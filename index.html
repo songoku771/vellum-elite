@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vellum Elite - Premium 4K & Live Wallpapers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Premium Dark Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #08080a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar for Luxury Feel */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #08080a; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 4%;
+            background: rgba(13, 13, 16, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #d4af37;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex: 0 1 500px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 11px 22px;
+            background: #121216;
+            border: 1px solid #22222a;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .search-container input:focus {
+            border-color: #d4af37;
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Luxury Options Menu & Categories */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 20px 4% 5px 4%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .tab-link {
+            color: #888;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            padding-bottom: 8px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .tab-link:hover, .tab-link.active {
+            color: #d4af37;
+        }
+
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 2px;
+            background: #d4af37;
+            box-shadow: 0 0 8px #d4af37;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 4%;
+            overflow-x: auto;
+        }
+
+        .cat-btn {
+            background: #121216;
+            border: 1px solid #22222a;
+            color: #aaa;
+            padding: 7px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .cat-btn:hover, .cat-btn.active {
+            background: #d4af37;
+            color: #000;
+            border-color: #d4af37;
+            font-weight: 600;
+        }
+
+        /* Grid System (Sleek Professional Thumbnails) */
+        .main-container { padding: 10px 4% 40px 4%; }
+        
+        .wallpaper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .card {
+            background: #121216;
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            height: 380px;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.7);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .card img, .card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px; left: 12px;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(5px);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            z-index: 2;
+        }
+
+        /* Pinterest-Style Split Layout Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 4, 5, 0.96);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #0d0d10;
+            width: 100%;
+            max-width: 1100px;
+            height: 88vh;
+            border-radius: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 22px;
+            font-size: 30px; color: #fff;
+            cursor: pointer; z-index: 110;
+            transition: 0.2s;
+        }
+        .close-modal:hover { color: #d4af37; }
+
+        /* Split Screen inside Modal */
+        .modal-body-split {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .modal-left-preview {
+            flex: 1.1;
+            background: #040405;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .modal-left-preview img, .modal-left-preview video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-right-scroll-panel {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: #0d0d10;
+        }
+
+        .wp-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .wp-author { font-size: 13px; color: #d4af37; margin-bottom: 25px; font-weight: 500; }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-luxury {
+            background: #14141a;
+            border: 1px solid #252530;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .btn-luxury:hover { border-color: #d4af37; background: #181822; }
+        .btn-luxury i.active { color: #ff3b30; text-shadow: 0 0 8px rgba(255,59,48,0.4); }
+
+        .btn-download-main {
+            background: #d4af37;
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-download-main:hover {
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+            transform: scale(1.02);
+        }
+
+        /* Pinterest Style "More Like This" Section */
+        .pinterest-loop-section {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 25px;
+        }
+        .pinterest-loop-section h3 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        .pinterest-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 12px;
+        }
+        .mini-card {
+            background: #121216;
+            border-radius: 10px;
+            height: 180px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.01);
+            transition: 0.3s;
+        }
+        .mini-card:hover { border-color: #d4af37; transform: scale(1.02); }
+        .mini-card img, .mini-card video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Comments Styling */
+        .comments-box { margin-top: 30px; }
+        .comments-box h4 { font-size: 14px; color: #888; margin-bottom: 12px; }
+        .input-group { display: flex; gap: 8px; margin-bottom: 15px; }
+        .input-group input {
+            flex: 1; background: #121216; border: 1px solid #22222a;
+            border-radius: 10px; padding: 10px; color: #fff; font-size: 13px;
+        }
+        .input-group input:focus { border-color: #d4af37; outline: none; }
+        .input-group button {
+            background: #1c1c24; border: 1px solid #252532; color: #d4af37; 
+            padding: 0 16px; border-radius: 10px; cursor: pointer; font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #040405;
+            font-size: 13px;
+            color: #444;
+            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            margin-top: 50px;
+        }
+        footer span { color: #d4af37; font-weight: 600; }
+
+        @media (max-width: 850px) {
+            .modal-body-split { flex-direction: column; }
+            .modal-content { height: 92vh; }
+            .modal-left-preview { flex: 0 0 40%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="location.reload()">Vellum Elite</div>
+        <div class="search-container">
+            <input type="text" placeholder="Search premium 4K & live wallpapers...">
+        </div>
+    </header>
+
+    <!-- Premium Options Menu Bar -->
+    <div class="nav-tabs">
+        <div class="tab-link active">Explore</div>
+        <div class="tab-link">Trending 🔥</div>
+        <div class="tab-link">Premium ✨</div>
+        <div class="tab-link">Live Engine 🎬</div>
+    </div>
+
+    <div class="categories">
+        <button class="cat-btn active">All Assets</button>
+        <button class="cat-btn">Anime Setup</button>
+        <button class="cat-btn">Gaming Rig</button>
+        <button class="cat-btn">Cyberpunk Dark</button>
+        <button class="cat-btn">Amoled 4K</button>
+    </div>
+
+    <div class="main-container">
+        <div class="wallpaper-grid" id="mainGrid">
+            <!-- Asset 1 -->
+            <div class="card" onclick="openLuxuryModal('static', 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800', 'Abstract Luxury Gold Fluid', 'Amoled 4K')">
+                <div class="badge">4K Static</div>
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800" alt="Wallpaper">
+            </div>
+            
+            <!-- Asset 2 -->
+            <div class="card" onclick="openLuxuryModal('live', 'https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-41753-large.mp4', 'Neon Cyber Laser Engine', 'Live Engine')">
+                <div class="badge">Live Setup</div>
+                <video src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-41753-large.mp4" loop muted autoplay></video>
+            </div>
+
+            <!-- Asset 3 -->
+            <div class="card" onclick="openLuxuryModal('static', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600', 'Gothic Renaissance Art Piece', 'Premium')">
+                <div class="badge">4K Static</div>
+                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600" alt="Wallpaper">
+            </div>
+
+            <!-- Asset 4 -->
+            <div class="card" onclick="openLuxuryModal('static', 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800', 'Neon Fluid Abstract Tech', 'Cyberpunk Dark')">
+                <div class="badge">4K Static</div>
+                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800" alt="Wallpaper">
+            </div>
+        </div>
+    </div>
+
+    <!-- Pinterest-Inspired Interactive Split Modal -->
+    <div class="modal" id="luxuryModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLuxuryModal()">&times;</span>
+            
+            <div class="modal-body-split">
+                <!-- Left: Big Visual Display -->
+                <div class="modal-left-preview" id="modalVisualBox"></div>
+                
+                <!-- Right: Content Details & Related Recommendations -->
+                <div class="modal-right-scroll-panel">
+                    <div class="wp-title" id="mdTitle">Asset Title</div>
+                    <div class="wp-author" id="mdTag">By Vellum Premium Studio</div>
+
+                    <div class="action-row">
+                        <button class="btn-luxury" onclick="toggleLike()">
+                            <i class="fa-solid fa-heart" id="likeIcon"></i> <span id="likeCount">382</span>
+                        </button>
+                        <button class="btn-download-main" onclick="triggerEarningDownload()">
+                            <i class="fa-solid fa-download"></i> Get Ultra HD
+                        </button>
+                    </div>
+
+                    <!-- Pinterest Feature: "More Like This" Inside the Loop -->
+                    <div class="pinterest-loop-section">
+                        <h3>More Like This</h3>
+                        <div class="pinterest-mini-grid">
+                            <div class="mini-card" onclick="switchMainWallpaper('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800', 'Abstract Luxury Gold Fluid', 'static')">
+                                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800">
+                            </div>
+                            <div class="mini-card" onclick="switchMainWallpaper('https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800', 'Neon Fluid Abstract Tech', 'static')">
+                                <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comments / Reviews inside loop -->
+                    <div class="comments-box">
+                        <h4>Feedback Loop</h4>
+                        <div class="input-group">
+                            <input type="text" id="commentText" placeholder="Leave a system review...">
+                            <button onclick="postComment()">Submit</button>
+                        </div>
+                        <div id="commentList" style="font-size: 13px; color: #777;">
+                            <p style="margin-bottom:6px;"><strong>Elite_User:</strong> Rendering engine is top tier. 10/10.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Vellum Elite | Architecture & Concept by <span>Kira</span>.</p>
+    </footer>
+
+    <script>
+        let currentDownloadUrl = "";
+
+        function openLuxuryModal(type, url, title, tag) {
+            currentDownloadUrl = url;
+            document.getElementById('mdTitle').innerText = title;
+            document.getElementById('mdTag').innerText = "Category: " + tag;
+            
+            const visualBox = document.getElementById('modalVisualBox');
+            if(type === 'static') {
+                visualBox.innerHTML = `<img src="${url}">`;
+            } else if(type === 'live') {
+                visualBox.innerHTML = `<video src="${url}" autoplay loop controls style="width:100%; height:100%;"></video>`;
+            }
+            document.getElementById('luxuryModal').style.display = 'flex';
+        }
+
+        function closeLuxuryModal() {
+            document.getElementById('luxuryModal').style.display = 'none';
+            document.getElementById('modalVisualBox').innerHTML = '';
+        }
+
+        function switchMainWallpaper(url, title, type) {
+            currentDownloadUrl = url;
+            document.getElementById('mdTitle').innerText = title;
+            const visualBox = document.getElementById('modalVisualBox');
+            visualBox.innerHTML = `<img src="${url}" style="animation: fadeIn 0.4s ease;">`;
+        }
+
+        function toggleLike() {
+            const icon = document.getElementById('likeIcon');
+            const count = document.getElementById('likeCount');
+            if(icon.classList.contains('active')) {
+                icon.classList.remove('active');
+                count.innerText = parseInt(count.innerText) - 1;
+            } else {
+                icon.classList.add('active');
+                count.innerText = parseInt(count.innerText) + 1;
+            }
+        }
+
+        function postComment() {
+            const input = document.getElementById('commentText');
+            if(input.value.trim() !== "") {
+                const list = document.getElementById('commentList');
+                list.innerHTML = `<p style="margin-bottom:6px; color:#aaa;"><strong>You:</strong> ${input.value}</p>` + list.innerHTML;
+                input.value = "";
+            }
+        }
+
+        function triggerEarningDownload() {
+            // MONETIZATION GATEWAY: In future, replace with real Adsterra/Monetag SmartLink URL
+            const gateway_ad_link = "https://www.google.com"; 
+            window.open(gateway_ad_link, '_blank');
+
+            // Actual file download action
+            const dl = document.createElement('a');
+            dl.href = currentDownloadUrl;
+            dl.download = 'Vellum_Elite_Asset.jpg';
+            document.body.appendChild(dl);
+            dl.click();
+            document.body.removeChild(dl);
+        }
+    </script>
+</body>
+</html>
