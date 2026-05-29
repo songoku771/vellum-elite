@@ -6,179 +6,236 @@
     <title>Vellum Elite - Premium 4K & Live Wallpapers</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .glass {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        body {
+            background-color: #0b0f19;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
         }
-        .wallpaper-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px rgba(255, 255, 255, 0.05) solid;
+        }
+        /* Pinterest style Masonry Grid */
+        .pinterest-grid {
+            columns: 2;
+            column-gap: 16px;
+        }
+        @media (min-width: 640px) { .pinterest-grid { columns: 3; } }
+        @media (min-width: 1024px) { .pinterest-grid { columns: 4; } }
+        @media (min-width: 1280px) { .pinterest-grid { columns: 5; } }
+        
+        .pin-card {
+            break-inside: avoid;
+            margin-bottom: 16px;
+            display: inline-block;
+            width: 100%;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+<body>
 
-    <nav class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-xl">
-        <div class="flex items-center gap-3">
-            <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-2xl animate-pulse"></i>
+    <nav class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-2 cursor-pointer">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-2xl"></i>
             <span class="text-xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">VELLUM ELITE</span>
         </div>
-        <div class="flex items-center gap-4">
-            <span id="userStatus" class="text-sm text-slate-400 hidden">Welcome, Admin</span>
-            <button id="authBtn" onclick="toggleAuthModal()" class="px-5 py-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-sm shadow-lg hover:scale-105 transition-all cursor-pointer">
-                <i class="fa-solid fa-user-shield mr-2"></i>Login / Sign Up
-            </button>
+        <div id="authStatus" class="flex items-center space-x-4">
+            <button onclick="openAuthModal('login')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 font-bold text-sm shadow-md hover:opacity-90 transition-all cursor-pointer">Login / Sign Up</button>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-10">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">⚡ PREMIUM WALLPAPERS Hub</h1>
-            <p class="text-slate-400 max-w-xl mx-auto">Unlock ultra-premium, high-refresh-rate 4K wallpapers. Created for gamers, hackers, and crypto enthusiasts.</p>
-        </div>
+    <header class="text-center py-16 px-4">
+        <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight"><i class="fa-solid fa-bolt text-amber-400 mr-2"></i>PREMIUM WALLPAPERS</h1>
+        <p class="text-slate-400 max-w-xl mx-auto">Unlock ultra-premium, high-refresh-rate 4K wallpapers. Created for gamers and creators.</p>
+    </header>
 
-        <div class="wallpaper-grid" id="wallpaperContainer">
-            <div class="glass rounded-2xl overflow-hidden shadow-2xl relative group hover:border-amber-500/50 transition-all duration-300">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600" alt="Abstract Gold" class="w-full h-80 object-cover group-hover:scale-105 transition-all duration-500">
-                <div class="p-5">
-                    <h3 class="font-bold text-lg">Abstract Luxury Gold</h3>
-                    <p class="text-xs text-amber-400 mb-4"><i class="fa-solid fa-crown mr-1"></i> Premium 4K</p>
-                    <button onclick="handleDownload()" class="w-full py-3 rounded-xl bg-slate-900 border border-slate-700 font-bold hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:border-transparent transition-all cursor-pointer">
-                        <i class="fa-solid fa-circle-arrow-down mr-2"></i>Get Ultra HD
-                    </button>
+    <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24">
+        <div class="pinterest-grid" id="wallpaperContainer">
+            
+            <div class="pin-card relative group rounded-2xl overflow-hidden glass transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                <img src="https://ezfxgevsjxfyluxprkls.supabase.co/storage/v1/object/public/wallpapers/image.png" alt="My Uploaded Wallpaper" class="w-full h-auto object-cover">
+                
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                    <div class="flex justify-end relative">
+                        <button onclick="toggleMenu(event, 'menu1')" class="w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-800 transition-all cursor-pointer">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <div id="menu1" class="hidden absolute right-0 top-11 w-40 rounded-xl glass p-2 shadow-xl z-10">
+                            <button onclick="handleDownload('https://ezfxgevsjxfyluxprkls.supabase.co/storage/v1/object/public/wallpapers/image.png')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-amber-500/20 text-amber-400 font-medium transition-all cursor-pointer">
+                                <i class="fa-solid fa-arrow-down mr-2"></i> Download 4K
+                            </button>
+                            <button onclick="alert('Shared link copied!')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-700/50 text-slate-300 transition-all cursor-pointer">
+                                <i class="fa-solid fa-share mr-2"></i> Share Link
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-white">
+                        <p class="font-bold text-sm truncate">Elite Cyber Setup</p>
+                        <p class="text-[11px] text-amber-400"><i class="fa-solid fa-crown mr-1"></i>Premium 4K</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="glass rounded-2xl overflow-hidden shadow-2xl relative group hover:border-amber-500/50 transition-all duration-300">
-                <img src="https://supabase.com/dashboard/project/ezfxgevsjxfyluxprkls/storage/buckets/wallpapers" alt="Anime Cyber" class="w-full h-80 object-cover group-hover:scale-105 transition-all duration-500">
-                <div class="p-5">
-                    <h3 class="font-bold text-lg">Neon Cyber Laser</h3>
-                    <p class="text-xs text-cyan-400 mb-4"><i class="fa-solid fa-bolt mr-1"></i> Live Motion</p>
-                    <button onclick="handleDownload()" class="w-full py-3 rounded-xl bg-slate-900 border border-slate-700 font-bold hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-600 hover:border-transparent transition-all cursor-pointer">
-                        <i class="fa-solid fa-circle-arrow-down mr-2"></i>Get Ultra HD
-                    </button>
+            <div class="pin-card relative group rounded-2xl overflow-hidden glass transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600" alt="Anime Cyber" class="w-full h-auto object-cover">
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                    <div class="flex justify-end relative">
+                        <button onclick="toggleMenu(event, 'menu2')" class="w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-800 transition-all cursor-pointer">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <div id="menu2" class="hidden absolute right-0 top-11 w-40 rounded-xl glass p-2 shadow-xl z-10">
+                            <button onclick="handleDownload('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-amber-500/20 text-amber-400 font-medium transition-all cursor-pointer">
+                                <i class="fa-solid fa-arrow-down mr-2"></i> Download 4K
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-white">
+                        <p class="font-bold text-sm truncate">Neon Cyber Laser</p>
+                        <p class="text-[11px] text-cyan-400"><i class="fa-solid fa-bolt mr-1"></i>Live Motion</p>
+                    </div>
                 </div>
             </div>
+
         </div>
     </main>
 
-    <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="glass w-full max-w-md rounded-3xl p-8 relative shadow-2xl animate-fade-in">
-            <button onclick="toggleAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white cursor-pointer text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-md glass p-8 rounded-3xl relative shadow-2xl">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
             
-            <h2 id="modalTitle" class="text-2xl font-black mb-2 text-center bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">JOIN THE ELITE CLUB</h2>
-            <p class="text-xs text-slate-400 text-center mb-6">Create a free account to unlock high-speed 4K downloads.</p>
-
-            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+            <h2 id="modalTitle" class="text-2xl font-black text-center mb-6 tracking-wide text-amber-400">LOGIN TO VELLUM</h2>
+            
+            <form id="authForm" class="space-y-4">
                 <div>
-                    <label class="text-xs font-bold uppercase text-slate-400 block mb-2">Email Address</label>
-                    <input type="email" id="authEmail" required class="w-full px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-700 focus:border-amber-500 focus:outline-none text-white text-sm" placeholder="you@example.com">
+                    <label class="text-xs font-bold tracking-wider text-slate-400 uppercase block mb-2">Email Address</label>
+                    <input type="email" id="authEmail" required class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white focus:outline-none focus:border-amber-400 transition-all" placeholder="yourname@gmail.com">
                 </div>
-                <div>
-                    <label class="text-xs font-bold uppercase text-slate-400 block mb-2">Password</label>
-                    <input type="password" id="authPassword" required class="w-full px-4 py-3 rounded-xl bg-slate-900/50 border border-slate-700 focus:border-amber-500 focus:outline-none text-white text-sm" placeholder="••••••••">
+                <div id="passwordField">
+                    <label class="text-xs font-bold tracking-wider text-slate-400 uppercase block mb-2">Password</label>
+                    <input type="password" id="authPassword" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white focus:outline-none focus:border-amber-400 transition-all" placeholder="••••••••">
+                    <div class="text-right mt-2">
+                        <a href="#" onclick="openAuthModal('forgot')" class="text-xs text-amber-400 hover:underline">Forgot Password?</a>
+                    </div>
                 </div>
-                <button type="submit" class="w-full py-3 mt-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all cursor-pointer">
-                    Continue <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
-                </button>
+                
+                <button type="submit" id="submitBtn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 font-black tracking-wide shadow-lg hover:opacity-95 transition-all mt-4 cursor-pointer">Continue <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i></button>
             </form>
 
-            <div class="mt-6 text-center text-xs text-slate-400">
+            <div class="text-center mt-6 text-sm text-slate-400">
                 <span id="switchText">Don't have an account?</span>
-                <button onclick="switchAuthMode()" id="switchBtn" class="text-amber-400 font-bold ml-1 underline cursor-pointer">Sign Up Now</button>
+                <a href="#" id="switchLink" onclick="toggleAuthMode()" class="text-amber-400 font-bold ml-1 hover:underline">Sign Up Now</a>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 🛠️ APNA LAPTOP PAR NOTEPAD SE YAHAN KEYS PASTE KARNA ⚠️
-        const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; // Aapka official project URL
-        const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; // Supabase Dashboard -> Settings -> API -> anon/public key daalna yahan
+        const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
 
-        // Initializing Supabase
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let isSignUpMode = false;
-        let currentUser = null;
+        let currentMode = 'login';
 
-        // Check if user is already logged in
-        window.onload = async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session) {
-                updateUserUI(session.user);
-            }
-        };
-
-        function toggleAuthModal() {
+        function openAuthModal(mode) {
+            currentMode = mode;
             const modal = document.getElementById('authModal');
-            modal.classList.toggle('hidden');
+            const title = document.getElementById('modalTitle');
+            const passField = document.getElementById('passwordField');
+            const submitBtn = document.getElementById('submitBtn');
+            const switchArea = document.getElementById('switchText').parentElement;
+            
+            modal.classList.remove('hidden');
+            
+            if (mode === 'login') {
+                title.innerText = "LOGIN TO VELLUM";
+                passField.classList.remove('hidden');
+                submitBtn.innerHTML = 'Login <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>';
+                switchArea.classList.remove('hidden');
+            } else if (mode === 'signup') {
+                title.innerText = "CREATE NEW ACCOUNT";
+                passField.classList.remove('hidden');
+                submitBtn.innerHTML = 'Sign Up <i class="fa-solid fa-user-plus ml-2"></i>';
+                switchArea.classList.remove('hidden');
+            } else if (mode === 'forgot') {
+                title.innerText = "RESET PASSWORD";
+                passField.classList.add('hidden'); 
+                submitBtn.innerHTML = 'Send Reset Link <i class="fa-solid fa-paper-plane ml-2"></i>';
+                switchArea.classList.add('hidden'); 
+            }
         }
 
-        function switchAuthMode() {
-            isSignUpMode = !isSignUpMode;
-            document.getElementById('modalTitle').innerText = isSignUpMode ? "CREATE NEW ACCOUNT" : "JOIN THE ELITE CLUB";
-            document.getElementById('switchText').innerText = isSignUpMode ? "Already have an account?" : "Don't have an account?";
-            document.getElementById('switchBtn').innerText = isSignUpMode ? "Login Here" : "Sign Up Now";
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
         }
 
-        // Handle Form Submit (Login/Signup)
-        async function handleAuth(e) {
+        function toggleAuthMode() {
+            if (currentMode === 'login') {
+                openAuthModal('signup');
+                document.getElementById('switchText').innerText = "Already have an account?";
+                document.getElementById('switchLink').innerText = "Login Here";
+            } else {
+                openAuthModal('login');
+                document.getElementById('switchText').innerText = "Don't have an account?";
+                document.getElementById('switchLink').innerText = "Sign Up Now";
+            }
+        }
+
+        function toggleMenu(event, menuId) {
+            event.stopPropagation();
+            const currentMenu = document.getElementById(menuId);
+            document.querySelectorAll('[id^="menu"]').forEach(m => {
+                if (m.id !== menuId) m.classList.add('hidden');
+            });
+            currentMenu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('[id^="menu"]').forEach(m => m.classList.add('hidden'));
+        });
+
+        function handleDownload(originalUrl) {
+            alert("Redirecting to premium secure high-speed download node...");
+            window.open("https://shrinkme.io/example_demo_link", "_blank");
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
+            const password = document.getElementById('authPassword') ? document.getElementById('authPassword').value : '';
 
             try {
-                if (isSignUpMode) {
+                if (currentMode === 'forgot') {
+                    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                        redirectTo: window.location.href, 
+                    });
+                    if (error) throw error;
+                    alert(`🔥 Hacker Alert: Password reset link aapke email (${email}) par bhej di gayi hai! Check inbox/spam.`);
+                    closeAuthModal();
+                } 
+                else if (currentMode === 'signup') {
                     const { data, error } = await supabaseClient.auth.signUp({ email, password });
                     if (error) throw error;
-                    alert("Verification link sent! Check your email inbox/spam to verify account.");
-                } else {
+                    alert("Account successfully bana diya gaya hai! Email check karke verify karein agar zaroori ho.");
+                    closeAuthModal();
+                } 
+                else if (currentMode === 'login') {
                     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                     if (error) throw error;
-                    updateUserUI(data.user);
-                    alert("Successfully logged in!");
-                    toggleAuthModal();
+                    alert("Swaagat hai! Aap successfully login ho chuke hain. 😎");
+                    
+                    document.getElementById('authStatus').innerHTML = `
+                        <span class="text-sm font-bold text-amber-400"><i class="fa-solid fa-circle-user mr-1"></i> ${email.split('@')[0]}</span>
+                        <button onclick="localStorage.clear(); location.reload();" class="text-xs text-red-400 hover:underline cursor-pointer">Logout</button>
+                    `;
+                    closeAuthModal();
                 }
-            } catch (err) {
-                alert("Auth Error: " + err.message);
+            } catch (error) {
+                alert("🚨 Error: " + error.message);
             }
-        }
-
-        function updateUserUI(user) {
-            currentUser = user;
-            if(user) {
-                document.getElementById('authBtn').innerHTML = `<i class="fa-solid fa-right-from-bracket mr-2"></i>Logout`;
-                document.getElementById('authBtn').setAttribute('onclick', 'handleLogout()');
-                document.getElementById('userStatus').classList.remove('hidden');
-                document.getElementById('userStatus').innerText = `Logged in: ${user.email.split('@')[0]}`;
-            }
-        }
-
-        async function handleLogout() {
-            await supabaseClient.auth.signOut();
-            currentUser = null;
-            document.getElementById('authBtn').innerHTML = `<i class="fa-solid fa-user-shield mr-2"></i>Login / Sign Up`;
-            document.getElementById('authBtn').setAttribute('onclick', 'toggleAuthModal()');
-            document.getElementById('userStatus').classList.add('hidden');
-            alert("Logged out successfully!");
-        }
-
-        // Premium Download Action
-        function handleDownload() {
-            if (!currentUser) {
-                alert("🔒 This is an Ultra HD Premium Wallpaper. Please Login or Sign Up first to unlock download!");
-                toggleAuthModal();
-            } else {
-                // Agar user logged in hai, toh direct monetized High-Earning ad link khulegi
-                window.open("https://www.google.com", "_blank"); // Kal hum yahan aapka Ad Link paste karenge!
-            }
-        }
+        });
     </script>
 </body>
 </html>
