@@ -7,30 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #0b0f19;
-            color: #f8fafc;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .glass {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px rgba(255, 255, 255, 0.05) solid;
-        }
-        .pinterest-grid {
-            columns: 2;
-            column-gap: 16px;
-        }
+        body { background-color: #0b0f19; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px rgba(255, 255, 255, 0.05) solid; }
+        .pinterest-grid { columns: 2; column-gap: 16px; }
         @media (min-width: 640px) { .pinterest-grid { columns: 3; } }
         @media (min-width: 1024px) { .pinterest-grid { columns: 4; } }
         @media (min-width: 1280px) { .pinterest-grid { columns: 5; } }
-        
-        .pin-card {
-            break-inside: avoid;
-            margin-bottom: 16px;
-            display: inline-block;
-            width: 100%;
-        }
+        .pin-card { break-inside: avoid; margin-bottom: 16px; display: inline-block; width: 100%; }
     </style>
 </head>
 <body>
@@ -45,15 +28,15 @@
         </div>
     </nav>
 
-    <header class="text-center py-16 px-4">
+    <header class="text-center py-12 px-4">
         <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight"><i class="fa-solid fa-bolt text-amber-400 mr-2"></i>PREMIUM WALLPAPERS</h1>
-        <p class="text-slate-400 max-w-xl mx-auto">Unlock ultra-premium, high-refresh-rate 4K wallpapers. Automatic Database Synced.</p>
+        <p class="text-slate-400 max-w-xl mx-auto">High-refresh-rate ultra premium wallpapers dashboard synced with real-time cloud database.</p>
     </header>
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24">
         <div class="pinterest-grid" id="wallpaperContainer">
             <div class="text-center col-span-full py-12 text-slate-500" id="loadingText">
-                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-amber-400"></i><br>Loading Database...
+                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-amber-400"></i><br>Connecting Secure Database...
             </div>
         </div>
     </main>
@@ -85,13 +68,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // AAPKI DETAILS MAINE AUTO-FILL KAR DI HAIN!
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentMode = 'login';
 
-        // AUTOMATIC WALLPAPER FETCH FUNCTION
+        // FETCH FROM DATABASE WITH REAL TIME COUNTERS
         async function fetchWallpapers() {
             const container = document.getElementById('wallpaperContainer');
             try {
@@ -101,35 +85,51 @@
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
-
-                container.innerHTML = ''; // Loading text hataya
+                container.innerHTML = ''; 
 
                 if(wallpapers.length === 0) {
-                    container.innerHTML = `<div class="text-center col-span-full text-slate-500 py-12">Database khali hai! Supabase mein row jodein.</div>`;
+                    container.innerHTML = `<div class="text-center col-span-full text-slate-500 py-12">Database khali hai! Supabase me rows add karein.</div>`;
                     return;
                 }
 
                 wallpapers.forEach((wall, index) => {
+                    const resBadge = wall.resolution ? wall.resolution : '4K UHD';
+                    const likesCount = wall.likes ? wall.likes : 0;
+                    const viewsCount = wall.views ? wall.views : 0;
+
                     const cardHtml = `
-                        <div class="pin-card relative group rounded-2xl overflow-hidden glass transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+                        <div class="pin-card relative group rounded-2xl overflow-hidden glass transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl" onclick="updateView('${wall.id}', ${viewsCount})">
                             <img src="${wall.image_url}" alt="${wall.title}" class="w-full h-auto object-cover">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
-                                <div class="flex justify-end relative">
+                            
+                            <span class="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-black tracking-widest bg-slate-900/80 text-amber-400 rounded-lg uppercase border border-amber-400/20 z-10">${resBadge}</span>
+
+                            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                                <div class="flex justify-between items-center relative">
+                                    <div class="flex space-x-3 text-xs text-slate-300 bg-slate-900/60 px-2.5 py-1.5 rounded-xl backdrop-blur-sm">
+                                        <span><i class="fa-solid fa-eye text-cyan-400 mr-1"></i>${viewsCount}</span>
+                                    </div>
                                     <button onclick="toggleMenu(event, 'menu-${index}')" class="w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-800 transition-all cursor-pointer">
                                         <i class="fa-solid fa-ellipsis"></i>
                                     </button>
-                                    <div id="menu-${index}" class="hidden absolute right-0 top-11 w-40 rounded-xl glass p-2 shadow-xl z-10">
-                                        <button onclick="handleDownload('${wall.image_url}')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-amber-500/20 text-amber-400 font-medium transition-all cursor-pointer">
+                                    <div id="menu-${index}" class="hidden absolute right-0 top-11 w-40 rounded-xl glass p-2 shadow-xl z-25">
+                                        <button onclick="handleDownload(event, '${wall.image_url}')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-amber-500/20 text-amber-400 font-medium transition-all cursor-pointer">
                                             <i class="fa-solid fa-arrow-down mr-2"></i> Download 4K
                                         </button>
-                                        <button onclick="navigator.clipboard.writeText('${wall.image_url}'); alert('Wallpaper link copied!')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-700/50 text-slate-300 transition-all cursor-pointer">
+                                        <button onclick="event.stopPropagation(); navigator.clipboard.writeText('${wall.image_url}'); alert('Shared link copied!')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-700/50 text-slate-300 transition-all cursor-pointer">
                                             <i class="fa-solid fa-share mr-2"></i> Share Link
                                         </button>
                                     </div>
                                 </div>
-                                <div class="text-white">
-                                    <p class="font-bold text-sm truncate">${wall.title}</p>
-                                    <p class="text-[11px] text-amber-400"><i class="fa-solid fa-crown mr-1"></i>${wall.tag}</p>
+                                
+                                <div class="flex justify-between items-end text-white">
+                                    <div class="max-w-[70%]">
+                                        <p class="font-bold text-sm truncate">${wall.title}</p>
+                                        <p class="text-[11px] text-amber-400"><i class="fa-solid fa-crown mr-1"></i>${wall.tag ? wall.tag : 'Premium'}</p>
+                                    </div>
+                                    <button onclick="handleLike(event, '${wall.id}', ${likesCount})" class="px-3 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white text-xs font-bold transition-all flex items-center space-x-1 border border-red-500/30 cursor-pointer">
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span>${likesCount}</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -137,80 +137,9 @@
                     container.innerHTML += cardHtml;
                 });
             } catch (error) {
-                container.innerHTML = `<div class="text-center col-span-full text-red-400 py-12">Error loading data: ${error.message}</div>`;
+                container.innerHTML = `<div class="text-center col-span-full text-red-400 py-12">System Error: ${error.message}</div>`;
             }
         }
 
-        // Run on page load
-        window.onload = fetchWallpapers;
-
-        // AUTH MODAL FUNCTIONS
-        function openAuthModal(mode) {
-            currentMode = mode;
-            const modal = document.getElementById('authModal');
-            const title = document.getElementById('modalTitle');
-            const passField = document.getElementById('passwordField');
-            const submitBtn = document.getElementById('submitBtn');
-            const switchArea = document.getElementById('switchText').parentElement;
-            modal.classList.remove('hidden');
-            if (mode === 'login') {
-                title.innerText = "LOGIN TO VELLUM";
-                passField.classList.remove('hidden');
-                submitBtn.innerHTML = 'Login <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>';
-                switchArea.classList.remove('hidden');
-            } else if (mode === 'signup') {
-                title.innerText = "CREATE NEW ACCOUNT";
-                passField.classList.remove('hidden');
-                submitBtn.innerHTML = 'Sign Up <i class="fa-solid fa-user-plus ml-2"></i>';
-                switchArea.classList.remove('hidden');
-            } else if (mode === 'forgot') {
-                title.innerText = "RESET PASSWORD";
-                passField.classList.add('hidden'); 
-                submitBtn.innerHTML = 'Send Reset Link <i class="fa-solid fa-paper-plane ml-2"></i>';
-                switchArea.classList.add('hidden'); 
-            }
-        }
-
-        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-
-        function toggleAuthMode() {
-            if (currentMode === 'login') {
-                openAuthModal('signup');
-                document.getElementById('switchText').innerText = "Already have an account?";
-                document.getElementById('switchLink').innerText = "Login Here";
-            } else {
-                openAuthModal('login');
-                document.getElementById('switchText').innerText = "Don't have an account?";
-                document.getElementById('switchLink').innerText = "Sign Up Now";
-            }
-        }
-
-        function toggleMenu(event, menuId) {
-            event.stopPropagation();
-            document.querySelectorAll('[id^="menu-"]').forEach(m => { if (m.id !== menuId) m.classList.add('hidden'); });
-            document.getElementById(menuId).classList.toggle('hidden');
-        }
-
-        document.addEventListener('click', () => { document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden')); });
-
-        // SHORTENER EARNING ACTION ON DOWNLOAD
-        function handleDownload(originalUrl) {
-            alert("Redirecting to premium secure high-speed download node...");
-            // YAHAN AAP APNI URL SHORTENER / MONETIZATION DIRECT LINK DAL SAKTE HO
-            window.open("https://shrinkme.io/example_demo_link", "_blank");
-        }
-
-        // REAL SUPABASE AUTH FORM HANDLING
-        document.getElementById('authForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword') ? document.getElementById('authPassword').value : '';
-
-            try {
-                if (currentMode === 'forgot') {
-                    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
-                    if (error) throw error;
-                    alert(`🔥 Password reset link aapke email (${email}) par bhej di gayi hai!`);
-                    closeAuthModal();
-                } else if (currentMode === 'signup') {
-                    const { error } = await supabase
+        // REAL-TIME DATABASE LIKE INCREMENT
+        async
