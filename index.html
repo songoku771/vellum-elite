@@ -35,7 +35,6 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24">
         <div class="pinterest-grid" id="wallpaperContainer">
-            <!-- ID SET TO 'loadingText' TO MATCH DATABASE SCRIPT -->
             <div class="text-center col-span-full py-12 text-slate-500" id="loadingText">
                 <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-amber-400"></i><br>Connecting Secure Database...
             </div>
@@ -79,7 +78,7 @@
         // FETCH FROM DATABASE
         async function fetchWallpapers() {
             const container = document.getElementById('wallpaperContainer');
-            const loadingEl = document.getElementById('loadingText'); // FIXED ID HERE
+            const loadingEl = document.getElementById('loadingText');
             
             try {
                 if (!container) return;
@@ -91,7 +90,6 @@
 
                 if (error) throw error;
                 
-                // Loader ko hide karo
                 if (loadingEl) {
                     loadingEl.style.display = 'none';
                 }
@@ -122,9 +120,9 @@
                                     <span class="flex items-center gap-1"><i class="fa-solid fa-eye"></i> ${wp.views || 0}</span>
                                     <span class="flex items-center gap-1"><i class="fa-solid fa-download"></i> ${wp.downloads || 0}</span>
                                 </div>
-                                <a href="${wp.image_url}" target="_blank" onclick="incrementDownload('${wp.id}')" class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition-transform active:scale-95">
                                     <i class="fa-solid fa-download"></i> Get
-                                </a>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -138,39 +136,33 @@
             }
         }
 
-        // DOWNLOAD INCREMENT FUNCTION
-        async function incrementDownload(id) {
+        // IMAGE KO DIRECT FORCE DOWNLOAD KARWANE KA FUNCTION
+        async function triggerDownload(id, imageUrl, title) {
             try {
+                // 1. Database mein counter badhao
                 await supabaseClient.rpc('increment_downloads', { row_id: id });
             } catch (e) {
-                console.log(e);
+                console.log("Counter update skipped:", e);
             }
-        }
 
-        // AUTH MODAL FUNCTIONS
-        function openAuthModal(mode) {
-            currentMode = mode;
-            const modal = document.getElementById('authModal');
-            const title = document.getElementById('modalTitle');
-            const passField = document.getElementById('passwordField');
-            
-            modal.classList.remove('hidden');
-            if(mode === 'login') {
-                title.innerText = "LOGIN TO VELLUM";
-                passField.style.display = 'block';
-            } else if(mode === 'signup') {
-                title.innerText = "CREATE ACCOUNT";
-                passField.style.display = 'block';
+            try {
+                // 2. Image ko fetch karke blob mein badlo taaki force download ho sake
+                const response = await fetch(imageUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = `${title.replace(/\s+/g, '_')}_Vellum_4K.jpg`; 
+                document.body.appendChild(a);
+                a.click();
+                
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error("Direct download blocked by browser cors, opening in new tab:", error);
+                window.open(imageUrl, '_blank');
             }
-        }
-
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function toggleAuthMode() {
-            if(currentMode === 'login') openAuthModal('signup');
-            else openAuthModal('login');
         }
 
         // Run on load
