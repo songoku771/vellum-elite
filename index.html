@@ -76,11 +76,14 @@
         let currentMode = 'login';
 
         // FETCH FROM DATABASE WITH REAL TIME COUNTERS
-        async function fetchWallpapers() {
+       async function fetchWallpapers() {
     const container = document.getElementById('wallpaperContainer');
-    const loadingEl = document.getElementById('loading'); // loading element pakdo
+    const loadingEl = document.getElementById('loading');
     
     try {
+        // 1. Pehle check karo ki elements page par hain ya nahi
+        if (!container) return;
+
         const { data: wallpapers, error } = await supabaseClient
             .from('wallpapers')
             .select('*')
@@ -88,16 +91,24 @@
 
         if (error) throw error;
         
-        // Agar data mil jaye toh loading spinner ko chhupao!
-        if (loadingEl) loadingEl.style.display = 'none';
-        
+        // 2. MASTERSTROKE: Data mile ya na mile, loader ko sabse pehle HATAO!
+        if (loadingEl) {
+            loadingEl.style.display = 'none';
+        }
+
         container.innerHTML = '';
 
+        // 3. Agar database mein koi wallpaper nahi mila
         if (!wallpapers || wallpapers.length === 0) {
-            container.innerHTML = `<div class="text-center text-gray-400 col-span-full py-10">No premium wallpapers found in database.</div>`;
+            container.innerHTML = `
+                <div class="text-center text-gray-400 col-span-full py-10">
+                    <i class="fa-solid fa-folder-open text-3xl mb-3 text-slate-600"></i>
+                    <p>Database is empty. Please add wallpapers in Supabase!</p>
+                </div>`;
             return;
         }
 
+        // 4. Agar data hai, toh cards banao
         wallpapers.forEach(wp => {
             const card = document.createElement('div');
             card.className = "bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group";
@@ -120,14 +131,15 @@
                     </div>
                 </div>
             `;
-            container.innerHTML += card.outerHTML;
+            container.appendChild(card);
         });
 
     } catch (error) {
         console.error('Error fetching wallpapers:', error);
+        // Error aane par bhi loader hatao aur message dikhao
+        if (loadingEl) loadingEl.style.display = 'none';
         if (container) container.innerHTML = `<div class="text-center text-red-400 col-span-full py-10">Database connection failed. Please refresh.</div>`;
     }
 }
-
         // REAL-TIME DATABASE LIKE INCREMENT
         async
