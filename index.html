@@ -68,7 +68,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // AAPKI DETAILS MAINE AUTO-FILL KAR DI HAIN! LIVE FIX
+        // AAPKI DETAILS MAINE AUTO-FILL KAR DI HAIN!
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -77,69 +77,57 @@
 
         // FETCH FROM DATABASE WITH REAL TIME COUNTERS
         async function fetchWallpapers() {
-            const container = document.getElementById('wallpaperContainer');
-            try {
-                const { data: wallpapers, error } = await supabaseClient
-                    .from('wallpapers')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+    const container = document.getElementById('wallpaperContainer');
+    const loadingEl = document.getElementById('loading'); // loading element pakdo
+    
+    try {
+        const { data: wallpapers, error } = await supabaseClient
+            .from('wallpapers')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-                if (error) throw error;
-                container.innerHTML = ''; 
+        if (error) throw error;
+        
+        // Agar data mil jaye toh loading spinner ko chhupao!
+        if (loadingEl) loadingEl.style.display = 'none';
+        
+        container.innerHTML = '';
 
-                if(wallpapers.length === 0) {
-                    container.innerHTML = `<div class="text-center col-span-full text-slate-500 py-12">Database khali hai! Supabase me rows add karein.</div>`;
-                    return;
-                }
-
-                wallpapers.forEach((wall, index) => {
-                    const resBadge = wall.resolution ? wall.resolution : '4K UHD';
-                    const likesCount = wall.likes ? wall.likes : 0;
-                    const viewsCount = wall.views ? wall.views : 0;
-
-                    const cardHtml = `
-                        <div class="pin-card relative group rounded-2xl overflow-hidden glass transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl" onclick="updateView('${wall.id}', ${viewsCount})">
-                            <img src="${wall.image_url}" alt="${wall.title}" class="w-full h-auto object-cover">
-                            
-                            <span class="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-black tracking-widest bg-slate-900/80 text-amber-400 rounded-lg uppercase border border-amber-400/20 z-10">${resBadge}</span>
-
-                            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
-                                <div class="flex justify-between items-center relative">
-                                    <div class="flex space-x-3 text-xs text-slate-300 bg-slate-900/60 px-2.5 py-1.5 rounded-xl backdrop-blur-sm">
-                                        <span><i class="fa-solid fa-eye text-cyan-400 mr-1"></i>${viewsCount}</span>
-                                    </div>
-                                    <button onclick="toggleMenu(event, 'menu-${index}')" class="w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-800 transition-all cursor-pointer">
-                                        <i class="fa-solid fa-ellipsis"></i>
-                                    </button>
-                                    <div id="menu-${index}" class="hidden absolute right-0 top-11 w-40 rounded-xl glass p-2 shadow-xl z-25">
-                                        <button onclick="handleDownload(event, '${wall.image_url}')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-amber-500/20 text-amber-400 font-medium transition-all cursor-pointer">
-                                            <i class="fa-solid fa-arrow-down mr-2"></i> Download 4K
-                                        </button>
-                                        <button onclick="event.stopPropagation(); navigator.clipboard.writeText('${wall.image_url}'); alert('Shared link copied!')" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-700/50 text-slate-300 transition-all cursor-pointer">
-                                            <i class="fa-solid fa-share mr-2"></i> Share Link
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex justify-between items-end text-white">
-                                    <div class="max-w-[70%]">
-                                        <p class="font-bold text-sm truncate">${wall.title}</p>
-                                        <p class="text-[11px] text-amber-400"><i class="fa-solid fa-crown mr-1"></i>${wall.tag ? wall.tag : 'Premium'}</p>
-                                    </div>
-                                    <button onclick="handleLike(event, '${wall.id}', ${likesCount})" class="px-3 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white text-xs font-bold transition-all flex items-center space-x-1 border border-red-500/30 cursor-pointer">
-                                        <i class="fa-solid fa-heart"></i>
-                                        <span>${likesCount}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += cardHtml;
-                });
-            } catch (error) {
-                container.innerHTML = `<div class="text-center col-span-full text-red-400 py-12">System Error: ${error.message}</div>`;
-            }
+        if (!wallpapers || wallpapers.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-400 col-span-full py-10">No premium wallpapers found in database.</div>`;
+            return;
         }
+
+        wallpapers.forEach(wp => {
+            const card = document.createElement('div');
+            card.className = "bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group";
+            card.innerHTML = `
+                <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
+                    <img src="${wp.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}" alt="${wp.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                    <span class="absolute top-3 right-3 bg-slate-950/80 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-500/30 backdrop-blur-sm">${wp.resolution || '4K Ultra'}</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">${wp.title}</h3>
+                    <p class="text-slate-400 text-xs mb-4">Premium High-Refresh Rate Wallpaper</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+                        <div class="flex items-center gap-4 text-slate-400 text-xs">
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-eye text-slate-500"></i> ${wp.views || 0}</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-download text-slate-500"></i> ${wp.downloads || 0}</span>
+                        </div>
+                        <a href="${wp.image_url}" target="_blank" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> Get Wall
+                        </a>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += card.outerHTML;
+        });
+
+    } catch (error) {
+        console.error('Error fetching wallpapers:', error);
+        if (container) container.innerHTML = `<div class="text-center text-red-400 col-span-full py-10">Database connection failed. Please refresh.</div>`;
+    }
+}
 
         // REAL-TIME DATABASE LIKE INCREMENT
         async
