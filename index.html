@@ -35,6 +35,7 @@
 
     <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24">
         <div class="pinterest-grid" id="wallpaperContainer">
+            <!-- ID SET TO 'loadingText' TO MATCH DATABASE SCRIPT -->
             <div class="text-center col-span-full py-12 text-slate-500" id="loadingText">
                 <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-amber-400"></i><br>Connecting Secure Database...
             </div>
@@ -68,79 +69,112 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // AAPKI DETAILS MAINE AUTO-FILL KAR DI HAIN!
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log("Supabase Client Status:", supabaseClient);
+        console.log("Supabase Client Status Loaded Successfully!");
 
         let currentMode = 'login';
 
-        // FETCH FROM DATABASE WITH REAL TIME COUNTERS
-       async function fetchWallpapers() {
-    const container = document.getElementById('wallpaperContainer');
-    const loadingEl = document.getElementById('loading');
-    
-    try {
-        // 1. Pehle check karo ki elements page par hain ya nahi
-        if (!container) return;
+        // FETCH FROM DATABASE
+        async function fetchWallpapers() {
+            const container = document.getElementById('wallpaperContainer');
+            const loadingEl = document.getElementById('loadingText'); // FIXED ID HERE
+            
+            try {
+                if (!container) return;
 
-        const { data: wallpapers, error } = await supabaseClient
-            .from('wallpapers')
-            .select('*')
-            .order('created_at', { ascending: false });
+                const { data: wallpapers, error } = await supabaseClient
+                    .from('wallpapers')
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-        if (error) throw error;
-        
-        // 2. MASTERSTROKE: Data mile ya na mile, loader ko sabse pehle HATAO!
-        if (loadingEl) {
-            loadingEl.style.display = 'none';
-        }
+                if (error) throw error;
+                
+                // Loader ko hide karo
+                if (loadingEl) {
+                    loadingEl.style.display = 'none';
+                }
 
-        container.innerHTML = '';
+                container.innerHTML = '';
 
-        // 3. Agar database mein koi wallpaper nahi mila
-        if (!wallpapers || wallpapers.length === 0) {
-            container.innerHTML = `
-                <div class="text-center text-gray-400 col-span-full py-10">
-                    <i class="fa-solid fa-folder-open text-3xl mb-3 text-slate-600"></i>
-                    <p>Database is empty. Please add wallpapers in Supabase!</p>
-                </div>`;
-            return;
-        }
+                if (!wallpapers || wallpapers.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center text-gray-400 col-span-full py-10 w-full">
+                            <i class="fa-solid fa-folder-open text-3xl mb-3 text-slate-600"></i>
+                            <p>Database is empty. Please add wallpapers in Supabase!</p>
+                        </div>`;
+                    return;
+                }
 
-        // 4. Agar data hai, toh cards banao
-        wallpapers.forEach(wp => {
-            const card = document.createElement('div');
-            card.className = "bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group";
-            card.innerHTML = `
-                <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                    <img src="${wp.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}" alt="${wp.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-                    <span class="absolute top-3 right-3 bg-slate-950/80 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-500/30 backdrop-blur-sm">${wp.resolution || '4K Ultra'}</span>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">${wp.title}</h3>
-                    <p class="text-slate-400 text-xs mb-4">Premium High-Refresh Rate Wallpaper</p>
-                    <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
-                        <div class="flex items-center gap-4 text-slate-400 text-xs">
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-eye text-slate-500"></i> ${wp.views || 0}</span>
-                            <span class="flex items-center gap-1"><i class="fa-solid fa-download text-slate-500"></i> ${wp.downloads || 0}</span>
+                wallpapers.forEach(wp => {
+                    const card = document.createElement('div');
+                    card.className = "pin-card bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group";
+                    card.innerHTML = `
+                        <div class="relative w-full overflow-hidden bg-slate-950">
+                            <img src="${wp.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}" alt="${wp.title}" class="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500" loading="lazy">
+                            <span class="absolute top-3 right-3 bg-slate-950/80 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-500/30 backdrop-blur-sm">${wp.resolution || '4K Ultra'}</span>
                         </div>
-                        <a href="${wp.image_url}" target="_blank" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20 flex items-center gap-1.5">
-                            <i class="fa-solid fa-download"></i> Get Wall
-                        </a>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
+                        <div class="p-4">
+                            <h3 class="text-base font-bold text-white mb-1 group-hover:text-amber-400 transition-colors">${wp.title}</h3>
+                            <div class="flex items-center justify-between pt-2 mt-2 border-t border-slate-800/60">
+                                <div class="flex items-center gap-3 text-slate-400 text-xs">
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-eye"></i> ${wp.views || 0}</span>
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-download"></i> ${wp.downloads || 0}</span>
+                                </div>
+                                <a href="${wp.image_url}" target="_blank" onclick="incrementDownload('${wp.id}')" class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                    <i class="fa-solid fa-download"></i> Get
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
 
-    } catch (error) {
-        console.error('Error fetching wallpapers:', error);
-        // Error aane par bhi loader hatao aur message dikhao
-        if (loadingEl) loadingEl.style.display = 'none';
-        if (container) container.innerHTML = `<div class="text-center text-red-400 col-span-full py-10">Database connection failed. Please refresh.</div>`;
-    }
-}
-        // REAL-TIME DATABASE LIKE INCREMENT
-        async
+            } catch (error) {
+                console.error('Error fetching wallpapers:', error);
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (container) container.innerHTML = `<div class="text-center text-red-400 col-span-full py-10 w-full">Database connection failed.</div>`;
+            }
+        }
+
+        // DOWNLOAD INCREMENT FUNCTION
+        async function incrementDownload(id) {
+            try {
+                await supabaseClient.rpc('increment_downloads', { row_id: id });
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        // AUTH MODAL FUNCTIONS
+        function openAuthModal(mode) {
+            currentMode = mode;
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('modalTitle');
+            const passField = document.getElementById('passwordField');
+            
+            modal.classList.remove('hidden');
+            if(mode === 'login') {
+                title.innerText = "LOGIN TO VELLUM";
+                passField.style.display = 'block';
+            } else if(mode === 'signup') {
+                title.innerText = "CREATE ACCOUNT";
+                passField.style.display = 'block';
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function toggleAuthMode() {
+            if(currentMode === 'login') openAuthModal('signup');
+            else openAuthModal('login');
+        }
+
+        // Run on load
+        window.onload = fetchWallpapers;
+    </script>
+</body>
+</html>
