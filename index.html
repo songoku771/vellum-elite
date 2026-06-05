@@ -23,6 +23,11 @@
 </head>
 <body>
 
+    <!-- TOAST NOTIFICATION FOR SHARE -->
+    <div id="shareToast" class="fixed bottom-5 right-5 glass bg-slate-900/90 text-amber-400 font-bold px-6 py-3 rounded-xl border border-amber-500/30 shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i> Link Copied! Share with your friends!
+    </div>
+
     <!-- NAVBAR -->
     <nav class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
         <div class="flex items-center space-x-2 cursor-pointer" onclick="location.reload()">
@@ -63,7 +68,7 @@
         </div>
     </main>
 
-    <!-- NEW FEATURE: PREMIUM QUICK PREVIEW MODAL -->
+    <!-- PREMIUM QUICK PREVIEW MODAL WITH SHARE BUTTON -->
     <div id="previewModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-2 md:p-4">
         <div class="w-full max-w-4xl glass rounded-3xl overflow-hidden relative shadow-2xl flex flex-col md:flex-row max-h-[90vh] md:max-h-[80vh]">
             <!-- Close Button -->
@@ -98,9 +103,9 @@
                     </div>
                 </div>
                 
-                <!-- Large Download Button Inside Modal -->
-                <div id="modalDownloadContainer">
-                    <!-- Dynamic button inserted via JS -->
+                <!-- Action Buttons: Download + Share Together -->
+                <div class="flex flex-col gap-3" id="modalActionContainer">
+                    <!-- Buttons inserted dynamically via JS -->
                 </div>
             </div>
         </div>
@@ -142,7 +147,7 @@
         let selectedCat = 'all';
         let currentMode = 'login';
 
-        // FETCH FROM DATABASE
+        // FETCH WALLPAPERS
         async function fetchWallpapers() {
             const container = document.getElementById('wallpaperContainer');
             const loadingEl = document.getElementById('loadingText');
@@ -156,7 +161,6 @@
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
-                
                 if (loadingEl) loadingEl.style.display = 'none';
 
                 allWallpapers = wallpapers || [];
@@ -169,7 +173,7 @@
             }
         }
 
-        // RENDER CARDS WITH OPEN PREVIEW FUNCTION
+        // RENDER CARDS
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
             container.innerHTML = '';
@@ -186,8 +190,6 @@
             list.forEach(wp => {
                 const card = document.createElement('div');
                 card.className = "pin-card bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group shadow-lg shadow-black/30 cursor-pointer";
-                
-                // Clicking on the card layout opens the custom popup preview
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden bg-slate-950" onclick="openPreviewModal('${wp.id}')">
                         <img src="${wp.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}" alt="${wp.title}" class="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500" loading="lazy">
@@ -210,33 +212,33 @@
             });
         }
 
-        // OPEN PREVIEW POPUP LOGIC + INCREMENT VIEW COUNTER
+        // OPEN PREVIEW WITH NEW SHARE ACTION
         async function openPreviewModal(id) {
             const wp = allWallpapers.find(item => item.id === id);
             if (!wp) return;
 
-            // Form data updates inside popup
             document.getElementById('modalImg').src = wp.image_url;
             document.getElementById('modalTitleText').innerText = wp.title;
             document.getElementById('modalRes').innerText = wp.resolution || '4K Ultra';
             document.getElementById('modalViews').innerText = (wp.views || 0) + 1;
             document.getElementById('modalDownloads').innerText = wp.downloads || 0;
 
-            // Generate big dynamic download button inside popup
-            const btnContainer = document.getElementById('modalDownloadContainer');
-            btnContainer.innerHTML = `
+            // Render Download AND Share button inside action layout container
+            const actionContainer = document.getElementById('modalActionContainer');
+            actionContainer.innerHTML = `
                 <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-sm shadow-xl shadow-orange-500/10 hover:opacity-95 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-cloud-arrow-down text-base"></i> Download In High Quality
                 </button>
+                <button onclick="copyShareLink('${wp.id}')" class="w-full py-3 rounded-xl bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+                    <i class="fa-solid fa-share-nodes text-amber-400 text-sm"></i> Share Wallpaper Link
+                </button>
             `;
 
-            // Display modal
             document.getElementById('previewModal').classList.remove('hidden');
 
-            // Increment view setup in database silently
             try {
                 await supabaseClient.from('wallpapers').update({ views: (wp.views || 0) + 1 }).eq('id', id);
-                wp.views = (wp.views || 0) + 1; // Update copy
+                wp.views = (wp.views || 0) + 1; 
             } catch(e) { console.log(e); }
         }
 
@@ -244,7 +246,27 @@
             document.getElementById('previewModal').classList.add('hidden');
         }
 
-        // SEARCH & FILTER LOGIC
+        // LIVE COPY SHARE FUNCTION + POPUP TOAST NOTIFICATION
+        function copyShareLink(id) {
+            // Generates deep link back to website deployment root
+            const siteUrl = window.location.origin + window.location.pathname;
+            const fullSharePath = `${siteUrl}`;
+            
+            navigator.clipboard.writeText(fullSharePath).then(() => {
+                const toast = document.getElementById('shareToast');
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+                
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        // SEARCH & FILTER
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const filtered = allWallpapers.filter(wp => {
@@ -267,11 +289,10 @@
             filterWallpapers();
         }
 
-        // FORCE DOWNLOAD LOGIC
+        // FORCE DOWNLOAD
         async function triggerDownload(id, imageUrl, title) {
             try {
                 await supabaseClient.rpc('increment_downloads', { row_id: id });
-                // Update internal live model downloads count display visually
                 const wp = allWallpapers.find(item => item.id === id);
                 if(wp) {
                     wp.downloads = (wp.downloads || 0) + 1;
