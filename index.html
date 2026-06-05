@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Default Smooth Transition Background Colors */
         body { 
             background-color: #ffffff; 
             color: #1e293b; 
@@ -15,15 +14,12 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Dynamic Theme classes managed by JS */
         body.theme-white { background-color: #ffffff; color: #1e293b; }
         body.theme-grey { background-color: #f1f5f9; color: #0f172a; }
         body.theme-black { background-color: #0b0f19; color: #f8fafc; }
 
-        /* Card styles adjusting with body text */
-        .wp-card { background: transparent; transition: all 0.2s ease; }
-        body.theme-black .wp-card h3 { color: #f1f5f9; }
-        body.theme-black .wp-card p { color: #94a3b8; }
+        body.theme-black .bg-card-custom { background-color: #1e293b; border-color: #334155; color: #f8fafc; }
+        body.theme-black input, body.theme-black select { background-color: #0f172a; border-color: #334155; color: #ffffff; }
         
         /* PINTEREST MASONRY GRID SYSTEM */
         .pinterest-grid { columns: 2; column-gap: 16px; }
@@ -46,25 +42,39 @@
     <!-- MAIN APP WRAPPER INTERFACE -->
     <div class="flex min-h-screen">
 
-        <!-- PINTEREST STYLE LEFT NAVIGATION BAR -->
+        <!-- UPGRADED PINTEREST STYLE LEFT NAVIGATION BAR -->
         <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-200/60 w-20 sticky top-0 h-screen z-40 bg-inherit">
             <div class="flex flex-col items-center gap-6 w-full">
                 <div onclick="resetToDashboard()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-md hover:bg-red-700 transition-all">
                     V
                 </div>
-                <button onclick="resetToDashboard()" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer">
+                <!-- Home -->
+                <button onclick="resetToDashboard()" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-all cursor-pointer group relative">
                     <i class="fa-solid fa-house text-lg"></i>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Home Feed</span>
                 </button>
-                <button onclick="alert('Explore feature launching next build!')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer">
+                <!-- Explore -->
+                <button onclick="alert('Explore feature launching next build!')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer group relative">
                     <i class="fa-solid fa-compass text-lg"></i>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Explore Vibe</span>
+                </button>
+                <!-- Create/Upload -->
+                <button onclick="alert('Wallpaper upload system interface coming soon!')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer group relative">
+                    <i class="fa-solid fa-circle-plus text-lg text-emerald-600"></i>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Create Pin</span>
                 </button>
             </div>
+            
             <div class="flex flex-col items-center gap-4">
-                <button onclick="alert('Notifications panel!')" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 transition-all">
+                <!-- Notifications -->
+                <button onclick="alert('Notifications panel!')" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 transition-all group relative">
                     <i class="fa-solid fa-bell text-lg"></i>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Updates</span>
                 </button>
-                <button onclick="alert('Direct messages open!')" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 transition-all">
-                    <i class="fa-solid fa-comment-dots text-lg"></i>
+                <!-- Messages -->
+                <button onclick="alert('Direct messages open!')" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 transition-all group relative">
+                    <i class="fa-solid fa-message text-lg"></i>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Inbox</span>
                 </button>
             </div>
         </aside>
@@ -79,73 +89,81 @@
                     <span class="text-lg font-black tracking-wider text-red-600">VELLUM</span>
                 </div>
                 
-                <!-- Expanded search alignment mimicking standard profile row design -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-4 relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2.5 rounded-full bg-slate-100 border-0 focus:outline-none focus:ring-2 focus:ring-slate-300 text-sm transition-all text-slate-900" placeholder="Search premium vibes...">
                 </div>
 
-                <!-- RIGHT CORNER DYNAMIC STATUS PROFILE DROPDOWN -->
-                <div id="authStatus" class="relative flex items-center gap-2">
+                <!-- RIGHT CORNER DYNAMIC AUTH & ADVANCED DROPDOWNS -->
+                <div id="authStatus" class="relative flex items-center gap-3">
                     <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2.5 rounded-full bg-red-600 text-white font-bold text-sm shadow-md hover:bg-red-700 transition-all cursor-pointer">Login / Sign Up</button>
                     
-                    <!-- AUTHENTICATED PROFILE WRAPPER LAYER -->
-                    <div id="userProfileArea" class="hidden flex items-center gap-1.5">
-                        <button onclick="toggleProfileDropdown()" class="w-10 h-10 rounded-full p-0.5 shadow-sm cursor-pointer focus:outline-none bg-slate-200 hover:opacity-90 transition-all">
+                    <!-- WRAPPER ONCE LOGGED IN -->
+                    <div id="userProfileArea" class="hidden flex items-center gap-1 relative">
+                        <!-- Profile Image Avatar -->
+                        <button onclick="toggleDropdown('profileDropdown')" class="w-9 h-9 rounded-full shadow-sm cursor-pointer focus:outline-none bg-slate-200 hover:opacity-90 transition-all">
                             <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Kira" alt="User Profile" class="w-full h-full rounded-full">
                         </button>
                         
-                        <!-- PINTEREST MORE OPTIONS 3-DOTS BUTTON -->
-                        <button onclick="toggleProfileDropdown()" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-all cursor-pointer">
-                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        <!-- PINTEREST 3-DOTS MORE BUTTON -->
+                        <button onclick="toggleDropdown('dotsDropdown')" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 transition-all cursor-pointer">
+                            <i class="fa-solid fa-ellipsis text-base"></i>
                         </button>
                         
-                        <!-- DROP DOWN PANEL ARCHITECTURE -->
-                        <div id="profileDropdown" class="hidden absolute right-0 top-12 w-64 bg-white text-slate-800 rounded-2xl border border-slate-200 shadow-2xl p-3 flex flex-col gap-1.5 z-50">
-                            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-400 tracking-wider">CURRENT USER</div>
-                            <div id="userDisplayEmail" class="px-3 pb-2 text-xs font-semibold text-slate-600 border-b border-slate-100 truncate">kira@vellum.com</div>
+                        <!-- 1. PROFILE AVATAR CLICK DROPDOWN MENU -->
+                        <div id="profileDropdown" class="hidden absolute right-10 top-11 w-60 bg-white text-slate-800 rounded-2xl border border-slate-200 shadow-2xl p-2.5 flex flex-col gap-1 z-50">
+                            <div class="px-2.5 py-1 text-[10px] font-bold text-slate-400 tracking-wider">CURRENT USER</div>
+                            <div id="userDisplayEmail" class="px-2.5 pb-2 text-xs font-bold text-slate-700 border-b border-slate-100 truncate">kira@vellum.com</div>
                             
                             <!-- THEME SELECTION BLOCK -->
-                            <div class="px-3 pt-2 text-[11px] font-bold text-slate-400 tracking-wider">BACKGROUND INTERFACE</div>
-                            <div class="grid grid-cols-3 gap-1 p-1 bg-slate-50 rounded-xl border border-slate-100">
-                                <button onclick="changeSiteTheme('white')" class="py-1.5 text-[10px] font-bold rounded-lg border bg-white border-slate-200 text-slate-800 cursor-pointer text-center">White</button>
-                                <button onclick="changeSiteTheme('grey')" class="py-1.5 text-[10px] font-bold rounded-lg border bg-slate-200 border-slate-300 text-slate-700 cursor-pointer text-center">Grey</button>
-                                <button onclick="changeSiteTheme('black')" class="py-1.5 text-[10px] font-bold rounded-lg border bg-slate-900 border-slate-950 text-white cursor-pointer text-center">Black</button>
+                            <div class="px-2.5 pt-2 text-[10px] font-bold text-slate-400 tracking-wider">INTERFACE THEME</div>
+                            <div class="grid grid-cols-3 gap-1 p-1 bg-slate-50 rounded-xl border border-slate-100 my-1">
+                                <button onclick="changeSiteTheme('white')" class="py-1 text-[10px] font-bold rounded-md border bg-white border-slate-200 text-slate-800 cursor-pointer">White</button>
+                                <button onclick="changeSiteTheme('grey')" class="py-1 text-[10px] font-bold rounded-md border bg-slate-200 border-slate-300 text-slate-700 cursor-pointer">Grey</button>
+                                <button onclick="changeSiteTheme('black')" class="py-1 text-[10px] font-bold rounded-md border bg-slate-900 border-slate-950 text-white cursor-pointer">Black</button>
                             </div>
 
-                            <div class="border-t border-slate-100 my-1"></div>
-                            
-                            <button onclick="alert('Editing controls coming tomorrow!')" class="w-full text-left px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-all cursor-pointer flex items-center gap-2">
-                                <i class="fa-solid fa-sliders text-slate-400"></i> Settings & Options
+                            <button onclick="openSettingsModal()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-all cursor-pointer flex items-center gap-2">
+                                <i class="fa-solid fa-gear text-slate-400"></i> Settings & Options
                             </button>
-                            <button onclick="alert('Saved Favorites Storage')" class="w-full text-left px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-all cursor-pointer flex items-center gap-2">
+                            <button onclick="alert('Your favorites gallery setup')" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-all cursor-pointer flex items-center gap-2">
                                 <i class="fa-solid fa-heart text-red-500"></i> My Liked Wallpapers
                             </button>
-                            <button onclick="handleLogout()" class="w-full text-left px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 text-xs font-bold transition-all cursor-pointer flex items-center gap-2 mt-1 border-t border-slate-100 pt-2">
+                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-600 hover:bg-red-50 text-xs font-bold transition-all cursor-pointer flex items-center gap-2 border-t border-slate-100 pt-2 mt-1">
                                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
                             </button>
                         </div>
+
+                        <!-- 2. PINTEREST STYLE 3-DOTS OPTIONS DROPDOWN MENU -->
+                        <div id="dotsDropdown" class="hidden absolute right-0 top-11 w-56 bg-white text-slate-800 rounded-2xl border border-slate-200 shadow-2xl p-2 flex flex-col gap-0.5 z-50">
+                            <div class="px-3 py-1 text-[10px] font-bold text-slate-400 tracking-wider">VELLUM OPTIONS</div>
+                            <button onclick="alert('Vellum Elite Beta Engine v2.0')" class="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-700">About Vellum Ecosystem</button>
+                            <button onclick="alert('Terms of Service & Privacy Policy')" class="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-700">Terms & Privacy Laws</button>
+                            <button onclick="alert('Beta standalone desktop launcher loading tool')" class="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 text-xs font-semibold text-red-600 flex items-center justify-between">
+                                <span>Get Desktop App</span> <i class="fa-solid fa-circle-down"></i>
+                            </button>
+                            <div class="border-t border-slate-100 my-1"></div>
+                            <button onclick="alert('Support help center open')" class="w-full text-left px-3 py-1.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-500 italic">Get Help / Support</button>
+                        </div>
+
                     </div>
                 </div>
             </nav>
 
-            <!-- VIEW SCREEN 1: CENTRAL EXPLORE STREAM (HOME DASHBOARD) -->
+            <!-- HOME DASHBOARD VIEW -->
             <div id="dashboardSection" class="w-full flex-1 flex flex-col">
-                <!-- Mobile Search Option Bar -->
                 <div class="px-4 pt-4 md:hidden">
                     <input type="text" oninput="filterWallpapers()" class="w-full px-4 py-2.5 rounded-full bg-slate-100 text-xs focus:outline-none" placeholder="Search wallpaper trends...">
                 </div>
 
-                <!-- CATEGORIES NAVIGATION BAR -->
                 <div class="max-w-6xl mx-auto px-4 py-6 overflow-x-auto no-scrollbar flex items-center justify-start md:justify-center gap-2 w-full">
-                    <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-4 py-2 rounded-full bg-slate-900 text-white font-bold text-xs transition-all cursor-pointer">All</button>
-                    <button onclick="selectCategory('Anime')" id="cat-Anime" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 transition-all cursor-pointer">Anime</button>
-                    <button onclick="selectCategory('Gaming')" id="cat-Gaming" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 transition-all cursor-pointer">Gaming</button>
-                    <button onclick="selectCategory('Cyberpunk')" id="cat-Cyberpunk" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 transition-all cursor-pointer">Cyberpunk</button>
-                    <button onclick="selectCategory('Cars')" id="cat-Cars" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 transition-all cursor-pointer">Cars & Bikes</button>
+                    <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-4 py-2 rounded-full bg-slate-900 text-white font-bold text-xs cursor-pointer">All</button>
+                    <button onclick="selectCategory('Anime')" id="cat-Anime" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 cursor-pointer">Anime</button>
+                    <button onclick="selectCategory('Gaming')" id="cat-Gaming" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 cursor-pointer">Gaming</button>
+                    <button onclick="selectCategory('Cyberpunk')" id="cat-Cyberpunk" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 cursor-pointer">Cyberpunk</button>
+                    <button onclick="selectCategory('Cars')" id="cat-Cars" class="cat-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs hover:bg-slate-200 cursor-pointer">Cars & Bikes</button>
                 </div>
 
-                <!-- MASONRY WORK STREAM GRID -->
                 <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24 w-full">
                     <div class="pinterest-grid" id="wallpaperContainer">
                         <div class="text-center col-span-full py-12 text-slate-400" id="loadingText">
@@ -155,32 +173,27 @@
                 </main>
             </div>
 
-            <!-- VIEW SCREEN 2: PINTEREST DETAIL ENGINE & SUGGESTIONS PAGE (HIDDEN DEFAULT) -->
-            <div id="detailSection" class="hidden w-full flex-1 flex flex-col animate-fade-in px-4 md:px-8 py-6">
-                <!-- Back Navigator Row -->
+            <!-- DETAIL VIEW & MORE LIKE THIS -->
+            <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6">
                 <div class="max-w-4xl mx-auto w-full mb-4">
                     <button onclick="resetToDashboard()" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center gap-2 cursor-pointer transition-all">
                         <i class="fa-solid fa-arrow-left"></i> Back to feed
                     </button>
                 </div>
 
-                <!-- Main Layout Container Box Structure -->
                 <div class="max-w-4xl mx-auto w-full bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm flex flex-col md:flex-row min-h-[500px]">
-                    <!-- Left Side Column Image Display Layer -->
                     <div class="w-full md:w-1/2 bg-slate-50 flex items-center justify-center p-4">
                         <img id="detailImg" src="" alt="View Target" class="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-md">
                     </div>
                     
-                    <!-- Right Details Column Side Layer -->
                     <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between text-slate-800 bg-white">
                         <div>
-                            <!-- Action Control Sub-bar line layer -->
                             <div class="flex items-center justify-between mb-6">
                                 <div class="flex items-center gap-4 text-slate-500">
                                     <span class="text-sm"><i class="fa-solid fa-eye"></i> <span id="detailViews">0</span></span>
                                     <span class="text-sm"><i class="fa-solid fa-download"></i> <span id="detailDownloads">0</span></span>
                                 </div>
-                                <button id="saveCollectionBtn" onclick="alert('Saved to your Pinterest board style collection!')" class="bg-red-600 text-white font-bold px-5 py-2.5 rounded-full text-xs hover:bg-red-700 transition-all cursor-pointer">
+                                <button onclick="alert('Saved artwork to profile!')" class="bg-red-600 text-white font-bold px-5 py-2.5 rounded-full text-xs hover:bg-red-700 cursor-pointer">
                                     Save Artwork
                                 </button>
                             </div>
@@ -190,21 +203,15 @@
                             <p class="text-slate-500 text-xs mt-2 leading-relaxed">High fidelity cloud generation synced for custom dynamic backgrounds setup.</p>
                         </div>
 
-                        <!-- Processing Operations Buttons layout block -->
-                        <div class="flex flex-col gap-2 mt-8" id="detailActionRow">
-                            <!-- Dynamic Content Inserted through core JS rendering engine -->
-                        </div>
+                        <div class="flex flex-col gap-2 mt-8" id="detailActionRow"></div>
                     </div>
                 </div>
 
-                <!-- DYNAMIC SUGGESTIONS SECTION ("MORE LIKE THIS" VIEW) -->
                 <div class="max-w-4xl mx-auto w-full mt-16">
                     <div class="text-center mb-8">
-                        <h3 class="text-xl font-black tracking-tight text-slate-800" id="suggestionTitle">More Like This</h3>
+                        <h3 class="text-xl font-black tracking-tight text-slate-800">More Like This</h3>
                         <div class="w-12 h-1 bg-slate-300 mx-auto mt-2 rounded-full"></div>
                     </div>
-                    
-                    <!-- Suggestion Output Feed Mount Container -->
                     <div class="pinterest-grid" id="suggestionContainer"></div>
                 </div>
             </div>
@@ -212,7 +219,43 @@
         </div>
     </div>
 
-    <!-- CLEAN AUTHENTICATION PORTAL OVERLAY CONTAINER -->
+    <!-- 3. PREMIUM ADVANCED SETTINGS MODAL LAYER -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-white text-slate-800 p-6 rounded-3xl relative shadow-2xl border border-slate-200 bg-card-custom">
+            <button onclick="closeSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
+            <h2 class="text-lg font-black tracking-tight mb-1 flex items-center gap-2"><i class="fa-solid fa-sliders text-red-600"></i> Advanced Settings</h2>
+            <p class="text-slate-400 text-[11px] mb-6">Manage your local Vellum engine configurations and custom profile details.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold tracking-wider uppercase text-slate-400 block mb-1">Public Display Name</label>
+                    <input type="text" id="settingsUsername" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none" value="Kira Hacker Profile">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold tracking-wider uppercase text-slate-400 block mb-1">Discovery Feed Mode</label>
+                    <select class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none">
+                        <option>Show Everything (Default)</option>
+                        <option>Anime & Gaming Only</option>
+                        <option>Cyberpunk Minimalist</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between py-2 border-y border-slate-100 my-4">
+                    <div>
+                        <p class="text-xs font-bold">Private Account Profile</p>
+                        <p class="text-[10px] text-slate-400">Hide my liked saves from the public gallery</p>
+                    </div>
+                    <input type="checkbox" class="w-4 h-4 accent-red-600">
+                </div>
+                
+                <button onclick="saveAdvancedSettings()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 shadow-md cursor-pointer transition-colors mt-2">
+                    Save Changes & Update
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION MODAL -->
     <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="w-full max-w-sm bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800 border border-slate-100">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -220,13 +263,13 @@
             <form class="space-y-4" onsubmit="handleAuthSubmit(event)">
                 <div>
                     <label class="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-1.5">Email address</label>
-                    <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="kira@example.com">
+                    <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none" placeholder="kira@example.com">
                 </div>
                 <div>
                     <label class="text-[10px] font-bold tracking-wider text-slate-400 uppercase block mb-1.5">Password</label>
-                    <input type="password" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="••••••••">
+                    <input type="password" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-sm tracking-wide shadow-md hover:bg-red-700 transition-all mt-2 cursor-pointer">Continue</button>
+                <button type="submit" class="w-full py-3 rounded-xl bg-red-600 text-white font-bold text-sm shadow-md hover:bg-red-700 mt-2 cursor-pointer">Continue</button>
             </form>
         </div>
     </div>
@@ -240,19 +283,15 @@
         let allWallpapers = []; 
         let selectedCat = 'all';
 
-        // THEME DISPATCH CONTROLLER ENGINE
         function changeSiteTheme(themeName) {
             const body = document.body;
-            body.className = ''; // wipe clear all themes
-            
+            body.className = '';
             if (themeName === 'white') body.classList.add('theme-white');
             if (themeName === 'grey') body.classList.add('theme-grey');
             if (themeName === 'black') body.classList.add('theme-black');
-            
             localStorage.setItem('vellum_user_theme', themeName);
         }
 
-        // BOOTSTRAP USER CONFIGURATIONS
         function loadSavedUserTheme() {
             const savedTheme = localStorage.getItem('vellum_user_theme') || 'white';
             changeSiteTheme(savedTheme);
@@ -274,11 +313,9 @@
             }
         }
 
-        // DATA FETCHER CONTROLLER FROM BACKEND
         async function fetchWallpapers() {
             const container = document.getElementById('wallpaperContainer');
             const loadingEl = document.getElementById('loadingText');
-            
             try {
                 const { data: wallpapers, error } = await supabaseClient
                     .from('wallpapers')
@@ -290,35 +327,25 @@
 
                 allWallpapers = wallpapers || [];
                 renderWallpapers(allWallpapers);
-                
-                // Boot session check elements
                 checkUserSession();
                 loadSavedUserTheme();
-
             } catch (error) {
-                console.error('Core Grid Load Error:', error);
+                console.error('Grid load error:', error);
                 if (loadingEl) loadingEl.style.display = 'none';
-                if (container) container.innerHTML = `<div class="text-center text-red-500 col-span-full py-10 w-full">Grid Stream offline. Try refreshing.</div>`;
             }
         }
 
-        // RENDERING MAIN WALLPAPER GALLERY GRID
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
             container.innerHTML = '';
-
             if (list.length === 0) {
-                container.innerHTML = `<div class="text-center text-slate-400 col-span-full py-12 w-full"><p>No trends matches found.</p></div>`;
+                container.innerHTML = `<div class="text-center text-slate-400 col-span-full py-12 w-full"><p>No wallpapers match.</p></div>`;
                 return;
             }
-
             list.forEach(wp => {
                 const card = document.createElement('div');
                 card.className = "pin-card bg-inherit overflow-hidden group cursor-pointer rounded-2xl";
-                
-                // Route target handler conversion directly inside stream click event
                 card.addEventListener('click', () => showPinterestDetailView(wp.id));
-
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden rounded-2xl bg-slate-100 shadow-sm group-hover:shadow-md transition-shadow duration-300">
                         <img src="${wp.image_url || ''}" alt="${wp.title}" class="w-full h-auto object-cover group-hover:opacity-90 transition-opacity duration-300" loading="lazy">
@@ -335,62 +362,42 @@
             });
         }
 
-        // PINTEREST STYLE DYNAMIC DETAIL SCREEN NAVIGATOR VIEW WITH INTEGRATED DISCOVERY SUGGESTIONS 
-        async function showPinterestDetailView(id) {
+        function showPinterestDetailView(id) {
             const wp = allWallpapers.find(item => item.id === id);
             if (!wp) return;
 
-            // Route view toggle operations
             document.getElementById('dashboardSection').classList.add('hidden');
-            const detailSec = document.getElementById('detailSection');
-            detailSec.classList.remove('hidden');
-            
-            // Force reset back to topmost level layer
+            document.getElementById('detailSection').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Mount element parameters securely
             document.getElementById('detailImg').src = wp.image_url;
             document.getElementById('detailTitleText').innerText = wp.title;
-            document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA ULTRA';
+            document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
 
             const actionRow = document.getElementById('detailActionRow');
             actionRow.innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3.5 rounded-full bg-slate-900 text-white font-black text-xs hover:bg-slate-800 shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3.5 rounded-full bg-slate-900 text-white font-black text-xs hover:bg-slate-800 shadow-lg flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-download"></i> Download Premium Resource
                 </button>
-                <button onclick="copyShareLink('${wp.id}')" class="w-full py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                <button onclick="copyShareLink('${wp.id}')" class="w-full py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-link text-slate-500"></i> Copy Link
                 </button>
             `;
-
-            // RENDER SUGGESTED DISCOVERY IMAGES UNDER THE POST
             renderSuggestions(wp.category, wp.id);
-
-            // Background update tracking counter view triggers 
-            try {
-                await supabaseClient.from('wallpapers').update({ views: (wp.views || 0) + 1 }).eq('id', id);
-                wp.views = (wp.views || 0) + 1; 
-            } catch(e) {}
         }
 
-        // RENDER SIMILAR WALLPAPERS AT BOTTOM
         function renderSuggestions(category, currentId) {
             const suggestionBox = document.getElementById('suggestionContainer');
             suggestionBox.innerHTML = '';
-
-            // Filter wallpapers belonging to the same category, excluding the active item
             const matchingList = allWallpapers.filter(wp => wp.category === category && wp.id !== currentId);
-            
-            // Fallback content if insufficient exact categorizations found 
             const finalSuggestionList = matchingList.length > 0 ? matchingList : allWallpapers.filter(wp => wp.id !== currentId).slice(0, 6);
 
             finalSuggestionList.forEach(wp => {
                 const card = document.createElement('div');
                 card.className = "pin-card bg-inherit overflow-hidden group cursor-pointer rounded-2xl";
                 card.addEventListener('click', () => showPinterestDetailView(wp.id));
-
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
                         <img src="${wp.image_url || ''}" alt="${wp.title}" class="w-full h-auto object-cover group-hover:opacity-90 transition-opacity duration-200" loading="lazy">
@@ -409,9 +416,28 @@
             window.scrollTo({ top: 0 });
         }
 
-        // NAVIGATION HANDLERS DISPATCHERS
-        function toggleProfileDropdown() {
-            document.getElementById('profileDropdown').classList.toggle('hidden');
+        // CONTROL MULTIPLE DROPDOWNS SECURELY
+        function toggleDropdown(id) {
+            const target = document.getElementById(id);
+            // Hide other dropdown to prevent overlapping
+            const lists = ['profileDropdown', 'dotsDropdown'];
+            lists.forEach(item => {
+                if(item !== id) document.getElementById(item).classList.add('hidden');
+            });
+            target.classList.toggle('hidden');
+        }
+
+        // MODALS FOR INTERFACE SETTINGS
+        function openSettingsModal() { 
+            document.getElementById('profileDropdown').classList.add('hidden');
+            document.getElementById('settingsModal').classList.remove('hidden'); 
+        }
+        function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
+        
+        function saveAdvancedSettings() {
+            const newName = document.getElementById('settingsUsername').value;
+            alert(`Config saved! Display title updated to: ${newName}`);
+            closeSettingsModal();
         }
 
         function handleAuthSubmit(e) {
@@ -440,7 +466,6 @@
             });
         }
 
-        // LIVE FILTER INPUT TRACKERS
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const filtered = allWallpapers.filter(wp => {
@@ -461,15 +486,13 @@
             filterWallpapers();
         }
 
-        // CORE STORAGE ACTIONS DOWNLOAD
         async function triggerDownload(id, imageUrl, title) {
             try {
                 await supabaseClient.rpc('increment_downloads', { row_id: id });
                 const wp = allWallpapers.find(item => item.id === id);
                 if(wp) { 
                     wp.downloads = (wp.downloads || 0) + 1; 
-                    const viewsEl = document.getElementById('detailDownloads');
-                    if(viewsEl) viewsEl.innerText = wp.downloads;
+                    document.getElementById('detailDownloads').innerText = wp.downloads;
                 }
             } catch (e) {}
 
@@ -490,12 +513,12 @@
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
 
-        // Click outside closes dropdown menu automatically
+        // General click outside tracker
         window.addEventListener('click', function(e){
-            const userArea = document.getElementById('userProfileArea');
-            const drop = document.getElementById('profileDropdown');
-            if (userArea && !userArea.contains(e.target) && drop) {
-                drop.classList.add('hidden');
+            const area = document.getElementById('userProfileArea');
+            if (area && !area.contains(e.target)) {
+                document.getElementById('profileDropdown').classList.add('hidden');
+                document.getElementById('dotsDropdown').classList.add('hidden');
             }
         });
 
