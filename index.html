@@ -10,20 +10,20 @@
         body { background-color: #0b0f19; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
         .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px rgba(255, 255, 255, 0.05) solid; }
         
-        /* PINTEREST MASONRY GRID LAYOUT */
+        /* PINTEREST MASONRY GRID */
         .pinterest-grid { columns: 2; column-gap: 20px; }
         @media (min-width: 640px) { .pinterest-grid { columns: 3; } }
         @media (min-width: 1024px) { .pinterest-grid { columns: 4; } }
         @media (min-width: 1280px) { .pinterest-grid { columns: 5; } }
         .pin-card { break-inside: avoid; margin-bottom: 20px; display: inline-block; width: 100%; }
         
-        /* Smooth category scroll for mobile */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <nav class="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
         <div class="flex items-center space-x-2 cursor-pointer" onclick="location.reload()">
             <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-2xl"></i>
@@ -34,6 +34,7 @@
         </div>
     </nav>
 
+    <!-- HEADER & SEARCH BAR -->
     <header class="text-center pt-12 pb-6 px-4">
         <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight"><i class="fa-solid fa-bolt text-amber-400 mr-2"></i>PREMIUM WALLPAPERS</h1>
         <p class="text-slate-400 max-w-xl mx-auto mb-8">High-refresh-rate ultra premium wallpapers dashboard synced with real-time cloud database.</p>
@@ -44,6 +45,7 @@
         </div>
     </header>
 
+    <!-- CATEGORY PILLS -->
     <div class="max-w-6xl mx-auto px-6 mb-10 overflow-x-auto no-scrollbar flex items-center justify-start md:justify-center gap-3">
         <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-5 py-2 rounded-full bg-amber-500 text-slate-950 font-bold text-sm transition-all cursor-pointer shadow-md">All</button>
         <button onclick="selectCategory('Anime')" id="cat-Anime" class="cat-btn px-5 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-semibold text-sm hover:border-slate-700 transition-all cursor-pointer">Anime</button>
@@ -52,6 +54,7 @@
         <button onclick="selectCategory('Cars')" id="cat-Cars" class="cat-btn px-5 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-semibold text-sm hover:border-slate-700 transition-all cursor-pointer">Cars & Bikes</button>
     </div>
 
+    <!-- MAIN GRID CONTAINER -->
     <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24">
         <div class="pinterest-grid" id="wallpaperContainer">
             <div class="text-center col-span-full py-12 text-slate-500" id="loadingText">
@@ -60,6 +63,50 @@
         </div>
     </main>
 
+    <!-- NEW FEATURE: PREMIUM QUICK PREVIEW MODAL -->
+    <div id="previewModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="w-full max-w-4xl glass rounded-3xl overflow-hidden relative shadow-2xl flex flex-col md:flex-row max-h-[90vh] md:max-h-[80vh]">
+            <!-- Close Button -->
+            <button onclick="closePreviewModal()" class="absolute top-4 right-4 bg-black/60 text-white hover:bg-amber-500 hover:text-slate-950 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all shadow-md">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <!-- Left Side: Big Image Display -->
+            <div class="w-full md:w-3/5 bg-slate-950 flex items-center justify-center overflow-hidden p-2">
+                <img id="modalImg" src="" alt="" class="max-w-full max-h-[45vh] md:max-h-[75vh] object-contain rounded-xl">
+            </div>
+            
+            <!-- Right Side: Details & Actions -->
+            <div class="w-full md:w-2/5 p-6 md:p-8 flex flex-col justify-between bg-slate-900/40 border-t md:border-t-0 md:border-l border-slate-800">
+                <div>
+                    <span id="modalRes" class="bg-amber-500/10 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">4K Ultra</span>
+                    <h2 id="modalTitleText" class="text-xl md:text-2xl font-black text-white mt-4 tracking-wide truncate">Wallpaper Title</h2>
+                    <p class="text-slate-400 text-xs mt-1">Exclusive Premium Dashboard Artwork</p>
+                    
+                    <!-- Stats Section -->
+                    <div class="grid grid-cols-2 gap-4 my-6">
+                        <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-center">
+                            <i class="fa-solid fa-eye text-amber-400 mb-1"></i>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold">Total Views</p>
+                            <p id="modalViews" class="text-sm font-bold text-slate-200">0</p>
+                        </div>
+                        <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-center">
+                            <i class="fa-solid fa-download text-orange-500 mb-1"></i>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold">Downloads</p>
+                            <p id="modalDownloads" class="text-sm font-bold text-slate-200">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Large Download Button Inside Modal -->
+                <div id="modalDownloadContainer">
+                    <!-- Dynamic button inserted via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
     <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
         <div class="w-full max-w-md glass p-8 rounded-3xl relative shadow-2xl">
             <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -91,11 +138,11 @@
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let allWallpapers = []; // Master copy of data
+        let allWallpapers = []; 
         let selectedCat = 'all';
         let currentMode = 'login';
 
-        // FETCH FROM DATABASE ONCE
+        // FETCH FROM DATABASE
         async function fetchWallpapers() {
             const container = document.getElementById('wallpaperContainer');
             const loadingEl = document.getElementById('loadingText');
@@ -122,7 +169,7 @@
             }
         }
 
-        // RENDER CARDS DYNAMICALLY
+        // RENDER CARDS WITH OPEN PREVIEW FUNCTION
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
             container.innerHTML = '';
@@ -138,21 +185,23 @@
 
             list.forEach(wp => {
                 const card = document.createElement('div');
-                card.className = "pin-card bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group shadow-lg shadow-black/30";
+                card.className = "pin-card bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 group shadow-lg shadow-black/30 cursor-pointer";
+                
+                // Clicking on the card layout opens the custom popup preview
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden bg-slate-950">
+                    <div class="relative w-full overflow-hidden bg-slate-950" onclick="openPreviewModal('${wp.id}')">
                         <img src="${wp.image_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}" alt="${wp.title}" class="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500" loading="lazy">
                         <span class="absolute top-3 right-3 bg-slate-950/80 text-amber-400 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-500/30 backdrop-blur-sm">${wp.resolution || '4K Ultra'}</span>
                     </div>
-                    <div class="p-4">
+                    <div class="p-4" onclick="openPreviewModal('${wp.id}')">
                         <h3 class="text-sm font-bold text-white mb-1 group-hover:text-amber-400 transition-colors truncate">${wp.title}</h3>
                         <div class="flex items-center justify-between pt-2 mt-2 border-t border-slate-800/60">
                             <div class="flex items-center gap-3 text-slate-400 text-[11px]">
                                 <span class="flex items-center gap-1"><i class="fa-solid fa-eye text-slate-600"></i> ${wp.views || 0}</span>
                                 <span class="flex items-center gap-1"><i class="fa-solid fa-download text-slate-600"></i> ${wp.downloads || 0}</span>
                             </div>
-                            <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer transition-transform active:scale-95 shadow-md shadow-orange-500/10">
-                                <i class="fa-solid fa-download"></i> Get
+                            <button class="bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-black px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-md shadow-orange-500/10">
+                                View
                             </button>
                         </div>
                     </div>
@@ -161,47 +210,74 @@
             });
         }
 
-        // REAL-TIME SEARCH & FILTER LOGIC
+        // OPEN PREVIEW POPUP LOGIC + INCREMENT VIEW COUNTER
+        async function openPreviewModal(id) {
+            const wp = allWallpapers.find(item => item.id === id);
+            if (!wp) return;
+
+            // Form data updates inside popup
+            document.getElementById('modalImg').src = wp.image_url;
+            document.getElementById('modalTitleText').innerText = wp.title;
+            document.getElementById('modalRes').innerText = wp.resolution || '4K Ultra';
+            document.getElementById('modalViews').innerText = (wp.views || 0) + 1;
+            document.getElementById('modalDownloads').innerText = wp.downloads || 0;
+
+            // Generate big dynamic download button inside popup
+            const btnContainer = document.getElementById('modalDownloadContainer');
+            btnContainer.innerHTML = `
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-black text-sm shadow-xl shadow-orange-500/10 hover:opacity-95 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-cloud-arrow-down text-base"></i> Download In High Quality
+                </button>
+            `;
+
+            // Display modal
+            document.getElementById('previewModal').classList.remove('hidden');
+
+            // Increment view setup in database silently
+            try {
+                await supabaseClient.from('wallpapers').update({ views: (wp.views || 0) + 1 }).eq('id', id);
+                wp.views = (wp.views || 0) + 1; // Update copy
+            } catch(e) { console.log(e); }
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
+        }
+
+        // SEARCH & FILTER LOGIC
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            
             const filtered = allWallpapers.filter(wp => {
                 const matchesSearch = wp.title.toLowerCase().includes(query);
-                
-                // Handling category check safely
                 const wpCategory = wp.category ? wp.category.toLowerCase() : 'all';
                 const matchesCategory = (selectedCat === 'all' || wpCategory === selectedCat.toLowerCase());
-                
                 return matchesSearch && matchesCategory;
             });
-
             renderWallpapers(filtered);
         }
 
-        // CATEGORY SWITCH SYSTEM
+        // CATEGORY SWITCH
         function selectCategory(category) {
             selectedCat = category;
-            
-            // UI Button highlight change
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.className = "cat-btn px-5 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-semibold text-sm hover:border-slate-700 transition-all cursor-pointer";
             });
-            
             const activeBtn = document.getElementById(`cat-${category}`);
-            if (activeBtn) {
-                activeBtn.className = "cat-btn px-5 py-2 rounded-full bg-amber-500 text-slate-950 font-bold text-sm transition-all cursor-pointer shadow-md";
-            }
-
+            if (activeBtn) activeBtn.className = "cat-btn px-5 py-2 rounded-full bg-amber-500 text-slate-950 font-bold text-sm transition-all cursor-pointer shadow-md";
             filterWallpapers();
         }
 
-        // FORCE DOWNLOAD FUNCTION
+        // FORCE DOWNLOAD LOGIC
         async function triggerDownload(id, imageUrl, title) {
             try {
                 await supabaseClient.rpc('increment_downloads', { row_id: id });
-            } catch (e) {
-                console.log("Counter skipped:", e);
-            }
+                // Update internal live model downloads count display visually
+                const wp = allWallpapers.find(item => item.id === id);
+                if(wp) {
+                    wp.downloads = (wp.downloads || 0) + 1;
+                    document.getElementById('modalDownloads').innerText = wp.downloads;
+                }
+            } catch (e) { console.log("Counter update skipped:", e); }
 
             try {
                 const response = await fetch(imageUrl);
@@ -230,13 +306,8 @@
             title.innerText = mode === 'login' ? "LOGIN TO VELLUM" : "CREATE ACCOUNT";
         }
 
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function toggleAuthMode() {
-            openAuthModal(currentMode === 'login' ? 'signup' : 'login');
-        }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+        function toggleAuthMode() { openAuthModal(currentMode === 'login' ? 'signup' : 'login'); }
 
         window.onload = fetchWallpapers;
     </script>
