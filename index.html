@@ -328,4 +328,206 @@
 
         function toggleLikeAsset(event, id) {
             event.stopPropagation();
-            if(!localStorage.getItem
+            if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
+            
+            if (likedWallpaperIds.includes(id)) {
+                likedWallpaperIds = likedWallpaperIds.filter(item => item !== id);
+                showToast("Removed from Vault");
+            } else {
+                likedWallpaperIds.push(id);
+                showToast("Added to Vault Saved!");
+            }
+            localStorage.setItem('vellum_liked_ids', JSON.stringify(likedWallpaperIds));
+            renderWallpapers(allWallpapers);
+            updateProfileGalleryGrid();
+        }
+
+        function openProfileGallery() {
+            document.getElementById('profileDropdown').classList.add('hidden');
+            showSection('profile');
+            updateProfileGalleryGrid();
+        }
+
+        function updateProfileGalleryGrid() {
+            const grid = document.getElementById('myFavoritesGrid');
+            grid.innerHTML = '';
+            const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id));
+            
+            if(favorites.length === 0) {
+                grid.innerHTML = `<div class="text-center text-slate-400 col-span-full py-12"><p>No saved wallpapers in your account yet.</p></div>`;
+                return;
+            }
+            favorites.forEach(wp => {
+                const card = document.createElement('div');
+                card.className = "pin-card bg-inherit overflow-hidden cursor-pointer rounded-2xl";
+                card.onclick = () => showPinterestDetailView(wp.id);
+                card.innerHTML = `
+                    <div class="w-full overflow-hidden rounded-2xl bg-slate-100 shadow-sm relative">
+                        <img src="${wp.image_url}" class="w-full h-auto object-cover">
+                        <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center"><i class="fa-solid fa-heart text-red-500"></i></div>
+                    </div>
+                    <div class="pt-2 px-1"><h4 class="text-xs font-bold text-slate-800 truncate">${wp.title}</h4></div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleEditProfileInputs() {
+            document.getElementById('profileEditDrawer').classList.toggle('hidden');
+        }
+
+        function triggerAvatarShuffle() {
+            profileState.seed = Math.random().toString(36).substring(7);
+            syncProfileUIElements();
+        }
+
+        function saveProfileDataModifications() {
+            profileState.name = document.getElementById('editProfileName').value || "Kira Elite Master";
+            profileState.bio = document.getElementById('editProfileBio').value || "Aesthetic asset manager.";
+            localStorage.setItem('vellum_profile_state', JSON.stringify(profileState));
+            syncProfileUIElements();
+            toggleEditProfileInputs();
+            showToast("Account Meta Updated!");
+        }
+
+        function showPinterestDetailView(id) {
+            const wp = allWallpapers.find(item => item.id === id);
+            if (!wp) return;
+            currentWpId = id;
+
+            showSection('detail');
+            document.getElementById('detailImg').src = wp.image_url;
+            document.getElementById('detailTitleText').innerText = wp.title;
+            document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
+            document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
+            document.getElementById('detailDownloads').innerText = wp.downloads || 0;
+
+            const tagsContainer = document.getElementById('detailTagsContainer');
+            tagsContainer.innerHTML = '';
+            const mockupTags = [wp.category || 'Wallpaper', '4K Ultra', 'Premium', 'Aesthetic'];
+            mockupTags.forEach(tag => {
+                tagsContainer.innerHTML += `<span class="px-2.5 py-1 bg-slate-100 border text-[10px] text-slate-500 rounded-lg font-bold">#${tag.toLowerCase()}</span>`;
+            });
+
+            const actionRow = document.getElementById('detailActionRow');
+            actionRow.innerHTML = `
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 rounded-full bg-slate-900 text-white font-black text-xs shadow-lg"><i class="fa-solid fa-download"></i> Get Premium Asset</button>
+            `;
+            loadMockupComments();
+        }
+
+        function loadMockupComments() {
+            const stream = document.getElementById('commentsStream');
+            stream.innerHTML = `
+                <div class="bg-slate-50 p-2 rounded-xl border"><strong>MatrixBot:</strong> Asset cluster verification complete. Ready for background dynamic sync.</div>
+                <div class="bg-slate-50 p-2 rounded-xl border"><strong>Neo_Vellum:</strong> Absolute legendary colors on this 4K render! 🔥</div>
+            `;
+        }
+
+        function postLiveComment(e) {
+            e.preventDefault();
+            const input = document.getElementById('commentInput');
+            const stream = document.getElementById('commentsStream');
+            const user = localStorage.getItem('vellum_logged_in_user') || "Anonymous";
+            
+            stream.innerHTML += `<div class="bg-red-50/60 p-2 rounded-xl border border-red-100"><strong>${user.split('@')[0]}:</strong> ${input.value}</div>`;
+            input.value = '';
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        function compileAnalyticsDashboard() {
+            document.getElementById('statTotalAssets').innerText = allWallpapers.length;
+            let views = 0, downloads = 0;
+            allWallpapers.forEach(wp => { views += (wp.views || 0); downloads += (wp.downloads || 0); });
+            document.getElementById('statTotalViews').innerText = views;
+            document.getElementById('statTotalDownloads').innerText = downloads;
+        }
+
+        async function handleAdminWallpaperUpload(e) {
+            e.preventDefault();
+            const title = document.getElementById('adminWpTitle').value;
+            const category = document.getElementById('adminWpCategory').value;
+            const resolution = document.getElementById('adminWpRes').value;
+            const image_url = document.getElementById('adminWpUrl').value;
+
+            try {
+                const { error } = await supabaseClient.from('wallpapers').insert([{ title, category, resolution, image_url, views: 1, downloads: 0 }]);
+                if (error) throw error;
+                showToast("Array node inserted into cluster!");
+                e.target.reset();
+                fetchWallpapers();
+                showSection('dashboard');
+            } catch (err) { alert(err.message); }
+        }
+
+        function setAuthMode(mode) { currentAuthMode = mode; }
+
+        async function handleAuthClusterSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            try {
+                let res = null;
+                if(currentAuthMode === 'signup') {
+                    res = await supabaseClient.auth.signUp({ email, password });
+                    if(res.error) throw res.error;
+                    showToast("Account Created via Supabase Node!");
+                } else {
+                    res = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if(res.error) throw res.error;
+                    showToast("Session Secured successfully!");
+                }
+                localStorage.setItem('vellum_logged_in_user', email);
+                closeAuthModal();
+                checkUserSession();
+            } catch(err) {
+                alert(`Auth Core Exception: ${err.message}`);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('vellum_logged_in_user');
+            document.getElementById('profileDropdown').classList.add('hidden');
+            checkUserSession();
+            showSection('dashboard');
+        }
+
+        function filterWallpapers() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtered = allWallpapers.filter(wp => wp.title.toLowerCase().includes(query) && (selectedCat === 'all' || wp.category.toLowerCase() === selectedCat.toLowerCase()));
+            renderWallpapers(filtered);
+        }
+
+        function selectCategory(cat) {
+            selectedCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.className = "cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs");
+            const active = document.getElementById(`cat-${cat}`);
+            if(active) active.className = "cat-btn px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold text-xs";
+            filterWallpapers();
+        }
+
+        async function triggerDownload(id, url, title) {
+            try { await supabaseClient.rpc('increment_downloads', { row_id: id }); } catch(e) {}
+            window.open(url, '_blank');
+        }
+
+        function toggleDropdown(id) {
+            ['profileDropdown', 'dotsDropdown'].forEach(item => { if(item !== id) document.getElementById(item).classList.add('hidden'); });
+            document.getElementById(id).classList.toggle('hidden');
+        }
+        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+
+        window.addEventListener('click', function(e){
+            const area = document.getElementById('userProfileArea');
+            if (area && !area.contains(e.target)) {
+                document.getElementById('profileDropdown').classList.add('hidden');
+                document.getElementById('dotsDropdown').classList.add('hidden');
+            }
+        });
+
+        window.onload = fetchWallpapers;
+    </script>
+</body>
+</html>
