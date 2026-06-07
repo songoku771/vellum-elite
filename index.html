@@ -8,194 +8,214 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { 
-            background-color: #ffffff; 
-            color: #1e293b; 
+            background-color: #0b0f19; 
+            color: #f8fafc; 
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
-        body.theme-white { background-color: #ffffff; color: #1e293b; }
-        body.theme-grey { background-color: #f1f5f9; color: #0f172a; }
-        body.theme-black { background-color: #0b0f19; color: #f8fafc; }
-
-        body.theme-black .bg-card-custom { background-color: #1e293b; border-color: #334155; color: #f8fafc; }
-        body.theme-black input, body.theme-black select, body.theme-black textarea { background-color: #0f172a; border-color: #334155; color: #ffffff; }
         
+        /* PINTEREST STYLE MASONRY GRID */
         .pinterest-grid { columns: 2; column-gap: 16px; }
         @media (min-width: 640px) { .pinterest-grid { columns: 3; column-gap: 20px; } }
         @media (min-width: 1024px) { .pinterest-grid { columns: 4; } }
         @media (min-width: 1280px) { .pinterest-grid { columns: 5; } }
         .pin-card { break-inside: avoid; margin-bottom: 20px; display: inline-block; width: 100%; }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        .shimmer-card { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; }
-        body.theme-black .shimmer-card { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
+        /* BOOT ANIMATION SHIMMER SYSTEM */
+        @keyframes fadeWelcome {
+            0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+            20% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+            80% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+            100% { opacity: 0; transform: translateY(-10px); filter: blur(4px); }
+        }
+        .animate-welcome-text { animation: fadeWelcome 0.6s ease-in-out forwards; }
     </style>
 </head>
-<body class="theme-white">
+<body class="bg-[#0b0f19]">
+
+    <div id="iphoneBootEngine" class="fixed inset-0 bg-[#05070c] z-[100] flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="text-center">
+            <h1 id="bootLoaderGreeting" class="text-4xl md:text-6xl font-black tracking-tight text-white opacity-0 transition-all">Hello</h1>
+            <div class="mt-8 flex items-center justify-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-red-600 animate-bounce" style="animation-delay: 0.1s"></span>
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-bounce" style="animation-delay: 0.2s"></span>
+                <span class="w-2 h-2 rounded-full bg-red-400 animate-bounce" style="animation-delay: 0.3s"></span>
+            </div>
+        </div>
+    </div>
 
     <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
         <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Network active</span>
     </div>
 
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen pt-0">
 
-        <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-200/60 w-20 sticky top-0 h-screen z-40 bg-inherit">
-            <div class="flex flex-col items-center gap-6 w-full">
-                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-md">V</div>
-                <button onclick="showSection('dashboard')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-700 hover:bg-slate-100 cursor-pointer group relative">
-                    <i class="fa-solid fa-house text-lg"></i>
-                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Home Feed</span>
-                </button>
-                <button onclick="showSection('admin')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-slate-100 cursor-pointer group relative">
-                    <i class="fa-solid fa-chart-pie text-lg"></i>
-                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Admin Metrics</span>
-                </button>
-                <button onclick="openCommunityUploadModal()" class="w-12 h-12 rounded-xl flex items-center justify-center text-emerald-600 hover:bg-emerald-50 cursor-pointer group relative">
-                    <i class="fa-solid fa-circle-plus text-lg"></i>
-                    <span class="absolute left-16 bg-emerald-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Upload Art</span>
-                </button>
+        <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-800/60 w-24 sticky top-0 h-screen z-40 bg-[#070a12]">
+            <div class="flex flex-col items-center gap-8 w-full">
+                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-lg shadow-red-900/30 hover:scale-105 transition-transform">V</div>
+                
+                <div class="flex flex-col items-center gap-5 w-full">
+                    <button onclick="showSection('dashboard')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer group relative transition-colors">
+                        <i class="fa-solid fa-house text-base"></i>
+                        <span class="text-[9px] font-bold mt-1">Home</span>
+                    </button>
+                    
+                    <button onclick="openCommunityUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/30 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer group relative transition-colors">
+                        <i class="fa-solid fa-plus text-base"></i>
+                        <span class="text-[9px] font-bold mt-1">Create</span>
+                    </button>
+
+                    <button onclick="showSection('admin')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-red-500 cursor-pointer group relative transition-colors">
+                        <i class="fa-solid fa-chart-pie text-base"></i>
+                        <span class="text-[9px] font-bold mt-1">Analytics</span>
+                    </button>
+                </div>
             </div>
+
             <div class="flex flex-col items-center gap-4">
-                <button onclick="openProfileGallery()" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-800 group relative">
-                    <i class="fa-solid fa-user text-lg"></i>
-                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">My Space</span>
+                <button onclick="openProfileGallery()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white group relative transition-colors">
+                    <i class="fa-solid fa-user-ninja text-base"></i>
+                    <span class="text-[9px] font-bold mt-1">Vault</span>
                 </button>
             </div>
         </aside>
 
-        <div class="flex-1 flex flex-col min-w-0 bg-inherit">
+        <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]">
 
-            <nav class="sticky top-0 z-40 px-4 md:px-8 py-4 flex justify-between items-center bg-inherit border-b border-slate-200/40 backdrop-blur-md">
+            <nav class="sticky top-0 z-40 px-4 md:px-8 py-4 flex justify-between items-center bg-[#0b0f19]/80 border-b border-slate-800/40 backdrop-blur-md">
                 <div class="flex items-center gap-3 md:hidden cursor-pointer" onclick="showSection('dashboard')">
-                    <span class="text-lg font-black text-red-600 tracking-wider">VELLUM</span>
+                    <span class="text-lg font-black text-red-500 tracking-wider">VELLUM</span>
                 </div>
                 
-                <div class="hidden md:flex flex-1 max-w-xl mx-4 relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2.5 rounded-full bg-slate-100 text-sm focus:outline-none" placeholder="Search curated matrix...">
+                <div class="flex-1 max-w-xl mx-4 relative hidden sm:block">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                    <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-red-600 transition-colors" placeholder="Search curated matrix wallpapers...">
                 </div>
 
                 <div id="authStatus" class="relative flex items-center gap-3">
-                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2.5 rounded-full bg-red-600 text-white font-bold text-sm shadow-md">Sign In</button>
+                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-red-600 text-white font-bold text-xs shadow-md">Sign In</button>
                     
                     <div id="userProfileArea" class="hidden flex items-center gap-1 relative">
-                        <button onclick="toggleDropdown('profileDropdown')" class="w-9 h-9 rounded-full bg-slate-200">
+                        <button onclick="toggleDropdown('profileDropdown')" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 p-0.5 overflow-hidden">
                             <img id="navAvatar" src="" class="w-full h-full rounded-full">
                         </button>
                         
-                        <div id="profileDropdown" class="hidden absolute right-0 top-11 w-60 bg-white text-slate-800 rounded-2xl border border-slate-200 shadow-2xl p-2.5 flex flex-col gap-1 z-50">
-                            <div id="userDisplayEmail" class="px-2.5 py-1 text-xs font-bold text-slate-700 border-b pb-2 truncate">user@vellum.com</div>
-                            
-                            <div class="grid grid-cols-3 gap-1 p-1 bg-slate-50 rounded-xl my-1">
-                                <button onclick="changeSiteTheme('white')" class="py-1 text-[10px] font-bold rounded bg-white text-slate-800 border">Light</button>
-                                <button onclick="changeSiteTheme('grey')" class="py-1 text-[10px] font-bold rounded bg-slate-200 text-slate-700">Grey</button>
-                                <button onclick="changeSiteTheme('black')" class="py-1 text-[10px] font-bold rounded bg-slate-900 text-white">Dark</button>
-                            </div>
-                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-700 hover:bg-slate-50 text-xs font-semibold flex items-center gap-2"><i class="fa-solid fa-user-ninja"></i> Account Space</button>
-                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-600 hover:bg-red-50 text-xs font-bold border-t pt-2 mt-1 flex items-center gap-2"><i class="fa-solid fa-sign-out-alt"></i> Kill Session</button>
+                        <div id="profileDropdown" class="hidden absolute right-0 top-11 w-56 bg-[#131926] text-slate-200 rounded-2xl border border-slate-800 shadow-2xl p-2 flex flex-col gap-1 z-50">
+                            <div id="userDisplayEmail" class="px-2.5 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-800 truncate">user@vellum.com</div>
+                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs font-semibold flex items-center gap-2"><i class="fa-solid fa-user-shield text-slate-400"></i> Account Space</button>
+                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800 mt-1 flex items-center gap-2"><i class="fa-solid fa-power-off"></i> Kill Session</button>
                         </div>
                     </div>
                 </div>
             </nav>
 
-            <div class="w-full max-w-4xl mx-auto px-4 mt-4">
-                <div class="w-full h-20 bg-slate-50 border border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center text-slate-400 text-xs font-bold p-2 text-center relative overflow-hidden bg-card-custom">
-                    <span class="absolute top-1 left-2 text-[8px] tracking-widest text-slate-300 uppercase">Sponsored Matrix Slot</span>
-                    <i class="fa-solid fa-rectangle-ad text-lg text-slate-300 mb-0.5"></i>
-                    <span class="text-[10px]">High CPM Campaign Active (Popunder Trigger Embedded)</span>
+            <div class="w-full max-w-[1600px] mx-auto px-4 md:px-8 mt-4">
+                <div class="w-full h-16 bg-[#121824] border border-dashed border-slate-800 rounded-2xl flex items-center justify-between px-6 text-slate-400 text-xs relative overflow-hidden">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-rectangle-ad text-amber-500 text-lg"></i>
+                        <span class="text-[11px] font-medium tracking-wide">Sponsored API Node Cluster Active (Popunder Injection Online)</span>
+                    </div>
+                    <span class="text-[9px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-black tracking-widest uppercase">High CPM</span>
                 </div>
             </div>
 
             <div id="dashboardSection" class="w-full flex-1 flex flex-col app-section">
-                <div id="categoriesContainerNav" class="max-w-6xl mx-auto px-4 py-4 flex gap-2 overflow-x-auto no-scrollbar w-full justify-start md:justify-center">
-                    <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold text-xs">All</button>
-                    <button onclick="selectCategory('Anime')" id="cat-Anime" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Anime</button>
-                    <button onclick="selectCategory('Gaming')" id="cat-Gaming" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Gaming</button>
-                    <button onclick="selectCategory('Cyberpunk')" id="cat-Cyberpunk" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Cyberpunk</button>
-                    <button onclick="selectCategory('Cars')" id="cat-Cars" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Cars</button>
+                
+                <div class="max-w-[1600px] mx-auto w-full px-4 md:px-8 mt-6">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-layer-group text-red-500"></i> Browse Premium Categories</h3>
+                    
+                    <div id="pinterestVisualCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 w-full">
+                        <div onclick="selectCategory('all')" id="visCat-all" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-red-600 to-amber-600 p-3.5 flex flex-col justify-end border-2 border-transparent transition-all hover:scale-[1.02]">
+                            <span class="text-xs font-black tracking-wide text-white drop-shadow-md">All Creative Assets</span>
+                        </div>
+                        <div onclick="selectCategory('Anime')" id="visCat-Anime" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#1e1b4b] to-[#311042] p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.02]">
+                            <i class="fa-solid fa-wand-magic-sparkles absolute top-3 right-3 text-purple-400/40 text-lg"></i>
+                            <span class="text-xs font-black tracking-wide text-purple-200">Anime Style</span>
+                        </div>
+                        <div onclick="selectCategory('Gaming')" id="visCat-Gaming" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#064e3b] to-[#022c22] p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.02]">
+                            <i class="fa-solid fa-gamepad absolute top-3 right-3 text-emerald-400/40 text-lg"></i>
+                            <span class="text-xs font-black tracking-wide text-emerald-200">Gaming Setups</span>
+                        </div>
+                        <div onclick="selectCategory('Cyberpunk')" id="visCat-Cyberpunk" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#701a75] to-[#4a044e] p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.02]">
+                            <i class="fa-solid fa-bolt absolute top-3 right-3 text-fuchsia-400/40 text-lg"></i>
+                            <span class="text-xs font-black tracking-wide text-fuchsia-200">Cyberpunk Vibe</span>
+                        </div>
+                        <div onclick="selectCategory('Cars')" id="visCat-Cars" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#7c2d12] to-[#431407] p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.02]">
+                            <i class="fa-solid fa-car-burst absolute top-3 right-3 text-orange-400/40 text-lg"></i>
+                            <span class="text-xs font-black tracking-wide text-orange-200">Stealth Cars</span>
+                        </div>
+                    </div>
                 </div>
 
-                <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24 w-full mt-4">
-                    <div id="shimmerLoaderContainer" class="pinterest-grid">
-                        <div class="pin-card h-80 shimmer-card rounded-2xl"></div>
-                        <div class="pin-card h-64 shimmer-card rounded-2xl"></div>
-                    </div>
+                <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24 w-full mt-8">
+                    <div id="wallpaperContainer" class="pinterest-grid"></div>
                     
-                    <div class="pinterest-grid hidden" id="wallpaperContainer"></div>
-                    
-                    <div id="infiniteScrollTrigger" class="w-full py-10 flex items-center justify-center text-xs font-bold text-slate-400">
-                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-600 mr-2"></i> Syncing assets database...</span>
+                    <div id="infiniteScrollTrigger" class="w-full py-12 flex items-center justify-center text-xs font-bold text-slate-500">
+                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-500 mr-2"></i> Fetching core databases array...</span>
                     </div>
                 </main>
             </div>
 
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6 app-section">
                 <div class="max-w-5xl mx-auto w-full mb-4 flex justify-between items-center">
-                    <button onclick="showSection('dashboard')" class="px-4 py-2 rounded-full bg-slate-100 text-slate-800 font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Feed Overview</button>
-                    <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-red-600 text-white font-bold text-xs flex items-center gap-2 shadow-md"><i class="fa-solid fa-sliders"></i> Open Design Studio</button>
+                    <button onclick="showSection('dashboard')" class="px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-arrow-left"></i> Core Feed</button>
+                    <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-red-600 text-white font-bold text-xs flex items-center gap-2 shadow-md cursor-pointer"><i class="fa-solid fa-sliders"></i> Toggle Design Studio</button>
                 </div>
                 
                 <div class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                    <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-4 flex flex-col items-center justify-center">
-                        <img id="detailImg" src="" class="max-w-full max-h-[65vh] object-contain rounded-2xl shadow-sm">
+                    <div class="lg:col-span-7 bg-[#111622] rounded-3xl border border-slate-800/80 overflow-hidden p-4 flex flex-col items-center justify-center">
+                        <img id="detailImg" src="" class="max-w-full max-h-[65vh] object-contain rounded-2xl shadow-2xl">
                         <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
 
-                    <div class="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[500px]">
+                    <div class="lg:col-span-5 bg-[#111622] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[500px]">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
+                            <div class="flex justify-between items-center mb-3">
                                 <div class="flex gap-3 text-slate-400 text-xs font-bold">
                                     <span><i class="fa-solid fa-eye"></i> <span id="detailViews">0</span></span>
                                     <span><i class="fa-solid fa-download"></i> <span id="detailDownloads">0</span></span>
                                 </div>
-                                <span id="detailRes" class="bg-red-50 text-red-600 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-red-100">4K ULTRA</span>
+                                <span id="detailRes" class="bg-red-950 text-red-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-red-900/40">4K ULTRA</span>
                             </div>
 
-                            <div class="mb-4 flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 text-xs text-slate-600">
+                            <div class="mb-4 flex items-center gap-2 bg-[#171e2e] px-3 py-2 rounded-xl border border-slate-800 text-xs text-slate-400">
                                 <i class="fa-solid fa-palette text-red-500"></i>
-                                <span>Uploaded By: <strong id="detailContributorName" class="text-slate-800">Core Network</strong></span>
+                                <span>Uploaded By: <strong id="detailContributorName" class="text-slate-200">Core Network</strong></span>
                             </div>
 
-                            <h2 id="detailTitleText" class="text-2xl font-black tracking-tight leading-tight mb-2">Asset Array</h2>
+                            <h2 id="detailTitleText" class="text-xl font-black tracking-tight mb-2">Asset Array</h2>
                             <div id="detailTagsContainer" class="flex flex-wrap gap-1.5 mt-3"></div>
 
-                            <div id="aestheticEditorControls" class="hidden mt-6 border-t border-slate-100 pt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
-                                <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Studio Panel</h3>
+                            <div id="aestheticEditorControls" class="hidden mt-6 border-t border-slate-800 pt-4 bg-[#171e2e] p-4 rounded-2xl border border-slate-800/60">
+                                <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Studio Workspace</h3>
                                 <div class="space-y-3">
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Crop Configuration</label>
-                                        <select id="editorCropRatio" class="w-full px-3 py-1.5 bg-white border rounded-xl text-xs font-semibold focus:outline-none">
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Crop Aspect Ratio</label>
+                                        <select id="editorCropRatio" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs font-semibold text-white focus:outline-none">
                                             <option value="original">Original Aspect Ratio</option>
-                                            <option value="mobile">Mobile Layout (9:16)</option>
-                                            <option value="desktop">Desktop Layout (16:10)</option>
+                                            <option value="mobile">Mobile Display Layout (9:16)</option>
+                                            <option value="desktop">Desktop Display Layout (16:10)</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Aesthetic Canvas Filters</label>
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Studio Image Filters</label>
                                         <div class="grid grid-cols-2 gap-1.5">
-                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Normal</button>
-                                            <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Grayscale</button>
-                                            <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">High Contrast</button>
-                                            <button onclick="applyEditorMatrixFilter('blur')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Soft Blur</button>
+                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Normal</button>
+                                            <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Grayscale</button>
+                                            <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">High Contrast</button>
+                                            <button onclick="applyEditorMatrixFilter('blur')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Soft Blur</button>
                                         </div>
                                     </div>
-                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2"><i class="fa-solid fa-microchip"></i> Export Creative Render</button>
+                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2 cursor-pointer"><i class="fa-solid fa-microchip"></i> Export Creative Image Render</button>
                                 </div>
                             </div>
 
-                            <div class="mt-4 p-3 bg-red-50/40 border border-dashed border-red-200 rounded-2xl flex items-center justify-between text-xs text-slate-500">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-nodes text-red-500 animate-spin"></i>
-                                    <div><strong class="text-slate-700 block text-[10px]">Premium Verification Link</strong><span class="text-[9px] text-slate-400">High Payout Ad Network Active</span></div>
-                                </div>
-                                <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">CPC Slot</span>
-                            </div>
-
-                            <div class="mt-4 border-t border-slate-100 pt-4">
-                                <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-2"><i class="fa-solid fa-comments"></i> Logs</h3>
-                                <div id="commentsStream" class="space-y-2.5 max-h-24 overflow-y-auto no-scrollbar text-xs"></div>
+                            <div class="mt-4 border-t border-slate-800 pt-4">
+                                <h3 class="text-xs font-black text-slate-500 tracking-wider uppercase mb-2"><i class="fa-solid fa-comments"></i> System Logs</h3>
+                                <div id="commentsStream" class="space-y-2 text-xs"></div>
                             </div>
                         </div>
                         <div class="flex flex-col gap-2 mt-6" id="detailActionRow"></div>
@@ -204,88 +224,92 @@
             </div>
 
             <div id="profileSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
-                <div class="max-w-4xl mx-auto w-full bg-slate-50 border rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 mb-8 bg-card-custom">
+                <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
                     <div class="flex flex-col md:flex-row items-center gap-5 w-full md:w-auto">
-                        <img id="profileAvatarImg" src="" class="w-20 h-20 rounded-full border bg-white p-1">
+                        <img id="profileAvatarImg" src="" class="w-16 h-16 rounded-2xl border border-slate-700 bg-slate-900 p-1">
                         <div class="text-center md:text-left flex-1">
-                            <h2 id="profileNameDisplay" class="text-xl font-black tracking-tight">Kira Elite</h2>
-                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-1">Vellum deployment module structure.</p>
-                            <p id="profileEmailDisplay" class="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-wider">user@vellum.com</p>
+                            <h2 id="profileNameDisplay" class="text-lg font-black tracking-tight">Kira Elite</h2>
+                            <p id="profileBioDisplay" class="text-xs text-slate-400 mt-0.5">Vellum core system account terminal.</p>
+                            <p id="profileEmailDisplay" class="text-[9px] text-red-400 font-bold mt-1 uppercase tracking-wider">user@vellum.com</p>
                         </div>
                     </div>
                 </div>
                 <div class="max-w-[1600px] mx-auto w-full">
-                    <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-4"><i class="fa-solid fa-heart text-red-500"></i> Saved Vault</h3>
+                    <h3 class="text-xs font-black text-slate-500 tracking-wider uppercase mb-4"><i class="fa-solid fa-heart text-red-500"></i> My Liked Collection</h3>
                     <div class="pinterest-grid" id="myFavoritesGrid"></div>
                 </div>
             </div>
 
             <div id="adminSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto w-full mb-8">
-                    <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Total Matrix Assets</p>
-                        <h3 id="statTotalAssets" class="text-2xl font-black mt-1">0</h3>
+                    <div class="bg-[#111622] p-5 border border-slate-800 rounded-2xl">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Database Total Wallpapers</p>
+                        <h3 id="statTotalAssets" class="text-xl font-black mt-1 text-white">0</h3>
                     </div>
-                    <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Aggregated Traffic Logs</p>
-                        <h3 id="statTotalViews" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
+                    <div class="bg-[#111622] p-5 border border-slate-800 rounded-2xl">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Aggregated Network Impressions</p>
+                        <h3 id="statTotalViews" class="text-xl font-black text-emerald-400 mt-1">0</h3>
                     </div>
-                    <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Downloads Tracked</p>
-                        <h3 id="statTotalDownloads" class="text-2xl font-black text-red-600 mt-1">0</h3>
+                    <div class="bg-[#111622] p-5 border border-slate-800 rounded-2xl">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Downloads Generated</p>
+                        <h3 id="statTotalDownloads" class="text-xl font-black text-red-500 mt-1">0</h3>
                     </div>
                 </div>
 
-                <div class="max-w-4xl mx-auto w-full bg-white border rounded-3xl p-6 bg-card-custom mb-8">
-                    <h2 class="text-sm font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Contributor Intake Pipeline Queue</h2>
-                    <div id="adminModerationQueue" class="space-y-4"></div>
+                <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6">
+                    <h2 class="text-xs font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Contributor Moderation Review Pipeline</h2>
+                    <div id="adminModerationQueue" class="space-y-3"></div>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <div id="communityUploadModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800">
-            <button onclick="closeCommunityUploadModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Creative Art</h2>
-            <p class="text-slate-400 text-[11px] mb-4">Select image file asset and set custom configuration tags.</p>
+    <div id="communityUploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-[#111622] border border-slate-800 p-6 rounded-3xl relative shadow-2xl text-slate-200">
+            <button onclick="closeCommunityUploadModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             
-            <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-3">
-                <input type="text" id="userUploadTitle" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Art Title">
+            <h2 class="text-sm font-black text-emerald-400 tracking-tight mb-0.5 uppercase flex items-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Creative Art</h2>
+            <p class="text-slate-500 text-[10px] mb-4">File assets map instantly directly into buffer arrays.</p>
+            
+            <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-3.5">
+                <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" placeholder="Art Title Specification">
                 
                 <div>
-                    <select id="userUploadCategory" onchange="toggleCustomCategoryInput(this.value)" class="w-full px-3 py-2 text-xs border rounded-xl">
+                    <select id="userUploadCategory" onchange="toggleCustomCategoryField(this.value)" class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none">
                         <option value="Anime">Anime</option>
                         <option value="Gaming">Gaming</option>
                         <option value="Cyberpunk">Cyberpunk</option>
                         <option value="Cars">Cars</option>
-                        <option value="Other">Other (Write Custom Category)</option>
+                        <option value="Other">Other Category (Write Custom Option)</option>
                     </select>
-                    <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2 mt-1.5 text-xs border border-amber-300 bg-amber-50/20 rounded-xl" placeholder="Enter your custom category name...">
+                    <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom category identity...">
                 </div>
 
-                <div class="relative w-full h-28 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-slate-50" id="fileZoneBox">
-                    <i id="uploadIconElement" class="fa-solid fa-circle-plus text-xl text-slate-400"></i>
-                    <span id="uploadLabelElement" class="text-[10px] font-bold text-slate-500 mt-1 uppercase">Select Device Image File</span>
-                    <input type="file" id="userUploadFile" accept="image/*" required onchange="handleFileSelectionTrace(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                <div class="relative w-full h-32 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
+                    <div id="fileUploadPromptContainer" class="flex flex-col items-center justify-center p-4 text-center">
+                        <i id="uploadIconElement" class="fa-solid fa-plus text-xl text-slate-600 mb-1"></i>
+                        <span id="uploadLabelElement" class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Select Artwork File</span>
+                    </div>
+                    <img id="uploadLivePreviewDisplay" class="hidden absolute inset-0 w-full h-full object-cover opacity-80">
+                    <input type="file" id="userUploadFile" accept="image/*" required onchange="processFileSelectionPreview(this)" class="absolute inset-0 opacity-0 cursor-pointer">
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Dispatch Parameters to Queue</button>
+                <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg transition-colors cursor-pointer">Dispatch Parameters to Queue</button>
             </form>
         </div>
     </div>
 
-    <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-sm bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800 border">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-base font-black text-center mb-6 tracking-tight text-red-600 uppercase">Vellum Gateway</h2>
-            <form class="space-y-4" onsubmit="handleAuthClusterSubmit(event)">
-                <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border text-xs" value="kira@vellum.com">
-                <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border text-xs" value="password123">
-                <div class="flex gap-2">
-                    <button type="submit" onclick="setAuthMode('login')" class="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Secure Login</button>
-                    <button type="submit" onclick="setAuthMode('signup')" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl">Create Account</button>
+    <div id="authModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-xs bg-[#111622] border border-slate-800 p-6 rounded-3xl relative shadow-2xl text-slate-200">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-xs font-black text-center mb-6 tracking-widest text-red-500 uppercase">Vellum Elite Node</h2>
+            <form class="space-y-3.5" onsubmit="handleAuthClusterSubmit(event)">
+                <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="kira@vellum.com">
+                <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="password123">
+                <div class="flex gap-2 pt-2">
+                    <button type="submit" onclick="setAuthMode('login')" class="flex-1 py-2.5 bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer">Login</button>
+                    <button type="submit" onclick="setAuthMode('signup')" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl cursor-pointer">Sign Up</button>
                 </div>
             </form>
         </div>
@@ -301,13 +325,39 @@
         let communityQueue = JSON.parse(localStorage.getItem('vellum_comm_queue')) || [];
         let uniqueCustomCategoriesList = JSON.parse(localStorage.getItem('vellum_custom_categories')) || [];
         let selectedCat = 'all';
-        let currentAuthMode = 'login';
-        let itemsRenderLimit = 8;
+        let itemsRenderLimit = 10;
         let selectedEditorFilter = 'none';
-        let base64ImageStringData = ""; // Holding file upload trace temporary link
+        let base64ImageStringData = ""; 
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
-        let profileState = { name: "Kira Elite Master", bio: "Operational cluster synced.", seed: "Kira-Elite" };
+        let profileState = { name: "Kira Elite", bio: "Operational start sequence matrix online.", seed: "Kira-Elite" };
+
+        // 1. BOOT ENGINE LOGIC INTERACTION ROUTINES (IPHONE STYLE BOOT SEQUENCE)
+        function initIphoneBootSequence() {
+            const greetings = ["Hello", "Namaste", "Konnichiwa", "Bonjour"];
+            let idx = 0;
+            const greetElement = document.getElementById('bootLoaderGreeting');
+            
+            // Initial flash entry
+            greetElement.innerText = greetings[idx];
+            greetElement.className = "text-4xl md:text-6xl font-black tracking-tight text-white animate-welcome-text";
+
+            const interval = setInterval(() => {
+                idx++;
+                if(idx < greetings.length) {
+                    greetElement.innerText = greetings[idx];
+                    // Retriggering raw DOM CSS animation pipeline cycles
+                    greetElement.classList.remove('animate-welcome-text');
+                    void greetElement.offsetWidth; 
+                    greetElement.classList.add('animate-welcome-text');
+                } else {
+                    clearInterval(interval);
+                    const engine = document.getElementById('iphoneBootEngine');
+                    engine.style.opacity = '0';
+                    setTimeout(() => engine.remove(), 700);
+                }
+            }, 600);
+        }
 
         function showSection(sectionId) {
             document.querySelectorAll('.app-section').forEach(sec => sec.classList.add('hidden'));
@@ -322,11 +372,6 @@
             toast.classList.replace('translate-y-20', 'translate-y-0');
             toast.classList.replace('opacity-0', 'opacity-100');
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
-        }
-
-        function changeSiteTheme(themeName) {
-            document.body.className = `theme-${themeName}`;
-            localStorage.setItem('vellum_user_theme', themeName);
         }
 
         function syncProfileUIElements() {
@@ -350,68 +395,63 @@
             syncProfileUIElements();
         }
 
-        function appendDynamicCategoryButtons() {
-            const nav = document.getElementById('categoriesContainerNav');
-            // Flush dynamically added ones but protect hardcoded core
-            document.querySelectorAll('.dynamic-cat-pill').forEach(el => el.remove());
+        function appendDynamicVisualCategoryCards() {
+            const container = document.getElementById('pinterestVisualCategoryGrid');
+            document.querySelectorAll('.dynamic-visual-card').forEach(el => el.remove());
             
             uniqueCustomCategoriesList.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.onclick = () => selectCategory(cat);
-                btn.id = `cat-${cat}`;
-                btn.className = "cat-btn dynamic-cat-pill px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs capitalize";
-                btn.innerText = cat;
-                nav.appendChild(btn);
+                const card = document.createElement('div');
+                card.onclick = () => selectCategory(cat);
+                card.id = `visCat-${cat}`;
+                card.className = "dynamic-visual-card h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-slate-800 to-slate-900 p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.02] capitalize";
+                card.innerHTML = `
+                    <i class="fa-solid fa-folder-open absolute top-3 right-3 text-slate-600 text-base"></i>
+                    <span class="text-xs font-black tracking-wide text-slate-300">${cat}</span>`;
+                container.appendChild(card);
             });
         }
 
         async function fetchWallpapers() {
             try {
-                document.getElementById('shimmerLoaderContainer').classList.remove('hidden');
-                document.getElementById('wallpaperContainer').classList.add('hidden');
-
                 const { data, error } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
                 allWallpapers = data || [];
 
-                // Extract any legacy/new unique category rows to update navigation context arrays
                 allWallpapers.forEach(wp => {
                     if(wp.category && !['all','anime','gaming','cyberpunk','cars'].includes(wp.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(wp.category)) {
                         uniqueCustomCategoriesList.push(wp.category);
                     }
                 });
                 localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
-                appendDynamicCategoryButtons();
-                
-                setTimeout(() => {
-                    document.getElementById('shimmerLoaderContainer').classList.add('hidden');
-                    document.getElementById('wallpaperContainer').classList.remove('hidden');
-                    renderWallpapers(allWallpapers.slice(0, itemsRenderLimit));
-                }, 800);
-
+                appendDynamicVisualCategoryCards();
+                renderWallpapers(allWallpapers.slice(0, itemsRenderLimit));
                 checkUserSession();
-                changeSiteTheme(localStorage.getItem('vellum_user_theme') || 'white');
             } catch (e) { console.error(e); }
         }
 
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
-            if(itemsRenderLimit <= 8) container.innerHTML = '';
+            if(itemsRenderLimit <= 10) container.innerHTML = '';
             
+            if(list.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs text-slate-500 font-bold uppercase tracking-wider">No assets align with current filters</div>`;
+                return;
+            }
+
             list.forEach(wp => {
                 const isLiked = likedWallpaperIds.includes(wp.id);
                 const card = document.createElement('div');
-                card.className = "pin-card bg-inherit overflow-hidden group cursor-pointer rounded-2xl relative";
+                card.className = "pin-card bg-transparent overflow-hidden group cursor-pointer rounded-2xl relative";
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 shadow-md border border-slate-900">
                         <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}')" class="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
-                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow transition-all hover:scale-110 z-10">
-                            <i class="fa-heart text-sm ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-700'}"></i>
+                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
+                            <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
                         </button>
                     </div>
                     <div class="pt-2 px-1" onclick="showPinterestDetailView('${wp.id}')">
-                        <h3 class="text-xs font-bold text-slate-800 truncate">${wp.title}</h3>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-feather text-slate-300"></i> ${wp.uploaded_by || 'Admin'}</p>
+                        <h3 class="text-xs font-bold text-slate-200 truncate tracking-wide">${wp.title}</h3>
+                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-0.5"><i class="fa-solid fa-feather text-slate-700 mr-0.5"></i> ${wp.uploaded_by || 'Vellum Core'}</p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -419,17 +459,17 @@
         }
 
         window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 180) {
                 if (itemsRenderLimit < allWallpapers.length) {
-                    document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-spinner animate-spin text-red-500"></i> Fetching array...`;
+                    document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-spinner animate-spin text-red-500"></i> Syncing array parameters...`;
                     setTimeout(() => {
                         const previousLength = itemsRenderLimit;
                         itemsRenderLimit += 6;
                         renderWallpapers(allWallpapers.slice(previousLength, itemsRenderLimit));
-                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Sync secure.`;
-                    }, 500);
+                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Matrix Secure.`;
+                    }, 400);
                 } else {
-                    document.getElementById('loadMoreText').innerText = "Vellum Core Feed Complete.";
+                    document.getElementById('loadMoreText').innerText = "Vellum Production Feed Synchronized Securely.";
                 }
             }
         });
@@ -442,11 +482,11 @@
                 showToast("Removed from profile");
             } else {
                 likedWallpaperIds.push(id);
-                showToast("Saved to My Space Node!");
+                showToast("Saved to My Space Vault!");
             }
             localStorage.setItem('vellum_liked_ids', JSON.stringify(likedWallpaperIds));
-            itemsRenderLimit = 8; 
-            renderWallpapers(allWallpapers.slice(0, itemsRenderLimit));
+            itemsRenderLimit = 10; 
+            filterWallpapers();
             updateProfileGalleryGrid();
         }
 
@@ -455,10 +495,10 @@
         function updateProfileGalleryGrid() {
             const grid = document.getElementById('myFavoritesGrid'); grid.innerHTML = '';
             const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id));
-            if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-400 py-6">Vault selection empty.</p>`; return; }
+            if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase tracking-wider py-6 col-span-full text-center">Vault array metrics clean</p>`; return; }
             favorites.forEach(wp => {
                 grid.innerHTML += `
-                    <div class="pin-card bg-inherit rounded-2xl relative">
+                    <div class="pin-card bg-transparent rounded-2xl relative border border-slate-900">
                         <img src="${wp.image_url}" class="w-full h-auto rounded-2xl" onclick="showPinterestDetailView('${wp.id}')">
                     </div>`;
             });
@@ -473,23 +513,22 @@
             document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
-            
-            document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Core Admin';
+            document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Admin';
 
             const tagsContainer = document.getElementById('detailTagsContainer'); tagsContainer.innerHTML = '';
             const mockupTags = [wp.category || 'Vibe', '4K_Elite', 'Aesthetic'];
             mockupTags.forEach(tag => {
                 const span = document.createElement('span');
-                span.className = "px-2.5 py-1 bg-slate-100 border text-[10px] text-slate-500 rounded-lg font-bold cursor-pointer hover:bg-red-500 hover:text-white transition-all";
+                span.className = "px-2.5 py-1 bg-slate-900 border border-slate-800 text-[10px] text-slate-400 rounded-lg font-bold cursor-pointer hover:bg-red-600 hover:text-white transition-all";
                 span.innerText = `#${tag.toLowerCase()}`;
                 span.onclick = () => { selectCategory(wp.category || 'all'); showSection('dashboard'); };
                 tagsContainer.appendChild(span);
             });
 
             document.getElementById('detailActionRow').innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-full shadow-md"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
             `;
-            document.getElementById('commentsStream').innerHTML = `<div class="p-2 bg-slate-50 border rounded-xl"><strong>Matrix_Node:</strong> High earning trackers operational. Link secure.</div>`;
+            document.getElementById('commentsStream').innerHTML = `<div class="p-2.5 bg-[#171e2e] border border-slate-800 rounded-xl text-slate-400"><strong>Matrix_Node:</strong> Content validation complete. High traffic monetization route active.</div>`;
             document.getElementById('aestheticEditorControls').classList.add('hidden');
         }
 
@@ -499,10 +538,10 @@
             selectedEditorFilter = filterType;
             const imgEl = document.getElementById('detailImg');
             if (filterType === 'grayscale') imgEl.style.filter = "grayscale(100%)";
-            else if (filterType === 'highcontrast') imgEl.style.filter = "contrast(170%) brightness(90%)";
+            else if (filterType === 'highcontrast') imgEl.style.filter = "contrast(160%) brightness(90%)";
             else if (filterType === 'blur') imgEl.style.filter = "blur(4px)";
             else imgEl.style.filter = "none";
-            showToast(`Render engine simulation: ${filterType}`);
+            showToast(`Filter applied: ${filterType}`);
         }
 
         function compileAndDownloadCustomRender() {
@@ -514,12 +553,10 @@
             const baseImg = new Image();
             baseImg.crossOrigin = "anonymous"; 
             baseImg.src = imgEl.src;
-            showToast("Processing high-res data arrays...");
+            showToast("Compiling custom visual crop nodes...");
 
             baseImg.onload = function() {
-                let targetWidth = baseImg.width;
-                let targetHeight = baseImg.height;
-
+                let targetWidth = baseImg.width; let targetHeight = baseImg.height;
                 if (ratioType === 'mobile') {
                     targetWidth = baseImg.height * (9 / 16);
                     if (targetWidth > baseImg.width) { targetWidth = baseImg.width; targetHeight = baseImg.width * (16 / 9); }
@@ -533,48 +570,43 @@
                 const sy = (baseImg.height - targetHeight) / 2;
 
                 if (selectedEditorFilter === 'grayscale') ctx.filter = "grayscale(100%)";
-                else if (selectedEditorFilter === 'highcontrast') ctx.filter = "contrast(170%) brightness(90%)";
-                else if (selectedEditorFilter === 'blur') ctx.filter = "blur(8px)";
+                else if (selectedEditorFilter === 'highcontrast') ctx.filter = "contrast(160%) brightness(90%)";
+                else if (selectedEditorFilter === 'blur') ctx.filter = "blur(6px)";
                 else ctx.filter = "none";
 
                 ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
-
                 try {
                     const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                     const link = document.createElement('a');
                     link.download = `Vellum_Studio_${Date.now()}.jpg`;
                     link.href = dataUrl; link.click();
-                    showToast("Render package dispatch complete!");
-                } catch(e) {
-                    window.open(imgEl.src, '_blank');
-                    showToast("Fallback routing executed.");
-                }
+                } catch(e) { window.open(imgEl.src, '_blank'); }
             };
         }
 
-        // OTHER OPTION TRIGGER TOGGLE FIELD
-        function toggleCustomCategoryInput(val) {
-            const inputField = document.getElementById('userUploadCustomCategory');
-            if(val === 'Other') {
-                inputField.classList.remove('hidden');
-                inputField.setAttribute('required', 'true');
-            } else {
-                inputField.classList.add('hidden');
-                inputField.removeAttribute('required');
-            }
+        function toggleCustomCategoryField(val) {
+            const field = document.getElementById('userUploadCustomCategory');
+            if(val === 'Other') { field.classList.remove('hidden'); field.setAttribute('required', 'true'); }
+            else { field.classList.add('hidden'); field.removeAttribute('required'); }
         }
 
-        // CONVERT DEVICE PHYSICAL IMAGE STORAGE DATA FILE INTO SECURE TEMPORARY IN-MEMORY ROUTING STRINGS
-        function handleFileSelectionTrace(input) {
+        // 3. IMAGE PREVIEW FILE SELECTION MECHANISM TRACE
+        function processFileSelectionPreview(input) {
             if (input.files && input.files[0]) {
-                const selectedFile = input.files[0];
-                base64ImageStringData = URL.createObjectURL(selectedFile);
-                
-                // Visual update feedback on the dropzone layout box
-                document.getElementById('fileZoneBox').style.borderColor = "#10b981";
-                document.getElementById('uploadIconElement').className = "fa-solid fa-circle-check text-xl text-emerald-500";
-                document.getElementById('uploadLabelElement').innerText = `Selected: ${selectedFile.name.substring(0, 18)}...`;
-                showToast("File mapped into system buffer.");
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64ImageStringData = e.target.result;
+                    
+                    // UI changes to manifest live selection data preview image inside dropzone container
+                    document.getElementById('fileUploadPromptContainer').classList.add('hidden');
+                    const previewImg = document.getElementById('uploadLivePreviewDisplay');
+                    previewImg.src = base64ImageStringData;
+                    previewImg.classList.remove('hidden');
+                    
+                    document.getElementById('fileZoneBox').style.borderColor = "#10b981";
+                    showToast("Physical file layout mapped secure!");
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
@@ -586,25 +618,22 @@
             const title = document.getElementById('userUploadTitle').value;
             let category = document.getElementById('userUploadCategory').value;
             
-            if(category === 'Other') {
-                category = document.getElementById('userUploadCustomCategory').value.trim();
-            }
+            if(category === 'Other') { category = document.getElementById('userUploadCustomCategory').value.trim(); }
+            if(!base64ImageStringData) { alert("Please attach an image file asset."); return; }
 
-            if(!base64ImageStringData) { alert("Please drop or select a physical file."); return; }
+            const user = localStorage.getItem('vellum_logged_in_user') || 'Anon';
+            const handle = user.split('@')[0]; 
 
-            const currentSessionUser = localStorage.getItem('vellum_logged_in_user') || 'Anon';
-            const userHandle = currentSessionUser.split('@')[0]; 
-
-            communityQueue.push({ id: Date.now().toString(), title, category, image_url: base64ImageStringData, uploaded_by: userHandle });
+            communityQueue.push({ id: Date.now().toString(), title, category, image_url: base64ImageStringData, uploaded_by: handle });
             localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
             
             showToast("Dispatched directly to operational review queue!");
             
-            // Clean interface configurations
+            // Clean modal interface states completely
             base64ImageStringData = "";
-            document.getElementById('fileZoneBox').style.borderColor = "#cbd5e1";
-            document.getElementById('uploadIconElement').className = "fa-solid fa-circle-plus text-xl text-slate-400";
-            document.getElementById('uploadLabelElement').innerText = "Select Device Image File";
+            document.getElementById('fileUploadPromptContainer').classList.remove('hidden');
+            document.getElementById('uploadLivePreviewDisplay').classList.add('hidden');
+            document.getElementById('fileZoneBox').style.borderColor = "#1e293b";
             document.getElementById('userUploadCustomCategory').classList.add('hidden');
 
             e.target.reset(); closeCommunityUploadModal();
@@ -616,17 +645,17 @@
             document.getElementById('statTotalViews').innerText = v; document.getElementById('statTotalDownloads').innerText = d;
 
             const qBox = document.getElementById('adminModerationQueue'); qBox.innerHTML = '';
-            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-400">Queue processing system trace clean.</p>`; return; }
+            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase py-4">Review Queue Pipeline Clean</p>`; return; }
             communityQueue.forEach((item, index) => {
                 qBox.innerHTML += `
-                    <div class="flex items-center justify-between p-3 border rounded-xl bg-slate-50">
+                    <div class="flex items-center justify-between p-3 border border-slate-800 rounded-xl bg-[#171e2e]">
                         <div class="flex items-center gap-3">
-                            <img src="${item.image_url}" class="w-12 h-12 rounded-lg object-cover">
-                            <div><h4 class="text-xs font-bold">${item.title}</h4><p class="text-[10px] text-slate-400">By: ${item.uploaded_by} | Category: ${item.category}</p></div>
+                            <img src="${item.image_url}" class="w-12 h-12 rounded-lg object-cover border border-slate-800">
+                            <div><h4 class="text-xs font-bold text-white">${item.title}</h4><p class="text-[10px] text-slate-400">By: ${item.uploaded_by} | Category: ${item.category}</p></div>
                         </div>
-                        <div class="flex gap-1">
-                            <button onclick="approveQueueAsset(${index})" class="px-3 py-1 bg-emerald-600 text-white font-bold text-[10px] rounded-lg">Approve Injection</button>
-                            <button onclick="rejectQueueAsset(${index})" class="px-3 py-1 bg-red-600 text-white font-bold text-[10px] rounded-lg">Drop</button>
+                        <div class="flex gap-1.5">
+                            <button onclick="approveQueueAsset(${index})" class="px-3 py-1.5 bg-emerald-600 text-white font-bold text-[10px] rounded-lg cursor-pointer">Inject</button>
+                            <button onclick="rejectQueueAsset(${index})" class="px-3 py-1.5 bg-red-600 text-white font-bold text-[10px] rounded-lg cursor-pointer">Drop</button>
                         </div>
                     </div>`;
             });
@@ -636,52 +665,41 @@
             const target = communityQueue[idx];
             try {
                 const { error } = await supabaseClient.from('wallpapers').insert([{ 
-                    title: target.title, 
-                    category: target.category, 
-                    image_url: target.image_url, 
-                    views: 1, 
-                    downloads: 0,
-                    uploaded_by: target.uploaded_by || 'Contributor'
+                    title: target.title, category: target.category, image_url: target.image_url, views: 1, downloads: 0, uploaded_by: target.uploaded_by || 'Contributor'
                 }]);
                 if (error) throw error;
-                showToast("Live injection into production network secure!");
+                showToast("Live injection into network cluster secure!");
                 
-                // If it is a new custom category, update the navbar array memory
                 if(!['all','anime','gaming','cyberpunk','cars'].includes(target.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(target.category)) {
-                    uniqueCustomCategoriesList.push(target.category);
-                    localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
+                    uniqueCustomCategoriesList.push(target.category); localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
                 }
-
                 communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
                 fetchWallpapers(); compileAnalyticsDashboard();
             } catch(e) { 
-                // Local Storage network fallback simulator if target table needs hard cloud dynamic bucket mappings
-                allWallpapers.unshift({
-                    id: target.id, title: target.title, category: target.category, image_url: target.image_url, views: 5, downloads: 1, uploaded_by: target.uploaded_by
-                });
-                showToast("Simulated Client Node injection successful.");
-                communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
+                allWallpapers.unshift({ id: target.id, title: target.title, category: target.category, image_url: target.image_url, views: 1, downloads: 0, uploaded_by: target.uploaded_by });
+                showToast("Fallback simulator engine active: Asset injected locally.");
                 if(!['all','anime','gaming','cyberpunk','cars'].includes(target.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(target.category)) {
-                    uniqueCustomCategoriesList.push(target.category);
-                    localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
+                    uniqueCustomCategoriesList.push(target.category); localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
                 }
+                communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
                 fetchWallpapers(); compileAnalyticsDashboard();
             }
         }
 
         function rejectQueueAsset(idx) {
             communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-            showToast("Asset stack record cleared."); compileAnalyticsDashboard();
+            showToast("Asset trace record cleared."); compileAnalyticsDashboard();
         }
 
-        function setAuthMode(m) { currentAuthMode = m; }
+        function setAuthMode(m) {}
         async function handleAuthClusterSubmit(e) {
             e.preventDefault(); const email = document.getElementById('authEmail').value;
             localStorage.setItem('vellum_logged_in_user', email);
-            closeAuthModal(); checkUserSession(); showToast("Identity node connection successful.");
+            closeAuthModal(); checkUserSession(); showToast("Identity credentials trace online.");
+            filterWallpapers();
         }
 
-        function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); document.getElementById('profileDropdown').classList.add('hidden'); checkUserSession(); showSection('dashboard'); }
+        function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); document.getElementById('profileDropdown').classList.add('hidden'); checkUserSession(); showSection('dashboard'); filterWallpapers(); }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function toggleDropdown(id) { document.getElementById(id).classList.toggle('hidden'); }
@@ -689,14 +707,16 @@
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const filtered = allWallpapers.filter(wp => wp.title.toLowerCase().includes(query) && (selectedCat === 'all' || wp.category.toLowerCase() === selectedCat.toLowerCase()));
-            itemsRenderLimit = 8; renderWallpapers(filtered);
+            itemsRenderLimit = 10; renderWallpapers(filtered);
         }
 
         function selectCategory(cat) {
             selectedCat = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.className = "cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs");
-            const active = document.getElementById(`cat-${cat}`);
-            if(active) active.className = "cat-btn px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold text-xs";
+            document.querySelectorAll('#pinterestVisualCategoryGrid > div').forEach(b => {
+                b.style.borderColor = "transparent";
+            });
+            const activeCard = document.getElementById(`visCat-${cat}`);
+            if(activeCard) activeCard.style.borderColor = "#dc2626";
             filterWallpapers();
         }
 
@@ -705,7 +725,10 @@
             window.open(url, '_blank');
         }
 
-        window.onload = fetchWallpapers;
+        window.onload = () => {
+            initIphoneBootSequence();
+            fetchWallpapers();
+        };
     </script>
 </body>
 </html>
