@@ -36,7 +36,7 @@
 <body class="theme-white">
 
     <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
-        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">System online</span>
+        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Network active</span>
     </div>
 
     <div class="flex min-h-screen">
@@ -100,6 +100,14 @@
                 </div>
             </nav>
 
+            <div class="w-full max-w-4xl mx-auto px-4 mt-4">
+                <div class="w-full h-20 bg-slate-50 border border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center text-slate-400 text-xs font-bold p-2 text-center relative overflow-hidden bg-card-custom">
+                    <span class="absolute top-1 left-2 text-[8px] tracking-widest text-slate-300 uppercase">Sponsored Matrix Slot</span>
+                    <i class="fa-solid fa-rectangle-ad text-lg text-slate-300 mb-0.5"></i>
+                    <span class="text-[10px]">High CPM Campaign Active (Popunder Trigger Embedded)</span>
+                </div>
+            </div>
+
             <div id="dashboardSection" class="w-full flex-1 flex flex-col app-section">
                 <div class="max-w-6xl mx-auto px-4 py-4 flex gap-2 overflow-x-auto no-scrollbar w-full justify-start md:justify-center">
                     <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold text-xs">All</button>
@@ -113,14 +121,12 @@
                     <div id="shimmerLoaderContainer" class="pinterest-grid">
                         <div class="pin-card h-80 shimmer-card rounded-2xl"></div>
                         <div class="pin-card h-64 shimmer-card rounded-2xl"></div>
-                        <div class="pin-card h-96 shimmer-card rounded-2xl"></div>
-                        <div class="pin-card h-72 shimmer-card rounded-2xl"></div>
                     </div>
                     
                     <div class="pinterest-grid hidden" id="wallpaperContainer"></div>
                     
                     <div id="infiniteScrollTrigger" class="w-full py-10 flex items-center justify-center text-xs font-bold text-slate-400">
-                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-600 mr-2"></i> Streaming digital pipelines...</span>
+                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-600 mr-2"></i> Syncing assets database...</span>
                     </div>
                 </main>
             </div>
@@ -134,55 +140,62 @@
                 <div class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                     <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-4 flex flex-col items-center justify-center">
                         <img id="detailImg" src="" class="max-w-full max-h-[65vh] object-contain rounded-2xl shadow-sm">
-                        
                         <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
 
                     <div class="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[500px]">
                         <div>
-                            <div class="flex justify-between items-center mb-4">
+                            <div class="flex justify-between items-center mb-2">
                                 <div class="flex gap-3 text-slate-400 text-xs font-bold">
                                     <span><i class="fa-solid fa-eye"></i> <span id="detailViews">0</span></span>
                                     <span><i class="fa-solid fa-download"></i> <span id="detailDownloads">0</span></span>
                                 </div>
                                 <span id="detailRes" class="bg-red-50 text-red-600 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-red-100">4K ULTRA</span>
                             </div>
+
+                            <div class="mb-4 flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-100 text-xs text-slate-600">
+                                <i class="fa-solid fa-palette text-red-500"></i>
+                                <span>Uploaded By: <strong id="detailContributorName" class="text-slate-800">Core Network</strong></span>
+                            </div>
+
                             <h2 id="detailTitleText" class="text-2xl font-black tracking-tight leading-tight mb-2">Asset Array</h2>
-                            
                             <div id="detailTagsContainer" class="flex flex-wrap gap-1.5 mt-3"></div>
 
                             <div id="aestheticEditorControls" class="hidden mt-6 border-t border-slate-100 pt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
-                                <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Render Engine Settings</h3>
-                                
+                                <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Studio Panel</h3>
                                 <div class="space-y-3">
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Crop Ratio Target</label>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Crop Configuration</label>
                                         <select id="editorCropRatio" class="w-full px-3 py-1.5 bg-white border rounded-xl text-xs font-semibold focus:outline-none">
                                             <option value="original">Original Aspect Ratio</option>
-                                            <option value="mobile">Mobile Screen Layout (9:16)</option>
-                                            <option value="desktop">Desktop Display Canvas (16:10)</option>
+                                            <option value="mobile">Mobile Layout (9:16)</option>
+                                            <option value="desktop">Desktop Layout (16:10)</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Aesthetic Creative Filters</label>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Aesthetic Canvas Filters</label>
                                         <div class="grid grid-cols-2 gap-1.5">
-                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Normal View</button>
+                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Normal</button>
                                             <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Grayscale</button>
                                             <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">High Contrast</button>
                                             <button onclick="applyEditorMatrixFilter('blur')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Soft Blur</button>
                                         </div>
                                     </div>
-                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2"><i class="fa-solid fa-microchip"></i> Export Studio Render</button>
+                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2"><i class="fa-solid fa-microchip"></i> Export Creative Render</button>
                                 </div>
                             </div>
 
-                            <div class="mt-6 border-t border-slate-100 pt-4">
-                                <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-2"><i class="fa-solid fa-comments"></i> Community Comments</h3>
-                                <div id="commentsStream" class="space-y-2.5 max-h-36 overflow-y-auto no-scrollbar text-xs"></div>
-                                <form onsubmit="postLiveComment(event)" class="mt-3 flex gap-2">
-                                    <input type="text" id="commentInput" required class="flex-1 px-3 py-2 text-xs bg-slate-50 border rounded-xl focus:outline-none" placeholder="Append response entry...">
-                                    <button type="submit" class="px-3 bg-red-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
-                                </form>
+                            <div class="mt-4 p-3 bg-red-50/40 border border-dashed border-red-200 rounded-2xl flex items-center justify-between text-xs text-slate-500">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-nodes text-red-500 animate-spin"></i>
+                                    <div><strong class="text-slate-700 block text-[10px]">Premium Verification Link</strong><span class="text-[9px] text-slate-400">High Payout Ad Network Active</span></div>
+                                </div>
+                                <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">CPC Slot</span>
+                            </div>
+
+                            <div class="mt-4 border-t border-slate-100 pt-4">
+                                <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-2"><i class="fa-solid fa-comments"></i> Logs</h3>
+                                <div id="commentsStream" class="space-y-2.5 max-h-24 overflow-y-auto no-scrollbar text-xs"></div>
                             </div>
                         </div>
                         <div class="flex flex-col gap-2 mt-6" id="detailActionRow"></div>
@@ -193,27 +206,16 @@
             <div id="profileSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="max-w-4xl mx-auto w-full bg-slate-50 border rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 mb-8 bg-card-custom">
                     <div class="flex flex-col md:flex-row items-center gap-5 w-full md:w-auto">
-                        <div class="relative group cursor-pointer">
-                            <img id="profileAvatarImg" src="" class="w-20 h-20 rounded-full border bg-white p-1">
-                            <button onclick="triggerAvatarShuffle()" class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-sync-alt"></i></button>
-                        </div>
+                        <img id="profileAvatarImg" src="" class="w-20 h-20 rounded-full border bg-white p-1">
                         <div class="text-center md:text-left flex-1">
-                            <div class="flex items-center justify-center md:justify-start gap-2">
-                                <h2 id="profileNameDisplay" class="text-xl font-black tracking-tight">Kira Elite</h2>
-                                <button onclick="toggleEditProfileInputs()" class="text-xs text-slate-400 hover:text-red-600"><i class="fa-solid fa-edit"></i></button>
-                            </div>
-                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-1 italic">Vellum infrastructure module</p>
+                            <h2 id="profileNameDisplay" class="text-xl font-black tracking-tight">Kira Elite</h2>
+                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-1">Vellum deployment module structure.</p>
                             <p id="profileEmailDisplay" class="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-wider">user@vellum.com</p>
                         </div>
                     </div>
-                    <div id="profileEditDrawer" class="hidden w-full max-w-xs flex flex-col gap-2 p-3 bg-white rounded-2xl border">
-                        <input type="text" id="editProfileName" class="w-full px-3 py-1.5 text-xs border rounded-xl" placeholder="Display Node Name">
-                        <input type="text" id="editProfileBio" class="w-full px-3 py-1.5 text-xs border rounded-xl" placeholder="Bio array description...">
-                        <button onclick="saveProfileDataModifications()" class="w-full py-1.5 bg-red-600 text-white font-bold text-[11px] rounded-xl">Commit Updates</button>
-                    </div>
                 </div>
                 <div class="max-w-[1600px] mx-auto w-full">
-                    <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-4"><i class="fa-solid fa-heart text-red-500"></i> My Vault Node Saves</h3>
+                    <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-4"><i class="fa-solid fa-heart text-red-500"></i> Saved Vault</h3>
                     <div class="pinterest-grid" id="myFavoritesGrid"></div>
                 </div>
             </div>
@@ -221,11 +223,11 @@
             <div id="adminSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto w-full mb-8">
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Total Array Assets</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Total Matrix Assets</p>
                         <h3 id="statTotalAssets" class="text-2xl font-black mt-1">0</h3>
                     </div>
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Aggregated Traffic</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Aggregated Traffic Logs</p>
                         <h3 id="statTotalViews" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
                     </div>
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
@@ -235,7 +237,7 @@
                 </div>
 
                 <div class="max-w-4xl mx-auto w-full bg-white border rounded-3xl p-6 bg-card-custom mb-8">
-                    <h2 class="text-sm font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Community Pipeline Intake Queue</h2>
+                    <h2 class="text-sm font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Contributor Intake Pipeline Queue</h2>
                     <div id="adminModerationQueue" class="space-y-4"></div>
                 </div>
             </div>
@@ -246,8 +248,8 @@
     <div id="communityUploadModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800">
             <button onclick="closeCommunityUploadModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Premium Wallpaper</h2>
-            <p class="text-slate-400 text-[11px] mb-4">Your file parameters will be pushed directly to the admin cluster approval engine.</p>
+            <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Creative Art</h2>
+            <p class="text-slate-400 text-[11px] mb-4">Your attribution parameters will sync to your current profile allocation metrics.</p>
             <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-3">
                 <input type="text" id="userUploadTitle" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Art Title">
                 <select id="userUploadCategory" class="w-full px-3 py-2 text-xs border rounded-xl">
@@ -256,8 +258,8 @@
                     <option value="Cyberpunk">Cyberpunk</option>
                     <option value="Cars">Cars</option>
                 </select>
-                <input type="url" id="userUploadUrl" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Direct Secure Image URL Destination">
-                <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Dispatch to Admin Node</button>
+                <input type="url" id="userUploadUrl" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Direct Secure CDN Image URL Link">
+                <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Dispatch Parameters to Queue</button>
             </form>
         </div>
     </div>
@@ -291,9 +293,7 @@
         let selectedEditorFilter = 'none';
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
-        let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || {
-            name: "Kira Elite Master", bio: "Vellum deployment node framework.", seed: "Kira-Elite"
-        };
+        let profileState = { name: "Kira Elite Master", bio: "Operational cluster synced.", seed: "Kira-Elite" };
 
         function showSection(sectionId) {
             document.querySelectorAll('.app-section').forEach(sec => sec.classList.add('hidden'));
@@ -317,12 +317,9 @@
 
         function syncProfileUIElements() {
             document.getElementById('profileNameDisplay').innerText = profileState.name;
-            document.getElementById('profileBioDisplay').innerText = profileState.bio;
             const avatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${profileState.seed}`;
             document.getElementById('profileAvatarImg').src = avatarUrl;
             document.getElementById('navAvatar').src = avatarUrl;
-            document.getElementById('editProfileName').value = profileState.name;
-            document.getElementById('editProfileBio').value = profileState.bio;
         }
 
         function checkUserSession() {
@@ -374,7 +371,10 @@
                             <i class="fa-heart text-sm ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-700'}"></i>
                         </button>
                     </div>
-                    <div class="pt-2 px-1" onclick="showPinterestDetailView('${wp.id}')"><h3 class="text-xs font-bold text-slate-800 truncate">${wp.title}</h3></div>
+                    <div class="pt-2 px-1" onclick="showPinterestDetailView('${wp.id}')">
+                        <h3 class="text-xs font-bold text-slate-800 truncate">${wp.title}</h3>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-feather text-slate-300"></i> ${wp.uploaded_by || 'Admin'}</p>
+                    </div>
                 `;
                 container.appendChild(card);
             });
@@ -383,15 +383,15 @@
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
                 if (itemsRenderLimit < allWallpapers.length) {
-                    document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-spinner animate-spin text-red-500"></i> Fetching next array packet...`;
+                    document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-spinner animate-spin text-red-500"></i> Fetching array...`;
                     setTimeout(() => {
                         const previousLength = itemsRenderLimit;
                         itemsRenderLimit += 6;
                         renderWallpapers(allWallpapers.slice(previousLength, itemsRenderLimit));
-                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Pipelines synchronized.`;
+                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Sync secure.`;
                     }, 500);
                 } else {
-                    document.getElementById('loadMoreText').innerText = "Vellum Core Feed Stream Complete.";
+                    document.getElementById('loadMoreText').innerText = "Vellum Core Feed Complete.";
                 }
             }
         });
@@ -413,20 +413,11 @@
         }
 
         function openProfileGallery() { document.getElementById('profileDropdown').classList.add('hidden'); showSection('profile'); updateProfileGalleryGrid(); }
-        function toggleEditProfileInputs() { document.getElementById('profileEditDrawer').classList.toggle('hidden'); }
-        function triggerAvatarShuffle() { profileState.seed = Math.random().toString(36).substring(7); syncProfileUIElements(); }
-        
-        function saveProfileDataModifications() {
-            profileState.name = document.getElementById('editProfileName').value || "Kira Elite";
-            profileState.bio = document.getElementById('editProfileBio').value || "Node synced.";
-            localStorage.setItem('vellum_profile_state', JSON.stringify(profileState));
-            syncProfileUIElements(); toggleEditProfileInputs(); showToast("Profile Config Synced!");
-        }
 
         function updateProfileGalleryGrid() {
             const grid = document.getElementById('myFavoritesGrid'); grid.innerHTML = '';
             const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id));
-            if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-400 py-6">Your vault allocation is empty.</p>`; return; }
+            if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-400 py-6">Vault selection empty.</p>`; return; }
             favorites.forEach(wp => {
                 grid.innerHTML += `
                     <div class="pin-card bg-inherit rounded-2xl relative">
@@ -444,6 +435,9 @@
             document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
+            
+            // MAP LIVE ATTRIBUTION LOGIC TO DETAIL BADGE
+            document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Core Admin';
 
             const tagsContainer = document.getElementById('detailTagsContainer'); tagsContainer.innerHTML = '';
             const mockupTags = [wp.category || 'Vibe', '4K_Elite', 'Aesthetic'];
@@ -456,28 +450,22 @@
             });
 
             document.getElementById('detailActionRow').innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-full shadow-md"><i class="fa-solid fa-download"></i> Download Original File</button>
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-full shadow-md"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
             `;
-            document.getElementById('commentsStream').innerHTML = `<div class="p-2 bg-slate-50 border rounded-xl"><strong>System_Node:</strong> Pipeline connection secured. Ready for configuration changes.</div>`;
-            document.getElementById('aestheticEditorControls').classList.add('hidden'); // Close studio by default
+            document.getElementById('commentsStream').innerHTML = `<div class="p-2 bg-slate-50 border rounded-xl"><strong>Matrix_Node:</strong> High earning trackers operational. Link secure.</div>`;
+            document.getElementById('aestheticEditorControls').classList.add('hidden');
         }
 
-        // ================= DESIGN STUDIO RESIZER & CANVAS FILTER ENGINE =================
-        function toggleAestheticEditorPanel() {
-            document.getElementById('aestheticEditorControls').classList.toggle('hidden');
-        }
+        function toggleAestheticEditorPanel() { document.getElementById('aestheticEditorControls').classList.toggle('hidden'); }
 
         function applyEditorMatrixFilter(filterType) {
             selectedEditorFilter = filterType;
             const imgEl = document.getElementById('detailImg');
-            
-            // Real-time Visual Filter Simulation Feedback on Main Element
             if (filterType === 'grayscale') imgEl.style.filter = "grayscale(100%)";
             else if (filterType === 'highcontrast') imgEl.style.filter = "contrast(170%) brightness(90%)";
             else if (filterType === 'blur') imgEl.style.filter = "blur(4px)";
             else imgEl.style.filter = "none";
-            
-            showToast(`Applied ${filterType} matrix parameters!`);
+            showToast(`Render engine simulation: ${filterType}`);
         }
 
         function compileAndDownloadCustomRender() {
@@ -489,37 +477,24 @@
             const baseImg = new Image();
             baseImg.crossOrigin = "anonymous"; 
             baseImg.src = imgEl.src;
-
-            showToast("Processing studio calculations...");
+            showToast("Processing high-res data arrays...");
 
             baseImg.onload = function() {
                 let targetWidth = baseImg.width;
                 let targetHeight = baseImg.height;
 
-                // Adjust Ratios based on request inputs
                 if (ratioType === 'mobile') {
                     targetWidth = baseImg.height * (9 / 16);
-                    if (targetWidth > baseImg.width) {
-                        targetWidth = baseImg.width;
-                        targetHeight = baseImg.width * (16 / 9);
-                    }
+                    if (targetWidth > baseImg.width) { targetWidth = baseImg.width; targetHeight = baseImg.width * (16 / 9); }
                 } else if (ratioType === 'desktop') {
-                    targetWidth = baseImg.width;
-                    targetHeight = baseImg.width * (10 / 16);
-                    if (targetHeight > baseImg.height) {
-                        targetHeight = baseImg.height;
-                        targetWidth = baseImg.height * (16 / 10);
-                    }
+                    targetWidth = baseImg.width; targetHeight = baseImg.width * (10 / 16);
+                    if (targetHeight > baseImg.height) { targetHeight = baseImg.height; targetWidth = baseImg.height * (16 / 10); }
                 }
 
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-
-                // Center Framing Alignment
+                canvas.width = targetWidth; canvas.height = targetHeight;
                 const sx = (baseImg.width - targetWidth) / 2;
                 const sy = (baseImg.height - targetHeight) / 2;
 
-                // Canvas Filters Core Setup
                 if (selectedEditorFilter === 'grayscale') ctx.filter = "grayscale(100%)";
                 else if (selectedEditorFilter === 'highcontrast') ctx.filter = "contrast(170%) brightness(90%)";
                 else if (selectedEditorFilter === 'blur') ctx.filter = "blur(8px)";
@@ -527,28 +502,17 @@
 
                 ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
 
-                // Export Matrix Stream Trigger
                 try {
                     const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                     const link = document.createElement('a');
-                    link.download = `Vellum_Studio_Render_${Date.now()}.jpg`;
-                    link.href = dataUrl;
-                    link.click();
-                    showToast("Custom export package complete!");
+                    link.download = `Vellum_Studio_${Date.now()}.jpg`;
+                    link.href = dataUrl; link.click();
+                    showToast("Render package dispatch complete!");
                 } catch(e) {
-                    // Failover if image server has strict CORS restrictions
                     window.open(imgEl.src, '_blank');
-                    showToast("Export active via secondary fallback window.");
+                    showToast("Fallback routing executed.");
                 }
             };
-        }
-
-        function postLiveComment(e) {
-            e.preventDefault();
-            const input = document.getElementById('commentInput');
-            const stream = document.getElementById('commentsStream');
-            stream.innerHTML += `<div class="p-2 bg-red-50 border border-red-100 rounded-xl"><strong>${(localStorage.getItem('vellum_logged_in_user') || 'Anon').split('@')[0]}:</strong> ${input.value}</div>`;
-            input.value = '';
         }
 
         function openCommunityUploadModal() { if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; } document.getElementById('communityUploadModal').classList.remove('hidden'); }
@@ -559,9 +523,12 @@
             const title = document.getElementById('userUploadTitle').value;
             const category = document.getElementById('userUploadCategory').value;
             const image_url = document.getElementById('userUploadUrl').value;
-            communityQueue.push({ id: Date.now().toString(), title, category, image_url });
+            const currentSessionUser = localStorage.getItem('vellum_logged_in_user') || 'Anon';
+            const userHandle = currentSessionUser.split('@')[0]; // Extract clean profile username handle
+
+            communityQueue.push({ id: Date.now().toString(), title, category, image_url, uploaded_by: userHandle });
             localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-            showToast("Dispatched to Admin Intake Queue!");
+            showToast("Dispatched directly to operational review queue!");
             e.target.reset(); closeCommunityUploadModal();
         }
 
@@ -571,17 +538,17 @@
             document.getElementById('statTotalViews').innerText = v; document.getElementById('statTotalDownloads').innerText = d;
 
             const qBox = document.getElementById('adminModerationQueue'); qBox.innerHTML = '';
-            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-400">Intake network queue is empty.</p>`; return; }
+            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-400">Queue processing system trace clean.</p>`; return; }
             communityQueue.forEach((item, index) => {
                 qBox.innerHTML += `
                     <div class="flex items-center justify-between p-3 border rounded-xl bg-slate-50">
                         <div class="flex items-center gap-3">
                             <img src="${item.image_url}" class="w-12 h-12 rounded-lg object-cover">
-                            <div><h4 class="text-xs font-bold">${item.title}</h4><p class="text-[10px] text-slate-400">${item.category}</p></div>
+                            <div><h4 class="text-xs font-bold">${item.title}</h4><p class="text-[10px] text-slate-400">By: ${item.uploaded_by} | Category: ${item.category}</p></div>
                         </div>
                         <div class="flex gap-1">
-                            <button onclick="approveQueueAsset(${index})" class="px-3 py-1 bg-emerald-600 text-white font-bold text-[10px] rounded-lg">Approve</button>
-                            <button onclick="rejectQueueAsset(${index})" class="px-3 py-1 bg-red-600 text-white font-bold text-[10px] rounded-lg">Reject</button>
+                            <button onclick="approveQueueAsset(${index})" class="px-3 py-1 bg-emerald-600 text-white font-bold text-[10px] rounded-lg">Approve Injection</button>
+                            <button onclick="rejectQueueAsset(${index})" class="px-3 py-1 bg-red-600 text-white font-bold text-[10px] rounded-lg">Drop</button>
                         </div>
                     </div>`;
             });
@@ -590,9 +557,17 @@
         async function approveQueueAsset(idx) {
             const target = communityQueue[idx];
             try {
-                const { error } = await supabaseClient.from('wallpapers').insert([{ title: target.title, category: target.category, image_url: target.image_url, views: 12, downloads: 2 }]);
+                // PERSISTING THE CONTRIBUTOR USERNAME HANDLE DIRECTLY INTO DYNAMIC PRODUCTION TABLE ROW
+                const { error } = await supabaseClient.from('wallpapers').insert([{ 
+                    title: target.title, 
+                    category: target.category, 
+                    image_url: target.image_url, 
+                    views: 1, 
+                    downloads: 0,
+                    uploaded_by: target.uploaded_by || 'Contributor'
+                }]);
                 if (error) throw error;
-                showToast("Pushed into active production grid!");
+                showToast("Live injection into production network secure!");
                 communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
                 fetchWallpapers(); compileAnalyticsDashboard();
             } catch(e) { alert(e.message); }
@@ -600,14 +575,14 @@
 
         function rejectQueueAsset(idx) {
             communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-            showToast("Asset dropped from stack execution."); compileAnalyticsDashboard();
+            showToast("Asset stack record cleared."); compileAnalyticsDashboard();
         }
 
         function setAuthMode(m) { currentAuthMode = m; }
         async function handleAuthClusterSubmit(e) {
             e.preventDefault(); const email = document.getElementById('authEmail').value;
             localStorage.setItem('vellum_logged_in_user', email);
-            closeAuthModal(); checkUserSession(); showToast("Cluster Network Connection Secured!");
+            closeAuthModal(); checkUserSession(); showToast("Identity node connection successful.");
         }
 
         function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); document.getElementById('profileDropdown').classList.add('hidden'); checkUserSession(); showSection('dashboard'); }
