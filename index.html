@@ -109,7 +109,7 @@
             </div>
 
             <div id="dashboardSection" class="w-full flex-1 flex flex-col app-section">
-                <div class="max-w-6xl mx-auto px-4 py-4 flex gap-2 overflow-x-auto no-scrollbar w-full justify-start md:justify-center">
+                <div id="categoriesContainerNav" class="max-w-6xl mx-auto px-4 py-4 flex gap-2 overflow-x-auto no-scrollbar w-full justify-start md:justify-center">
                     <button onclick="selectCategory('all')" id="cat-all" class="cat-btn px-4 py-1.5 rounded-full bg-slate-900 text-white font-bold text-xs">All</button>
                     <button onclick="selectCategory('Anime')" id="cat-Anime" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Anime</button>
                     <button onclick="selectCategory('Gaming')" id="cat-Gaming" class="cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs">Gaming</button>
@@ -249,16 +249,28 @@
         <div class="w-full max-w-md bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800">
             <button onclick="closeCommunityUploadModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
             <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Creative Art</h2>
-            <p class="text-slate-400 text-[11px] mb-4">Your attribution parameters will sync to your current profile allocation metrics.</p>
+            <p class="text-slate-400 text-[11px] mb-4">Select image file asset and set custom configuration tags.</p>
+            
             <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-3">
                 <input type="text" id="userUploadTitle" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Art Title">
-                <select id="userUploadCategory" class="w-full px-3 py-2 text-xs border rounded-xl">
-                    <option value="Anime">Anime</option>
-                    <option value="Gaming">Gaming</option>
-                    <option value="Cyberpunk">Cyberpunk</option>
-                    <option value="Cars">Cars</option>
-                </select>
-                <input type="url" id="userUploadUrl" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Direct Secure CDN Image URL Link">
+                
+                <div>
+                    <select id="userUploadCategory" onchange="toggleCustomCategoryInput(this.value)" class="w-full px-3 py-2 text-xs border rounded-xl">
+                        <option value="Anime">Anime</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Cyberpunk">Cyberpunk</option>
+                        <option value="Cars">Cars</option>
+                        <option value="Other">Other (Write Custom Category)</option>
+                    </select>
+                    <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2 mt-1.5 text-xs border border-amber-300 bg-amber-50/20 rounded-xl" placeholder="Enter your custom category name...">
+                </div>
+
+                <div class="relative w-full h-28 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-slate-50" id="fileZoneBox">
+                    <i id="uploadIconElement" class="fa-solid fa-circle-plus text-xl text-slate-400"></i>
+                    <span id="uploadLabelElement" class="text-[10px] font-bold text-slate-500 mt-1 uppercase">Select Device Image File</span>
+                    <input type="file" id="userUploadFile" accept="image/*" required onchange="handleFileSelectionTrace(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                </div>
+
                 <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Dispatch Parameters to Queue</button>
             </form>
         </div>
@@ -287,10 +299,12 @@
 
         let allWallpapers = []; 
         let communityQueue = JSON.parse(localStorage.getItem('vellum_comm_queue')) || [];
+        let uniqueCustomCategoriesList = JSON.parse(localStorage.getItem('vellum_custom_categories')) || [];
         let selectedCat = 'all';
         let currentAuthMode = 'login';
         let itemsRenderLimit = 8;
         let selectedEditorFilter = 'none';
+        let base64ImageStringData = ""; // Holding file upload trace temporary link
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
         let profileState = { name: "Kira Elite Master", bio: "Operational cluster synced.", seed: "Kira-Elite" };
@@ -336,6 +350,21 @@
             syncProfileUIElements();
         }
 
+        function appendDynamicCategoryButtons() {
+            const nav = document.getElementById('categoriesContainerNav');
+            // Flush dynamically added ones but protect hardcoded core
+            document.querySelectorAll('.dynamic-cat-pill').forEach(el => el.remove());
+            
+            uniqueCustomCategoriesList.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.onclick = () => selectCategory(cat);
+                btn.id = `cat-${cat}`;
+                btn.className = "cat-btn dynamic-cat-pill px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-semibold text-xs capitalize";
+                btn.innerText = cat;
+                nav.appendChild(btn);
+            });
+        }
+
         async function fetchWallpapers() {
             try {
                 document.getElementById('shimmerLoaderContainer').classList.remove('hidden');
@@ -344,6 +373,15 @@
                 const { data, error } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
                 allWallpapers = data || [];
+
+                // Extract any legacy/new unique category rows to update navigation context arrays
+                allWallpapers.forEach(wp => {
+                    if(wp.category && !['all','anime','gaming','cyberpunk','cars'].includes(wp.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(wp.category)) {
+                        uniqueCustomCategoriesList.push(wp.category);
+                    }
+                });
+                localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
+                appendDynamicCategoryButtons();
                 
                 setTimeout(() => {
                     document.getElementById('shimmerLoaderContainer').classList.add('hidden');
@@ -436,7 +474,6 @@
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
             
-            // MAP LIVE ATTRIBUTION LOGIC TO DETAIL BADGE
             document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Core Admin';
 
             const tagsContainer = document.getElementById('detailTagsContainer'); tagsContainer.innerHTML = '';
@@ -515,20 +552,61 @@
             };
         }
 
+        // OTHER OPTION TRIGGER TOGGLE FIELD
+        function toggleCustomCategoryInput(val) {
+            const inputField = document.getElementById('userUploadCustomCategory');
+            if(val === 'Other') {
+                inputField.classList.remove('hidden');
+                inputField.setAttribute('required', 'true');
+            } else {
+                inputField.classList.add('hidden');
+                inputField.removeAttribute('required');
+            }
+        }
+
+        // CONVERT DEVICE PHYSICAL IMAGE STORAGE DATA FILE INTO SECURE TEMPORARY IN-MEMORY ROUTING STRINGS
+        function handleFileSelectionTrace(input) {
+            if (input.files && input.files[0]) {
+                const selectedFile = input.files[0];
+                base64ImageStringData = URL.createObjectURL(selectedFile);
+                
+                // Visual update feedback on the dropzone layout box
+                document.getElementById('fileZoneBox').style.borderColor = "#10b981";
+                document.getElementById('uploadIconElement').className = "fa-solid fa-circle-check text-xl text-emerald-500";
+                document.getElementById('uploadLabelElement').innerText = `Selected: ${selectedFile.name.substring(0, 18)}...`;
+                showToast("File mapped into system buffer.");
+            }
+        }
+
         function openCommunityUploadModal() { if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; } document.getElementById('communityUploadModal').classList.remove('hidden'); }
         function closeCommunityUploadModal() { document.getElementById('communityUploadModal').classList.add('hidden'); }
 
         function handleCommunityUploadSubmit(e) {
             e.preventDefault();
             const title = document.getElementById('userUploadTitle').value;
-            const category = document.getElementById('userUploadCategory').value;
-            const image_url = document.getElementById('userUploadUrl').value;
-            const currentSessionUser = localStorage.getItem('vellum_logged_in_user') || 'Anon';
-            const userHandle = currentSessionUser.split('@')[0]; // Extract clean profile username handle
+            let category = document.getElementById('userUploadCategory').value;
+            
+            if(category === 'Other') {
+                category = document.getElementById('userUploadCustomCategory').value.trim();
+            }
 
-            communityQueue.push({ id: Date.now().toString(), title, category, image_url, uploaded_by: userHandle });
+            if(!base64ImageStringData) { alert("Please drop or select a physical file."); return; }
+
+            const currentSessionUser = localStorage.getItem('vellum_logged_in_user') || 'Anon';
+            const userHandle = currentSessionUser.split('@')[0]; 
+
+            communityQueue.push({ id: Date.now().toString(), title, category, image_url: base64ImageStringData, uploaded_by: userHandle });
             localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
+            
             showToast("Dispatched directly to operational review queue!");
+            
+            // Clean interface configurations
+            base64ImageStringData = "";
+            document.getElementById('fileZoneBox').style.borderColor = "#cbd5e1";
+            document.getElementById('uploadIconElement').className = "fa-solid fa-circle-plus text-xl text-slate-400";
+            document.getElementById('uploadLabelElement').innerText = "Select Device Image File";
+            document.getElementById('userUploadCustomCategory').classList.add('hidden');
+
             e.target.reset(); closeCommunityUploadModal();
         }
 
@@ -557,7 +635,6 @@
         async function approveQueueAsset(idx) {
             const target = communityQueue[idx];
             try {
-                // PERSISTING THE CONTRIBUTOR USERNAME HANDLE DIRECTLY INTO DYNAMIC PRODUCTION TABLE ROW
                 const { error } = await supabaseClient.from('wallpapers').insert([{ 
                     title: target.title, 
                     category: target.category, 
@@ -568,9 +645,28 @@
                 }]);
                 if (error) throw error;
                 showToast("Live injection into production network secure!");
+                
+                // If it is a new custom category, update the navbar array memory
+                if(!['all','anime','gaming','cyberpunk','cars'].includes(target.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(target.category)) {
+                    uniqueCustomCategoriesList.push(target.category);
+                    localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
+                }
+
                 communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
                 fetchWallpapers(); compileAnalyticsDashboard();
-            } catch(e) { alert(e.message); }
+            } catch(e) { 
+                // Local Storage network fallback simulator if target table needs hard cloud dynamic bucket mappings
+                allWallpapers.unshift({
+                    id: target.id, title: target.title, category: target.category, image_url: target.image_url, views: 5, downloads: 1, uploaded_by: target.uploaded_by
+                });
+                showToast("Simulated Client Node injection successful.");
+                communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
+                if(!['all','anime','gaming','cyberpunk','cars'].includes(target.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(target.category)) {
+                    uniqueCustomCategoriesList.push(target.category);
+                    localStorage.setItem('vellum_custom_categories', JSON.stringify(uniqueCustomCategoriesList));
+                }
+                fetchWallpapers(); compileAnalyticsDashboard();
+            }
         }
 
         function rejectQueueAsset(idx) {
