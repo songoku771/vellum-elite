@@ -28,7 +28,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* SHIMMER SKELETON ANIMATION */
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .shimmer-card { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; }
         body.theme-black .shimmer-card { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
@@ -37,7 +36,7 @@
 <body class="theme-white">
 
     <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
-        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Cluster status active</span>
+        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">System online</span>
     </div>
 
     <div class="flex min-h-screen">
@@ -51,7 +50,7 @@
                 </button>
                 <button onclick="showSection('admin')" class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-slate-100 cursor-pointer group relative">
                     <i class="fa-solid fa-chart-pie text-lg"></i>
-                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Admin Node</span>
+                    <span class="absolute left-16 bg-slate-900 text-white text-[10px] px-2 py-1 rounded hidden group-hover:block whitespace-nowrap">Admin Metrics</span>
                 </button>
                 <button onclick="openCommunityUploadModal()" class="w-12 h-12 rounded-xl flex items-center justify-center text-emerald-600 hover:bg-emerald-50 cursor-pointer group relative">
                     <i class="fa-solid fa-circle-plus text-lg"></i>
@@ -116,26 +115,30 @@
                         <div class="pin-card h-64 shimmer-card rounded-2xl"></div>
                         <div class="pin-card h-96 shimmer-card rounded-2xl"></div>
                         <div class="pin-card h-72 shimmer-card rounded-2xl"></div>
-                        <div class="pin-card h-84 shimmer-card rounded-2xl"></div>
                     </div>
                     
                     <div class="pinterest-grid hidden" id="wallpaperContainer"></div>
                     
                     <div id="infiniteScrollTrigger" class="w-full py-10 flex items-center justify-center text-xs font-bold text-slate-400">
-                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-600 mr-2"></i> Synced dynamic assets streaming...</span>
+                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-600 mr-2"></i> Streaming digital pipelines...</span>
                     </div>
                 </main>
             </div>
 
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6 app-section">
-                <div class="max-w-4xl mx-auto w-full mb-4">
+                <div class="max-w-5xl mx-auto w-full mb-4 flex justify-between items-center">
                     <button onclick="showSection('dashboard')" class="px-4 py-2 rounded-full bg-slate-100 text-slate-800 font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Feed Overview</button>
+                    <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-red-600 text-white font-bold text-xs flex items-center gap-2 shadow-md"><i class="fa-solid fa-sliders"></i> Open Design Studio</button>
                 </div>
-                <div class="max-w-4xl mx-auto w-full bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm flex flex-col md:flex-row min-h-[500px]">
-                    <div class="w-full md:w-1/2 bg-slate-50 flex items-center justify-center p-4">
-                        <img id="detailImg" src="" class="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-md">
+                
+                <div class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm p-4 flex flex-col items-center justify-center">
+                        <img id="detailImg" src="" class="max-w-full max-h-[65vh] object-contain rounded-2xl shadow-sm">
+                        
+                        <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
-                    <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between text-slate-800 bg-white border-l border-slate-100">
+
+                    <div class="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between min-h-[500px]">
                         <div>
                             <div class="flex justify-between items-center mb-4">
                                 <div class="flex gap-3 text-slate-400 text-xs font-bold">
@@ -144,16 +147,41 @@
                                 </div>
                                 <span id="detailRes" class="bg-red-50 text-red-600 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-red-100">4K ULTRA</span>
                             </div>
-                            <h2 id="detailTitleText" class="text-2xl font-black tracking-tight leading-tight">Asset Title</h2>
+                            <h2 id="detailTitleText" class="text-2xl font-black tracking-tight leading-tight mb-2">Asset Array</h2>
                             
                             <div id="detailTagsContainer" class="flex flex-wrap gap-1.5 mt-3"></div>
 
-                            <div class="mt-8 border-t border-slate-100 pt-4">
-                                <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-3"><i class="fa-solid fa-comments"></i> Forum Logs</h3>
-                                <div id="commentsStream" class="space-y-3 max-h-44 overflow-y-auto no-scrollbar text-xs"></div>
+                            <div id="aestheticEditorControls" class="hidden mt-6 border-t border-slate-100 pt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                                <h3 class="text-xs font-black text-slate-700 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Render Engine Settings</h3>
+                                
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Crop Ratio Target</label>
+                                        <select id="editorCropRatio" class="w-full px-3 py-1.5 bg-white border rounded-xl text-xs font-semibold focus:outline-none">
+                                            <option value="original">Original Aspect Ratio</option>
+                                            <option value="mobile">Mobile Screen Layout (9:16)</option>
+                                            <option value="desktop">Desktop Display Canvas (16:10)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Aesthetic Creative Filters</label>
+                                        <div class="grid grid-cols-2 gap-1.5">
+                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Normal View</button>
+                                            <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Grayscale</button>
+                                            <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">High Contrast</button>
+                                            <button onclick="applyEditorMatrixFilter('blur')" class="py-1 text-[10px] font-bold border rounded-lg bg-white">Soft Blur</button>
+                                        </div>
+                                    </div>
+                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2"><i class="fa-solid fa-microchip"></i> Export Studio Render</button>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 border-t border-slate-100 pt-4">
+                                <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-2"><i class="fa-solid fa-comments"></i> Community Comments</h3>
+                                <div id="commentsStream" class="space-y-2.5 max-h-36 overflow-y-auto no-scrollbar text-xs"></div>
                                 <form onsubmit="postLiveComment(event)" class="mt-3 flex gap-2">
-                                    <input type="text" id="commentInput" required class="flex-1 px-3 py-2 text-xs bg-slate-50 border rounded-xl focus:outline-none" placeholder="Append feedback entry...">
-                                    <button type="submit" class="px-3 bg-red-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-arrow-right"></i></button>
+                                    <input type="text" id="commentInput" required class="flex-1 px-3 py-2 text-xs bg-slate-50 border rounded-xl focus:outline-none" placeholder="Append response entry...">
+                                    <button type="submit" class="px-3 bg-red-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -171,16 +199,16 @@
                         </div>
                         <div class="text-center md:text-left flex-1">
                             <div class="flex items-center justify-center md:justify-start gap-2">
-                                <h2 id="profileNameDisplay" class="text-xl font-black tracking-tight">Kira Elite Pro</h2>
+                                <h2 id="profileNameDisplay" class="text-xl font-black tracking-tight">Kira Elite</h2>
                                 <button onclick="toggleEditProfileInputs()" class="text-xs text-slate-400 hover:text-red-600"><i class="fa-solid fa-edit"></i></button>
                             </div>
-                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-1 italic">Vellum dynamic interface core</p>
+                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-1 italic">Vellum infrastructure module</p>
                             <p id="profileEmailDisplay" class="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-wider">user@vellum.com</p>
                         </div>
                     </div>
                     <div id="profileEditDrawer" class="hidden w-full max-w-xs flex flex-col gap-2 p-3 bg-white rounded-2xl border">
                         <input type="text" id="editProfileName" class="w-full px-3 py-1.5 text-xs border rounded-xl" placeholder="Display Node Name">
-                        <input type="text" id="editProfileBio" class="w-full px-3 py-1.5 text-xs border rounded-xl" placeholder="Bio array details...">
+                        <input type="text" id="editProfileBio" class="w-full px-3 py-1.5 text-xs border rounded-xl" placeholder="Bio array description...">
                         <button onclick="saveProfileDataModifications()" class="w-full py-1.5 bg-red-600 text-white font-bold text-[11px] rounded-xl">Commit Updates</button>
                     </div>
                 </div>
@@ -193,11 +221,11 @@
             <div id="adminSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto w-full mb-8">
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Total Cluster Assets</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Total Array Assets</p>
                         <h3 id="statTotalAssets" class="text-2xl font-black mt-1">0</h3>
                     </div>
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Aggregated Traffic Logs</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase">Aggregated Traffic</p>
                         <h3 id="statTotalViews" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
                     </div>
                     <div class="bg-white p-5 border rounded-2xl bg-card-custom shadow-sm">
@@ -207,7 +235,7 @@
                 </div>
 
                 <div class="max-w-4xl mx-auto w-full bg-white border rounded-3xl p-6 bg-card-custom mb-8">
-                    <h2 class="text-sm font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Community Submissions Pipeline</h2>
+                    <h2 class="text-sm font-black tracking-wider text-amber-500 uppercase mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Community Pipeline Intake Queue</h2>
                     <div id="adminModerationQueue" class="space-y-4"></div>
                 </div>
             </div>
@@ -218,18 +246,18 @@
     <div id="communityUploadModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800">
             <button onclick="closeCommunityUploadModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Share Your Premium Artwork</h2>
-            <p class="text-slate-400 text-[11px] mb-4">Your submission will be routed to the Admin cluster queue for verification setup.</p>
+            <h2 class="text-base font-black text-emerald-600 tracking-tight mb-1 uppercase"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Premium Wallpaper</h2>
+            <p class="text-slate-400 text-[11px] mb-4">Your file parameters will be pushed directly to the admin cluster approval engine.</p>
             <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-3">
-                <input type="text" id="userUploadTitle" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Wallpaper Art Title">
+                <input type="text" id="userUploadTitle" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Art Title">
                 <select id="userUploadCategory" class="w-full px-3 py-2 text-xs border rounded-xl">
                     <option value="Anime">Anime</option>
                     <option value="Gaming">Gaming</option>
                     <option value="Cyberpunk">Cyberpunk</option>
                     <option value="Cars">Cars</option>
                 </select>
-                <input type="url" id="userUploadUrl" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Direct CDN Image URL Link Link">
-                <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Submit to Pipeline Queue</button>
+                <input type="url" id="userUploadUrl" required class="w-full px-3 py-2 text-xs border rounded-xl" placeholder="Direct Secure Image URL Destination">
+                <button type="submit" class="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl shadow-md">Dispatch to Admin Node</button>
             </form>
         </div>
     </div>
@@ -237,13 +265,13 @@
     <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="w-full max-w-sm bg-white p-6 rounded-3xl relative shadow-2xl text-slate-800 border">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-base font-black text-center mb-6 tracking-tight text-red-600 uppercase">Vellum Gateway Login</h2>
+            <h2 class="text-base font-black text-center mb-6 tracking-tight text-red-600 uppercase">Vellum Gateway</h2>
             <form class="space-y-4" onsubmit="handleAuthClusterSubmit(event)">
                 <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border text-xs" value="kira@vellum.com">
                 <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border text-xs" value="password123">
                 <div class="flex gap-2">
-                    <button type="submit" onclick="setAuthMode('login')" class="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Login Session</button>
-                    <button type="submit" onclick="setAuthMode('signup')" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl">Register Node</button>
+                    <button type="submit" onclick="setAuthMode('login')" class="flex-1 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl">Secure Login</button>
+                    <button type="submit" onclick="setAuthMode('signup')" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl">Create Account</button>
                 </div>
             </form>
         </div>
@@ -260,10 +288,11 @@
         let selectedCat = 'all';
         let currentAuthMode = 'login';
         let itemsRenderLimit = 8;
+        let selectedEditorFilter = 'none';
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
         let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || {
-            name: "Kira Elite Master", bio: "Vellum operational architecture layer config.", seed: "Kira-Elite"
+            name: "Kira Elite Master", bio: "Vellum deployment node framework.", seed: "Kira-Elite"
         };
 
         function showSection(sectionId) {
@@ -312,7 +341,6 @@
 
         async function fetchWallpapers() {
             try {
-                // SHIMMER LOADER DELAY EMULATION FOR SMOOTHNESS
                 document.getElementById('shimmerLoaderContainer').classList.remove('hidden');
                 document.getElementById('wallpaperContainer').classList.add('hidden');
 
@@ -352,7 +380,6 @@
             });
         }
 
-        // MOCK MULTI-STAGED INFINITE STREAM DISPATCHER
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
                 if (itemsRenderLimit < allWallpapers.length) {
@@ -360,9 +387,8 @@
                     setTimeout(() => {
                         const previousLength = itemsRenderLimit;
                         itemsRenderLimit += 6;
-                        const nextBatch = allWallpapers.slice(previousLength, itemsRenderLimit);
-                        renderWallpapers(nextBatch);
-                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Buffer array synchronized.`;
+                        renderWallpapers(allWallpapers.slice(previousLength, itemsRenderLimit));
+                        document.getElementById('loadMoreText').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i> Pipelines synchronized.`;
                     }, 500);
                 } else {
                     document.getElementById('loadMoreText').innerText = "Vellum Core Feed Stream Complete.";
@@ -394,14 +420,11 @@
             profileState.name = document.getElementById('editProfileName').value || "Kira Elite";
             profileState.bio = document.getElementById('editProfileBio').value || "Node synced.";
             localStorage.setItem('vellum_profile_state', JSON.stringify(profileState));
-            syncProfileUIElements();
-            toggleEditProfileInputs();
-            showToast("Profile Config Synced!");
+            syncProfileUIElements(); toggleEditProfileInputs(); showToast("Profile Config Synced!");
         }
 
         function updateProfileGalleryGrid() {
-            const grid = document.getElementById('myFavoritesGrid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('myFavoritesGrid'); grid.innerHTML = '';
             const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id));
             if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-400 py-6">Your vault allocation is empty.</p>`; return; }
             favorites.forEach(wp => {
@@ -422,9 +445,7 @@
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
 
-            // DYNAMIC CLUSTER INTERACTIVE CLICKABLE HASH-TAGS ENGINE
-            const tagsContainer = document.getElementById('detailTagsContainer');
-            tagsContainer.innerHTML = '';
+            const tagsContainer = document.getElementById('detailTagsContainer'); tagsContainer.innerHTML = '';
             const mockupTags = [wp.category || 'Vibe', '4K_Elite', 'Aesthetic'];
             mockupTags.forEach(tag => {
                 const span = document.createElement('span');
@@ -435,9 +456,91 @@
             });
 
             document.getElementById('detailActionRow').innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-full shadow-md"><i class="fa-solid fa-download"></i> Get Resource</button>
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-full shadow-md"><i class="fa-solid fa-download"></i> Download Original File</button>
             `;
-            document.getElementById('commentsStream').innerHTML = `<div class="p-2 bg-slate-50 border rounded-xl"><strong>System_Node:</strong> Asset cluster pipeline secure.</div>`;
+            document.getElementById('commentsStream').innerHTML = `<div class="p-2 bg-slate-50 border rounded-xl"><strong>System_Node:</strong> Pipeline connection secured. Ready for configuration changes.</div>`;
+            document.getElementById('aestheticEditorControls').classList.add('hidden'); // Close studio by default
+        }
+
+        // ================= DESIGN STUDIO RESIZER & CANVAS FILTER ENGINE =================
+        function toggleAestheticEditorPanel() {
+            document.getElementById('aestheticEditorControls').classList.toggle('hidden');
+        }
+
+        function applyEditorMatrixFilter(filterType) {
+            selectedEditorFilter = filterType;
+            const imgEl = document.getElementById('detailImg');
+            
+            // Real-time Visual Filter Simulation Feedback on Main Element
+            if (filterType === 'grayscale') imgEl.style.filter = "grayscale(100%)";
+            else if (filterType === 'highcontrast') imgEl.style.filter = "contrast(170%) brightness(90%)";
+            else if (filterType === 'blur') imgEl.style.filter = "blur(4px)";
+            else imgEl.style.filter = "none";
+            
+            showToast(`Applied ${filterType} matrix parameters!`);
+        }
+
+        function compileAndDownloadCustomRender() {
+            const imgEl = document.getElementById('detailImg');
+            const canvas = document.getElementById('editorProcessingCanvas');
+            const ctx = canvas.getContext('2d');
+            const ratioType = document.getElementById('editorCropRatio').value;
+
+            const baseImg = new Image();
+            baseImg.crossOrigin = "anonymous"; 
+            baseImg.src = imgEl.src;
+
+            showToast("Processing studio calculations...");
+
+            baseImg.onload = function() {
+                let targetWidth = baseImg.width;
+                let targetHeight = baseImg.height;
+
+                // Adjust Ratios based on request inputs
+                if (ratioType === 'mobile') {
+                    targetWidth = baseImg.height * (9 / 16);
+                    if (targetWidth > baseImg.width) {
+                        targetWidth = baseImg.width;
+                        targetHeight = baseImg.width * (16 / 9);
+                    }
+                } else if (ratioType === 'desktop') {
+                    targetWidth = baseImg.width;
+                    targetHeight = baseImg.width * (10 / 16);
+                    if (targetHeight > baseImg.height) {
+                        targetHeight = baseImg.height;
+                        targetWidth = baseImg.height * (16 / 10);
+                    }
+                }
+
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+
+                // Center Framing Alignment
+                const sx = (baseImg.width - targetWidth) / 2;
+                const sy = (baseImg.height - targetHeight) / 2;
+
+                // Canvas Filters Core Setup
+                if (selectedEditorFilter === 'grayscale') ctx.filter = "grayscale(100%)";
+                else if (selectedEditorFilter === 'highcontrast') ctx.filter = "contrast(170%) brightness(90%)";
+                else if (selectedEditorFilter === 'blur') ctx.filter = "blur(8px)";
+                else ctx.filter = "none";
+
+                ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
+
+                // Export Matrix Stream Trigger
+                try {
+                    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+                    const link = document.createElement('a');
+                    link.download = `Vellum_Studio_Render_${Date.now()}.jpg`;
+                    link.href = dataUrl;
+                    link.click();
+                    showToast("Custom export package complete!");
+                } catch(e) {
+                    // Failover if image server has strict CORS restrictions
+                    window.open(imgEl.src, '_blank');
+                    showToast("Export active via secondary fallback window.");
+                }
+            };
         }
 
         function postLiveComment(e) {
@@ -448,10 +551,7 @@
             input.value = '';
         }
 
-        function openCommunityUploadModal() {
-            if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            document.getElementById('communityUploadModal').classList.remove('hidden');
-        }
+        function openCommunityUploadModal() { if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; } document.getElementById('communityUploadModal').classList.remove('hidden'); }
         function closeCommunityUploadModal() { document.getElementById('communityUploadModal').classList.add('hidden'); }
 
         function handleCommunityUploadSubmit(e) {
@@ -459,25 +559,19 @@
             const title = document.getElementById('userUploadTitle').value;
             const category = document.getElementById('userUploadCategory').value;
             const image_url = document.getElementById('userUploadUrl').value;
-
             communityQueue.push({ id: Date.now().toString(), title, category, image_url });
             localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-            showToast("Dispatched to Admin Approval Hub!");
-            e.target.reset();
-            closeCommunityUploadModal();
+            showToast("Dispatched to Admin Intake Queue!");
+            e.target.reset(); closeCommunityUploadModal();
         }
 
         function compileAnalyticsDashboard() {
             document.getElementById('statTotalAssets').innerText = allWallpapers.length;
             let v = 0, d = 0; allWallpapers.forEach(wp => { v += (wp.views || 0); d += (wp.downloads || 0); });
-            document.getElementById('statTotalViews').innerText = v;
-            document.getElementById('statTotalDownloads').innerText = d;
+            document.getElementById('statTotalViews').innerText = v; document.getElementById('statTotalDownloads').innerText = d;
 
-            // RENDER REVIEWS QUEUE IN ADMIN AREA
-            const qBox = document.getElementById('adminModerationQueue');
-            qBox.innerHTML = '';
-            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-400">Pipeline queue is clear.</p>`; return; }
-            
+            const qBox = document.getElementById('adminModerationQueue'); qBox.innerHTML = '';
+            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-400">Intake network queue is empty.</p>`; return; }
             communityQueue.forEach((item, index) => {
                 qBox.innerHTML += `
                     <div class="flex items-center justify-between p-3 border rounded-xl bg-slate-50">
@@ -496,29 +590,24 @@
         async function approveQueueAsset(idx) {
             const target = communityQueue[idx];
             try {
-                const { error } = await supabaseClient.from('wallpapers').insert([{ title: target.title, category: target.category, image_url: target.image_url, views: 5, downloads: 0 }]);
+                const { error } = await supabaseClient.from('wallpapers').insert([{ title: target.title, category: target.category, image_url: target.image_url, views: 12, downloads: 2 }]);
                 if (error) throw error;
-                showToast("Pushed into active database network!");
-                communityQueue.splice(idx, 1);
-                localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-                fetchWallpapers();
-                compileAnalyticsDashboard();
+                showToast("Pushed into active production grid!");
+                communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
+                fetchWallpapers(); compileAnalyticsDashboard();
             } catch(e) { alert(e.message); }
         }
 
         function rejectQueueAsset(idx) {
-            communityQueue.splice(idx, 1);
-            localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
-            showToast("Asset dropped from stack.");
-            compileAnalyticsDashboard();
+            communityQueue.splice(idx, 1); localStorage.setItem('vellum_comm_queue', JSON.stringify(communityQueue));
+            showToast("Asset dropped from stack execution."); compileAnalyticsDashboard();
         }
 
         function setAuthMode(m) { currentAuthMode = m; }
         async function handleAuthClusterSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
+            e.preventDefault(); const email = document.getElementById('authEmail').value;
             localStorage.setItem('vellum_logged_in_user', email);
-            closeAuthModal(); checkUserSession(); showToast("Cluster Node Active!");
+            closeAuthModal(); checkUserSession(); showToast("Cluster Network Connection Secured!");
         }
 
         function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); document.getElementById('profileDropdown').classList.add('hidden'); checkUserSession(); showSection('dashboard'); }
