@@ -64,7 +64,7 @@
                         <span class="text-[9px] font-bold mt-1">Home</span>
                     </button>
                     
-                    <button onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/30 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-colors">
+                    <button id="sidebarCreateButtonNode" onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/30 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all duration-200 active:scale-95">
                         <i class="fa-solid fa-plus text-base"></i>
                         <span class="text-[9px] font-bold mt-1">Create</span>
                     </button>
@@ -84,7 +84,7 @@
             </div>
         </aside>
 
-        <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200">
+        <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full scale-95 opacity-0 transition-all duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200 pointer-events-none">
             <div>
                 <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-5">
                     <div class="flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider">
@@ -147,7 +147,7 @@
                     <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-red-600 text-white font-bold text-xs shadow-md">Sign In</button>
                     
                     <div id="userProfileArea" class="hidden flex items-center gap-1 relative">
-                        <button onclick="toggleDropdown('profileDropdown')" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 p-0.5 overflow-hidden">
+                        <button onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 p-0.5 overflow-hidden active:scale-95 transition-transform">
                             <img id="navAvatar" src="" class="w-full h-full rounded-full object-cover">
                         </button>
                         
@@ -255,10 +255,11 @@
                 <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
                     
                     <div class="md:col-span-5 bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center text-center relative group">
-                        <div class="relative w-24 h-24 mb-3 cursor-pointer" onclick="document.getElementById('profileAvatarInputFile').click()">
+                        <div class="relative w-24 h-24 mb-3 cursor-pointer group" onclick="document.getElementById('profileAvatarInputFile').click()">
                             <img id="profileAvatarImg" src="" class="w-full h-full rounded-full border-2 border-red-500 bg-slate-900 object-cover p-1">
-                            <div class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <i class="fa-solid fa-camera text-white text-sm"></i>
+                            <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <i class="fa-solid fa-camera text-white text-base mb-1"></i>
+                                <span class="text-[8px] font-bold text-slate-300 uppercase tracking-wider">Change DP</span>
                             </div>
                         </div>
                         <input type="file" id="profileAvatarInputFile" accept="image/*" onchange="processProfileAvatarChange(this)" class="hidden">
@@ -336,7 +337,6 @@
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
         
-        // RESTRUCTURED PERSISTENT PROFILE STATE NODE
         let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || { 
             name: "Kira Elite Master", 
             bio: "Vellum core ecosystem deployment space active.",
@@ -353,20 +353,35 @@
             }, 2200);
         }
 
+        /* DYNAMIC ICON-SLIDE DIRECTION TRIGGER DEPLOYMENT MODULE */
         function openLeftSlideUploadModal() {
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
+            
             const panel = document.getElementById('leftSlideUploadModal');
             const backdrop = document.getElementById('slidePanelBackdrop');
+            
             backdrop.classList.remove('hidden');
-            panel.classList.remove('-translate-x-full');
-            if (window.innerWidth >= 768) { panel.style.left = "96px"; } else { panel.style.left = "0px"; }
+            
+            // Removing old position tags & building custom viewport dynamic scale entries
+            panel.classList.remove('pointer-events-none', '-translate-x-full', 'scale-95', 'opacity-0');
+            panel.classList.add('translate-x-0', 'scale-100', 'opacity-100');
+            
+            if (window.innerWidth >= 768) { 
+                panel.style.left = "96px"; 
+            } else { 
+                panel.style.left = "0px"; 
+            }
         }
 
         function closeLeftSlideUploadModal() {
             const panel = document.getElementById('leftSlideUploadModal');
             const backdrop = document.getElementById('slidePanelBackdrop');
+            
             backdrop.classList.add('hidden');
-            panel.classList.add('-translate-x-full');
+            
+            // Smoothly collapse vector alignment directly back into original sidebar coordinates orientation
+            panel.classList.remove('translate-x-0', 'scale-100', 'opacity-100');
+            panel.classList.add('-translate-x-full', 'scale-95', 'opacity-0', 'pointer-events-none');
         }
 
         function showSection(sectionId) {
@@ -385,14 +400,11 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
         }
 
-        /* SYNC PROFILE WITH RESTRUCTURED NODES (NAME, BIO & DP REMOVED ALL TERMINATORS) */
         function syncProfileUIElements() {
             document.getElementById('profileNameDisplay').innerText = profileState.name;
             document.getElementById('profileBioDisplay').innerText = profileState.bio;
-            
             document.getElementById('profileNameInput').value = profileState.name;
             document.getElementById('profileBioInput').value = profileState.bio;
-            
             document.getElementById('profileAvatarImg').src = profileState.avatarData;
             document.getElementById('navAvatar').src = profileState.avatarData;
         }
@@ -405,7 +417,6 @@
             showToast("Profile settings saved successfully!");
         }
 
-        /* NEW BASE64 AVATAR/DP TRANSITION PROCESSING MODULE */
         function processProfileAvatarChange(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -452,8 +463,6 @@
                 if (error) throw error;
                 
                 let dbWallpapers = data || [];
-                
-                // FIXED REFRESH PERSISTENCE BUG: Injecting local storage session uploads into database array stream safely
                 let savedLocalUploads = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
                 allWallpapers = [...savedLocalUploads, ...dbWallpapers];
 
@@ -470,7 +479,6 @@
             } catch (e) { console.error(e); }
         }
 
-        /* ORDERED GRIDS WITH LINE SEQUENCE RENDERING NODES */
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
             if(itemsRenderLimit <= 15) container.innerHTML = '';
@@ -619,7 +627,6 @@
             }
         }
 
-        /* SYSTEM DATA INJECTION LOCK: LOCAL REFRESH PERSISTENCE SECURED */
         function handleCommunityUploadSubmit(e) {
             e.preventDefault();
             const title = document.getElementById('userUploadTitle').value;
@@ -641,7 +648,6 @@
                 downloads: 0
             };
 
-            // Inject local persistent database nodes array stream
             let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
             activeSessionItems.unshift(runtimeNewAssetItem);
             localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
@@ -654,7 +660,7 @@
             
             e.target.reset(); 
             closeLeftSlideUploadModal();
-            fetchWallpapers(); // Reruns stream arrays instantly
+            fetchWallpapers(); 
         }
 
         function toggleLikeAsset(event, id) {
@@ -677,7 +683,6 @@
 
         function openProfileGallery() { showSection('profile'); updateProfileGalleryGrid(); }
 
-        /* LINE OVER ORDERED GRID DISPLAY ENGINE FOR SYSTEM VAULT CORES */
         function updateProfileGalleryGrid() {
             const grid = document.getElementById('myFavoritesGrid'); 
             grid.innerHTML = '';
@@ -720,7 +725,25 @@
         function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); checkUserSession(); showSection('dashboard'); filterWallpapers(); }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-        function toggleDropdown(id) { document.getElementById(id).classList.toggle('hidden'); }
+        
+        /* EXPLICIT DROPDOWN TOGGLE ENGINE WITH BINDED PREVENT PROPAGATION EVENT */
+        function toggleDropdown(event, id) {
+            if (event) event.stopPropagation();
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        /* ABSOLUTE GLOBAL OUTSIDE CLICK DETECTOR ENGINE */
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileArea = document.getElementById('userProfileArea');
+            
+            // Check mapping structure bounds to ensure clean closure logic state
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                if (profileArea && !profileArea.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+        });
 
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
