@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vellum Elite - Premium 4K Wallpapers</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { 
@@ -35,12 +35,6 @@
             letter-spacing: -0.04em;
             animation: appleHelloAnimation 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
-
-        /* FIXED FLUID TRANSITIONS FOR SLIDE PANEL */
-        .slide-panel-transition { 
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; 
-        }
-        .view-step-back { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; }
     </style>
 </head>
 <body class="bg-[#0b0f19]">
@@ -49,11 +43,11 @@
         <h1 class="text-5xl md:text-7xl font-bold text-white animate-apple-hello opacity-0">Hello</h1>
     </div>
 
-    <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
+    <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-[60] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
         <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Cluster Sync Active</span>
     </div>
 
-    <div id="slidePanelBackdrop" onclick="closeLeftSlideUploadModal()" class="fixed inset-0 bg-black/40 backdrop-blur-xs hidden z-40 transition-opacity duration-300"></div>
+    <div id="slidePanelBackdrop" onclick="closeLeftSlideUploadModal()" class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
 
     <div class="flex min-h-screen pt-0 relative">
 
@@ -87,7 +81,7 @@
             </div>
         </aside>
 
-        <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 md:left-0 w-full max-w-sm bg-[#111622]/95 border-r border-slate-800/80 z-45 transform -translate-x-full slide-panel-transition shadow-2xl flex flex-col justify-between p-6 text-slate-200 backdrop-blur-md opacity-0 pointer-events-none">
+        <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200">
             <div>
                 <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-5">
                     <div class="flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider">
@@ -134,9 +128,9 @@
             <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
         </div>
 
-        <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19] view-step-back" id="mainRenderPipelineContainer">
+        <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]" id="mainRenderPipelineContainer">
 
-            <nav class="sticky top-0 z-30 px-4 md:px-8 py-4 flex justify-between items-center bg-[#0b0f19]/80 border-b border-slate-800/40 backdrop-blur-md">
+            <nav class="sticky top-0 z-30 px-4 md:px-8 py-4 flex justify-between items-center bg-[#0b0f19] border-b border-slate-800/40">
                 <div class="flex items-center gap-3 md:hidden cursor-pointer" onclick="showSection('dashboard')">
                     <span class="text-lg font-black text-red-500 tracking-wider">VELLUM</span>
                 </div>
@@ -264,17 +258,32 @@
             </div>
 
             <div id="profileSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
-                <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6 flex items-center justify-between gap-6 mb-8">
-                    <div class="flex items-center gap-4">
-                        <img id="profileAvatarImg" src="" class="w-14 h-14 rounded-xl border border-slate-800 bg-slate-900 p-0.5">
-                        <div>
-                            <h2 id="profileNameDisplay" class="text-base font-black tracking-wide">Kira Elite Terminal</h2>
-                            <p id="profileBioDisplay" class="text-xs text-slate-500 mt-0.5">Vellum core ecosystem deployment space active.</p>
+                <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+                    
+                    <div class="md:col-span-5 bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center text-center">
+                        <img id="profileAvatarImg" src="" class="w-20 h-20 rounded-full border-2 border-red-500 bg-slate-900 p-1 mb-3">
+                        <h2 id="profileNameDisplay" class="text-lg font-black tracking-wide text-white">Kira Elite Master</h2>
+                        <p id="profileBioDisplay" class="text-xs text-slate-400 mt-1">Vellum core ecosystem deployment space active.</p>
+                    </div>
+
+                    <div class="md:col-span-7 bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col justify-center">
+                        <h3 class="text-xs font-black text-red-500 uppercase tracking-wider mb-4"><i class="fa-solid fa-user-gear"></i> Update System Identity Hub</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Terminal Profile Name</label>
+                                <input type="text" id="profileNameInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Terminal Custom Status Bio</label>
+                                <input type="text" id="profileBioInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-red-500">
+                            </div>
+                            <button onclick="updateProfileMetaData()" class="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-black text-xs rounded-xl transition-colors cursor-pointer uppercase tracking-wider">Synchronize Settings</button>
                         </div>
                     </div>
                 </div>
-                <div class="max-w-[1600px] mx-auto w-full">
-                    <h3 class="text-xs font-black text-slate-500 tracking-wider uppercase mb-4">Saved Vault Core Items</h3>
+
+                <div class="max-w-[1600px] mx-auto w-full border-t border-slate-800/60 pt-6">
+                    <h3 class="text-xs font-black text-slate-400 tracking-wider uppercase mb-4"><i class="fa-solid fa-box-archive text-red-500"></i> Saved Vault Core Items</h3>
                     <div class="pinterest-grid" id="myFavoritesGrid"></div>
                 </div>
             </div>
@@ -294,7 +303,7 @@
         </div>
     </div>
 
-    <div id="authModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div id="authModal" class="fixed inset-0 bg-black/80 hidden z-[70] flex items-center justify-center p-4">
         <div class="w-full max-w-xs bg-[#111622] border border-slate-800 p-6 rounded-3xl relative shadow-2xl text-slate-200">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             <h2 class="text-xs font-black text-center mb-6 tracking-widest text-red-500 uppercase">Vellum Node Verification</h2>
@@ -324,8 +333,9 @@
         let base64ImageStringData = ""; 
         let deepNavigationHistoryTraceStack = []; 
         
+        // Liked IDs arrays string match mapping engine
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
-        let profileState = { name: "Kira Elite Master", seed: "Kira-Elite" };
+        let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || { name: "Kira Elite Master", bio: "Vellum core ecosystem deployment space active.", seed: "Kira-Elite" };
 
         function initIphoneBootSequence() {
             setTimeout(() => {
@@ -337,7 +347,7 @@
             }, 2200);
         }
 
-        /* FIXED OPEN/CLOSE METRICS FOR FLOATING OVERLAY PANEL */
+        /* ABSOLUTE HIGH PRIORITY TOGGLE METRICS FOR OVERLAY SLIDE PANEL */
         function openLeftSlideUploadModal() {
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
             
@@ -345,15 +355,13 @@
             const backdrop = document.getElementById('slidePanelBackdrop');
             
             backdrop.classList.remove('hidden');
-            panel.classList.remove('pointer-events-none');
+            panel.classList.remove('-translate-x-full');
             
-            // Apply fluid translations based on viewport widths
             if (window.innerWidth >= 768) {
-                panel.style.transform = "translateX(96px)"; // Anchors perfectly right next to desktop navbar icons (w-24 = 96px)
+                panel.style.left = "96px"; 
             } else {
-                panel.style.transform = "translateX(0px)";
+                panel.style.left = "0px";
             }
-            panel.style.opacity = "1";
         }
 
         function closeLeftSlideUploadModal() {
@@ -361,9 +369,7 @@
             const backdrop = document.getElementById('slidePanelBackdrop');
             
             backdrop.classList.add('hidden');
-            panel.classList.add('pointer-events-none');
-            panel.style.transform = "translateX(-100%)";
-            panel.style.opacity = "0";
+            panel.classList.add('-translate-x-full');
         }
 
         function showSection(sectionId) {
@@ -382,11 +388,26 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
         }
 
+        /* SECURE METADATA PROFILE STORAGE ALIGNMENT ENGINE */
         function syncProfileUIElements() {
             document.getElementById('profileNameDisplay').innerText = profileState.name;
+            document.getElementById('profileBioDisplay').innerText = profileState.bio;
+            
+            document.getElementById('profileNameInput').value = profileState.name;
+            document.getElementById('profileBioInput').value = profileState.bio;
+            
             const avatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${profileState.seed}`;
             document.getElementById('profileAvatarImg').src = avatarUrl;
             document.getElementById('navAvatar').src = avatarUrl;
+        }
+
+        function updateProfileMetaData() {
+            profileState.name = document.getElementById('profileNameInput').value.trim() || "Kira Elite Master";
+            profileState.bio = document.getElementById('profileBioInput').value.trim() || "Deployment space active.";
+            localStorage.setItem('vellum_profile_state', JSON.stringify(profileState));
+            
+            syncProfileUIElements();
+            showToast("System profile credentials updated successfully!");
         }
 
         function checkUserSession() {
@@ -433,6 +454,7 @@
                 appendDynamicVisualCategoryCards();
                 renderWallpapers(allWallpapers.slice(0, itemsRenderLimit));
                 checkUserSession();
+                updateProfileGalleryGrid();
             } catch (e) { console.error(e); }
         }
 
@@ -441,13 +463,13 @@
             if(itemsRenderLimit <= 10) container.innerHTML = '';
             
             list.forEach(wp => {
-                const isLiked = likedWallpaperIds.includes(wp.id);
+                const isLiked = likedWallpaperIds.includes(wp.id.toString());
                 const card = document.createElement('div');
                 card.className = "pin-card bg-transparent overflow-hidden group cursor-pointer rounded-2xl relative";
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 shadow-md border border-slate-900">
                         <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', true)" class="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-300" loading="lazy">
-                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
+                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
                             <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
                         </button>
                     </div>
@@ -470,64 +492,46 @@
         });
 
         function showPinterestDetailView(id, clearStackHistory = false) {
-            const wp = allWallpapers.find(item => item.id === id);
+            const wp = allWallpapers.find(item => item.id.toString() === id.toString());
             if (!wp) return;
             
             if(clearStackHistory) { deepNavigationHistoryTraceStack = []; }
             deepNavigationHistoryTraceStack.push(id);
 
-            const containerPipeline = document.getElementById('mainRenderPipelineContainer');
-            containerPipeline.style.transform = "scale(0.97)";
-            containerPipeline.style.opacity = "0.4";
+            showSection('detail');
+            document.getElementById('detailImg').src = wp.image_url;
+            document.getElementById('detailTitleText').innerText = wp.title;
+            document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
+            document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
+            document.getElementById('detailDownloads').innerText = wp.downloads || 0;
+            document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Admin';
 
-            setTimeout(() => {
-                showSection('detail');
-                document.getElementById('detailImg').src = wp.image_url;
-                document.getElementById('detailTitleText').innerText = wp.title;
-                document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
-                document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
-                document.getElementById('detailDownloads').innerText = wp.downloads || 0;
-                document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Admin';
+            const suggestionsBox = document.getElementById('detailSuggestionsGrid');
+            suggestionsBox.innerHTML = '';
+            const targets = allWallpapers.filter(item => item.id.toString() !== wp.id.toString() && item.category === wp.category).slice(0, 4);
+            
+            targets.forEach(sug => {
+                suggestionsBox.innerHTML += `
+                    <div onclick="showPinterestDetailView('${sug.id}', false)" class="group cursor-pointer bg-[#0b0f19] border border-slate-900 rounded-xl overflow-hidden p-1.5 shadow-md">
+                        <img src="${sug.image_url}" class="w-full h-32 object-cover rounded-lg group-hover:opacity-80 transition-opacity">
+                        <h4 class="text-[11px] font-bold text-slate-300 truncate mt-1.5 px-0.5">${sug.title}</h4>
+                    </div>`;
+            });
 
-                const suggestionsBox = document.getElementById('detailSuggestionsGrid');
-                suggestionsBox.innerHTML = '';
-                const targets = allWallpapers.filter(item => item.id !== wp.id && item.category === wp.category).slice(0, 4);
-                
-                targets.forEach(sug => {
-                    suggestionsBox.innerHTML += `
-                        <div onclick="showPinterestDetailView('${sug.id}', false)" class="group cursor-pointer bg-[#0b0f19] border border-slate-900 rounded-xl overflow-hidden p-1.5 shadow-md">
-                            <img src="${sug.image_url}" class="w-full h-32 object-cover rounded-lg group-hover:opacity-80 transition-opacity">
-                            <h4 class="text-[11px] font-bold text-slate-300 truncate mt-1.5 px-0.5">${sug.title}</h4>
-                        </div>`;
-                });
-
-                document.getElementById('detailActionRow').innerHTML = `
-                    <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
-                `;
-                
-                containerPipeline.style.transform = "scale(1)";
-                containerPipeline.style.opacity = "1";
-            }, 240);
+            document.getElementById('detailActionRow').innerHTML = `
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
+            `;
         }
 
         function triggerLineByLineBackNavigation() {
             deepNavigationHistoryTraceStack.pop(); 
-            const containerPipeline = document.getElementById('mainRenderPipelineContainer');
-            
-            containerPipeline.style.transform = "scale(0.97)";
-            containerPipeline.style.opacity = "0.4";
-
-            setTimeout(() => {
-                if(deepNavigationHistoryTraceStack.length > 0) {
-                    const previousId = deepNavigationHistoryTraceStack[deepNavigationHistoryTraceStack.length - 1];
-                    showPinterestDetailView(previousId, false);
-                    deepNavigationHistoryTraceStack.pop(); 
-                } else {
-                    showSection('dashboard');
-                }
-                containerPipeline.style.transform = "scale(1)";
-                containerPipeline.style.opacity = "1";
-            }, 240);
+            if(deepNavigationHistoryTraceStack.length > 0) {
+                const previousId = deepNavigationHistoryTraceStack[deepNavigationHistoryTraceStack.length - 1];
+                showPinterestDetailView(previousId, false);
+                deepNavigationHistoryTraceStack.pop(); 
+            } else {
+                showSection('dashboard');
+            }
         }
 
         function toggleAestheticEditorPanel() { document.getElementById('aestheticEditorControls').classList.toggle('hidden'); }
@@ -626,30 +630,50 @@
             e.target.reset(); closeLeftSlideUploadModal();
         }
 
+        /* ABSOLUTE DATA SYNC MATCH ENGINE FOR LIKED VAULT */
         function toggleLikeAsset(event, id) {
             event.stopPropagation();
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            if (likedWallpaperIds.includes(id)) {
-                likedWallpaperIds = likedWallpaperIds.filter(item => item !== id);
+            
+            let targetIdStr = id.toString();
+            if (likedWallpaperIds.includes(targetIdStr)) {
+                likedWallpaperIds = likedWallpaperIds.filter(item => item !== targetIdStr);
+                showToast("Removed from Vault");
             } else {
-                likedWallpaperIds.push(id);
+                likedWallpaperIds.push(targetIdStr);
                 showToast("Saved to My Space Vault!");
             }
             localStorage.setItem('vellum_liked_ids', JSON.stringify(likedWallpaperIds));
-            filterWallpapers(); updateProfileGalleryGrid();
+            
+            // Re-render feed instantly to sync state nodes
+            filterWallpapers(); 
+            updateProfileGalleryGrid();
         }
 
         function openProfileGallery() { showSection('profile'); updateProfileGalleryGrid(); }
 
+        /* ABSOLUTE RE-RENDER LOGIC FOR THE VAULT COLUMN TILES */
         function updateProfileGalleryGrid() {
-            const grid = document.getElementById('myFavoritesGrid'); grid.innerHTML = '';
-            const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id));
-            if(favorites.length === 0) { grid.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase py-6 col-span-full text-center">Vault selection empty</p>`; return; }
+            const grid = document.getElementById('myFavoritesGrid'); 
+            grid.innerHTML = '';
+            
+            if (!allWallpapers || allWallpapers.length === 0) return;
+
+            // Direct mapping string trace verification node
+            const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id.toString()));
+            
+            if(favorites.length === 0) { 
+                grid.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase py-6 col-span-full text-center">Vault selection empty</p>`; 
+                return; 
+            }
+            
             favorites.forEach(wp => {
-                grid.innerHTML += `
-                    <div class="pin-card bg-transparent rounded-2xl relative border border-slate-900">
-                        <img src="${wp.image_url}" class="w-full h-auto rounded-2xl" onclick="showPinterestDetailView('${wp.id}', true)">
-                    </div>`;
+                const card = document.createElement('div');
+                card.className = "pin-card bg-transparent rounded-2xl relative border border-slate-950 overflow-hidden";
+                card.innerHTML = `
+                    <img src="${wp.image_url}" class="w-full h-auto rounded-2xl cursor-pointer hover:opacity-90 transition-opacity" onclick="showPinterestDetailView('${wp.id}', true)">
+                `;
+                grid.appendChild(card);
             });
         }
 
