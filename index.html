@@ -14,7 +14,7 @@
             overflow-x: hidden;
         }
         
-        /* FIXED GRID HORIZONTAL LINE SEQUENCE (1, 2, 3, 4...) */
+        /* FIXED GRID HORIZONTAL LINE SEQUENCE */
         .ordered-wallpaper-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -27,7 +27,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* ULTRA-MINIMALIST IPHONE BOOT ENGINE */
         @keyframes appleHelloAnimation {
             0% { opacity: 0; filter: blur(12px); transform: scale(0.95); }
             35% { opacity: 1; filter: blur(0px); transform: scale(1); }
@@ -58,19 +57,24 @@
             <div class="flex flex-col items-center gap-8 w-full">
                 <div onclick="showSection('dashboard')" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-lg shadow-red-900/30 hover:scale-105 transition-transform">V</div>
                 
-                <div class="flex flex-col items-center gap-5 w-full">
+                <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="showSection('dashboard')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer transition-colors">
-                        <i class="fa-solid fa-house text-base"></i>
+                        <i class="fa-solid fa-house text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">Home</span>
                     </button>
                     
-                    <button id="sidebarCreateButtonNode" onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/30 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all duration-200 active:scale-95">
-                        <i class="fa-solid fa-plus text-base"></i>
+                    <button onclick="triggerAiWorkspace()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-indigo-400 bg-indigo-950/20 border border-indigo-900/40 hover:bg-indigo-900/40 cursor-pointer transition-all active:scale-95">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm animate-pulse"></i>
+                        <span class="text-[9px] font-bold mt-1">AI Gen</span>
+                    </button>
+
+                    <button id="sidebarCreateButtonNode" onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all active:scale-95">
+                        <i class="fa-solid fa-plus text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">Create</span>
                     </button>
 
                     <button onclick="showSection('admin')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-red-500 cursor-pointer transition-colors">
-                        <i class="fa-solid fa-chart-pie text-base"></i>
+                        <i class="fa-solid fa-chart-pie text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">Analytics</span>
                     </button>
                 </div>
@@ -78,7 +82,7 @@
 
             <div class="flex flex-col items-center gap-4">
                 <button onclick="openProfileGallery()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white transition-colors">
-                    <i class="fa-solid fa-user-ninja text-base"></i>
+                    <i class="fa-solid fa-box-archive text-sm"></i>
                     <span class="text-[9px] font-bold mt-1">Vault</span>
                 </button>
             </div>
@@ -108,9 +112,9 @@
                             <option value="Gaming">Gaming</option>
                             <option value="Cyberpunk">Cyberpunk</option>
                             <option value="Cars">Cars</option>
-                            <option value="Other">Other Category (Write Custom Option)</option>
+                            <option value="Other">Other Category</option>
                         </select>
-                        <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom asset metadata label...">
+                        <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom label...">
                     </div>
 
                     <div>
@@ -161,10 +165,8 @@
             </nav>
 
             <div id="dashboardSection" class="w-full flex-1 flex flex-col app-section">
-                
                 <div class="max-w-[1600px] mx-auto w-full px-4 md:px-8 mt-6">
                     <h3 class="text-xs font-black text-slate-400 tracking-widest uppercase mb-3"><i class="fa-solid fa-layer-group text-red-500"></i> Categories</h3>
-                    
                     <div id="pinterestVisualCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 w-full">
                         <div onclick="selectCategory('all')" id="visCat-all" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-red-600 to-amber-600 p-3.5 flex flex-col justify-end border-2 border-transparent transition-all hover:scale-[1.01]">
                             <span class="text-xs font-black tracking-wide text-white drop-shadow-md">All Creative Assets</span>
@@ -187,20 +189,39 @@
                 <main class="max-w-[1600px] mx-auto px-4 md:px-8 pb-24 w-full mt-8">
                     <div id="wallpaperContainer" class="ordered-wallpaper-grid"></div>
                     <div id="infiniteScrollTrigger" class="w-full py-12 flex items-center justify-center text-xs font-bold text-slate-500">
-                        <span id="loadMoreText"><i class="fa-solid fa-circle-notch animate-spin text-red-500 mr-2"></i> Array Sync Online...</span>
+                        <span><i class="fa-solid fa-circle-notch animate-spin text-red-500 mr-2"></i> Array Sync Online...</span>
                     </div>
                 </main>
             </div>
 
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6 app-section">
-                <div class="max-w-5xl mx-auto w-full mb-4 flex justify-between items-center">
+                <div class="max-w-6xl mx-auto w-full mb-4 flex justify-between items-center">
                     <button onclick="triggerLineByLineBackNavigation()" class="px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs flex items-center gap-2 cursor-pointer transition-transform hover:scale-105"><i class="fa-solid fa-arrow-left text-red-500"></i> Back to Grid</button>
-                    <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-red-600 text-white font-bold text-xs flex items-center gap-2 shadow-md cursor-pointer"><i class="fa-solid fa-sliders"></i> Toggle Studio</button>
+                    <div class="flex gap-2">
+                        <button onclick="togglePhonePreview()" class="px-4 py-2 rounded-full bg-indigo-950 border border-indigo-900/60 text-indigo-400 font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-mobile-screen-button"></i> UI Preview</button>
+                        <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-red-600 text-white font-bold text-xs flex items-center gap-2 shadow-md cursor-pointer"><i class="fa-solid fa-sliders"></i> Matrix Studio</button>
+                    </div>
                 </div>
                 
-                <div class="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                    <div class="lg:col-span-7 bg-[#111622] rounded-3xl border border-slate-800/80 overflow-hidden p-4 flex flex-col items-center justify-center shadow-2xl">
-                        <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl">
+                <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    <div class="lg:col-span-7 bg-[#111622] rounded-3xl border border-slate-800/80 overflow-hidden p-4 flex flex-col items-center justify-center shadow-2xl relative min-h-[50vh]">
+                        
+                        <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl transition-all duration-300">
+                        
+                        <div id="phoneSimulationWrapper" class="hidden absolute w-[260px] h-[500px] bg-black/40 border-[6px] border-slate-800 rounded-[36px] shadow-2xl overflow-hidden pointer-events-none flex flex-col justify-between p-4">
+                            <div class="w-20 h-4 bg-slate-800 rounded-full mx-auto mt-[-8px]"></div> <div class="flex justify-between text-[10px] font-bold text-slate-300 px-2">
+                                <span>9:41</span>
+                                <div class="flex gap-1"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4 my-auto px-2 opacity-80">
+                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-whatsapp"></i></div></div>
+                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-gradient-to-tr from-amber-500 to-fuchsia-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-instagram"></i></div></div>
+                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-facebook"></i></div></div>
+                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-slate-700 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-solid fa-gear"></i></div></div>
+                            </div>
+                            <div class="w-24 h-1 bg-white/80 rounded-full mx-auto mb-[-4px]"></div> </div>
+
                         <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
 
@@ -211,39 +232,44 @@
                                     <span><i class="fa-solid fa-eye text-slate-600"></i> <span id="detailViews">0</span></span>
                                     <span><i class="fa-solid fa-download text-slate-600"></i> <span id="detailDownloads">0</span></span>
                                 </div>
-                                <span id="detailRes" class="bg-red-950 text-red-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-red-900/40">4K ULTRA</span>
+                                <span id="detailRes" class="bg-indigo-950 text-indigo-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-indigo-900/40">VECTOR AI CORE</span>
                             </div>
 
-                            <div class="mb-4 flex items-center gap-2 bg-[#171e2e] px-3 py-2 rounded-xl border border-slate-800 text-xs text-slate-400">
-                                <i class="fa-solid fa-palette text-red-500"></i>
-                                <span>Uploaded By: <strong id="detailContributorName" class="text-slate-200">Core Engine</strong></span>
-                            </div>
+                            <h2 id="detailTitleText" class="text-xl font-black tracking-tight mb-4">Asset Array Identity</h2>
 
-                            <h2 id="detailTitleText" class="text-xl font-black tracking-tight mb-2">Asset Array Identity</h2>
-                            <div id="detailTagsContainer" class="flex flex-wrap gap-1.5 mt-3"></div>
+                            <div id="aestheticEditorControls" class="hidden mt-2 border-t border-slate-800 pt-4 bg-[#171e2e] p-4 rounded-2xl border border-slate-800/60 space-y-4">
+                                <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Advanced Control Mesh</h3>
+                                
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Chroma Hue Color Shift Engine</label>
+                                    <input type="range" id="chromaHueSlider" min="0" max="360" value="0" oninput="applyLiveChromaShift(this.value)" class="w-full accent-red-500 bg-slate-900 h-1.5 rounded-lg appearance-none cursor-pointer">
+                                </div>
 
-                            <div id="aestheticEditorControls" class="hidden mt-6 border-t border-slate-800 pt-4 bg-[#171e2e] p-4 rounded-2xl border border-slate-800/60">
-                                <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider mb-3"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Creative Workspace</h3>
-                                <div class="space-y-3">
+                                <div class="grid grid-cols-2 gap-2">
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Crop Aspect Nodes</label>
-                                        <select id="editorCropRatio" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs font-semibold text-white focus:outline-none">
-                                            <option value="original">Original Aspect Space</option>
-                                            <option value="mobile">Mobile Layer (9:16)</option>
-                                            <option value="desktop">Desktop Grid (16:10)</option>
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Aspect Scale</label>
+                                        <select id="editorCropRatio" class="w-full px-2.5 py-1.5 bg-[#0b0f19] border border-slate-800 rounded-lg text-xs text-white focus:outline-none">
+                                            <option value="original">Original Aspect</option>
+                                            <option value="mobile">Mobile (9:16)</option>
+                                            <option value="desktop">Desktop (16:10)</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Matrix Studio Filters</label>
-                                        <div class="grid grid-cols-2 gap-1.5">
-                                            <button onclick="applyEditorMatrixFilter('none')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Normal</button>
-                                            <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Grayscale</button>
-                                            <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">High Contrast</button>
-                                            <button onclick="applyEditorMatrixFilter('blur')" class="py-1.5 text-[10px] font-bold border border-slate-800 rounded-lg bg-[#0b0f19] text-white">Soft Blur</button>
-                                        </div>
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">AI Smart Upscale</label>
+                                        <button onclick="triggerSuperResolutionUpscale()" class="w-full py-1.5 bg-indigo-950 border border-indigo-800 text-indigo-400 text-[11px] font-black rounded-lg hover:bg-indigo-900"><i class="fa-solid fa-bolt-lightning"></i> 4K Upscale</button>
                                     </div>
-                                    <button onclick="compileAndDownloadCustomRender()" class="w-full py-2.5 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2 cursor-pointer">Export File</button>
                                 </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Matrix Filters</label>
+                                    <div class="grid grid-cols-4 gap-1">
+                                        <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Normal</button>
+                                        <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Gray</button>
+                                        <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Cyber</button>
+                                        <button onclick="applyEditorMatrixFilter('blur')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Blur</button>
+                                    </div>
+                                </div>
+                                <button onclick="compileAndDownloadCustomRender()" class="w-full py-2 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2">Export Custom Matrix Render</button>
                             </div>
                         </div>
                         <div class="flex flex-col gap-2 mt-6" id="detailActionRow"></div>
@@ -253,7 +279,6 @@
 
             <div id="profileSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
-                    
                     <div class="md:col-span-5 bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center text-center relative group">
                         <div class="relative w-24 h-24 mb-3 cursor-pointer group" onclick="document.getElementById('profileAvatarInputFile').click()">
                             <img id="profileAvatarImg" src="" class="w-full h-full rounded-full border-2 border-red-500 bg-slate-900 object-cover p-1">
@@ -263,7 +288,6 @@
                             </div>
                         </div>
                         <input type="file" id="profileAvatarInputFile" accept="image/*" onchange="processProfileAvatarChange(this)" class="hidden">
-                        
                         <h2 id="profileNameDisplay" class="text-lg font-black tracking-wide text-white">Kira Elite Master</h2>
                         <p id="profileBioDisplay" class="text-xs text-slate-400 mt-1">Deployment space active.</p>
                     </div>
@@ -313,8 +337,7 @@
                 <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="kira@vellum.com">
                 <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="password123">
                 <div class="flex gap-2 pt-2">
-                    <button type="submit" onclick="setAuthMode('login')" class="flex-1 py-2.5 bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer">Login</button>
-                    <button type="submit" onclick="setAuthMode('signup')" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl cursor-pointer">Sign Up</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer">Login</button>
                 </div>
             </form>
         </div>
@@ -334,7 +357,6 @@
         let selectedEditorFilter = 'none';
         let base64ImageStringData = ""; 
         let deepNavigationHistoryTraceStack = []; 
-        
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
         
         let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || { 
@@ -353,33 +375,20 @@
             }, 2200);
         }
 
-        /* DYNAMIC ICON-SLIDE DIRECTION TRIGGER DEPLOYMENT MODULE */
         function openLeftSlideUploadModal() {
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            
             const panel = document.getElementById('leftSlideUploadModal');
             const backdrop = document.getElementById('slidePanelBackdrop');
-            
             backdrop.classList.remove('hidden');
-            
-            // Removing old position tags & building custom viewport dynamic scale entries
             panel.classList.remove('pointer-events-none', '-translate-x-full', 'scale-95', 'opacity-0');
             panel.classList.add('translate-x-0', 'scale-100', 'opacity-100');
-            
-            if (window.innerWidth >= 768) { 
-                panel.style.left = "96px"; 
-            } else { 
-                panel.style.left = "0px"; 
-            }
+            if (window.innerWidth >= 768) { panel.style.left = "96px"; } else { panel.style.left = "0px"; }
         }
 
         function closeLeftSlideUploadModal() {
             const panel = document.getElementById('leftSlideUploadModal');
             const backdrop = document.getElementById('slidePanelBackdrop');
-            
             backdrop.classList.add('hidden');
-            
-            // Smoothly collapse vector alignment directly back into original sidebar coordinates orientation
             panel.classList.remove('translate-x-0', 'scale-100', 'opacity-100');
             panel.classList.add('-translate-x-full', 'scale-95', 'opacity-0', 'pointer-events-none');
         }
@@ -398,6 +407,63 @@
             toast.classList.replace('translate-y-20', 'translate-y-0');
             toast.classList.replace('opacity-0', 'opacity-100');
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
+        }
+
+        /* CHROMA HUE SHIFTER MODULE SYSTEM */
+        function applyLiveChromaShift(value) {
+            const img = document.getElementById('detailImg');
+            img.style.filter = `hue-rotate(${value}deg) ${selectedEditorFilter !== 'none' ? getFilterStyleString(selectedEditorFilter) : ''}`;
+        }
+
+        /* AI WORKSPACE TRIGGER ENGINE SIMULATOR */
+        function triggerAiWorkspace() {
+            if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
+            showToast("Initializing AI Core Generation Neural Network...");
+            setTimeout(() => {
+                const prompt = prompt("Enter Creative Vision Prompt for AI Neural Vector Engine:");
+                if(prompt) {
+                    showToast("Synthesizing Art Nodes... Please wait.");
+                    setTimeout(() => {
+                        // Injects premium simulated high tech asset directly into local stream
+                        const fakeAiAsset = {
+                            id: "ai_" + Date.now().toString(),
+                            title: "AI Matrix: " + prompt,
+                            category: "Cyberpunk",
+                            image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000",
+                            uploaded_by: "Neural_AI"
+                        };
+                        let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
+                        activeSessionItems.unshift(fakeAiAsset);
+                        localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
+                        fetchWallpapers();
+                        showToast("AI Masterpiece added to Grid feed!");
+                    }, 2000);
+                }
+            }, 400);
+        }
+
+        /* PHONE OVERLAY PREVIEW VISUAL LAYER */
+        function togglePhonePreview() {
+            const frame = document.getElementById('phoneSimulationWrapper');
+            frame.classList.toggle('hidden');
+            showToast(frame.classList.contains('hidden') ? "Studio Canvas Mode" : "Smartphone Layout Preview Active");
+        }
+
+        /* SMART AI UPSCALING GRAPHIC ENGINE SIMULATION */
+        function triggerSuperResolutionUpscale() {
+            showToast("Running Matrix Detail Upscaler Engine...");
+            setTimeout(() => {
+                document.getElementById('detailRes').innerText = "8K SUPER-RESOLUTION";
+                document.getElementById('detailRes').className = "bg-emerald-950 text-emerald-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-emerald-900/40";
+                showToast("Enhancement complete! Textures stabilized at 8K resolution.");
+            }, 1500);
+        }
+
+        function getFilterStyleString(type) {
+            if (type === 'grayscale') return "grayscale(100%)";
+            if (type === 'highcontrast') return "contrast(160%) brightness(90%)";
+            if (type === 'blur') return "blur(4px)";
+            return "";
         }
 
         function syncProfileUIElements() {
@@ -521,23 +587,13 @@
 
             showSection('detail');
             document.getElementById('detailImg').src = wp.image_url;
+            document.getElementById('detailImg').style.filter = "none";
+            document.getElementById('chromaHueSlider').value = 0;
             document.getElementById('detailTitleText').innerText = wp.title;
             document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
+            document.getElementById('detailRes').className = "bg-indigo-950 text-indigo-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-indigo-900/40";
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
-            document.getElementById('detailContributorName').innerText = wp.uploaded_by || 'Vellum Admin';
-
-            const suggestionsBox = document.getElementById('detailSuggestionsGrid');
-            suggestionsBox.innerHTML = '';
-            const targets = allWallpapers.filter(item => item.id.toString() !== wp.id.toString() && item.category === wp.category).slice(0, 4);
-            
-            targets.forEach(sug => {
-                suggestionsBox.innerHTML += `
-                    <div onclick="showPinterestDetailView('${sug.id}', false)" class="group cursor-pointer bg-[#0b0f19] border border-slate-900 rounded-xl overflow-hidden p-1.5 shadow-md">
-                        <img src="${sug.image_url}" class="w-full h-32 object-cover rounded-lg group-hover:opacity-80 transition-opacity">
-                        <h4 class="text-[11px] font-bold text-slate-300 truncate mt-1.5 px-0.5">${sug.title}</h4>
-                    </div>`;
-            });
 
             document.getElementById('detailActionRow').innerHTML = `
                 <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
@@ -553,6 +609,7 @@
             } else {
                 showSection('dashboard');
             }
+            document.getElementById('phoneSimulationWrapper').classList.add('hidden');
         }
 
         function toggleAestheticEditorPanel() { document.getElementById('aestheticEditorControls').classList.toggle('hidden'); }
@@ -560,10 +617,8 @@
         function applyEditorMatrixFilter(filterType) {
             selectedEditorFilter = filterType;
             const imgEl = document.getElementById('detailImg');
-            if (filterType === 'grayscale') imgEl.style.filter = "grayscale(100%)";
-            else if (filterType === 'highcontrast') imgEl.style.filter = "contrast(160%) brightness(90%)";
-            else if (filterType === 'blur') imgEl.style.filter = "blur(4px)";
-            else imgEl.style.filter = "none";
+            const hueVal = document.getElementById('chromaHueSlider').value;
+            imgEl.style.filter = `hue-rotate(${hueVal}deg) ${getFilterStyleString(filterType)}`;
         }
 
         function compileAndDownloadCustomRender() {
@@ -571,36 +626,31 @@
             const canvas = document.getElementById('editorProcessingCanvas');
             const ctx = canvas.getContext('2d');
             const ratioType = document.getElementById('editorCropRatio').value;
+            const hueVal = document.getElementById('chromaHueSlider').value;
 
             const baseImg = new Image();
             baseImg.crossOrigin = "anonymous"; 
             baseImg.src = imgEl.src;
-            showToast("Compiling output render vector...");
+            showToast("Compiling custom output render vector...");
 
             baseImg.onload = function() {
                 let targetWidth = baseImg.width; let targetHeight = baseImg.height;
                 if (ratioType === 'mobile') {
                     targetWidth = baseImg.height * (9 / 16);
-                    if (targetWidth > baseImg.width) { targetWidth = baseImg.width; targetHeight = baseImg.width * (16 / 9); }
                 } else if (ratioType === 'desktop') {
                     targetWidth = baseImg.width; targetHeight = baseImg.width * (10 / 16);
-                    if (targetHeight > baseImg.height) { targetHeight = baseImg.height; targetWidth = baseImg.height * (16 / 10); }
                 }
 
                 canvas.width = targetWidth; canvas.height = targetHeight;
                 const sx = (baseImg.width - targetWidth) / 2;
                 const sy = (baseImg.height - targetHeight) / 2;
 
-                if (selectedEditorFilter === 'grayscale') ctx.filter = "grayscale(100%)";
-                else if (selectedEditorFilter === 'highcontrast') ctx.filter = "contrast(160%) brightness(90%)";
-                else if (selectedEditorFilter === 'blur') ctx.filter = "blur(6px)";
-                else ctx.filter = "none";
-
+                ctx.filter = `hue-rotate(${hueVal}deg) ${getFilterStyleString(selectedEditorFilter)}`;
                 ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
                 try {
                     const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                     const link = document.createElement('a');
-                    link.download = `Vellum_Studio_${Date.now()}.jpg`;
+                    link.download = `Vellum_AI_Studio_${Date.now()}.jpg`;
                     link.href = dataUrl; link.click();
                 } catch(e) { window.open(imgEl.src, '_blank'); }
             };
@@ -631,19 +681,14 @@
             e.preventDefault();
             const title = document.getElementById('userUploadTitle').value;
             let category = document.getElementById('userUploadCategory').value;
-            
             if(category === 'Other') { category = document.getElementById('userUploadCustomCategory').value.trim(); }
-            if(!base64ImageStringData) { alert("Please attach an image file asset."); return; }
-
-            const user = localStorage.getItem('vellum_logged_in_user') || 'Anon';
-            const handle = user.split('@')[0]; 
-
+            
             const runtimeNewAssetItem = { 
                 id: "local_" + Date.now().toString(), 
                 title: title, 
                 category: category, 
                 image_url: base64ImageStringData, 
-                uploaded_by: handle,
+                uploaded_by: "Core",
                 views: 1,
                 downloads: 0
             };
@@ -652,12 +697,8 @@
             activeSessionItems.unshift(runtimeNewAssetItem);
             localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
 
-            showToast("Wallpaper deployed to stream permanently!");
+            showToast("Wallpaper deployed permanently!");
             base64ImageStringData = "";
-            document.getElementById('fileUploadPromptContainer').classList.remove('hidden');
-            document.getElementById('uploadLivePreviewDisplay').classList.add('hidden');
-            document.getElementById('fileZoneBox').style.borderColor = "#1e293b";
-            
             e.target.reset(); 
             closeLeftSlideUploadModal();
             fetchWallpapers(); 
@@ -666,17 +707,13 @@
         function toggleLikeAsset(event, id) {
             event.stopPropagation();
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            
             let targetIdStr = id.toString();
             if (likedWallpaperIds.includes(targetIdStr)) {
                 likedWallpaperIds = likedWallpaperIds.filter(item => item !== targetIdStr);
-                showToast("Removed from Vault");
             } else {
                 likedWallpaperIds.push(targetIdStr);
-                showToast("Saved to Vault!");
             }
             localStorage.setItem('vellum_liked_ids', JSON.stringify(likedWallpaperIds));
-            
             filterWallpapers(); 
             updateProfileGalleryGrid();
         }
@@ -686,35 +723,19 @@
         function updateProfileGalleryGrid() {
             const grid = document.getElementById('myFavoritesGrid'); 
             grid.innerHTML = '';
-            
-            if (!allWallpapers || allWallpapers.length === 0) return;
             const favorites = allWallpapers.filter(wp => likedWallpaperIds.includes(wp.id.toString()));
-            
             if(favorites.length === 0) { 
                 grid.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase py-6 col-span-full text-center">Vault selection empty</p>`; 
                 return; 
             }
-            
             favorites.forEach(wp => {
-                const card = document.createElement('div');
-                card.className = "bg-transparent rounded-2xl relative border border-slate-950 overflow-hidden aspect-[3/4]";
-                card.innerHTML = `
-                    <img src="${wp.image_url}" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity" onclick="showPinterestDetailView('${wp.id}', true)">
-                `;
-                grid.appendChild(card);
+                grid.innerHTML += `
+                    <div class="bg-transparent rounded-2xl relative border border-slate-950 overflow-hidden aspect-[3/4]">
+                        <img src="${wp.image_url}" class="w-full h-full object-cover cursor-pointer" onclick="showPinterestDetailView('${wp.id}', true)">
+                    </div>`;
             });
         }
 
-        function compileAnalyticsDashboard() {
-            document.getElementById('statTotalAssets').innerText = allWallpapers.length;
-            let v = 0, d = 0; allWallpapers.forEach(wp => { v += (wp.views || 0); d += (wp.downloads || 0); });
-            document.getElementById('statTotalViews').innerText = v; document.getElementById('statTotalDownloads').innerText = d;
-
-            const qBox = document.getElementById('adminModerationQueue'); qBox.innerHTML = '';
-            if(communityQueue.length === 0) { qBox.innerHTML = `<p class="text-xs text-slate-500 font-bold uppercase py-4">Review Queue Pipeline Clean</p>`; return; }
-        }
-
-        function setAuthMode(m) {}
         async function handleAuthClusterSubmit(e) {
             e.preventDefault(); const email = document.getElementById('authEmail').value;
             localStorage.setItem('vellum_logged_in_user', email);
@@ -725,30 +746,20 @@
         function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); checkUserSession(); showSection('dashboard'); filterWallpapers(); }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-        
-        /* EXPLICIT DROPDOWN TOGGLE ENGINE WITH BINDED PREVENT PROPAGATION EVENT */
-        function toggleDropdown(event, id) {
-            if (event) event.stopPropagation();
-            document.getElementById(id).classList.toggle('hidden');
-        }
+        function toggleDropdown(event, id) { if (event) event.stopPropagation(); document.getElementById(id).classList.toggle('hidden'); }
 
-        /* ABSOLUTE GLOBAL OUTSIDE CLICK DETECTOR ENGINE */
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('profileDropdown');
             const profileArea = document.getElementById('userProfileArea');
-            
-            // Check mapping structure bounds to ensure clean closure logic state
             if (dropdown && !dropdown.classList.contains('hidden')) {
-                if (profileArea && !profileArea.contains(event.target)) {
-                    dropdown.classList.add('hidden');
-                }
+                if (profileArea && !profileArea.contains(event.target)) dropdown.classList.add('hidden');
             }
         });
 
         function filterWallpapers() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const filtered = allWallpapers.filter(wp => wp.title.toLowerCase().includes(query) && (selectedCat === 'all' || wp.category.toLowerCase() === selectedCat.toLowerCase()));
-            itemsRenderLimit = 15; renderWallpapers(filtered);
+            renderWallpapers(filtered);
         }
 
         function selectCategory(cat) {
@@ -759,15 +770,8 @@
             filterWallpapers();
         }
 
-        async function triggerDownload(id, url, title) {
-            try { await supabaseClient.rpc('increment_downloads', { row_id: id }); } catch(e) {}
-            window.open(url, '_blank');
-        }
-
-        window.onload = () => {
-            initIphoneBootSequence();
-            fetchWallpapers();
-        };
+        async function triggerDownload(id, url, title) { window.open(url, '_blank'); }
+        window.onload = () => { initIphoneBootSequence(); fetchWallpapers(); };
     </script>
 </body>
 </html>
