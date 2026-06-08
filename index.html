@@ -24,7 +24,7 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* PURE ULTRA-MINIMAList IPHONE HELLO BOOT ENGINE */
+        /* PURE ULTRA-MINIMALIST IPHONE HELLO BOOT ENGINE */
         @keyframes appleHelloAnimation {
             0% { opacity: 0; filter: blur(12px); transform: scale(0.95); }
             35% { opacity: 1; filter: blur(0px); transform: scale(1); }
@@ -36,8 +36,10 @@
             animation: appleHelloAnimation 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* DYNAMIC APP FLUID TRANSITIONS */
-        .slide-panel-transition { transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; }
+        /* FIXED FLUID TRANSITIONS FOR SLIDE PANEL */
+        .slide-panel-transition { 
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; 
+        }
         .view-step-back { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; }
     </style>
 </head>
@@ -51,9 +53,11 @@
         <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Cluster Sync Active</span>
     </div>
 
-    <div class="flex min-h-screen pt-0">
+    <div id="slidePanelBackdrop" onclick="closeLeftSlideUploadModal()" class="fixed inset-0 bg-black/40 backdrop-blur-xs hidden z-40 transition-opacity duration-300"></div>
 
-        <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-800/60 w-24 sticky top-0 h-screen z-40 bg-[#070a12]">
+    <div class="flex min-h-screen pt-0 relative">
+
+        <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-800/60 w-24 sticky top-0 h-screen z-50 bg-[#070a12]">
             <div class="flex flex-col items-center gap-8 w-full">
                 <div onclick="showSection('dashboard')" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-lg shadow-red-900/30 hover:scale-105 transition-transform">V</div>
                 
@@ -82,6 +86,53 @@
                 </button>
             </div>
         </aside>
+
+        <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 md:left-0 w-full max-w-sm bg-[#111622]/95 border-r border-slate-800/80 z-45 transform -translate-x-full slide-panel-transition shadow-2xl flex flex-col justify-between p-6 text-slate-200 backdrop-blur-md opacity-0 pointer-events-none">
+            <div>
+                <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-5">
+                    <div class="flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-plus text-base"></i> Create Premium Artwork
+                    </div>
+                    <button onclick="closeLeftSlideUploadModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title Specification</label>
+                        <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" placeholder="Art Asset Label Identity">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Matrix Stream</label>
+                        <select id="userUploadCategory" onchange="toggleCustomCategoryField(this.value)" class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none">
+                            <option value="Anime">Anime</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Cyberpunk">Cyberpunk</option>
+                            <option value="Cars">Cars</option>
+                            <option value="Other">Other Category (Write Custom Option)</option>
+                        </select>
+                        <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom asset metadata label...">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Physical Media Target File Source</label>
+                        <div class="relative w-full h-36 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
+                            <div id="fileUploadPromptContainer" class="flex flex-col items-center justify-center p-4 text-center">
+                                <i id="uploadIconElement" class="fa-solid fa-plus text-lg text-slate-600 mb-1"></i>
+                                <span id="uploadLabelElement" class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Pick Artwork</span>
+                            </div>
+                            <img id="uploadLivePreviewDisplay" class="hidden absolute inset-0 w-full h-full object-cover opacity-80">
+                            <input type="file" id="userUploadFile" accept="image/*" required onchange="processFileSelectionPreview(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg transition-colors cursor-pointer mt-2 uppercase tracking-wider">Dispatch System Input Params</button>
+                </form>
+            </div>
+            <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
+        </div>
 
         <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19] view-step-back" id="mainRenderPipelineContainer">
 
@@ -230,59 +281,17 @@
 
             <div id="adminSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6 mb-6">
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Items</p><p id="statTotalAssets" class="text-xl font-black mt-1">0</p></div>
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Hits</p><p id="statTotalViews" class="text-xl font-black mt-1">0</p></div>
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Downloads</p><p id="statTotalDownloads" class="text-xl font-black mt-1">0</p></div>
+                    </div>
                     <h2 class="text-xs font-black tracking-wider text-amber-500 uppercase mb-4"><i class="fa-solid fa-shield-halved"></i> Intake Validation Line Queue</h2>
                     <div id="adminModerationQueue" class="space-y-3"></div>
                 </div>
             </div>
 
         </div>
-    </div>
-
-    <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 md:left-24 w-full max-w-sm bg-[#111622]/95 border-r border-slate-800/80 z-50 transform -translate-x-full slide-panel-transition shadow-2xl flex flex-col justify-between p-6 text-slate-200">
-        <div>
-            <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-5">
-                <div class="flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider">
-                    <i class="fa-solid fa-circle-plus text-base"></i> Create Premium Artwork
-                </div>
-                <button onclick="closeLeftSlideUploadModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer">
-                    <i class="fa-solid fa-arrow-left-long text-xs"></i>
-                </button>
-            </div>
-            
-            <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title Specification</label>
-                    <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" placeholder="Art Asset Label Identity">
-                </div>
-                
-                <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Matrix Stream</label>
-                    <select id="userUploadCategory" onchange="toggleCustomCategoryField(this.value)" class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none">
-                        <option value="Anime">Anime</option>
-                        <option value="Gaming">Gaming</option>
-                        <option value="Cyberpunk">Cyberpunk</option>
-                        <option value="Cars">Cars</option>
-                        <option value="Other">Other Category (Write Custom Option)</option>
-                    </select>
-                    <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom asset metadata label...">
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Physical Media Target File Source</label>
-                    <div class="relative w-full h-36 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
-                        <div id="fileUploadPromptContainer" class="flex flex-col items-center justify-center p-4 text-center">
-                            <i id="uploadIconElement" class="fa-solid fa-plus text-lg text-slate-600 mb-1"></i>
-                            <span id="uploadLabelElement" class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Pick Artwork</span>
-                        </div>
-                        <img id="uploadLivePreviewDisplay" class="hidden absolute inset-0 w-full h-full object-cover opacity-80">
-                        <input type="file" id="userUploadFile" accept="image/*" required onchange="processFileSelectionPreview(this)" class="absolute inset-0 opacity-0 cursor-pointer">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg transition-colors cursor-pointer mt-2 uppercase tracking-wider">Dispatch System Input Params</button>
-            </form>
-        </div>
-        <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
     </div>
 
     <div id="authModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
@@ -313,12 +322,11 @@
         let itemsRenderLimit = 10;
         let selectedEditorFilter = 'none';
         let base64ImageStringData = ""; 
-        let deepNavigationHistoryTraceStack = []; // Deep line-by-line historic route array stack tracker
+        let deepNavigationHistoryTraceStack = []; 
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('vellum_liked_ids')) || [];
         let profileState = { name: "Kira Elite Master", seed: "Kira-Elite" };
 
-        // 1. APPLE STARTUP RUNTIME CONTROLLER
         function initIphoneBootSequence() {
             setTimeout(() => {
                 const engine = document.getElementById('iphoneBootEngine');
@@ -329,14 +337,33 @@
             }, 2200);
         }
 
-        // 2. SLIDE PANELS SIDEBAR CONNECTOR
+        /* FIXED OPEN/CLOSE METRICS FOR FLOATING OVERLAY PANEL */
         function openLeftSlideUploadModal() {
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            document.getElementById('leftSlideUploadModal').classList.remove('-translate-x-full');
+            
+            const panel = document.getElementById('leftSlideUploadModal');
+            const backdrop = document.getElementById('slidePanelBackdrop');
+            
+            backdrop.classList.remove('hidden');
+            panel.classList.remove('pointer-events-none');
+            
+            // Apply fluid translations based on viewport widths
+            if (window.innerWidth >= 768) {
+                panel.style.transform = "translateX(96px)"; // Anchors perfectly right next to desktop navbar icons (w-24 = 96px)
+            } else {
+                panel.style.transform = "translateX(0px)";
+            }
+            panel.style.opacity = "1";
         }
 
         function closeLeftSlideUploadModal() {
-            document.getElementById('leftSlideUploadModal').classList.add('-translate-x-full');
+            const panel = document.getElementById('leftSlideUploadModal');
+            const backdrop = document.getElementById('slidePanelBackdrop');
+            
+            backdrop.classList.add('hidden');
+            panel.classList.add('pointer-events-none');
+            panel.style.transform = "translateX(-100%)";
+            panel.style.opacity = "0";
         }
 
         function showSection(sectionId) {
@@ -442,7 +469,6 @@
             }
         });
 
-        // 3. STEP BY STEP NAVIGATION CONTROLLER REGRESSIONS PIPELINE 
         function showPinterestDetailView(id, clearStackHistory = false) {
             const wp = allWallpapers.find(item => item.id === id);
             if (!wp) return;
