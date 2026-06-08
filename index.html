@@ -14,7 +14,6 @@
             overflow-x: hidden;
         }
         
-        /* FIXED GRID HORIZONTAL LINE SEQUENCE */
         .ordered-wallpaper-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -42,20 +41,20 @@
 <body class="bg-[#0b0f19]">
 
     <div id="iphoneBootEngine" class="fixed inset-0 bg-[#05070c] z-[100] flex items-center justify-center transition-opacity duration-500">
-        <h1 class="text-5xl md:text-7xl font-bold text-white animate-apple-hello opacity-0">Hello</h1>
+        <h1 class="text-4xl md:text-5xl font-black text-white tracking-widest uppercase animate-apple-hello opacity-0">Vellum Elite</h1>
     </div>
 
     <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-[60] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
-        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Sync Engine Ready</span>
+        <i class="fa-solid fa-bolt text-red-500 animate-pulse"></i> <span id="toastText">Ready</span>
     </div>
 
-    <div id="slidePanelBackdrop" onclick="closeLeftSlideUploadModal()" class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
+    <div id="slidePanelBackdrop" onclick="closeLeftSlideUploadModal(); closeLeftSettingsModal();" class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
 
     <div class="flex min-h-screen pt-0 relative">
 
         <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-800/60 w-24 sticky top-0 h-screen z-50 bg-[#070a12]">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white text-xl font-black cursor-pointer shadow-lg shadow-red-900/30 hover:scale-105 transition-transform">V</div>
+                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-gradient-to-b from-neutral-800 to-black border border-slate-700/60 rounded-full flex items-center justify-center text-white text-base font-black cursor-pointer shadow-lg hover:scale-105 transition-transform tracking-tighter">VE</div>
                 
                 <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="showSection('dashboard')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer transition-colors">
@@ -64,11 +63,11 @@
                     </button>
                     
                     <button onclick="triggerAiWorkspace()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-indigo-400 bg-indigo-950/20 border border-indigo-900/40 hover:bg-indigo-900/40 cursor-pointer transition-all active:scale-95">
-                        <i class="fa-solid fa-wand-magic-sparkles text-sm animate-pulse"></i>
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">AI Gen</span>
                     </button>
 
-                    <button id="sidebarCreateButtonNode" onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all active:scale-95">
+                    <button onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all active:scale-95">
                         <i class="fa-solid fa-plus text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">Create</span>
                     </button>
@@ -81,12 +80,36 @@
             </div>
 
             <div class="flex flex-col items-center gap-4">
-                <button onclick="openProfileGallery()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white transition-colors">
-                    <i class="fa-solid fa-box-archive text-sm"></i>
-                    <span class="text-[9px] font-bold mt-1">Vault</span>
+                <button onclick="openLeftSettingsModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all cursor-pointer">
+                    <i class="fa-solid fa-gears text-sm"></i>
+                    <span class="text-[9px] font-bold mt-1">Settings</span>
                 </button>
             </div>
         </aside>
+
+        <div id="leftSettingsModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full scale-95 opacity-0 transition-all duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200 pointer-events-none">
+            <div>
+                <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-5">
+                    <div class="flex items-center gap-2 text-slate-300 font-black text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-gears text-base text-red-500"></i> Control Console Panel
+                    </div>
+                    <button onclick="closeLeftSettingsModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-[#0b0f19] border border-slate-800/80 rounded-2xl">
+                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Core Connection</h4>
+                        <p class="text-[11px] text-slate-500">System security layers are fully operational. Sync tokens verified active.</p>
+                    </div>
+                    <div class="p-4 bg-[#0b0f19] border border-slate-800/80 rounded-2xl flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-300">Ultra HDR Streaming</span>
+                        <div class="w-8 h-4 bg-red-600 rounded-full p-0.5 cursor-pointer flex justify-end"><div class="w-3 h-3 bg-white rounded-full"></div></div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Configuration Layer V1</p>
+        </div>
 
         <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full scale-95 opacity-0 transition-all duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200 pointer-events-none">
             <div>
@@ -104,7 +127,6 @@
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title Specification</label>
                         <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" placeholder="Art Asset Label Identity">
                     </div>
-                    
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Matrix Stream</label>
                         <select id="userUploadCategory" onchange="toggleCustomCategoryField(this.value)" class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none">
@@ -114,22 +136,20 @@
                             <option value="Cars">Cars</option>
                             <option value="Other">Other Category</option>
                         </select>
-                        <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white placeholder-amber-600/60 focus:outline-none" placeholder="Type custom label...">
+                        <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white focus:outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Physical Media Target File Source</label>
-                        <div class="relative w-full h-36 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Physical Media Source</label>
+                        <div class="relative w-full h-36 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
                             <div id="fileUploadPromptContainer" class="flex flex-col items-center justify-center p-4 text-center">
-                                <i id="uploadIconElement" class="fa-solid fa-plus text-lg text-slate-600 mb-1"></i>
-                                <span id="uploadLabelElement" class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Pick Artwork</span>
+                                <i class="fa-solid fa-plus text-lg text-slate-600 mb-1"></i>
+                                <span class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Pick Artwork</span>
                             </div>
                             <img id="uploadLivePreviewDisplay" class="hidden absolute inset-0 w-full h-full object-cover opacity-80">
                             <input type="file" id="userUploadFile" accept="image/*" required onchange="processFileSelectionPreview(this)" class="absolute inset-0 opacity-0 cursor-pointer">
                         </div>
                     </div>
-
-                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg transition-colors cursor-pointer mt-2 uppercase tracking-wider">Dispatch Asset System</button>
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg uppercase tracking-wider">Dispatch Asset System</button>
                 </form>
             </div>
             <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
@@ -137,28 +157,31 @@
 
         <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]" id="mainRenderPipelineContainer">
 
-            <nav class="sticky top-0 z-30 px-4 md:px-8 py-4 flex justify-between items-center bg-[#0b0f19] border-b border-slate-800/40">
-                <div class="flex items-center gap-3 md:hidden cursor-pointer" onclick="showSection('dashboard')">
-                    <span class="text-lg font-black text-red-500 tracking-wider">VELLUM</span>
+            <nav class="sticky top-0 z-30 px-4 md:px-8 py-5 flex justify-between items-center bg-[#0b0f19]/90 backdrop-blur-xl border-b border-slate-800/40">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('dashboard')">
+                    <span class="text-sm font-black tracking-[0.3em] text-white uppercase bg-clip-text">VELLUM ELITE<span class="text-red-500 font-extrabold">.</span></span>
                 </div>
                 
-                <div class="flex-1 max-w-xl mx-4 relative hidden sm:block">
+                <div class="flex-1 max-w-xl mx-8 relative hidden sm:block">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
                     <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-red-600 transition-colors" placeholder="Search premium matrix designs...">
                 </div>
 
                 <div id="authStatus" class="relative flex items-center gap-3">
-                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-red-600 text-white font-bold text-xs shadow-md">Sign In</button>
+                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md transition-colors">Sign In</button>
                     
-                    <div id="userProfileArea" class="hidden flex items-center gap-1 relative">
-                        <button onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 p-0.5 overflow-hidden active:scale-95 transition-transform">
-                            <img id="navAvatar" src="" class="w-full h-full rounded-full object-cover">
-                        </button>
+                    <div id="userProfileArea" class="flex items-center gap-1 relative">
+                        <button id="navAvatarButtonNode" onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-gradient-to-tr border border-slate-700 p-0 flex items-center justify-center text-xs font-black tracking-tight uppercase active:scale-95 transition-all overflow-hidden">
+                            </button>
                         
                         <div id="profileDropdown" class="hidden absolute right-0 top-11 w-56 bg-[#131926] text-slate-200 rounded-2xl border border-slate-800 shadow-2xl p-2 flex flex-col gap-1 z-50">
-                            <div id="userDisplayEmail" class="px-2.5 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-800 truncate">user@vellum.com</div>
-                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800 text-xs font-semibold flex items-center gap-2"><i class="fa-solid fa-user-shield text-slate-400"></i> Account Space</button>
-                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800 mt-1 flex items-center gap-2"><i class="fa-solid fa-power-off"></i> Kill Session</button>
+                            <div id="userDisplayEmail" class="px-2.5 py-2 text-[10px] font-black tracking-wider uppercase text-slate-500 border-b border-slate-800/80 truncate">Identity Gate</div>
+                            
+                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-200 hover:bg-slate-800/80 text-xs font-bold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-box-archive text-red-500 text-xs"></i> Saved Vault Area</button>
+                            
+                            <button onclick="showSection('profile')" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800/50 text-xs font-semibold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-user-shield text-slate-400 text-xs"></i> Edit Workspace Bio</button>
+                            
+                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800/80 mt-1 flex items-center gap-2.5 transition-all"><i class="fa-solid fa-power-off text-xs"></i> Kill Session</button>
                         </div>
                     </div>
                 </div>
@@ -204,13 +227,12 @@
                 </div>
                 
                 <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                    
                     <div class="lg:col-span-7 bg-[#111622] rounded-3xl border border-slate-800/80 overflow-hidden p-4 flex flex-col items-center justify-center shadow-2xl relative min-h-[50vh]">
-                        
                         <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl transition-all duration-300">
                         
                         <div id="phoneSimulationWrapper" class="hidden absolute w-[260px] h-[500px] bg-black/40 border-[6px] border-slate-800 rounded-[36px] shadow-2xl overflow-hidden pointer-events-none flex flex-col justify-between p-4">
-                            <div class="w-20 h-4 bg-slate-800 rounded-full mx-auto mt-[-8px]"></div> <div class="flex justify-between text-[10px] font-bold text-slate-300 px-2">
+                            <div class="w-20 h-4 bg-slate-800 rounded-full mx-auto mt-[-8px]"></div>
+                            <div class="flex justify-between text-[10px] font-bold text-slate-300 px-2">
                                 <span>9:41</span>
                                 <div class="flex gap-1"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
                             </div>
@@ -220,8 +242,8 @@
                                 <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-facebook"></i></div></div>
                                 <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-slate-700 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-solid fa-gear"></i></div></div>
                             </div>
-                            <div class="w-24 h-1 bg-white/80 rounded-full mx-auto mb-[-4px]"></div> </div>
-
+                            <div class="w-24 h-1 bg-white/80 rounded-full mx-auto mb-[-4px]"></div>
+                        </div>
                         <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
 
@@ -239,12 +261,10 @@
 
                             <div id="aestheticEditorControls" class="hidden mt-2 border-t border-slate-800 pt-4 bg-[#171e2e] p-4 rounded-2xl border border-slate-800/60 space-y-4">
                                 <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-red-500"></i> Advanced Control Mesh</h3>
-                                
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Chroma Hue Color Shift Engine</label>
                                     <input type="range" id="chromaHueSlider" min="0" max="360" value="0" oninput="applyLiveChromaShift(this.value)" class="w-full accent-red-500 bg-slate-900 h-1.5 rounded-lg appearance-none cursor-pointer">
                                 </div>
-
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
                                         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Aspect Scale</label>
@@ -259,7 +279,6 @@
                                         <button onclick="triggerSuperResolutionUpscale()" class="w-full py-1.5 bg-indigo-950 border border-indigo-800 text-indigo-400 text-[11px] font-black rounded-lg hover:bg-indigo-900"><i class="fa-solid fa-bolt-lightning"></i> 4K Upscale</button>
                                     </div>
                                 </div>
-
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Matrix Filters</label>
                                     <div class="grid grid-cols-4 gap-1">
@@ -281,7 +300,7 @@
                 <div class="max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
                     <div class="md:col-span-5 bg-[#111622] border border-slate-800 rounded-3xl p-6 flex flex-col items-center justify-center text-center relative group">
                         <div class="relative w-24 h-24 mb-3 cursor-pointer group" onclick="document.getElementById('profileAvatarInputFile').click()">
-                            <img id="profileAvatarImg" src="" class="w-full h-full rounded-full border-2 border-red-500 bg-slate-900 object-cover p-1">
+                            <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" class="w-full h-full rounded-full border-2 border-red-500 bg-slate-900 object-cover p-1">
                             <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                 <i class="fa-solid fa-camera text-white text-base mb-1"></i>
                                 <span class="text-[8px] font-bold text-slate-300 uppercase tracking-wider">Change DP</span>
@@ -332,12 +351,12 @@
     <div id="authModal" class="fixed inset-0 bg-black/80 hidden z-[70] flex items-center justify-center p-4">
         <div class="w-full max-w-xs bg-[#111622] border border-slate-800 p-6 rounded-3xl relative shadow-2xl text-slate-200">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-xs font-black text-center mb-6 tracking-widest text-red-500 uppercase">Verification</h2>
+            <h2 class="text-xs font-black text-center mb-6 tracking-widest text-red-500 uppercase">Verification Gate</h2>
             <form class="space-y-3.5" onsubmit="handleAuthClusterSubmit(event)">
                 <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="kira@vellum.com">
                 <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="password123">
                 <div class="flex gap-2 pt-2">
-                    <button type="submit" class="flex-1 py-2.5 bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer">Login</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl cursor-pointer">Login / Sign Up</button>
                 </div>
             </form>
         </div>
@@ -350,7 +369,6 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allWallpapers = []; 
-        let communityQueue = JSON.parse(localStorage.getItem('vellum_comm_queue')) || [];
         let uniqueCustomCategoriesList = JSON.parse(localStorage.getItem('vellum_custom_categories')) || [];
         let selectedCat = 'all';
         let itemsRenderLimit = 15;
@@ -361,8 +379,7 @@
         
         let profileState = JSON.parse(localStorage.getItem('vellum_profile_state')) || { 
             name: "Kira Elite Master", 
-            bio: "Vellum core ecosystem deployment space active.",
-            avatarData: "https://api.dicebear.com/7.x/bottts/svg?seed=Kira-Elite"
+            bio: "Vellum core ecosystem deployment space active."
         };
 
         function initIphoneBootSequence() {
@@ -373,6 +390,24 @@
                     setTimeout(() => engine.remove(), 500);
                 }
             }, 2200);
+        }
+
+        /* SETTINGS DRAWER ENGINE HANDLERS */
+        function openLeftSettingsModal() {
+            const panel = document.getElementById('leftSettingsModal');
+            const backdrop = document.getElementById('slidePanelBackdrop');
+            backdrop.classList.remove('hidden');
+            panel.classList.remove('pointer-events-none', '-translate-x-full', 'scale-95', 'opacity-0');
+            panel.classList.add('translate-x-0', 'scale-100', 'opacity-100');
+            if (window.innerWidth >= 768) { panel.style.left = "96px"; } else { panel.style.left = "0px"; }
+        }
+
+        function closeLeftSettingsModal() {
+            const panel = document.getElementById('leftSettingsModal');
+            const backdrop = document.getElementById('slidePanelBackdrop');
+            backdrop.classList.add('hidden');
+            panel.classList.remove('translate-x-0', 'scale-100', 'opacity-100');
+            panel.classList.add('-translate-x-full', 'scale-95', 'opacity-0', 'pointer-events-none');
         }
 
         function openLeftSlideUploadModal() {
@@ -399,6 +434,7 @@
             window.scrollTo({ top: 0 });
             if(sectionId === 'admin') compileAnalyticsDashboard();
             closeLeftSlideUploadModal();
+            closeLeftSettingsModal();
         }
 
         function showToast(msg) {
@@ -409,54 +445,70 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
         }
 
-        /* CHROMA HUE SHIFTER MODULE SYSTEM */
+        /* INSTAGRAM AVATAR STYLE AND TEXT CORNER BALANCING HUB ENGINE */
+        function checkUserSession() {
+            const user = localStorage.getItem('vellum_logged_in_user');
+            const avatarBtn = document.getElementById('navAvatarButtonNode');
+            
+            if (user) {
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('userProfileArea').classList.remove('hidden');
+                document.getElementById('userDisplayEmail').innerText = user;
+                
+                // USER LOGGED IN STATE: First letter generation circle blueprint
+                const initialLetter = user.charAt(0).toUpperCase();
+                avatarBtn.className = "w-9 h-9 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 text-white flex items-center justify-center text-sm font-black tracking-tight border border-slate-700 shadow-md active:scale-95 transition-all";
+                avatarBtn.innerHTML = `<span>${initialLetter}</span>`;
+            } else {
+                document.getElementById('loginBtn').classList.remove('hidden');
+                document.getElementById('userProfileArea').classList.remove('hidden'); // Persists structure box for instant rendering
+                document.getElementById('userDisplayEmail').innerText = "Anonymous Agent";
+                
+                // WITHOUT LOGIN STATE: Instagram Default Silhouette Vector Icon Node
+                avatarBtn.className = "w-9 h-9 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs border border-slate-700 active:scale-95 transition-all";
+                avatarBtn.innerHTML = `<i class="fa-regular fa-user text-sm"></i>`;
+            }
+            syncProfileUIElements();
+        }
+
         function applyLiveChromaShift(value) {
             const img = document.getElementById('detailImg');
             img.style.filter = `hue-rotate(${value}deg) ${selectedEditorFilter !== 'none' ? getFilterStyleString(selectedEditorFilter) : ''}`;
         }
 
-        /* AI WORKSPACE TRIGGER ENGINE SIMULATOR */
         function triggerAiWorkspace() {
             if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
-            showToast("Initializing AI Core Generation Neural Network...");
-            setTimeout(() => {
-                const prompt = prompt("Enter Creative Vision Prompt for AI Neural Vector Engine:");
-                if(prompt) {
-                    showToast("Synthesizing Art Nodes... Please wait.");
-                    setTimeout(() => {
-                        // Injects premium simulated high tech asset directly into local stream
-                        const fakeAiAsset = {
-                            id: "ai_" + Date.now().toString(),
-                            title: "AI Matrix: " + prompt,
-                            category: "Cyberpunk",
-                            image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000",
-                            uploaded_by: "Neural_AI"
-                        };
-                        let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
-                        activeSessionItems.unshift(fakeAiAsset);
-                        localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
-                        fetchWallpapers();
-                        showToast("AI Masterpiece added to Grid feed!");
-                    }, 2000);
-                }
-            }, 400);
+            const promptStr = prompt("Enter Vision Prompt for AI Vector Engine:");
+            if(promptStr) {
+                showToast("Synthesizing Art Nodes...");
+                setTimeout(() => {
+                    const fakeAiAsset = {
+                        id: "ai_" + Date.now().toString(),
+                        title: "AI Matrix: " + promptStr,
+                        category: "Cyberpunk",
+                        image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000",
+                        uploaded_by: "Neural_AI"
+                    };
+                    let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
+                    activeSessionItems.unshift(fakeAiAsset);
+                    localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
+                    fetchWallpapers();
+                    showToast("AI Render Sync Complete!");
+                }, 1500);
+            }
         }
 
-        /* PHONE OVERLAY PREVIEW VISUAL LAYER */
         function togglePhonePreview() {
             const frame = document.getElementById('phoneSimulationWrapper');
             frame.classList.toggle('hidden');
-            showToast(frame.classList.contains('hidden') ? "Studio Canvas Mode" : "Smartphone Layout Preview Active");
         }
 
-        /* SMART AI UPSCALING GRAPHIC ENGINE SIMULATION */
         function triggerSuperResolutionUpscale() {
             showToast("Running Matrix Detail Upscaler Engine...");
             setTimeout(() => {
                 document.getElementById('detailRes').innerText = "8K SUPER-RESOLUTION";
-                document.getElementById('detailRes').className = "bg-emerald-950 text-emerald-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-emerald-900/40";
-                showToast("Enhancement complete! Textures stabilized at 8K resolution.");
-            }, 1500);
+                showToast("Enhancement complete! Textures stabilized at 8K.");
+            }, 1200);
         }
 
         function getFilterStyleString(type) {
@@ -471,8 +523,6 @@
             document.getElementById('profileBioDisplay').innerText = profileState.bio;
             document.getElementById('profileNameInput').value = profileState.name;
             document.getElementById('profileBioInput').value = profileState.bio;
-            document.getElementById('profileAvatarImg').src = profileState.avatarData;
-            document.getElementById('navAvatar').src = profileState.avatarData;
         }
 
         function updateProfileMetaData() {
@@ -487,36 +537,19 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    profileState.avatarData = e.target.result;
-                    localStorage.setItem('vellum_profile_state', JSON.stringify(profileState));
-                    syncProfileUIElements();
-                    showToast("Profile avatar picture synced!");
+                    document.getElementById('profileAvatarImg').src = e.target.result;
+                    showToast("Profile avatar synced!");
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function checkUserSession() {
-            const user = localStorage.getItem('vellum_logged_in_user');
-            if (user) {
-                document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userProfileArea').classList.remove('hidden');
-                document.getElementById('userDisplayEmail').innerText = user;
-            } else {
-                document.getElementById('loginBtn').classList.remove('hidden');
-                document.getElementById('userProfileArea').classList.add('hidden');
-            }
-            syncProfileUIElements();
-        }
-
         function appendDynamicVisualCategoryCards() {
             const container = document.getElementById('pinterestVisualCategoryGrid');
             document.querySelectorAll('.dynamic-visual-card').forEach(el => el.remove());
-            
             uniqueCustomCategoriesList.forEach(cat => {
                 const card = document.createElement('div');
                 card.onclick = () => selectCategory(cat);
-                card.id = `visCat-${cat}`;
                 card.className = "dynamic-visual-card h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-slate-800 to-slate-900 p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.01] capitalize";
                 card.innerHTML = `<span class="text-xs font-black tracking-wide text-slate-300">${cat}</span>`;
                 container.appendChild(card);
@@ -527,11 +560,9 @@
             try {
                 const { data, error } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
-                
                 let dbWallpapers = data || [];
                 let savedLocalUploads = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
                 allWallpapers = [...savedLocalUploads, ...dbWallpapers];
-
                 allWallpapers.forEach(wp => {
                     if(wp.category && !['all','anime','gaming','cyberpunk','cars'].includes(wp.category.toLowerCase()) && !uniqueCustomCategoriesList.includes(wp.category)) {
                         uniqueCustomCategoriesList.push(wp.category);
@@ -548,14 +579,13 @@
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
             if(itemsRenderLimit <= 15) container.innerHTML = '';
-            
             list.forEach(wp => {
                 const isLiked = likedWallpaperIds.includes(wp.id.toString());
                 const card = document.createElement('div');
                 card.className = "bg-transparent overflow-hidden group cursor-pointer flex flex-col relative w-full";
                 card.innerHTML = `
                     <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-slate-900 shadow-md border border-slate-850">
-                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', true)" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" loading="lazy">
+                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', true)" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                         <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
                             <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
                         </button>
@@ -581,7 +611,6 @@
         function showPinterestDetailView(id, clearStackHistory = false) {
             const wp = allWallpapers.find(item => item.id.toString() === id.toString());
             if (!wp) return;
-            
             if(clearStackHistory) { deepNavigationHistoryTraceStack = []; }
             deepNavigationHistoryTraceStack.push(id);
 
@@ -591,12 +620,11 @@
             document.getElementById('chromaHueSlider').value = 0;
             document.getElementById('detailTitleText').innerText = wp.title;
             document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
-            document.getElementById('detailRes').className = "bg-indigo-950 text-indigo-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-indigo-900/40";
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
 
             document.getElementById('detailActionRow').innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', '${wp.title}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
             `;
         }
 
@@ -606,9 +634,7 @@
                 const previousId = deepNavigationHistoryTraceStack[deepNavigationHistoryTraceStack.length - 1];
                 showPinterestDetailView(previousId, false);
                 deepNavigationHistoryTraceStack.pop(); 
-            } else {
-                showSection('dashboard');
-            }
+            } else { showSection('dashboard'); }
             document.getElementById('phoneSimulationWrapper').classList.add('hidden');
         }
 
@@ -622,6 +648,9 @@
         }
 
         function compileAndDownloadCustomRender() {
+            // STRICT AUTHENTICATION LAYER FOR CUSTOM COMPILATION ACTIONS
+            if(!localStorage.getItem('vellum_logged_in_user')) { showToast("Security Lock: Verification Required!"); openAuthModal(); return; }
+
             const imgEl = document.getElementById('detailImg');
             const canvas = document.getElementById('editorProcessingCanvas');
             const ctx = canvas.getContext('2d');
@@ -635,11 +664,8 @@
 
             baseImg.onload = function() {
                 let targetWidth = baseImg.width; let targetHeight = baseImg.height;
-                if (ratioType === 'mobile') {
-                    targetWidth = baseImg.height * (9 / 16);
-                } else if (ratioType === 'desktop') {
-                    targetWidth = baseImg.width; targetHeight = baseImg.width * (10 / 16);
-                }
+                if (ratioType === 'mobile') { targetWidth = baseImg.height * (9 / 16); }
+                else if (ratioType === 'desktop') { targetWidth = baseImg.width; targetHeight = baseImg.width * (10 / 16); }
 
                 canvas.width = targetWidth; canvas.height = targetHeight;
                 const sx = (baseImg.width - targetWidth) / 2;
@@ -648,10 +674,9 @@
                 ctx.filter = `hue-rotate(${hueVal}deg) ${getFilterStyleString(selectedEditorFilter)}`;
                 ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
                 try {
-                    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
                     const link = document.createElement('a');
                     link.download = `Vellum_AI_Studio_${Date.now()}.jpg`;
-                    link.href = dataUrl; link.click();
+                    link.href = canvas.toDataURL("image/jpeg", 0.9); link.click();
                 } catch(e) { window.open(imgEl.src, '_blank'); }
             };
         }
@@ -671,7 +696,6 @@
                     const previewImg = document.getElementById('uploadLivePreviewDisplay');
                     previewImg.src = base64ImageStringData; previewImg.classList.remove('hidden');
                     document.getElementById('fileZoneBox').style.borderColor = "#10b981";
-                    showToast("Asset mapped secure!");
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -688,20 +712,15 @@
                 title: title, 
                 category: category, 
                 image_url: base64ImageStringData, 
-                uploaded_by: "Core",
-                views: 1,
-                downloads: 0
+                uploaded_by: "Core Agent"
             };
 
             let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
             activeSessionItems.unshift(runtimeNewAssetItem);
             localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
-
             showToast("Wallpaper deployed permanently!");
             base64ImageStringData = "";
-            e.target.reset(); 
-            closeLeftSlideUploadModal();
-            fetchWallpapers(); 
+            e.target.reset(); closeLeftSlideUploadModal(); fetchWallpapers(); 
         }
 
         function toggleLikeAsset(event, id) {
@@ -710,12 +729,9 @@
             let targetIdStr = id.toString();
             if (likedWallpaperIds.includes(targetIdStr)) {
                 likedWallpaperIds = likedWallpaperIds.filter(item => item !== targetIdStr);
-            } else {
-                likedWallpaperIds.push(targetIdStr);
-            }
+            } else { likedWallpaperIds.push(targetIdStr); }
             localStorage.setItem('vellum_liked_ids', JSON.stringify(likedWallpaperIds));
-            filterWallpapers(); 
-            updateProfileGalleryGrid();
+            filterWallpapers(); updateProfileGalleryGrid();
         }
 
         function openProfileGallery() { showSection('profile'); updateProfileGalleryGrid(); }
@@ -737,13 +753,17 @@
         }
 
         async function handleAuthClusterSubmit(e) {
-            e.preventDefault(); const email = document.getElementById('authEmail').value;
+            e.preventDefault(); 
+            const email = document.getElementById('authEmail').value;
             localStorage.setItem('vellum_logged_in_user', email);
             closeAuthModal(); checkUserSession(); showToast("Identity validated secure.");
             filterWallpapers();
         }
 
-        function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); checkUserSession(); showSection('dashboard'); filterWallpapers(); }
+        function handleLogout() { 
+            localStorage.removeItem('vellum_logged_in_user'); 
+            checkUserSession(); showSection('dashboard'); filterWallpapers(); 
+        }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function toggleDropdown(event, id) { if (event) event.stopPropagation(); document.getElementById(id).classList.toggle('hidden'); }
@@ -770,7 +790,20 @@
             filterWallpapers();
         }
 
-        async function triggerDownload(id, url, title) { window.open(url, '_blank'); }
+        /* STRICT DOWNLOAD CONTROL POLICY LAYER */
+        async function triggerDownload(id, url) {
+            if(!localStorage.getItem('vellum_logged_in_user')) {
+                showToast("Download Locked! Authentication Required.");
+                openAuthModal();
+                return;
+            }
+            window.open(url, '_blank');
+        }
+
+        function compileAnalyticsDashboard() {
+            document.getElementById('statTotalAssets').innerText = allWallpapers.length;
+        }
+
         window.onload = () => { initIphoneBootSequence(); fetchWallpapers(); };
     </script>
 </body>
