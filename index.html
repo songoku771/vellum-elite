@@ -44,7 +44,6 @@
         .settings-nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
         .settings-active { color: #fff !important; background: rgba(251, 191, 36, 0.1) !important; border-left: 3px solid #fbbf24; }
 
-        /* Custom Toggle Switch Styles */
         .toggle-checkbox:checked + .toggle-label { background-color: #fbbf24; }
         .toggle-checkbox:checked + .toggle-label .toggle-dot { transform: translateX(100%); background-color: #070a13; }
     </style>
@@ -59,7 +58,7 @@
         
         <aside class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base cursor-pointer shadow-lg brand-font hover:scale-105 transition-transform">VE</div>
+                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base cursor-pointer shadow-lg brand-font hover:scale-105 transition-transform">LU</div>
                 
                 <div class="flex flex-col items-center gap-5 w-full">
                     <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 transition-all gap-1"><i class="fa-solid fa-house text-base"></i><span class="text-[9px] font-medium">Home</span></button>
@@ -152,8 +151,7 @@
                 </div>
 
                 <div class="flex-1 p-6 md:p-10 max-w-3xl overflow-y-auto">
-                    <div id="settingsTabContent" class="space-y-6">
-                        </div>
+                    <div id="settingsTabContent" class="space-y-6"></div>
                 </div>
             </div>
 
@@ -170,7 +168,6 @@
         let navigationHistoryBuffer = [];
         let base64TempImageString = "";
         
-        // Comprehensive Local Global State Matrix Engine
         let profile = JSON.parse(localStorage.getItem('lusso_profile')) || { 
             name: "Tejendar Prajapati", 
             about: "Elite System Designer & Computer Application Architect.",
@@ -228,6 +225,7 @@
             closeAllOpenDrawers(); if(hidden) panel.classList.remove('-translate-x-full');
         }
 
+        /* --- SENSITIVE IMAGES UPLOAD PROTECTION LAYER --- */
         function openLeftSliderUploadEngine() {
             closeAllOpenDrawers(); document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full');
         }
@@ -250,7 +248,6 @@
             document.getElementById('boardsProfileName').innerText = profile.name;
         }
 
-        /* --- HARDCORE MODULAR SETTINGS CONTROLLER ENGINE --- */
         function updateSettingsTabActiveStyle(tabId) {
             document.querySelectorAll('.settings-nav-btn').forEach(b => b.classList.remove('settings-active'));
             const dynamicButtonNode = document.getElementById(`sbtn-${tabId}`);
@@ -294,7 +291,7 @@
                             <div class="flex items-center justify-between border-b border-slate-900 pb-4"><div><h4 class="text-sm font-bold text-gray-200">Password</h4><p class="text-xs text-slate-500">Update security entry credentials strings</p></div><button onclick="triggerNotificationToast('Recovery secure protocol sent')" class="px-4 py-2 bg-slate-800 text-xs font-bold rounded-xl">Change</button></div>
                             <div class="flex items-center justify-between border-b border-slate-900 pb-4"><div><h4 class="text-sm font-bold text-gray-200">Convert to Business</h4><p class="text-xs text-slate-500">Unlock corporate tracking and algorithmic metrics tools</p></div><button onclick="triggerNotificationToast('Business Node Deployed')" class="px-4 py-2 bg-amber-500 text-neutral-900 text-xs font-bold rounded-xl uppercase">Convert Account</button></div>
                             <div class="grid grid-cols-2 gap-4">
-                                Vans<div><label class="text-[11px] font-bold text-slate-400 block mb-1">BIRTHDATE</label><input type="date" id="setAccBirth" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs" value="${profile.birthdate}"></div>
+                                <div><label class="text-[11px] font-bold text-slate-400 block mb-1">BIRTHDATE</label><input type="date" id="setAccBirth" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs" value="${profile.birthdate}"></div>
                                 <div><label class="text-[11px] font-bold text-slate-400 block mb-1">GENDER</label><select id="setAccGender" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs"><option value="male" ${profile.gender==='male'?'selected':''}>Male</option><option value="female" ${profile.gender==='female'?'selected':''}>Female</option><option value="non-binary" ${profile.gender==='non-binary'?'selected':''}>Non-binary</option></select></div>
                             </div>
                             <div class="pt-6 border-t border-slate-900 flex justify-end"><button onclick="saveAccountManagementForm()" class="px-6 py-2.5 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full uppercase">Update Account</button></div>
@@ -307,11 +304,11 @@
                         <p class="text-xs text-slate-400 mb-8">Manage how your global visual profile can be discovered on or off grid.</p>
                         <div class="space-y-6 bg-[#070a13] p-6 rounded-2xl border border-slate-900">
                             <div class="flex items-center justify-between">
-                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Private Profile</h4><p class="text-xs text-slate-500 mt-0.5">When active, only nodes approved manually by you can monitor assets and active boards structures.</p></div>
+                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Private Profile</h4><p class="text-xs text-slate-500 mt-0.5">Only nodes approved manually can monitor assets.</p></div>
                                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" id="tglPrivate" onchange="toggleProfileVisibilityState('privateProfile')" ${profile.privateProfile?'checked':''} class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
                             </div>
                             <div class="flex items-center justify-between border-t border-slate-900 pt-4">
-                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Search Privacy</h4><p class="text-xs text-slate-500 mt-0.5">Hide data architecture, vectors and custom boards array fields from standard public search indexing engines like Google.</p></div>
+                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Search Privacy</h4><p class="text-xs text-slate-500 mt-0.5">Hide architecture arrays from search indexing engines.</p></div>
                                 <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" id="tglSearch" onchange="toggleProfileVisibilityState('searchPrivacy')" ${profile.searchPrivacy?'checked':''} class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
                             </div>
                         </div>`;
@@ -320,7 +317,7 @@
                 case 'refine':
                     content.innerHTML = `
                         <h2 class="text-2xl font-bold text-white mb-2">Refine recommendations</h2>
-                        <p class="text-xs text-slate-400 mb-6">Modify details LUSSO algorithms utilize to stream custom high-resolution items to your matrix.</p>
+                        <p class="text-xs text-slate-400 mb-6">Modify details LUSSO algorithms utilize to stream custom high-resolution items.</p>
                         <div class="flex gap-4 border-b border-slate-900 pb-2 mb-6"><button class="text-xs font-bold text-amber-500 border-b-2 border-amber-500 pb-2">AI content Tuning</button><button onclick="triggerNotificationToast('History clean')" class="text-xs font-bold text-slate-500 pb-2">History Active</button></div>
                         <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
                             ${['Architecture', 'Cyberpunk Art', 'Dark Samurai Vibe', 'Tech Hardware Design', 'Gaming Setups Matrix', 'Minimalist Vectors'].map(topic => `
@@ -397,7 +394,6 @@
             }
         }
 
-        /* --- STATE COLLECTION AND FORM PROCESSORS --- */
         function saveEditProfileForm() {
             profile.name = document.getElementById('setNameInput').value;
             profile.about = document.getElementById('setAboutInput').value;
@@ -419,7 +415,6 @@
             saveConfigStateMatrix();
         }
 
-        /* --- CORE APP LOADER & DATA FLOWS --- */
         async function initializeApplicationDataEngine() {
             try {
                 const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
