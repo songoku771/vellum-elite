@@ -6,7 +6,7 @@
     <title>LUSSO | Premium Luxury Matrix Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=500;700&family=Cinzel:wght=600;800&display=swap" rel="stylesheet">
     
     <style>
         body { 
@@ -17,14 +17,23 @@
             min-height: 100vh;
         }
         
-        .lusso-masonry-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+        /* TRUE PINTEREST MASONRY GRID LAYOUT */
+        .pinterest-masonry {
+            column-count: 2;
+            column-gap: 16px;
+            width: 100%;
         }
-        @media (min-width: 640px) { .lusso-masonry-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
-        @media (min-width: 1024px) { .lusso-masonry-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-        @media (min-width: 1280px) { .lusso-masonry-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+        @media (min-width: 640px) { .pinterest-masonry { column-count: 3; column-gap: 20px; } }
+        @media (min-width: 1024px) { .pinterest-masonry { column-count: 4; } }
+        @media (min-width: 1280px) { .pinterest-masonry { column-count: 5; } }
+
+        /* Prevent column breaking inside items */
+        .pinterest-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            display: inline-block;
+            width: 100%;
+        }
 
         .filter-normal { filter: none; }
         .filter-grayscale { filter: grayscale(100%); }
@@ -156,7 +165,7 @@
                 </div>
 
                 <main class="max-w-[1600px] mx-auto px-6 md:px-8 pb-24 w-full mt-8 flex-1">
-                    <div id="wallpaperContainer" class="lusso-masonry-grid"></div>
+                    <div id="wallpaperContainer" class="pinterest-masonry"></div>
                 </main>
             </div>
 
@@ -181,7 +190,7 @@
                 </div>
 
                 <div class="max-w-[1600px] mx-auto w-full">
-                    <div id="tabContent-pins" class="lusso-masonry-grid"></div>
+                    <div id="tabContent-pins" class="pinterest-masonry"></div>
 
                     <div id="tabContent-boards" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
                 </div>
@@ -238,7 +247,7 @@
 
                 <div class="max-w-6xl mx-auto w-full mt-12 border-t border-white/5 pt-8">
                     <h3 class="text-xs font-black tracking-wider text-slate-400 uppercase mb-4">More From This Collection</h3>
-                    <div id="relatedWallpapersGrid" class="lusso-masonry-grid"></div>
+                    <div id="relatedWallpapersGrid" class="pinterest-masonry"></div>
                 </div>
             </div>
 
@@ -302,10 +311,12 @@
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // GLOBAL CONFIG & BUG FIXES DEFINITION
         let allWallpapers = []; 
         let selectedCat = 'all';
         let currentOpenAssetId = null;
         let navigationStackHistory = [];
+        let base64ImageStringData = ""; // FIXED: Declared globally to fix crash during local deployment!
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('lusso_liked_ids')) || [];
         let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_custom_boards')) || {
@@ -427,22 +438,24 @@
             } catch (e) { console.error(e); }
         }
 
+        // UPDATED FOR EXACT VERTICAL STAGGERED SIZE (PINTEREST MASONRY FLOW)
         function renderWallpapersFeedItems(list) {
             const c = document.getElementById('wallpaperContainer'); c.innerHTML = '';
             if(list.length === 0) { c.innerHTML = `<p class="col-span-full py-12 text-center text-xs text-slate-500 font-bold uppercase tracking-widest">No matching assets in LUSSO array</p>`; return; }
+            
             list.forEach(wp => {
                 const isLiked = likedWallpaperIds.includes(wp.id.toString());
                 const el = document.createElement('div');
-                el.className = "flex flex-col relative w-full group transition-all duration-200 hover:scale-[1.01]";
+                el.className = "pinterest-item group transition-all duration-200 hover:scale-[1.01]";
                 el.innerHTML = `
-                    <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-900 border border-white/5">
-                        <img src="${wp.image_url}" onclick="openPinterestDetailView('${wp.id}', true)" class="w-full h-full object-cover cursor-pointer">
-                        <button onclick="toggleAssetLikeNode(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-white/10 z-10 hover:bg-black/90">
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-neutral-900 border border-white/5">
+                        <img src="${wp.image_url}" onclick="openPinterestDetailView('${wp.id}', true)" class="w-full h-auto object-cover cursor-pointer block">
+                        <button onclick="toggleAssetLikeNode(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-white/10 z-10 hover:bg-black/90 transition-all opacity-100 sm:opacity-0 group-hover:opacity-100">
                             <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
                         </button>
-                    </div>
-                    <div class="pt-2 px-1" onclick="openPinterestDetailView('${wp.id}', true)">
-                        <h3 class="text-xs font-bold text-slate-300 truncate tracking-wide cursor-pointer">${wp.title}</h3>
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-3 pt-8 transform translate-y-2 opacity-100 sm:opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all pointer-events-none">
+                            <h3 class="text-xs font-bold text-white truncate tracking-wide">${wp.title}</h3>
+                        </div>
                     </div>`;
                 c.appendChild(el);
             });
@@ -476,8 +489,8 @@
             let items = allWallpapers.filter(w => w.category && category && w.category.toLowerCase() === category.toLowerCase() && w.id.toString() !== currentId.toString());
             items.slice(0, 4).forEach(wp => {
                 container.innerHTML += `
-                    <div class="relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-neutral-900 border border-white/5">
-                        <img src="${wp.image_url}" onclick="openPinterestDetailView('${wp.id}', false)" class="w-full h-full object-cover cursor-pointer">
+                    <div class="pinterest-item rounded-xl overflow-hidden bg-neutral-900 border border-white/5">
+                        <img src="${wp.image_url}" onclick="openPinterestDetailView('${wp.id}', false)" class="w-full h-auto object-cover cursor-pointer block">
                     </div>`;
             });
         }
@@ -496,7 +509,7 @@
             if(!localStorage.getItem('lusso_logged_user')) { openAuthModal(); return; }
             toggleSavedProfileTabs('pins');
 
-            // TAB 1: PINS
+            // TAB 1: PINS (MASONRY COMPLIANT)
             const pinsContainer = document.getElementById('tabContent-pins'); pinsContainer.innerHTML = "";
             const favoritePins = allWallpapers.filter(w => likedWallpaperIds.includes(w.id.toString()));
             if(favoritePins.length === 0) {
@@ -504,8 +517,8 @@
             } else {
                 favoritePins.forEach(w => {
                     pinsContainer.innerHTML += `
-                        <div class="rounded-xl overflow-hidden aspect-[3/4] border border-white/5 bg-neutral-900 shadow-md hover:scale-[1.01] transition-transform">
-                            <img src="${w.image_url}" class="w-full h-full object-cover cursor-pointer" onclick="openPinterestDetailView('${w.id}', true)">
+                        <div class="pinterest-item rounded-xl overflow-hidden border border-white/5 bg-neutral-900 shadow-md hover:scale-[1.01] transition-transform">
+                            <img src="${w.image_url}" class="w-full h-auto object-cover cursor-pointer block" onclick="openPinterestDetailView('${w.id}', true)">
                         </div>`;
                 });
             }
@@ -559,7 +572,7 @@
         function processFileSelection(input) {
             if (input.files && input.files[0]) {
                 const r = new FileReader(); r.onload = function(e) {
-                    base64ImageStringData = e.target.result;
+                    base64ImageStringData = e.target.result; // Working correctly now
                     document.getElementById('fileUploadPromptContainer').classList.add('hidden');
                     const preview = document.getElementById('uploadLivePreviewDisplay'); preview.src = base64ImageStringData; preview.classList.remove('hidden');
                 }; r.readAsDataURL(input.files[0]);
@@ -571,13 +584,15 @@
             const title = document.getElementById('userUploadTitle').value;
             const cat = document.getElementById('userUploadCategory').value;
 
+            if(!base64ImageStringData) { alert("Please select an image first!"); return; }
+
             const newAsset = { id: "local_" + Date.now().toString(), title: title, category: cat, image_url: base64ImageStringData, views: 0, downloads: 0 };
             let locals = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
             locals.unshift(newAsset); localStorage.setItem('lusso_local_items', JSON.stringify(locals));
             
             timelineNotificationUpdates.unshift({ id: Date.now(), title: `Ingested Asset Matrix: ${title}`, date: "June 09, 2026" });
 
-            e.target.reset(); closeLeftSlideUploadModal(); showToast("Asset synchronized safely.");
+            e.target.reset(); base64ImageStringData = ""; closeLeftSlideUploadModal(); showToast("Asset synchronized safely.");
             fetchWallpapersFromDatabase(); showSection('dashboard');
         }
 
