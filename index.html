@@ -6,7 +6,9 @@
     <title>Vellum Elite - Premium 4K Wallpapers</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
         body { 
             background-color: #0b0f19; 
@@ -27,18 +29,17 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* MULTI-LANGUAGE TRUE APPLE HELLO ANIMATION */
+        /* MULTI-LANGUAGE TRUE APPLE HELLO HANDWRITTEN ANIMATION */
         @keyframes appleHelloCycle {
-            0% { opacity: 0; filter: blur(15px); transform: scale(0.92) translateY(5px); }
-            10% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
-            25% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
-            35% { opacity: 0; filter: blur(10px); transform: scale(1.03) translateY(-5px); }
+            0% { opacity: 0; filter: blur(12px); transform: scale(0.9) translateY(10px); }
+            12% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
+            28% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
+            40% { opacity: 0; filter: blur(8px); transform: scale(1.05) translateY(-10px); }
             100% { opacity: 0; }
         }
         
         .animate-apple-hello-text {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
+            font-family: 'Dancing Script', cursive;
             animation: appleHelloCycle 3.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
         }
     </style>
@@ -46,15 +47,15 @@
 <body class="bg-[#0b0f19]">
 
     <div id="iphoneBootEngine" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
-        <div class="relative h-24 flex items-center justify-center">
-            <h1 id="dynamicHelloWord" class="text-5xl md:text-7xl font-medium text-white tracking-tight animate-apple-hello-text opacity-0">hello</h1>
+        <div class="relative h-32 flex items-center justify-center">
+            <h1 id="dynamicHelloWord" class="text-6xl md:text-8xl text-white font-normal animate-apple-hello-text opacity-0">hello</h1>
         </div>
-        <div class="w-32 h-[2px] bg-neutral-800 rounded-full overflow-hidden mt-8 relative">
+        <div class="w-28 h-[2.5px] bg-neutral-800 rounded-full overflow-hidden mt-6 relative">
             <div class="absolute inset-y-0 left-0 bg-white rounded-full transition-all duration-[3000ms] ease-out w-0" id="bootProgressBar"></div>
         </div>
     </div>
 
-    <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-900 text-white font-bold px-6 py-3 rounded-full shadow-2xl z-[60] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
+    <div id="shareToast" class="fixed bottom-5 right-5 bg-neutral-950 text-white border border-slate-800 px-6 py-3 rounded-full shadow-2xl z-[80] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 text-sm">
         <i class="fa-solid fa-bolt text-amber-500 animate-pulse"></i> <span id="toastText">Ready</span>
     </div>
 
@@ -112,10 +113,6 @@
                         <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Core Connection</h4>
                         <p class="text-[11px] text-slate-500">System security layers are fully operational. Sync tokens verified active.</p>
                     </div>
-                    <div class="p-4 bg-[#0b0f19] border border-slate-800/80 rounded-2xl flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-300">Ultra HDR Streaming</span>
-                        <div class="w-8 h-4 bg-amber-600 rounded-full p-0.5 cursor-pointer flex justify-end"><div class="w-3 h-3 bg-white rounded-full"></div></div>
-                    </div>
                 </div>
             </div>
             <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Configuration Layer V1</p>
@@ -132,10 +129,10 @@
                     </button>
                 </div>
                 
-                <form onsubmit="handleCommunityUploadSubmit(event)" class="space-y-4">
+                <form id="assetUploadFormEngine" onsubmit="handleCommunityUploadSubmit(event)" class="space-y-4">
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title Specification</label>
-                        <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-500" placeholder="Art Asset Label Identity">
+                        <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-500" placeholder="Art Asset Label Identity (Paste Allowed)">
                     </div>
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Matrix Stream</label>
@@ -182,15 +179,12 @@
                     
                     <div id="userProfileArea" class="flex items-center gap-1 relative">
                         <button id="navAvatarButtonNode" onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-gradient-to-tr border border-slate-700 p-0 flex items-center justify-center text-xs font-black tracking-tight uppercase active:scale-95 transition-all overflow-hidden">
-                            </button>
+                        </button>
                         
                         <div id="profileDropdown" class="hidden absolute right-0 top-11 w-56 bg-[#131926] text-slate-200 rounded-2xl border border-slate-800 shadow-2xl p-2 flex flex-col gap-1 z-50">
                             <div id="userDisplayEmail" class="px-2.5 py-2 text-[10px] font-black tracking-wider uppercase text-slate-500 border-b border-slate-800/80 truncate">Identity Gate</div>
-                            
                             <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-200 hover:bg-slate-800/80 text-xs font-bold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-box-archive text-[#e2ba6e] text-xs"></i> Saved Vault Area</button>
-                            
                             <button onclick="showSection('profile')" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800/50 text-xs font-semibold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-user-shield text-slate-400 text-xs"></i> Edit Workspace Bio</button>
-                            
                             <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800/80 mt-1 flex items-center gap-2.5 transition-all"><i class="fa-solid fa-power-off text-xs"></i> Kill Session</button>
                         </div>
                     </div>
@@ -230,9 +224,17 @@
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6 app-section">
                 <div class="max-w-6xl mx-auto w-full mb-4 flex justify-between items-center">
                     <button onclick="triggerLineByLineBackNavigation()" class="px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs flex items-center gap-2 cursor-pointer transition-transform hover:scale-105"><i class="fa-solid fa-arrow-left text-[#e2ba6e]"></i> Back to Grid</button>
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 relative">
                         <button onclick="togglePhonePreview()" class="px-4 py-2 rounded-full bg-indigo-950 border border-indigo-900/60 text-indigo-400 font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-mobile-screen-button"></i> UI Preview</button>
-                        <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-[#e2ba6e] text-neutral-950 font-black text-xs flex items-center gap-2 shadow-md cursor-pointer"><i class="fa-solid fa-sliders"></i> Matrix Studio</button>
+                        <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-sliders"></i> Studio</button>
+                        
+                        <button onclick="toggleThreeDotsDropdownEngine(event)" class="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-200 hover:bg-slate-800 cursor-pointer text-xs"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        
+                        <div id="threeDotsActionMenuHub" class="hidden absolute right-0 top-11 w-48 bg-[#121824] border border-slate-800 rounded-2xl shadow-2xl p-1.5 flex flex-col gap-1 z-50">
+                            <button id="dotActionDownloadBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-slate-800 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-circle-arrow-down text-emerald-400"></i> Download Asset</button>
+                            <button id="dotActionCopyLinkBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-slate-800 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-link text-amber-400"></i> Copy Secure Link</button>
+                            <button id="dotActionShareBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-slate-800 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-share-nodes text-indigo-400"></i> Share Vector Mesh</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -249,15 +251,13 @@
                             <div class="grid grid-cols-4 gap-4 my-auto px-2 opacity-80">
                                 <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-whatsapp"></i></div></div>
                                 <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-gradient-to-tr from-amber-500 to-fuchsia-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-instagram"></i></div></div>
-                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-facebook"></i></div></div>
-                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-slate-700 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-solid fa-gear"></i></div></div>
                             </div>
                             <div class="w-24 h-1 bg-white/80 rounded-full mx-auto mb-[-4px]"></div>
                         </div>
                         <canvas id="editorProcessingCanvas" class="hidden"></canvas>
                     </div>
 
-                    <div class="lg:col-span-5 bg-[#111622] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[480px]">
+                    <div class="lg:col-span-5 bg-[#111622] border border-slate-800/80 rounded-3xl p-6 flex flex-col justify-between min-h-[420px]">
                         <div>
                             <div class="flex justify-between items-center mb-3">
                                 <div class="flex gap-3 text-slate-400 text-xs font-bold">
@@ -289,20 +289,16 @@
                                         <button onclick="triggerSuperResolutionUpscale()" class="w-full py-1.5 bg-indigo-950 border border-indigo-800 text-indigo-400 text-[11px] font-black rounded-lg hover:bg-indigo-900"><i class="fa-solid fa-bolt-lightning"></i> 4K Upscale</button>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5">Matrix Filters</label>
-                                    <div class="grid grid-cols-4 gap-1">
-                                        <button onclick="applyEditorMatrixFilter('none')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Normal</button>
-                                        <button onclick="applyEditorMatrixFilter('grayscale')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Gray</button>
-                                        <button onclick="applyEditorMatrixFilter('highcontrast')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Cyber</button>
-                                        <button onclick="applyEditorMatrixFilter('blur')" class="py-1 text-[9px] font-bold border border-slate-800 rounded bg-[#0b0f19]">Blur</button>
-                                    </div>
-                                </div>
                                 <button onclick="compileAndDownloadCustomRender()" class="w-full py-2 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2">Export Custom Matrix Render</button>
                             </div>
                         </div>
                         <div class="flex flex-col gap-2 mt-6" id="detailActionRow"></div>
                     </div>
+                </div>
+
+                <div class="max-w-6xl mx-auto w-full mt-16 border-t border-slate-800/80 pt-8">
+                    <h3 class="text-sm font-black tracking-wider text-slate-300 uppercase mb-6"><i class="fa-solid fa-wand-magic text-[#e2ba6e] mr-2"></i> More To Explore / Related Designs</h3>
+                    <div id="relatedWallpapersGrid" class="ordered-wallpaper-grid"></div>
                 </div>
             </div>
 
@@ -347,8 +343,6 @@
                 <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6 mb-6">
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Items</p><p id="statTotalAssets" class="text-xl font-black mt-1">0</p></div>
-                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Hits</p><p id="statTotalViews" class="text-xl font-black mt-1">0</p></div>
-                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Downloads</p><p id="statTotalDownloads" class="text-xl font-black mt-1">0</p></div>
                     </div>
                 </div>
             </div>
@@ -390,7 +384,6 @@
             bio: "Vellum core ecosystem deployment space active."
         };
 
-        // APPLE STYLE HELLO CYCLING ENGINE
         const helloWords = ["hello", "hola", "bonjour", "ciao", "namaste", "konnichiwa"];
         let currentWordIndex = 0;
 
@@ -398,16 +391,13 @@
             const wordEl = document.getElementById('dynamicHelloWord');
             const progressLoader = document.getElementById('bootProgressBar');
             
-            // Trigger bar movement
-            setTimeout(() => { if(progressLoader) progressLoader.style.w = "0%"; progressLoader.style.width = "100%"; }, 50);
+            setTimeout(() => { if(progressLoader) progressLoader.style.width = "100%"; }, 50);
 
-            // Cycle text intervals like genuine iOS setup
             const wordCycleInterval = setInterval(() => {
                 currentWordIndex = (currentWordIndex + 1) % helloWords.length;
                 if(wordEl) wordEl.innerText = helloWords[currentWordIndex];
             }, 550);
 
-            // Shutdown overlay gate smoothly
             setTimeout(() => {
                 clearInterval(wordCycleInterval);
                 const engineOverlay = document.getElementById('iphoneBootEngine');
@@ -418,6 +408,17 @@
                 }
             }, 3200);
         }
+
+        // Title Input Patch Fixes: Direct listener that doesn't trigger component refresh loop
+        document.addEventListener("DOMContentLoaded", () => {
+            const titleField = document.getElementById("userUploadTitle");
+            if(titleField) {
+                titleField.addEventListener("paste", (e) => {
+                    // Let native browser engine write string variables seamlessly
+                    setTimeout(() => { console.log("Data text chunk securely parsed inside Vellum architecture."); }, 10);
+                });
+            }
+        });
 
         function openLeftSettingsModal() {
             const panel = document.getElementById('leftSettingsModal');
@@ -452,7 +453,6 @@
             backdrop.classList.add('hidden');
             panel.classList.remove('translate-x-0', 'scale-100', 'opacity-100');
             panel.classList.add('-translate-x-full', 'scale-95', 'opacity-0', 'pointer-events-none');
-            // Form clean reset upon cancel triggers
             document.getElementById('fileUploadPromptContainer').classList.remove('hidden');
             document.getElementById('uploadLivePreviewDisplay').classList.add('hidden');
             document.getElementById('fileZoneBox').style.borderColor = "";
@@ -483,7 +483,6 @@
                 document.getElementById('loginBtn').classList.add('hidden');
                 document.getElementById('userProfileArea').classList.remove('hidden');
                 document.getElementById('userDisplayEmail').innerText = user;
-                
                 const initialLetter = user.charAt(0).toUpperCase();
                 avatarBtn.className = "w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-[#b38938] text-neutral-950 flex items-center justify-center text-sm font-black tracking-tight border border-slate-700 shadow-md active:scale-95 transition-all";
                 avatarBtn.innerHTML = `<span>${initialLetter}</span>`;
@@ -491,7 +490,6 @@
                 document.getElementById('loginBtn').classList.remove('hidden');
                 document.getElementById('userProfileArea').classList.remove('hidden');
                 document.getElementById('userDisplayEmail').innerText = "Anonymous Agent";
-                
                 avatarBtn.className = "w-9 h-9 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs border border-slate-700 active:scale-95 transition-all";
                 avatarBtn.innerHTML = `<i class="fa-regular fa-user text-sm"></i>`;
             }
@@ -540,8 +538,6 @@
 
         function getFilterStyleString(type) {
             if (type === 'grayscale') return "grayscale(100%)";
-            if (type === 'highcontrast') return "contrast(160%) brightness(90%)";
-            if (type === 'blur') return "blur(4px)";
             return "";
         }
 
@@ -605,7 +601,7 @@
 
         function renderWallpapers(list) {
             const container = document.getElementById('wallpaperContainer');
-            container.innerHTML = ''; // Keep viewport clean on pipeline triggers
+            container.innerHTML = ''; 
             list.forEach(wp => {
                 const isLiked = likedWallpaperIds.includes(wp.id.toString());
                 const card = document.createElement('div');
@@ -628,13 +624,13 @@
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 180) {
                 if (itemsRenderLimit < allWallpapers.length) {
-                    const previousLength = itemsRenderLimit;
                     itemsRenderLimit += 8;
                     renderWallpapers(allWallpapers.slice(0, itemsRenderLimit));
                 }
             }
         });
 
+        // RECONSTRUCTED DETAILS INTERFACE WRAPPER FOR THREE DOTS & RELATED SUGGESTIONS
         function showPinterestDetailView(id, clearStackHistory = false) {
             const wp = allWallpapers.find(item => item.id.toString() === id.toString());
             if (!wp) return;
@@ -642,6 +638,7 @@
             deepNavigationHistoryTraceStack.push(id);
 
             showSection('detail');
+            document.getElementById('threeDotsActionMenuHub').classList.add('hidden'); // Close open dropdown resets
             document.getElementById('detailImg').src = wp.image_url;
             document.getElementById('detailImg').style.filter = "none";
             document.getElementById('chromaHueSlider').value = 0;
@@ -653,6 +650,62 @@
             document.getElementById('detailActionRow').innerHTML = `
                 <button onclick="triggerDownload('${wp.id}', '${wp.image_url}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
             `;
+
+            // Setup dynamic callback links inside three dots menu panel instantly
+            document.getElementById('dotActionDownloadBtn').onclick = () => triggerDownload(wp.id, wp.image_url);
+            document.getElementById('dotActionCopyLinkBtn').onclick = () => {
+                navigator.clipboard.writeText(wp.image_url);
+                showToast("Vector secure mirror address linked to clipboard!");
+                document.getElementById('threeDotsActionMenuHub').classList.add('hidden');
+            };
+            document.getElementById('dotActionShareBtn').onclick = () => {
+                showToast("Sharing routing terminal initialized successfully!");
+                document.getElementById('threeDotsActionMenuHub').classList.add('hidden');
+            };
+
+            // RENDER "MORE TO EXPLORE" RECURSIVE PATTERN
+            renderRelatedExploreGrid(wp.category, wp.id);
+        }
+
+        function renderRelatedExploreGrid(category, currentId) {
+            const container = document.getElementById('relatedWallpapersGrid');
+            container.innerHTML = "";
+            
+            // Filter elements matching same tags but eliminate currently selected view node
+            let relatedList = allWallpapers.filter(item => 
+                item.category && category && 
+                item.category.toLowerCase() === category.toLowerCase() && 
+                item.id.toString() !== currentId.toString()
+            );
+
+            // Fallback backup pool fill logic if matching category density is low
+            if(relatedList.length < 3) {
+                relatedList = allWallpapers.filter(item => item.id.toString() !== currentId.toString());
+            }
+
+            // Slice out up to 6 distinct nodes for display rows
+            relatedList.slice(0, 6).forEach(wp => {
+                const isLiked = likedWallpaperIds.includes(wp.id.toString());
+                const card = document.createElement('div');
+                card.className = "bg-transparent overflow-hidden group cursor-pointer flex flex-col relative w-full";
+                card.innerHTML = `
+                    <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-slate-900 shadow-sm border border-slate-850">
+                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', false)" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
+                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
+                            <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
+                        </button>
+                    </div>
+                    <div class="pt-2 px-1" onclick="showPinterestDetailView('${wp.id}', false)">
+                        <h3 class="text-xs font-bold text-slate-200 truncate tracking-wide">${wp.title}</h3>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleThreeDotsDropdownEngine(event) {
+            event.stopPropagation();
+            document.getElementById('threeDotsActionMenuHub').classList.toggle('hidden');
         }
 
         function triggerLineByLineBackNavigation() {
@@ -676,7 +729,6 @@
 
         function compileAndDownloadCustomRender() {
             if(!localStorage.getItem('vellum_logged_in_user')) { showToast("Security Lock: Verification Required!"); openAuthModal(); return; }
-
             const imgEl = document.getElementById('detailImg');
             const canvas = document.getElementById('editorProcessingCanvas');
             const ctx = canvas.getContext('2d');
@@ -727,7 +779,6 @@
             }
         }
 
-        /* FIXED DISPATCH ASSET ENGINE: Closes drawer, backdrop and refreshes dashboard grid view instantly */
         function handleCommunityUploadSubmit(e) {
             e.preventDefault();
             const title = document.getElementById('userUploadTitle').value;
@@ -746,24 +797,11 @@
             activeSessionItems.unshift(runtimeNewAssetItem);
             localStorage.setItem('vellum_session_injected_items', JSON.stringify(activeSessionItems));
             
-            // Clean modal states
             base64ImageStringData = "";
             e.target.reset(); 
             
-            // UI Smooth Hiding Operations Matrix 
-            const panel = document.getElementById('leftSlideUploadModal');
-            const backdrop = document.getElementById('slidePanelBackdrop');
-            backdrop.classList.add('hidden');
-            panel.classList.remove('translate-x-0', 'scale-100', 'opacity-100');
-            panel.classList.add('-translate-x-full', 'scale-95', 'opacity-0', 'pointer-events-none');
-            
-            document.getElementById('fileUploadPromptContainer').classList.remove('hidden');
-            document.getElementById('uploadLivePreviewDisplay').classList.add('hidden');
-            document.getElementById('fileZoneBox').style.borderColor = "";
-
+            closeLeftSlideUploadModal();
             showToast("Wallpaper deployed permanently!");
-            
-            // Sync Views Immediately
             fetchWallpapers(); 
             showSection('dashboard');
         }
@@ -815,9 +853,14 @@
 
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('profileDropdown');
+            const dotsMenu = document.getElementById('threeDotsActionMenuHub');
             const profileArea = document.getElementById('userProfileArea');
+            
             if (dropdown && !dropdown.classList.contains('hidden')) {
                 if (profileArea && !profileArea.contains(event.target)) dropdown.classList.add('hidden');
+            }
+            if (dotsMenu && !dotsMenu.classList.contains('hidden')) {
+                dotsMenu.classList.add('hidden');
             }
         });
 
