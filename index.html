@@ -179,7 +179,7 @@
 
         let allAssetsDatabaseMemory = [];
         let navigationHistoryBuffer = [];
-        let selectedRawFileObject = null; // New storage handler for direct bucket transmission
+        let selectedRawFileObject = null;
         
         let profile = JSON.parse(localStorage.getItem('lusso_profile')) || { 
             name: "Tejendar Prajapati", 
@@ -208,7 +208,7 @@
             const node = document.getElementById('appGlobalToast');
             document.getElementById('toastMessageText').innerText = msg;
             node.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-            setTimeout(() => node.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'), 2500);
+            setTimeout(() => node.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'), 3000);
         }
 
         function applyAdaptiveThemeColor(hexcolor) {
@@ -277,6 +277,7 @@
             document.getElementById('formUploadTitle').value = "";
         }
 
+        // Dropdown menu toggle handler
         function toggleTopProfileDropdownMenu(e) {
             e.stopPropagation();
             const node = document.getElementById('topProfileDropdownNode');
@@ -310,7 +311,7 @@
                 case 'edit-profile':
                     content.innerHTML = `
                         <h2 class="text-2xl font-bold mb-2">Edit profile</h2>
-                        <p class="text-xs opacity-70 mb-8">Keep your personal details secure. Information verified active on grid.</p>
+                        <p class="text-xs opacity-70 mb-8">Keep your personal details secure.</p>
                         <div class="space-y-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl font-bold text-amber-500">${profile.name.charAt(0).toUpperCase()}</div>
@@ -350,14 +351,14 @@
                 case 'labs':
                     content.innerHTML = `
                         <h2 class="text-2xl font-bold mb-2">Labs Adaptive Studio Configuration</h2>
-                        <p class="text-xs opacity-70 mb-8">Experiment with dynamic color matching frameworks. Modifying background scales down typography contrast values automatically.</p>
+                        <p class="text-xs opacity-70 mb-8">Experiment with dynamic color matching frameworks.</p>
                         <div class="p-6 bg-slate-900/40 rounded-2xl border border-slate-800">
                             <label class="text-xs font-bold uppercase tracking-wider block mb-3">Select System Background Canvas Color</label>
                             <div class="flex items-center gap-4">
                                 <input type="color" id="themeColorMatrixPicker" oninput="applyAdaptiveThemeColor(this.value)" class="w-16 h-16 bg-transparent border-0 cursor-pointer" value="${profile.bgColor}">
                                 <div>
                                     <h4 class="text-xs font-bold">Real-time Hue Tracking</h4>
-                                    <p class="text-[11px] opacity-60">Contrast, side navigation trays, and sub borders recalibrate dynamically upon input changes.</p>
+                                    <p class="text-[11px] opacity-60">Contrast, side navigation trays, and sub borders recalibrate dynamically.</p>
                                 </div>
                             </div>
                         </div>`;
@@ -397,7 +398,6 @@
                 let dbData = data || [];
                 
                 let updatesAttached = localLiveUpdatesTimeline.map(u => ({ id: u.id, title: u.title, image_url: u.targetUrl }));
-                
                 allAssetsDatabaseMemory = [...updatesAttached, ...dbData];
                 
                 if(allAssetsDatabaseMemory.length === 0) {
@@ -481,7 +481,6 @@
             }
         }
 
-        // FIXED UPLOAD ENGINE MECHANISM: Capture raw binary file data structure
         function processLocalFileSelection(input) {
             if (input.files && input.files[0]) {
                 selectedRawFileObject = input.files[0];
@@ -495,7 +494,7 @@
             }
         }
 
-        // FIXED UPLOAD ENGINE MECHANISM: Direct Pipeline pushing to Supabase Bucket Storage & Database
+        // IMPROVED ERROR HANDLING FOR KAL
         async function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
             
@@ -510,21 +509,25 @@
             try {
                 submitBtn.disabled = true;
                 submitBtn.innerText = "UPLOADING TO GRID...";
-                triggerNotificationToast("Uploading asset to Supabase Server...");
+                triggerNotificationToast("Uploading asset to Supabase...");
 
-                // 1. Generate unique file name token structure
                 const fileExtension = selectedRawFileObject.name.split('.').pop();
                 const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExtension}`;
 
-                // 2. Upload Binary Payload into Supabase Storage 'wallpapers' Bucket
+                // Uploading process to 'wallpapers' storage bucket
                 const { data: storageData, error: storageError } = await supabaseClient
                     .storage
                     .from('wallpapers')
                     .upload(uniqueFileName, selectedRawFileObject);
 
-                if (storageError) throw storageError;
+                if (storageError) {
+                    // Detailed error alerts if bucket configuration is missing
+                    if (storageError.message.includes("not found")) {
+                        alert("Error: Supabase Storage me 'wallpapers' naam ka bucket nahi mila. Kripya dashboard me jaakar bucket banaye aur use public set karein!");
+                    }
+                    throw storageError;
+                }
 
-                // 3. Resolve Public Signed Domain URL Asset String
                 const { data: urlData } = supabaseClient
                     .storage
                     .from('wallpapers')
@@ -532,23 +535,21 @@
 
                 const publicImageUrl = urlData.publicUrl;
 
-                // 4. Inject structural record token inside Supabase Table Matrix
                 const { error: dbError } = await supabaseClient
                     .from('wallpapers')
                     .insert([{ title: title, image_url: publicImageUrl }]);
 
                 if (dbError) throw dbError;
 
-                triggerNotificationToast("Asset Compiled & Synchronized Successfully!");
+                triggerNotificationToast("Asset Compiled Successfully!");
                 closeLeftSliderUploadEngine();
                 
-                // 5. Hard refresh content stream state mapping
                 await initializeApplicationDataEngine(); 
                 navigateToAppSection('dashboard');
 
             } catch (err) {
-                console.error("Critical Upload Matrix Failure:", err);
-                triggerNotificationToast("Upload failed! Check console configurations.");
+                console.error("Critical Upload Failure:", err);
+                triggerNotificationToast(err.message || "Upload failed! Check configurations.");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "PUBLISH ASSET";
