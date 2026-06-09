@@ -97,7 +97,7 @@
                     <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
                     <i class="fa-solid fa-upload text-amber-500 text-xl"></i>
                 </div>
-                <button type="submit" class="w-full py-3 bg-amber-500 text-neutral-900 font-bold text-xs rounded-xl uppercase">Publish Asset</button>
+                <button type="submit" id="formSubmitBtn" class="w-full py-3 bg-amber-500 text-neutral-900 font-bold text-xs rounded-xl uppercase">Publish Asset</button>
             </form>
         </div>
 
@@ -179,7 +179,7 @@
 
         let allAssetsDatabaseMemory = [];
         let navigationHistoryBuffer = [];
-        let base64TempImageString = "";
+        let selectedRawFileObject = null; // New storage handler for direct bucket transmission
         
         let profile = JSON.parse(localStorage.getItem('lusso_profile')) || { 
             name: "Tejendar Prajapati", 
@@ -192,10 +192,9 @@
             country: "India",
             privateProfile: false,
             searchPrivacy: true,
-            bgColor: "#0b0f19" // Storing global adaptive background configuration
+            bgColor: "#0b0f19"
         };
 
-        // Interactive Notification Items linked to specific active wallpapers
         let localLiveUpdatesTimeline = [
             { id: "101", title: "Cyberpunk City Light Horizon", date: "Just Now", img: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=400&q=80", targetUrl: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=800&q=80" },
             { id: "102", title: "Dark Samurai Vibe Eclipse", date: "1h ago", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80", targetUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" }
@@ -212,12 +211,10 @@
             setTimeout(() => node.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'), 2500);
         }
 
-        // Adaptive Color Contrast Engine Engine
         function applyAdaptiveThemeColor(hexcolor) {
             profile.bgColor = hexcolor;
             localStorage.setItem('lusso_profile', JSON.stringify(profile));
             
-            // Calculate luminosity brightness factor
             const r = parseInt(hexcolor.substr(1,2),16);
             const g = parseInt(hexcolor.substr(3,2),16);
             const b = parseInt(hexcolor.substr(5,2),16);
@@ -229,7 +226,6 @@
             const borderLinesColor = isLight ? "rgba(15, 23, 42, 0.15)" : "rgba(255, 255, 255, 0.1)";
             const secondaryContainers = isLight ? "#ffffff" : "#070a13";
 
-            // Apply modifications to standard design architecture variables
             document.documentElement.style.setProperty('--bg-color', hexcolor);
             document.documentElement.style.setProperty('--text-primary', primaryTextColor);
             document.documentElement.style.setProperty('--text-secondary', secondaryTextColor);
@@ -276,7 +272,9 @@
 
         function closeLeftSliderUploadEngine() {
             document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full');
-            base64TempImageString = "";
+            selectedRawFileObject = null;
+            document.getElementById('formLiveImagePreview').classList.add('hidden');
+            document.getElementById('formUploadTitle').value = "";
         }
 
         function toggleTopProfileDropdownMenu(e) {
@@ -393,17 +391,14 @@
 
         async function initializeApplicationDataEngine() {
             try {
-                // Initialize background adaptive layout settings early
                 applyAdaptiveThemeColor(profile.bgColor);
 
                 const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 let dbData = data || [];
-                let locals = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
                 
-                // Injecting notification linked updates directly inside master stack framework cleanly
                 let updatesAttached = localLiveUpdatesTimeline.map(u => ({ id: u.id, title: u.title, image_url: u.targetUrl }));
                 
-                allAssetsDatabaseMemory = [...locals, ...updatesAttached, ...dbData];
+                allAssetsDatabaseMemory = [...updatesAttached, ...dbData];
                 
                 if(allAssetsDatabaseMemory.length === 0) {
                     allAssetsDatabaseMemory = [{ id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" }];
@@ -448,14 +443,12 @@
             renderStream(item.id);
         }
 
-        // Action Triggered when Notification Update item is tapped
         function jumpDirectToNotificationWallpaperLocation(assetId) {
             closeAllOpenDrawers();
             openImageDetailStudioView(assetId, true);
             triggerNotificationToast("Viewing notification target object.");
         }
 
-        // FIXED: Displays all remaining items to fill up the entire empty layout space beneath "More Like This"
         function renderStream(currentId) {
             const container = document.getElementById('sideCascadedStreamGrid'); container.innerHTML = "";
             let items = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString());
@@ -488,21 +481,78 @@
             }
         }
 
+        // FIXED UPLOAD ENGINE MECHANISM: Capture raw binary file data structure
         function processLocalFileSelection(input) {
             if (input.files && input.files[0]) {
+                selectedRawFileObject = input.files[0];
+                
                 const reader = new FileReader();
-                reader.onload = (e) => { base64TempImageString = e.target.result; document.getElementById('formLiveImagePreview').src = base64TempImageString; document.getElementById('formLiveImagePreview').classList.remove('hidden'); };
-                reader.readAsDataURL(input.files[0]);
+                reader.onload = (e) => { 
+                    document.getElementById('formLiveImagePreview').src = e.target.result; 
+                    document.getElementById('formLiveImagePreview').classList.remove('hidden'); 
+                };
+                reader.readAsDataURL(selectedRawFileObject);
             }
         }
 
-        function handleLocalFormUploadSubmit(e) {
+        // FIXED UPLOAD ENGINE MECHANISM: Direct Pipeline pushing to Supabase Bucket Storage & Database
+        async function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
-            const node = { id: Date.now().toString(), title: document.getElementById('formUploadTitle').value, image_url: base64TempImageString };
-            let pins = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
-            pins.unshift(node); localStorage.setItem('lusso_local_items', JSON.stringify(pins));
-            closeLeftSliderUploadEngine(); triggerNotificationToast("Asset Compiled!");
-            initializeApplicationDataEngine(); navigateToAppSection('dashboard');
+            
+            if (!selectedRawFileObject) {
+                triggerNotificationToast("Please select a wallpaper file first!");
+                return;
+            }
+
+            const title = document.getElementById('formUploadTitle').value;
+            const submitBtn = document.getElementById('formSubmitBtn');
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "UPLOADING TO GRID...";
+                triggerNotificationToast("Uploading asset to Supabase Server...");
+
+                // 1. Generate unique file name token structure
+                const fileExtension = selectedRawFileObject.name.split('.').pop();
+                const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExtension}`;
+
+                // 2. Upload Binary Payload into Supabase Storage 'wallpapers' Bucket
+                const { data: storageData, error: storageError } = await supabaseClient
+                    .storage
+                    .from('wallpapers')
+                    .upload(uniqueFileName, selectedRawFileObject);
+
+                if (storageError) throw storageError;
+
+                // 3. Resolve Public Signed Domain URL Asset String
+                const { data: urlData } = supabaseClient
+                    .storage
+                    .from('wallpapers')
+                    .getPublicUrl(uniqueFileName);
+
+                const publicImageUrl = urlData.publicUrl;
+
+                // 4. Inject structural record token inside Supabase Table Matrix
+                const { error: dbError } = await supabaseClient
+                    .from('wallpapers')
+                    .insert([{ title: title, image_url: publicImageUrl }]);
+
+                if (dbError) throw dbError;
+
+                triggerNotificationToast("Asset Compiled & Synchronized Successfully!");
+                closeLeftSliderUploadEngine();
+                
+                // 5. Hard refresh content stream state mapping
+                await initializeApplicationDataEngine(); 
+                navigateToAppSection('dashboard');
+
+            } catch (err) {
+                console.error("Critical Upload Matrix Failure:", err);
+                triggerNotificationToast("Upload failed! Check console configurations.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "PUBLISH ASSET";
+            }
         }
 
         function refreshUpdates() {
