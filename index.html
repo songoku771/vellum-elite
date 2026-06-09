@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELLUM ELITE | Premium Matrix</title>
+    <title>VELLUM ELITE | Premium System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
             min-height: 100vh;
         }
         
-        /* PREMIUM MASONRY FLOW GRID */
+        /* PREMIUM MASONRY MESH GRID */
         .pinterest-grid {
             column-count: 2;
             column-gap: 16px;
@@ -46,59 +46,90 @@
 <body class="bg-[#0b0f19] text-gray-200">
 
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
-        <span id="toastMessageText">Notification Matrix</span>
+        <span id="toastMessageText">Notification Log Matrix</span>
     </div>
 
     <div class="flex min-h-screen w-full">
         
-        <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900 z-50">
+        <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base tracking-tighter cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.3)] brand-font hover:scale-105 transition-transform">
                     VE
                 </div>
                 
-                <div class="flex flex-col items-center gap-5 w-full">
-                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/50 transition-all gap-1" title="Home">
+                <div class="flex flex-col items-center gap-6 w-full">
+                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 transition-all gap-1" title="Home">
                         <i class="fa-solid fa-house text-base"></i>
                         <span class="text-[9px] font-medium tracking-wide">Home</span>
                     </button>
 
-                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/50 transition-all gap-1" title="AI Gen">
-                        <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
-                        <span class="text-[9px] font-medium tracking-wide">AI Gen</span>
-                    </button>
-
-                    <button onclick="openUploadModalSheet()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-slate-800/50 transition-all gap-1" title="Create">
+                    <button onclick="openLeftSliderUploadEngine()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-slate-800/40 transition-all gap-1" title="Create Vector">
                         <i class="fa-solid fa-square-plus text-base"></i>
                         <span class="text-[9px] font-medium tracking-wide">Create</span>
                     </button>
 
-                    <button onclick="toggleNotificationDrawer()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/50 relative transition-all gap-1" title="Analytics">
+                    <button onclick="toggleGlobalNotificationDrawer()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 relative transition-all gap-1" title="Updates Log">
+                        <i class="fa-solid fa-bell text-base"></i>
+                        <span class="text-[9px] font-medium tracking-wide">Updates</span>
+                        <span class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                    </button>
+
+                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 transition-all gap-1" title="Analytics System">
                         <i class="fa-solid fa-chart-pie text-base"></i>
                         <span class="text-[9px] font-medium tracking-wide">Analytics</span>
-                        <span class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
                     </button>
                 </div>
             </div>
 
-            <button class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-gray-300 transition-all gap-1" title="Settings">
+            <button class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-gray-300 transition-all gap-1" title="Settings Panel">
                 <i class="fa-solid fa-gear text-base"></i>
                 <span class="text-[9px] font-medium tracking-wide">Settings</span>
             </button>
         </aside>
 
-        <div id="updatesDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-4">
+        <div id="updatesDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#070a13] border-r border-slate-900/90 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-5">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                <span class="font-bold text-xs text-gray-400 uppercase tracking-wider">Updates Engine Feed</span>
-                <button onclick="toggleNotificationDrawer()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                <span class="font-bold text-xs text-gray-400 uppercase tracking-wider">System Live Stream</span>
+                <button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="updatesTimelineWrapper" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
+        </div>
+
+        <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-6">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-4 mb-5">
+                <div class="flex flex-col">
+                    <span class="font-bold text-xs text-gray-200 uppercase tracking-widest brand-font">Upload Matrix</span>
+                    <span class="text-[9px] text-amber-500 font-semibold uppercase tracking-wider mt-0.5">Payload Generator</span>
+                </div>
+                <button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white bg-slate-900 w-7 h-7 rounded-lg flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button>
+            </div>
+
+            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-5 flex-1 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Artwork Label / Title</label>
+                        <input type="text" id="formUploadTitle" required class="w-full px-3 py-2.5 bg-[#111827] border border-slate-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-amber-500/50 transition-colors" placeholder="e.g. Dark Samurai Core">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Payload Design Source</label>
+                        <div class="relative w-full h-48 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center bg-slate-950/40 overflow-hidden cursor-pointer hover:border-amber-500/30 transition-all">
+                            <div id="formPromptUploadContainer" class="flex flex-col items-center pointer-events-none">
+                                <i class="fa-solid fa-arrow-up-from-bracket text-amber-500 text-xl mb-2"></i>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Drop or Choose Image</span>
+                            </div>
+                            <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover">
+                            <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-widest shadow-xl hover:brightness-110 transition-all">Publish Vector Asset</button>
+            </form>
         </div>
 
         <div class="flex-1 pl-20 min-w-0 flex flex-col">
             
             <header class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <div class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest hidden md:block">
+                <div onclick="forceResetToHomeGrid()" class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest cursor-pointer hidden md:block">
                     VELLUM ELITE.
                 </div>
 
@@ -107,9 +138,19 @@
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2.5 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors" placeholder="Search premium matrix designs...">
                 </div>
                 
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs brand-font shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+                <div class="flex items-center gap-2 relative">
+                    <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs brand-font shadow-[0_0_10px_rgba(245,158,11,0.1)] cursor-pointer">
                         P
+                    </div>
+
+                    <button onclick="toggleTopProfileDropdownMenu(event)" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors">
+                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                    </button>
+
+                    <div id="topProfileDropdownNode" class="hidden absolute right-0 top-10 w-44 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl py-1.5 z-50">
+                        <button onclick="triggerNotificationToast('Profile Matrix Sync Active.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide border-b border-slate-900"><i class="fa-solid fa-user-gear text-amber-500"></i> Edit Profile</button>
+                        <button onclick="navigateToAppSection('boards')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-images text-amber-500"></i> Active Boards</button>
+                        <button onclick="triggerNotificationToast('Profile Link Matrix copied!')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-arrow-up-right-from-square text-amber-500"></i> Share Profile</button>
                     </div>
                 </div>
             </header>
@@ -122,7 +163,7 @@
                 <div class="flex justify-between items-center border-b border-slate-900 pb-6 mb-6">
                     <div>
                         <h1 class="text-xl font-bold text-gray-100 brand-font">Your Saved Ideas</h1>
-                        <p class="text-[10px] text-amber-500/70 mt-1 uppercase tracking-wider font-semibold">Active Collections</p>
+                        <p class="text-[10px] text-amber-500/70 mt-1 uppercase tracking-wider font-semibold">Active Directories</p>
                     </div>
                     <button onclick="createNewCustomBoardDialog()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg hover:brightness-110 transition-all">+ Create Custom Board</button>
                 </div>
@@ -138,45 +179,21 @@
                     </div>
 
                     <div class="md:col-span-3 bg-[#070a13] border border-slate-900 rounded-xl p-5">
-                        <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-4 truncate brand-font tracking-wide">Premium Matrix Design</h2>
+                        <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-4 truncate brand-font tracking-wide">Premium Design Core</h2>
                         <div class="space-y-2">
-                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-circle-down text-amber-500 text-sm"></i> Download File</button>
-                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-folder-plus text-amber-500 text-sm"></i> Pin to Collection</button>
-                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-link text-amber-500 text-sm"></i> Copy Matrix Link</button>
+                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-circle-down text-amber-500 text-sm"></i> Download Asset</button>
+                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-folder-plus text-amber-500 text-sm"></i> Pin to Board</button>
+                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-link text-amber-500 text-sm"></i> Copy Design URL</button>
                         </div>
                     </div>
 
                     <div class="md:col-span-3">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-3 pb-1 border-b border-slate-900">Next Stream List</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-3 pb-1 border-b border-slate-900">Recommended Stream</span>
                         <div id="sideCascadedStreamGrid" class="flex flex-col gap-4 max-h-[65vh] overflow-y-auto no-scrollbar"></div>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <div id="globalUploadModalOverlay" class="fixed inset-0 bg-black/75 hidden z-[100] flex items-center justify-center p-4 transition-all duration-300 backdrop-blur-sm">
-        <div class="w-full max-w-sm bg-[#070a13] border border-slate-900 rounded-2xl shadow-2xl p-6">
-            <div class="flex items-center justify-between border-b border-slate-900 pb-3 mb-4">
-                <span class="font-bold text-xs text-gray-300 uppercase tracking-widest brand-font">Upload Premium File</span>
-                <button onclick="closeUploadModalSheet()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 tracking-wider">Artwork Label</label>
-                    <input type="text" id="formUploadTitle" required class="w-full px-3 py-2.5 bg-[#111827] border border-slate-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-amber-500/50">
-                </div>
-                <div class="relative w-full h-40 border-2 border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center bg-slate-950/40 overflow-hidden cursor-pointer">
-                    <div id="formPromptUploadContainer" class="flex flex-col items-center pointer-events-none">
-                        <i class="fa-solid fa-arrow-up-from-bracket text-amber-500 text-lg mb-1"></i>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Choose Design Payload</span>
-                    </div>
-                    <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover">
-                    <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
-                </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-widest shadow-lg hover:brightness-110 transition-all">Publish Vector</button>
-            </form>
         </div>
     </div>
 
@@ -194,8 +211,7 @@
         let localLiveUpdatesTimeline = [
             { id: 101, title: "Take a moment for yourself ❤️", date: "2d ago", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" },
             { id: 102, title: "Inspired by you", date: "3d ago", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" },
-            { id: 103, title: "You just get it", date: "4d ago", img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=80" },
-            { id: 104, title: "100% certified good taste", date: "5d ago", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&q=80" }
+            { id: 103, title: "You just get it", date: "4d ago", img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=80" }
         ];
 
         let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_boards_cache')) || {
@@ -225,31 +241,41 @@
 
         function closeAllOpenDrawers() {
             document.getElementById('updatesDrawerPanel').classList.add('-translate-x-full');
-            closeUploadModalSheet();
+            closeLeftSliderUploadEngine();
             closeAllActiveDropdowns();
         }
 
-        function toggleNotificationDrawer() {
+        function toggleGlobalNotificationDrawer() {
             const panel = document.getElementById('updatesDrawerPanel');
-            if (panel.classList.contains('-translate-x-full')) {
-                closeAllOpenDrawers(); panel.classList.remove('-translate-x-full');
-            } else { panel.classList.add('-translate-x-full'); }
+            const isOpen = !panel.classList.contains('-translate-x-full');
+            closeAllOpenDrawers();
+            if (!isOpen) panel.classList.remove('-translate-x-full');
         }
 
-        function openUploadModalSheet() {
+        function openLeftSliderUploadEngine() {
             closeAllOpenDrawers();
-            document.getElementById('globalUploadModalOverlay').classList.remove('hidden');
+            document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full');
         }
-        function closeUploadModalSheet() {
-            document.getElementById('globalUploadModalOverlay').classList.add('hidden');
+
+        function closeLeftSliderUploadEngine() {
+            document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full');
             document.getElementById('formPromptUploadContainer').classList.remove('hidden');
             document.getElementById('formLiveImagePreview').classList.add('hidden');
             document.getElementById('formUploadTitle').value = "";
             base64TempImageString = "";
         }
 
+        function toggleTopProfileDropdownMenu(e) {
+            e.stopPropagation();
+            const drop = document.getElementById('topProfileDropdownNode');
+            const hidden = drop.classList.contains('hidden');
+            closeAllActiveDropdowns();
+            if (hidden) drop.classList.remove('hidden');
+        }
+
         function closeAllActiveDropdowns() {
             document.querySelectorAll('.dropdown-menu-list').forEach(m => m.classList.add('hidden'));
+            document.getElementById('topProfileDropdownNode').classList.add('hidden');
             currentlyOpenDropdownMenuId = null;
         }
 
@@ -285,9 +311,7 @@
                     allAssetsDatabaseMemory = [
                         { id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" },
                         { id: "2", title: "Welcome to my Mind Skull", image_url: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&q=80" },
-                        { id: "3", title: "Sakura Cranium Death Art", image_url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=500&q=80" },
-                        { id: "4", title: "Cyber Crypt Alphabet System", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&q=80" },
-                        { id: "5", title: "Red Moon Vampire Eclipse", image_url: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&q=80" }
+                        { id: "3", title: "Sakura Cranium Death Art", image_url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=500&q=80" }
                     ];
                 }
 
@@ -300,7 +324,7 @@
             const container = document.getElementById('pinterestMainMasonryContainer');
             container.innerHTML = "";
             if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-slate-600 uppercase tracking-widest">No matrix data mapped</div>`;
+                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-slate-600 uppercase tracking-widest">No matching vector data tracked</div>`;
                 return;
             }
 
@@ -312,7 +336,7 @@
                         <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300">
                     </div>
                     <div class="mt-2 px-1 flex justify-between items-center relative">
-                        <span class="text-xs font-medium text-gray-300 truncate pr-2 max-w-[8%] pointer-events-none tracking-wide">${item.title}</span>
+                        <span class="text-xs font-medium text-gray-300 truncate pr-2 max-w-[85%] pointer-events-none tracking-wide">${item.title}</span>
                         <div class="relative">
                             <button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-gray-400 hover:text-white transition-colors">
                                 <i class="fa-solid fa-ellipsis text-xs"></i>
@@ -368,11 +392,6 @@
             let remainingItems = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString());
             let visibleSlice = remainingItems.slice(0, 5);
 
-            if(visibleSlice.length === 0) {
-                container.innerHTML = `<span class="text-[10px] text-slate-600 font-bold uppercase">No stream streams</span>`;
-                return;
-            }
-
             visibleSlice.forEach(item => {
                 container.innerHTML += `
                     <div class="w-full rounded-xl overflow-hidden border border-slate-900 bg-slate-950/40 group relative transition-transform duration-200 hover:scale-[1.01]">
@@ -398,7 +417,7 @@
                     <div class="bg-[#070a13] border border-slate-900 rounded-2xl p-5 flex flex-col justify-between h-40 hover:border-slate-800 transition-colors">
                         <div>
                             <h3 class="text-gray-200 font-bold text-xs truncate brand-font tracking-wide"><i class="fa-solid fa-folder text-amber-500/60 mr-2"></i> ${bName}</h3>
-                            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase tracking-wider">${list.length} Vectors Vector</p>
+                            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase tracking-wider">${list.length} Vectors Registered</p>
                         </div>
                         <button onclick="displayTargetAlbumFilteredPins('${bName}')" class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800 uppercase tracking-widest hover:bg-slate-800 transition-colors">Open Matrix</button>
                     </div>`;
@@ -407,12 +426,12 @@
 
         function pinAssetToTargetCustomBoard(id) {
             const keys = Object.keys(customUserAlbumBoards);
-            const selected = prompt(`Select Target Board Array:\n[ ${keys.join(' | ')} ]`);
+            const selected = prompt(`Select Target Board Destination:\n[ ${keys.join(' | ')} ]`);
             if (selected && customUserAlbumBoards[selected]) {
                 if (!customUserAlbumBoards[selected].includes(id.toString())) {
                     customUserAlbumBoards[selected].push(id.toString());
                     localStorage.setItem('lusso_boards_cache', JSON.stringify(customUserAlbumBoards));
-                    triggerNotificationToast(`Pinned to directory ${selected}`);
+                    triggerNotificationToast(`Pinned to ${selected}`);
                 } else { triggerNotificationToast("Asset already loaded here."); }
             } else if (selected) { triggerNotificationToast("Matrix directory error."); }
         }
@@ -422,7 +441,7 @@
             const filteredList = allAssetsDatabaseMemory.filter(w => pinnedIds.includes(w.id.toString()));
             navigateToAppSection('dashboard');
             renderPinterestGridItems(filteredList);
-            triggerNotificationToast(`Filtered Board: ${name}`);
+            triggerNotificationToast(`Board Filtered: ${name}`);
         }
 
         function createNewCustomBoardDialog() {
@@ -452,7 +471,6 @@
         function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
             const title = document.getElementById('formUploadTitle').value.trim();
-
             if (!base64TempImageString) { alert("Missing matrix design data stream."); return; }
 
             const generatedNewPinNode = {
@@ -472,8 +490,8 @@
                 img: base64TempImageString
             });
 
-            closeUploadModalSheet();
-            triggerNotificationToast("Matrix asset loaded to dashboard!");
+            closeLeftSliderUploadEngine();
+            triggerNotificationToast("Matrix asset successfully compiled!");
             initializeApplicationDataEngine();
             forceResetToHomeGrid();
         }
