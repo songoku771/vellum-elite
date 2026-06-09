@@ -3,193 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VELLUM ELITE | Premium System</title>
+    <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
     
     <style>
         body { 
             background-color: #0b0f19; 
             color: #f3f4f6; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden; /* Main window fixed, inner content scrolls */
         }
         
-        /* PREMIUM MASONRY MESH GRID */
+        /* SCROLLABLE CONTENT AREA */
+        #mainContentScrollNode {
+            height: 100vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        /* TRUE PINTEREST MASONRY FLOW */
         .pinterest-grid {
-            column-count: 2;
-            column-gap: 16px;
-            width: 100%;
+            column-count: 2; column-gap: 16px; width: 100%;
         }
         @media (min-width: 640px) { .pinterest-grid { column-count: 3; } }
         @media (min-width: 1024px) { .pinterest-grid { column-count: 5; } }
         @media (min-width: 1280px) { .pinterest-grid { column-count: 6; } }
 
         .pinterest-card {
-            break-inside: avoid;
-            margin-bottom: 16px;
-            display: inline-block;
-            width: 100%;
+            break-inside: avoid; margin-bottom: 16px; display: inline-block; width: 100%;
         }
 
-        .brand-font {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.1em;
-        }
+        .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
+        
+        /* Custom Scrollbar */
+        #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
+        #mainContentScrollNode::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* SETTINGS STYLE */
+        .settings-nav-btn { width: 100%; text-align: left; padding: 10px 15px; font-size: 13px; font-weight: 600; color: #94a3b8; border-radius: 8px; transition: all 0.2s; }
+        .settings-nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .settings-active { color: #fff !important; background: rgba(251, 191, 36, 0.1) !important; border-left: 3px solid #fbbf24; }
     </style>
 </head>
-<body class="bg-[#0b0f19] text-gray-200">
+<body>
 
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
-        <span id="toastMessageText">Notification Log Matrix</span>
+        <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <div class="flex min-h-screen w-full">
+    <div class="flex h-screen w-full">
         
-        <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
+        <aside class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base tracking-tighter cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.3)] brand-font hover:scale-105 transition-transform">
-                    VE
-                </div>
+                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base cursor-pointer shadow-lg brand-font hover:scale-105 transition-transform">VE</div>
                 
-                <div class="flex flex-col items-center gap-6 w-full">
-                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 transition-all gap-1" title="Home">
-                        <i class="fa-solid fa-house text-base"></i>
-                        <span class="text-[9px] font-medium tracking-wide">Home</span>
-                    </button>
-
-                    <button onclick="openLeftSliderUploadEngine()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-slate-800/40 transition-all gap-1" title="Create Vector">
-                        <i class="fa-solid fa-square-plus text-base"></i>
-                        <span class="text-[9px] font-medium tracking-wide">Create</span>
-                    </button>
-
-                    <button onclick="toggleGlobalNotificationDrawer()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 relative transition-all gap-1" title="Updates Log">
-                        <i class="fa-solid fa-bell text-base"></i>
-                        <span class="text-[9px] font-medium tracking-wide">Updates</span>
-                        <span class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
-                    </button>
-
-                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 transition-all gap-1" title="Analytics System">
-                        <i class="fa-solid fa-chart-pie text-base"></i>
-                        <span class="text-[9px] font-medium tracking-wide">Analytics</span>
-                    </button>
+                <div class="flex flex-col items-center gap-5 w-full">
+                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 transition-all gap-1"><i class="fa-solid fa-house text-base"></i><span class="text-[9px] font-medium">Home</span></button>
+                    <button onclick="openLeftSliderUploadEngine()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-slate-800/40 transition-all gap-1"><i class="fa-solid fa-square-plus text-base"></i><span class="text-[9px] font-medium">Create</span></button>
+                    <button onclick="toggleGlobalNotificationDrawer()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 relative transition-all gap-1"><i class="fa-solid fa-bell text-base"></i><span class="text-[9px] font-medium">Updates</span><span class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span></button>
+                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/40 transition-all gap-1"><i class="fa-solid fa-chart-pie text-base"></i><span class="text-[9px] font-medium">Analytics</span></button>
                 </div>
             </div>
-
-            <button class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-gray-300 transition-all gap-1" title="Settings Panel">
-                <i class="fa-solid fa-gear text-base"></i>
-                <span class="text-[9px] font-medium tracking-wide">Settings</span>
-            </button>
+            <button onclick="navigateToAppSection('settings')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 transition-all gap-1"><i class="fa-solid fa-gear text-base"></i><span class="text-[9px] font-medium">Settings</span></button>
         </aside>
 
         <div id="updatesDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#070a13] border-r border-slate-900/90 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-5">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                <span class="font-bold text-xs text-gray-400 uppercase tracking-wider">System Live Stream</span>
-                <button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="updatesTimelineWrapper" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4"><span class="font-bold text-xs text-gray-400 uppercase tracking-wider">Updates</span><button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
+            <div id="updatesTimelineWrapper" class="flex-1 overflow-y-auto space-y-3"></div>
         </div>
 
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-6">
-            <div class="flex items-center justify-between border-b border-slate-900 pb-4 mb-5">
-                <div class="flex flex-col">
-                    <span class="font-bold text-xs text-gray-200 uppercase tracking-widest brand-font">Upload Matrix</span>
-                    <span class="text-[9px] text-amber-500 font-semibold uppercase tracking-wider mt-0.5">Payload Generator</span>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-gray-200 uppercase brand-font">Upload Matrix</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
+            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
+                <div><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Title</label><input type="text" id="formUploadTitle" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs text-gray-200 outline-none"></div>
+                <div class="relative w-full h-48 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center bg-slate-950/40 cursor-pointer">
+                    <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover">
+                    <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <i class="fa-solid fa-upload text-amber-500 text-xl"></i>
                 </div>
-                <button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white bg-slate-900 w-7 h-7 rounded-lg flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button>
-            </div>
-
-            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-5 flex-1 flex flex-col justify-between">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Artwork Label / Title</label>
-                        <input type="text" id="formUploadTitle" required class="w-full px-3 py-2.5 bg-[#111827] border border-slate-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-amber-500/50 transition-colors" placeholder="e.g. Dark Samurai Core">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Payload Design Source</label>
-                        <div class="relative w-full h-48 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center bg-slate-950/40 overflow-hidden cursor-pointer hover:border-amber-500/30 transition-all">
-                            <div id="formPromptUploadContainer" class="flex flex-col items-center pointer-events-none">
-                                <i class="fa-solid fa-arrow-up-from-bracket text-amber-500 text-xl mb-2"></i>
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Drop or Choose Image</span>
-                            </div>
-                            <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover">
-                            <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-widest shadow-xl hover:brightness-110 transition-all">Publish Vector Asset</button>
+                <button type="submit" class="w-full py-3 bg-amber-500 text-neutral-900 font-bold text-xs rounded-xl uppercase">Publish Asset</button>
             </form>
         </div>
 
-        <div class="flex-1 pl-20 min-w-0 flex flex-col">
+        <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             
             <header class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <div onclick="forceResetToHomeGrid()" class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest cursor-pointer hidden md:block">
-                    VELLUM ELITE.
-                </div>
-
+                <div onclick="forceResetToHomeGrid()" class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest cursor-pointer hidden md:block">LUSSO.</div>
                 <div class="flex-1 relative max-w-xl">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2.5 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors" placeholder="Search premium matrix designs...">
+                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2.5 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none" placeholder="Search matrix...">
                 </div>
-                
                 <div class="flex items-center gap-2 relative">
-                    <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs brand-font shadow-[0_0_10px_rgba(245,158,11,0.1)] cursor-pointer">
-                        P
-                    </div>
-
-                    <button onclick="toggleTopProfileDropdownMenu(event)" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800/60 text-slate-400 hover:text-white transition-colors">
-                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
-                    </button>
-
+                    <div id="navUserInitial" onclick="navigateToAppSection('boards')" class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs cursor-pointer">T</div>
+                    <button onclick="toggleTopProfileDropdownMenu(event)" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-slate-400 transition-colors"><i class="fa-solid fa-ellipsis-vertical text-xs"></i></button>
                     <div id="topProfileDropdownNode" class="hidden absolute right-0 top-10 w-44 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl py-1.5 z-50">
-                        <button onclick="triggerNotificationToast('Profile Matrix Sync Active.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide border-b border-slate-900"><i class="fa-solid fa-user-gear text-amber-500"></i> Edit Profile</button>
-                        <button onclick="navigateToAppSection('boards')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-images text-amber-500"></i> Active Boards</button>
-                        <button onclick="triggerNotificationToast('Profile Link Matrix copied!')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-arrow-up-right-from-square text-amber-500"></i> Share Profile</button>
+                        <button onclick="navigateToAppSection('settings')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase border-b border-slate-900"><i class="fa-solid fa-user-gear text-amber-500"></i> Edit Profile</button>
+                        <button onclick="navigateToAppSection('boards')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-900 flex items-center gap-2 uppercase"><i class="fa-solid fa-images text-amber-500"></i> Active Boards</button>
                     </div>
                 </div>
             </header>
 
-            <div id="dashboardSection" class="w-full flex-1 app-view-block p-6">
+            <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
             </div>
 
-            <div id="boardsSection" class="hidden w-full flex-1 app-view-block p-8">
+            <div id="boardsSection" class="hidden w-full app-view-block p-8">
                 <div class="flex justify-between items-center border-b border-slate-900 pb-6 mb-6">
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-100 brand-font">Your Saved Ideas</h1>
-                        <p class="text-[10px] text-amber-500/70 mt-1 uppercase tracking-wider font-semibold">Active Directories</p>
-                    </div>
-                    <button onclick="createNewCustomBoardDialog()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg hover:brightness-110 transition-all">+ Create Custom Board</button>
+                    <div><h1 class="text-xl font-bold text-gray-100 brand-font" id="boardsProfileName">Tejendar Prajapati</h1><p class="text-[10px] text-amber-500/70 uppercase">Elite Collector</p></div>
+                    <button onclick="createNewCustomBoardDialog()" class="px-5 py-2.5 bg-amber-500 text-neutral-900 font-bold text-xs rounded-xl uppercase">+ Create Board</button>
                 </div>
-                <div id="customBoardsGridOutput" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+                <div class="flex gap-4 border-b border-slate-900 pb-2 mb-6"><button onclick="toggleSavedProfileTabs('pins')" id="tabBtn-pins" class="text-xs font-bold text-amber-500 border-b-2 border-amber-500 pb-2 px-2">PINS</button><button onclick="toggleSavedProfileTabs('boards')" id="tabBtn-boards" class="text-xs font-bold text-gray-400 pb-2 px-2">BOARDS</button></div>
+                <div id="tabContent-pins" class="pinterest-grid"></div>
+                <div id="tabContent-boards" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
             </div>
 
-            <div id="detailSection" class="hidden w-full flex-1 app-view-block p-6">
-                <button onclick="triggerBackNavigation()" class="mb-6 px-4 py-2 bg-slate-900 border border-slate-800 text-gray-300 font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-800 transition-all"><i class="fa-solid fa-arrow-left text-amber-500"></i> Back to Grid</button>
-                
+            <div id="detailSection" class="hidden w-full app-view-block p-6">
+                <button onclick="triggerBackNavigation()" class="mb-6 px-4 py-2 bg-slate-900 border border-slate-800 text-gray-300 font-bold text-xs rounded-xl flex items-center gap-2"><i class="fa-solid fa-arrow-left text-amber-500"></i> Back</button>
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                    <div class="md:col-span-6 bg-slate-950/40 rounded-2xl p-4 flex items-center justify-center border border-slate-900">
-                        <img id="detailPreviewImageNode" src="" class="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl">
-                    </div>
-
+                    <div class="md:col-span-6 bg-slate-950/40 rounded-2xl p-4 flex items-center justify-center border border-slate-900"><img id="detailPreviewImageNode" src="" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl"></div>
                     <div class="md:col-span-3 bg-[#070a13] border border-slate-900 rounded-xl p-5">
-                        <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-4 truncate brand-font tracking-wide">Premium Design Core</h2>
+                        <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-6 truncate brand-font">Matrix Detail</h2>
                         <div class="space-y-2">
-                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-circle-down text-amber-500 text-sm"></i> Download Asset</button>
-                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-folder-plus text-amber-500 text-sm"></i> Pin to Board</button>
-                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-link text-amber-500 text-sm"></i> Copy Design URL</button>
+                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-white/5 border border-slate-800 hover:bg-slate-800 rounded-xl flex items-center gap-3"><i class="fa-solid fa-circle-down text-amber-500"></i> Download Image</button>
+                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-white/5 border border-slate-800 hover:bg-slate-800 rounded-xl flex items-center gap-3"><i class="fa-solid fa-folder-plus text-amber-500"></i> Save to Board</button>
+                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-white/5 border border-slate-800 hover:bg-slate-800 rounded-xl flex items-center gap-3"><i class="fa-solid fa-link text-amber-500"></i> Copy Link</button>
                         </div>
                     </div>
+                    <div class="md:col-span-3"><span class="text-[10px] font-bold uppercase text-slate-500 block mb-3 border-b border-slate-900 pb-1 tracking-widest">More Like This</span><div id="sideCascadedStreamGrid" class="flex flex-col gap-4"></div></div>
+                </div>
+            </div>
 
-                    <div class="md:col-span-3">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-3 pb-1 border-b border-slate-900">Recommended Stream</span>
-                        <div id="sideCascadedStreamGrid" class="flex flex-col gap-4 max-h-[65vh] overflow-y-auto no-scrollbar"></div>
+            <div id="settingsSection" class="hidden w-full app-view-block min-h-screen bg-[#0b0f19] flex">
+                <div class="w-64 border-r border-slate-900 p-4 space-y-1 bg-[#070a13]">
+                    <button onclick="showSettingTab('edit-profile')" class="settings-nav-btn settings-active" id="sbtn-edit-profile">Edit profile</button>
+                    <button onclick="showSettingTab('account')" class="settings-nav-btn">Account management</button>
+                    <button onclick="showSettingTab('visibility')" class="settings-nav-btn">Profile visibility</button>
+                    <button onclick="showSettingTab('refine')" class="settings-nav-btn">Refine recommendations</button>
+                    <button onclick="showSettingTab('link')" class="settings-nav-btn">Link to Pinterest</button>
+                    <button onclick="showSettingTab('social')" class="settings-nav-btn">Social permissions</button>
+                    <button onclick="showSettingTab('notifications')" class="settings-nav-btn">Notifications</button>
+                    <button onclick="showSettingTab('privacy')" class="settings-nav-btn">Privacy and data</button>
+                    <button onclick="showSettingTab('security')" class="settings-nav-btn">Security</button>
+                </div>
+                <div class="flex-1 p-10 max-w-2xl">
+                    <div id="settingsTabContent">
+                        <h2 class="text-2xl font-bold text-white mb-2">Edit profile</h2>
+                        <p class="text-xs text-slate-400 mb-8">Information you add here is visible to anyone who can view your profile.</p>
+                        <div class="space-y-6">
+                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1">Photo</label><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center text-xl font-bold text-amber-500" id="settingsInitial">T</div><button class="px-4 py-2 bg-slate-800 text-xs font-bold rounded-full">Change</button></div></div>
+                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1">Name</label><input type="text" id="setNameInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none focus:border-amber-500"></div>
+                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1">About</label><textarea id="setAboutInput" rows="3" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none focus:border-amber-500" placeholder="Tell your story..."></textarea></div>
+                            <div class="flex justify-end gap-3 pt-4"><button onclick="forceResetToHomeGrid()" class="px-6 py-2 bg-slate-800 text-xs font-bold rounded-full">Reset</button><button onclick="saveLussoProfile()" class="px-6 py-2 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full">Save</button></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,31 +175,32 @@
         let allAssetsDatabaseMemory = [];
         let navigationHistoryBuffer = [];
         let base64TempImageString = "";
-        let currentlyOpenDropdownMenuId = null;
+        let profile = JSON.parse(localStorage.getItem('lusso_profile')) || { name: "Tejendar Prajapati", about: "" };
 
         let localLiveUpdatesTimeline = [
-            { id: 101, title: "Take a moment for yourself ❤️", date: "2d ago", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" },
-            { id: 102, title: "Inspired by you", date: "3d ago", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" },
-            { id: 103, title: "You just get it", date: "4d ago", img: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=80" }
+            { id: 1, title: "Cyber-Vampire Eclipse Drops", date: "Just Now", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" },
+            { id: 2, title: "Dark Samurai Mesh Sync", date: "1h ago", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" }
         ];
 
-        let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_boards_cache')) || {
-            "Wallpaper": [], "Anime wallpaper": [], "Skull wallpaper": [], "Japanese art samurai": [], "Art wallpaper": []
+        let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_boards')) || {
+            "Anime wallpaper": [], "Skull wallpaper": [], "Japanese art samurai": []
         };
 
         function triggerNotificationToast(msg) {
-            const toastNode = document.getElementById('appGlobalToast');
+            const node = document.getElementById('appGlobalToast');
             document.getElementById('toastMessageText').innerText = msg;
-            toastNode.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-            setTimeout(() => { toastNode.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'); }, 2500);
+            node.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            setTimeout(() => node.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'), 2500);
         }
 
-        function navigateToAppSection(targetViewId) {
-            document.querySelectorAll('.app-view-block').forEach(view => view.classList.add('hidden'));
-            document.getElementById(`${targetViewId}Section`).classList.remove('hidden');
-            window.scrollTo({ top: 0 });
+        function navigateToAppSection(viewId) {
+            document.querySelectorAll('.app-view-block').forEach(v => v.classList.add('hidden'));
+            document.getElementById(`${viewId}Section`).classList.remove('hidden');
+            const mainContent = document.getElementById('mainContentScrollNode');
+            if(mainContent) mainContent.scrollTop = 0;
             closeAllOpenDrawers();
-            if (targetViewId === 'boards') renderCustomUserBoardsMarkup();
+            if(viewId === 'boards') renderCustomUserBoardsMarkup();
+            if(viewId === 'settings') initSettingsFields();
         }
 
         function forceResetToHomeGrid() {
@@ -241,110 +211,99 @@
 
         function closeAllOpenDrawers() {
             document.getElementById('updatesDrawerPanel').classList.add('-translate-x-full');
-            closeLeftSliderUploadEngine();
-            closeAllActiveDropdowns();
+            document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full');
+            document.getElementById('topProfileDropdownNode').classList.add('hidden');
         }
 
         function toggleGlobalNotificationDrawer() {
             const panel = document.getElementById('updatesDrawerPanel');
-            const isOpen = !panel.classList.contains('-translate-x-full');
-            closeAllOpenDrawers();
-            if (!isOpen) panel.classList.remove('-translate-x-full');
+            const hidden = panel.classList.contains('-translate-x-full');
+            closeAllOpenDrawers(); if(hidden) panel.classList.remove('-translate-x-full');
         }
 
         function openLeftSliderUploadEngine() {
-            closeAllOpenDrawers();
-            document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full');
+            closeAllOpenDrawers(); document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full');
         }
 
         function closeLeftSliderUploadEngine() {
             document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full');
-            document.getElementById('formPromptUploadContainer').classList.remove('hidden');
-            document.getElementById('formLiveImagePreview').classList.add('hidden');
-            document.getElementById('formUploadTitle').value = "";
             base64TempImageString = "";
         }
 
         function toggleTopProfileDropdownMenu(e) {
             e.stopPropagation();
-            const drop = document.getElementById('topProfileDropdownNode');
-            const hidden = drop.classList.contains('hidden');
-            closeAllActiveDropdowns();
-            if (hidden) drop.classList.remove('hidden');
+            const node = document.getElementById('topProfileDropdownNode');
+            const hidden = node.classList.contains('hidden');
+            closeAllOpenDrawers(); if(hidden) node.classList.remove('hidden');
         }
 
-        function closeAllActiveDropdowns() {
-            document.querySelectorAll('.dropdown-menu-list').forEach(m => m.classList.add('hidden'));
-            document.getElementById('topProfileDropdownNode').classList.add('hidden');
-            currentlyOpenDropdownMenuId = null;
+        /* --- PROFILE SAVE SYSTEM --- */
+        function initSettingsFields() {
+            document.getElementById('setNameInput').value = profile.name;
+            document.getElementById('setAboutInput').value = profile.about;
         }
 
-        function refreshLiveUpdatesDrawerTimeline() {
-            const wrapper = document.getElementById('updatesTimelineWrapper');
-            wrapper.innerHTML = "";
-            localLiveUpdatesTimeline.forEach(item => {
-                wrapper.innerHTML += `
-                    <div class="p-2 bg-slate-900/40 hover:bg-slate-900 rounded-xl flex gap-3 items-center border border-slate-900 transition-colors">
-                        <img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0 bg-slate-800">
-                        <div class="min-w-0 flex-1">
-                            <h4 class="text-xs font-semibold text-gray-300 line-clamp-1">${item.title}</h4>
-                            <span class="text-[9px] font-bold text-slate-500 block mt-0.5">${item.date}</span>
-                        </div>
-                    </div>`;
-            });
+        function saveLussoProfile() {
+            profile.name = document.getElementById('setNameInput').value;
+            profile.about = document.getElementById('setAboutInput').value;
+            localStorage.setItem('lusso_profile', JSON.stringify(profile));
+            updateGlobalUI();
+            triggerNotificationToast("Profile matrix successfully saved!");
+            navigateToAppSection('boards');
         }
 
-        function executeLiveSearchQuery() {
-            const query = document.getElementById('appSearchEngineInput').value.toLowerCase().trim();
-            const filtered = allAssetsDatabaseMemory.filter(item => item.title.toLowerCase().includes(query));
-            renderPinterestGridItems(filtered);
+        function updateGlobalUI() {
+            const initial = profile.name.charAt(0).toUpperCase();
+            document.getElementById('navUserInitial').innerText = initial;
+            document.getElementById('settingsInitial').innerText = initial;
+            document.getElementById('boardsProfileName').innerText = profile.name;
         }
 
+        /* --- SETTINGS TAB --- */
+        function showSettingTab(tab) {
+            document.querySelectorAll('.settings-nav-btn').forEach(b => b.classList.remove('settings-active'));
+            const content = document.getElementById('settingsTabContent');
+            if(tab === 'edit-profile') {
+                document.getElementById('sbtn-edit-profile').classList.add('settings-active');
+                content.innerHTML = `<h2 class="text-2xl font-bold text-white mb-2">Edit profile</h2><p class="text-xs text-slate-400 mb-8">Personal details matrix.</p><div class="space-y-6"><div><label class="text-[11px] font-bold text-slate-400 block mb-1">Name</label><input type="text" id="setNameInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none" value="${profile.name}"></div><div><label class="text-[11px] font-bold text-slate-400 block mb-1">About</label><textarea id="setAboutInput" rows="3" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none">${profile.about}</textarea></div><div class="flex justify-end gap-3"><button onclick="saveLussoProfile()" class="px-6 py-2 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full">Save</button></div></div>`;
+            } else {
+                content.innerHTML = `<h2 class="text-2xl font-bold text-white mb-4 capitalize">${tab} Management</h2><div class="p-10 border border-dashed border-slate-800 rounded-2xl text-center text-xs text-slate-600 uppercase tracking-widest">This encryption layer will be unlocked in v2.0</div>`;
+            }
+        }
+
+        /* --- CORE MASONRY ENGINE --- */
         async function initializeApplicationDataEngine() {
             try {
-                const { data, error } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
+                const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 let dbData = data || [];
-                let localUploaded = JSON.parse(localStorage.getItem('lusso_local_pins')) || [];
-                allAssetsDatabaseMemory = [...localUploaded, ...dbData];
+                let locals = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
+                allAssetsDatabaseMemory = [...locals, ...dbData];
                 
                 if(allAssetsDatabaseMemory.length === 0) {
-                    allAssetsDatabaseMemory = [
-                        { id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" },
-                        { id: "2", title: "Welcome to my Mind Skull", image_url: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&q=80" },
-                        { id: "3", title: "Sakura Cranium Death Art", image_url: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=500&q=80" }
-                    ];
+                    allAssetsDatabaseMemory = [{ id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" }];
                 }
-
                 renderPinterestGridItems(allAssetsDatabaseMemory);
-                refreshLiveUpdatesDrawerTimeline();
-            } catch (err) { console.error("Database Engine Fault:", err); }
+                refreshUpdates();
+                updateGlobalUI();
+            } catch (err) { console.error(err); }
         }
 
         function renderPinterestGridItems(list) {
             const container = document.getElementById('pinterestMainMasonryContainer');
             container.innerHTML = "";
-            if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-slate-600 uppercase tracking-widest">No matching vector data tracked</div>`;
-                return;
-            }
-
             list.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "pinterest-card group relative";
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-900/60 transition-all duration-200">
-                        <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300">
-                    </div>
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/60"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300"></div>
                     <div class="mt-2 px-1 flex justify-between items-center relative">
-                        <span class="text-xs font-medium text-gray-300 truncate pr-2 max-w-[85%] pointer-events-none tracking-wide">${item.title}</span>
-                        <div class="relative">
-                            <button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-gray-400 hover:text-white transition-colors">
-                                <i class="fa-solid fa-ellipsis text-xs"></i>
-                            </button>
-                            <div id="dropdown-${item.id}" class="dropdown-menu-list hidden absolute right-0 bottom-8 w-40 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl z-50 py-1.5 transition-all">
-                                <button onclick="triggerDirectImageDownload('${item.image_url}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-circle-arrow-down text-amber-500"></i> Download</button>
-                                <button onclick="pinAssetToTargetCustomBoard('${item.id}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-folder-plus text-amber-500"></i> Pin Board</button>
-                                <button onclick="executeSecureImageLinkCopy('${item.image_url}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-link text-amber-500"></i> Copy URL</button>
+                        <span class="text-[11px] font-bold text-gray-300 truncate pr-2 max-w-[85%]">${item.title}</span>
+                        <div class="relative"><button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-gray-400 transition-colors"><i class="fa-solid fa-ellipsis text-xs"></i></button>
+                            <div id="dropdown-${item.id}" class="dropdown-menu-list hidden absolute right-0 bottom-8 w-52 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl z-[60] py-2">
+                                <button onclick="triggerNotificationToast('Algorithm refined.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase">See more like this</button>
+                                <button onclick="triggerNotificationToast('Asset hidden.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase">See less like this</button>
+                                <button onclick="window.open('${item.image_url}','_blank')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase border-t border-slate-800 mt-1"><i class="fa-solid fa-circle-arrow-down text-emerald-500"></i> Download image</button>
+                                <button onclick="triggerNotificationToast('Vector reported.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-red-400 hover:bg-red-950/20 flex items-center gap-2 uppercase"><i class="fa-solid fa-triangle-exclamation"></i> Report Pin</button>
                             </div>
                         </div>
                     </div>`;
@@ -352,151 +311,92 @@
             });
         }
 
-        function toggleCardActionDropdownMenu(e, id) {
-            e.stopPropagation();
-            const targetMenu = document.getElementById(`dropdown-${id}`);
-            const isCurrentlyHidden = targetMenu.classList.contains('hidden');
-            closeAllActiveDropdowns();
-            if (isCurrentlyHidden) {
-                targetMenu.classList.remove('hidden');
-                currentlyOpenDropdownMenuId = id;
-            }
-        }
+        function toggleCardActionDropdownMenu(e, id) { e.stopPropagation(); const node = document.getElementById(`dropdown-${id}`); const hidden = node.classList.contains('hidden'); closeAllActiveDropdowns(); if(hidden) node.classList.remove('hidden'); }
+        function closeAllActiveDropdowns() { document.querySelectorAll('.dropdown-menu-list').forEach(m => m.classList.add('hidden')); }
 
-        document.addEventListener('click', () => { closeAllActiveDropdowns(); });
-
-        function triggerDirectImageDownload(url) { window.open(url, '_blank'); triggerNotificationToast("Download payload triggered."); }
-        function executeSecureImageLinkCopy(url) { navigator.clipboard.writeText(url).then(() => triggerNotificationToast("Matrix URL verified & copied!")); }
-
+        /* --- DETAILS VIEW --- */
         function openImageDetailStudioView(id, clearHistory = false) {
             const item = allAssetsDatabaseMemory.find(w => w.id.toString() === id.toString());
             if (!item) return;
-
             if (clearHistory) navigationHistoryBuffer = [];
             navigationHistoryBuffer.push(id);
-
             navigateToAppSection('detail');
             document.getElementById('detailPreviewImageNode').src = item.image_url;
             document.getElementById('detailAssetTitleText').innerText = item.title;
-
-            document.getElementById('detailActionDownloadBtn').onclick = () => triggerDirectImageDownload(item.image_url);
-            document.getElementById('detailActionSaveBtn').onclick = () => pinAssetToTargetCustomBoard(item.id);
-            document.getElementById('detailActionShareBtn').onclick = () => executeSecureImageLinkCopy(item.image_url);
-
-            renderSideCascadeStreamEngine(item.id);
+            renderStream(item.id);
         }
 
-        function renderSideCascadeStreamEngine(currentId) {
-            const container = document.getElementById('sideCascadedStreamGrid');
-            container.innerHTML = "";
-            let remainingItems = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString());
-            let visibleSlice = remainingItems.slice(0, 5);
-
-            visibleSlice.forEach(item => {
-                container.innerHTML += `
-                    <div class="w-full rounded-xl overflow-hidden border border-slate-900 bg-slate-950/40 group relative transition-transform duration-200 hover:scale-[1.01]">
-                        <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer block">
-                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 p-2 text-[9px] font-bold text-gray-200 truncate opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider">${item.title}</div>
-                    </div>`;
+        function renderStream(currentId) {
+            const container = document.getElementById('sideCascadedStreamGrid'); container.innerHTML = "";
+            let items = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString()).slice(0, 4);
+            items.forEach(item => {
+                container.innerHTML += `<div class="w-full rounded-xl overflow-hidden border border-slate-900 bg-slate-950 group relative"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer"></div>`;
             });
         }
 
-        function triggerBackNavigation() {
-            navigationHistoryBuffer.pop();
-            if (navigationHistoryBuffer.length > 0) {
-                openImageDetailStudioView(navigationHistoryBuffer.pop(), false);
-            } else { forceResetToHomeGrid(); }
-        }
-
+        /* --- BOARDS --- */
         function renderCustomUserBoardsMarkup() {
-            const grid = document.getElementById('customBoardsGridOutput');
-            grid.innerHTML = "";
+            toggleSavedProfileTabs('pins');
+            const gBoards = document.getElementById('tabContent-boards'); gBoards.innerHTML = "";
             Object.keys(customUserAlbumBoards).forEach(bName => {
-                const list = customUserAlbumBoards[bName];
-                grid.innerHTML += `
-                    <div class="bg-[#070a13] border border-slate-900 rounded-2xl p-5 flex flex-col justify-between h-40 hover:border-slate-800 transition-colors">
-                        <div>
-                            <h3 class="text-gray-200 font-bold text-xs truncate brand-font tracking-wide"><i class="fa-solid fa-folder text-amber-500/60 mr-2"></i> ${bName}</h3>
-                            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase tracking-wider">${list.length} Vectors Registered</p>
-                        </div>
-                        <button onclick="displayTargetAlbumFilteredPins('${bName}')" class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800 uppercase tracking-widest hover:bg-slate-800 transition-colors">Open Matrix</button>
-                    </div>`;
+                gBoards.innerHTML += `<div class="bg-[#070a13] border border-slate-900 rounded-2xl p-5 flex flex-col justify-between h-40"><div><h3 class="text-gray-200 font-bold text-xs truncate brand-font">${bName}</h3><p class="text-[9px] text-slate-500 font-bold uppercase">${customUserAlbumBoards[bName].length} Pins</p></div><button class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800">Open Board</button></div>`;
             });
         }
 
-        function pinAssetToTargetCustomBoard(id) {
-            const keys = Object.keys(customUserAlbumBoards);
-            const selected = prompt(`Select Target Board Destination:\n[ ${keys.join(' | ')} ]`);
-            if (selected && customUserAlbumBoards[selected]) {
-                if (!customUserAlbumBoards[selected].includes(id.toString())) {
-                    customUserAlbumBoards[selected].push(id.toString());
-                    localStorage.setItem('lusso_boards_cache', JSON.stringify(customUserAlbumBoards));
-                    triggerNotificationToast(`Pinned to ${selected}`);
-                } else { triggerNotificationToast("Asset already loaded here."); }
-            } else if (selected) { triggerNotificationToast("Matrix directory error."); }
-        }
-
-        function displayTargetAlbumFilteredPins(name) {
-            const pinnedIds = customUserAlbumBoards[name] || [];
-            const filteredList = allAssetsDatabaseMemory.filter(w => pinnedIds.includes(w.id.toString()));
-            navigateToAppSection('dashboard');
-            renderPinterestGridItems(filteredList);
-            triggerNotificationToast(`Board Filtered: ${name}`);
-        }
-
-        function createNewCustomBoardDialog() {
-            const bName = prompt("Enter Custom Directory Target Name:");
-            if (bName && !customUserAlbumBoards[bName]) {
-                customUserAlbumBoards[bName] = [];
-                localStorage.setItem('lusso_boards_cache', JSON.stringify(customUserAlbumBoards));
-                renderCustomUserBoardsMarkup();
-                triggerNotificationToast(`Board initialized: ${bName}`);
+        function toggleSavedProfileTabs(name) {
+            document.getElementById('tabBtn-pins').className = "text-xs font-bold text-gray-400 pb-2 px-2";
+            document.getElementById('tabBtn-boards').className = "text-xs font-bold text-gray-400 pb-2 px-2";
+            document.getElementById('tabContent-pins').classList.add('hidden');
+            document.getElementById('tabContent-boards').classList.add('hidden');
+            document.getElementById(`tabBtn-${name}`).className = "text-xs font-bold text-amber-500 border-b-2 border-amber-500 pb-2 px-2";
+            document.getElementById(`tabContent-${name}`).classList.remove('hidden');
+            
+            if(name === 'pins') {
+                const pinsContainer = document.getElementById('tabContent-pins'); pinsContainer.innerHTML = "";
+                allAssetsDatabaseMemory.slice(0, 10).forEach(w => {
+                    pinsContainer.innerHTML += `<div class="pinterest-card overflow-hidden rounded-2xl border border-slate-800"><img src="${w.image_url}" class="w-full object-cover"></div>`;
+                });
             }
         }
 
+        /* --- SYSTEM HELPERS --- */
         function processLocalFileSelection(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    base64TempImageString = e.target.result;
-                    document.getElementById('formPromptUploadContainer').classList.add('hidden');
-                    const preview = document.getElementById('formLiveImagePreview');
-                    preview.src = base64TempImageString;
-                    preview.classList.remove('hidden');
-                };
+                reader.onload = (e) => { base64TempImageString = e.target.result; document.getElementById('formLiveImagePreview').src = base64TempImageString; document.getElementById('formLiveImagePreview').classList.remove('hidden'); };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
-            const title = document.getElementById('formUploadTitle').value.trim();
-            if (!base64TempImageString) { alert("Missing matrix design data stream."); return; }
-
-            const generatedNewPinNode = {
-                id: "local_asset_" + Date.now().toString(),
-                title: title,
-                image_url: base64TempImageString
-            };
-
-            let localPins = JSON.parse(localStorage.getItem('lusso_local_pins')) || [];
-            localPins.unshift(generatedNewPinNode);
-            localStorage.setItem('lusso_local_pins', JSON.stringify(localPins));
-
-            localLiveUpdatesTimeline.unshift({
-                id: Date.now(),
-                title: title,
-                date: "Just Now",
-                img: base64TempImageString
-            });
-
-            closeLeftSliderUploadEngine();
-            triggerNotificationToast("Matrix asset successfully compiled!");
-            initializeApplicationDataEngine();
-            forceResetToHomeGrid();
+            const node = { id: Date.now().toString(), title: document.getElementById('formUploadTitle').value, image_url: base64TempImageString };
+            let pins = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
+            pins.unshift(node); localStorage.setItem('lusso_local_items', JSON.stringify(pins));
+            closeLeftSliderUploadEngine(); triggerNotificationToast("Asset Compiled!");
+            initializeApplicationDataEngine(); navigateToAppSection('dashboard');
         }
 
-        window.onload = () => { initializeApplicationDataEngine(); };
+        function refreshUpdates() {
+            const wrapper = document.getElementById('updatesTimelineWrapper'); wrapper.innerHTML = "";
+            localLiveUpdatesTimeline.forEach(item => {
+                wrapper.innerHTML += `<div class="p-2 bg-slate-900/40 rounded-xl flex gap-3 items-center border border-slate-900"><img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0"><div class="min-w-0 flex-1"><h4 class="text-xs font-semibold text-gray-300 line-clamp-1">${item.title}</h4><span class="text-[9px] font-bold text-slate-500 block mt-0.5">${item.date}</span></div></div>`;
+            });
+        }
+
+        function executeLiveSearchQuery() {
+            const query = document.getElementById('appSearchEngineInput').value.toLowerCase().trim();
+            renderPinterestGridItems(allAssetsDatabaseMemory.filter(item => item.title.toLowerCase().includes(query)));
+        }
+
+        function triggerBackNavigation() {
+            navigationHistoryBuffer.pop();
+            if (navigationHistoryBuffer.length > 0) openImageDetailStudioView(navigationHistoryBuffer.pop(), false);
+            else forceResetToHomeGrid();
+        }
+
+        document.addEventListener('click', () => closeAllActiveDropdowns());
+        window.onload = () => initializeApplicationDataEngine();
     </script>
 </body>
 </html>
