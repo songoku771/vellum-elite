@@ -6,16 +6,26 @@
     <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --bg-color: #0b0f19;
+            --sidebar-color: #070a13;
+            --card-bg: #111827;
+            --text-primary: #f3f4f6;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(30, 41, 59, 0.8);
+        }
+
         body { 
-            background-color: #0b0f19; 
-            color: #f3f4f6; 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         #mainContentScrollNode {
@@ -37,12 +47,15 @@
 
         .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
         
+        /* iPhone Signature style writing font class */
+        .iphone-script-font { font-family: 'Great Vibes', cursive; letter-spacing: 0; font-weight: 500; }
+        
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
-        #mainContentScrollNode::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-        .settings-nav-btn { width: 100%; text-align: left; padding: 10px 15px; font-size: 13px; font-weight: 600; color: #94a3b8; border-radius: 8px; transition: all 0.2s; }
-        .settings-nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-        .settings-active { color: #fff !important; background: rgba(251, 191, 36, 0.1) !important; border-left: 3px solid #fbbf24; }
+        .settings-nav-btn { width: 100%; text-align: left; padding: 10px 15px; font-size: 13px; font-weight: 600; color: var(--text-secondary); border-radius: 8px; transition: all 0.2s; }
+        .settings-nav-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        .settings-active { color: #000 !important; background: #fbbf24 !important; }
 
         .toggle-checkbox:checked + .toggle-label { background-color: #fbbf24; }
         .toggle-checkbox:checked + .toggle-label .toggle-dot { transform: translateX(100%); background-color: #070a13; }
@@ -56,9 +69,9 @@
 
     <div class="flex h-screen w-full">
         
-        <aside class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
+        <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50 transition-colors duration-300">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base cursor-pointer shadow-lg brand-font hover:scale-105 transition-transform">LU</div>
+                <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font hover:scale-110 transition-transform">Lusso</div>
                 
                 <div class="flex flex-col items-center gap-5 w-full">
                     <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 transition-all gap-1"><i class="fa-solid fa-house text-base"></i><span class="text-[9px] font-medium">Home</span></button>
@@ -90,8 +103,8 @@
 
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             
-            <header class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <div onclick="forceResetToHomeGrid()" class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest cursor-pointer hidden md:block">LUSSO.</div>
+            <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60 transition-colors duration-300">
+                <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 cursor-pointer hidden md:block">Lusso</div>
                 <div class="flex-1 relative max-w-xl">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2.5 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none" placeholder="Search matrix...">
@@ -124,7 +137,7 @@
                 <button onclick="triggerBackNavigation()" class="mb-6 px-4 py-2 bg-slate-900 border border-slate-800 text-gray-300 font-bold text-xs rounded-xl flex items-center gap-2"><i class="fa-solid fa-arrow-left text-amber-500"></i> Back</button>
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
                     <div class="md:col-span-6 bg-slate-950/40 rounded-2xl p-4 flex items-center justify-center border border-slate-900"><img id="detailPreviewImageNode" src="" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl"></div>
-                    <div class="md:col-span-3 bg-[#070a13] border border-slate-900 rounded-xl p-5">
+                    <div class="md:col-span-3 bg-[#070a13] border border-slate-900 rounded-xl p-5" id="detailInteractiveControlBox">
                         <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-6 truncate brand-font">Matrix Detail</h2>
                         <div class="space-y-2">
                             <button onclick="triggerNotificationToast('Downloading pipeline processing...')" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-white/5 border border-slate-800 hover:bg-slate-800 rounded-xl flex items-center gap-3"><i class="fa-solid fa-circle-down text-amber-500"></i> Download Image</button>
@@ -136,8 +149,8 @@
                 </div>
             </div>
 
-            <div id="settingsSection" class="hidden w-full app-view-block min-h-screen bg-[#0b0f19] flex flex-col md:flex-row">
-                <div class="w-full md:w-64 border-r border-slate-900 p-4 space-y-1 bg-[#070a13] flex-shrink-0">
+            <div id="settingsSection" class="hidden w-full app-view-block min-h-screen flex flex-col md:flex-row">
+                <div id="settingsSidebarNode" class="w-full md:w-64 border-r border-slate-900 p-4 space-y-1 bg-[#070a13] flex-shrink-0 transition-colors duration-300">
                     <button onclick="showSettingTab('edit-profile')" class="settings-nav-btn settings-active" id="sbtn-edit-profile">Edit profile</button>
                     <button onclick="showSettingTab('account')" class="settings-nav-btn" id="sbtn-account">Account management</button>
                     <button onclick="showSettingTab('visibility')" class="settings-nav-btn" id="sbtn-visibility">Profile visibility</button>
@@ -178,12 +191,14 @@
             gender: "male",
             country: "India",
             privateProfile: false,
-            searchPrivacy: true
+            searchPrivacy: true,
+            bgColor: "#0b0f19" // Storing global adaptive background configuration
         };
 
+        // Interactive Notification Items linked to specific active wallpapers
         let localLiveUpdatesTimeline = [
-            { id: 1, title: "Cyber-Vampire Eclipse Drops", date: "Just Now", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" },
-            { id: 2, title: "Dark Samurai Mesh Sync", date: "1h ago", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" }
+            { id: "101", title: "Cyberpunk City Light Horizon", date: "Just Now", img: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=400&q=80", targetUrl: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=800&q=80" },
+            { id: "102", title: "Dark Samurai Vibe Eclipse", date: "1h ago", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80", targetUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" }
         ];
 
         let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_boards')) || {
@@ -195,6 +210,36 @@
             document.getElementById('toastMessageText').innerText = msg;
             node.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
             setTimeout(() => node.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4'), 2500);
+        }
+
+        // Adaptive Color Contrast Engine Engine
+        function applyAdaptiveThemeColor(hexcolor) {
+            profile.bgColor = hexcolor;
+            localStorage.setItem('lusso_profile', JSON.stringify(profile));
+            
+            // Calculate luminosity brightness factor
+            const r = parseInt(hexcolor.substr(1,2),16);
+            const g = parseInt(hexcolor.substr(3,2),16);
+            const b = parseInt(hexcolor.substr(5,2),16);
+            const yiq = ((r*299)+(g*587)+(b*114))/1000;
+            
+            const isLight = yiq >= 128;
+            const primaryTextColor = isLight ? "#0f172a" : "#f3f4f6";
+            const secondaryTextColor = isLight ? "#475569" : "#94a3b8";
+            const borderLinesColor = isLight ? "rgba(15, 23, 42, 0.15)" : "rgba(255, 255, 255, 0.1)";
+            const secondaryContainers = isLight ? "#ffffff" : "#070a13";
+
+            // Apply modifications to standard design architecture variables
+            document.documentElement.style.setProperty('--bg-color', hexcolor);
+            document.documentElement.style.setProperty('--text-primary', primaryTextColor);
+            document.documentElement.style.setProperty('--text-secondary', secondaryTextColor);
+            document.documentElement.style.setProperty('--border-color', borderLinesColor);
+
+            document.getElementById('sidebarMainNode').style.backgroundColor = secondaryContainers;
+            document.getElementById('updatesDrawerPanel').style.backgroundColor = secondaryContainers;
+            document.getElementById('premiumUploadSideDrawer').style.backgroundColor = secondaryContainers;
+            document.getElementById('settingsSidebarNode').style.backgroundColor = secondaryContainers;
+            document.getElementById('mainHeaderNode').style.backgroundColor = hexcolor + "dd";
         }
 
         function navigateToAppSection(viewId) {
@@ -225,7 +270,6 @@
             closeAllOpenDrawers(); if(hidden) panel.classList.remove('-translate-x-full');
         }
 
-        /* --- SENSITIVE IMAGES UPLOAD PROTECTION LAYER --- */
         function openLeftSliderUploadEngine() {
             closeAllOpenDrawers(); document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full');
         }
@@ -267,129 +311,62 @@
             switch(tab) {
                 case 'edit-profile':
                     content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Edit profile</h2>
-                        <p class="text-xs text-slate-400 mb-8">Keep your personal details secure. Information verified active on grid.</p>
+                        <h2 class="text-2xl font-bold mb-2">Edit profile</h2>
+                        <p class="text-xs opacity-70 mb-8">Keep your personal details secure. Information verified active on grid.</p>
                         <div class="space-y-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl font-bold text-amber-500">${profile.name.charAt(0).toUpperCase()}</div>
-                                <button onclick="triggerNotificationToast('Asset change requested')" class="px-4 py-2 bg-slate-800 text-xs font-bold rounded-full hover:bg-slate-700 transition-colors">Change Photo</button>
+                                <button onclick="triggerNotificationToast('Asset change requested')" class="px-4 py-2 bg-slate-800 text-xs font-bold rounded-full hover:bg-slate-700 transition-colors text-white">Change Photo</button>
                             </div>
-                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">Name</label><input type="text" id="setNameInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500" value="${profile.name}"></div>
-                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">About</label><textarea id="setAboutInput" rows="3" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500">${profile.about}</textarea></div>
-                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">Website URL</label><input type="text" id="setWebsiteInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500" value="${profile.website}"></div>
-                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">Username</label><input type="text" id="setCustomUsername" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-400" value="${profile.username}" readonly><p class="text-[10px] text-slate-600 mt-1">www.lusso-matrix.com/${profile.username}</p></div>
+                            <div><label class="text-[11px] font-bold block mb-1 uppercase tracking-wider">Name</label><input type="text" id="setNameInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500" value="${profile.name}"></div>
+                            <div><label class="text-[11px] font-bold block mb-1 uppercase tracking-wider">About</label><textarea id="setAboutInput" rows="3" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500">${profile.about}</textarea></div>
+                            <div><label class="text-[11px] font-bold block mb-1 uppercase tracking-wider">Website URL</label><input type="text" id="setWebsiteInput" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm outline-none text-gray-200 focus:border-amber-500" value="${profile.website}"></div>
                             <div class="flex justify-end gap-3 pt-4"><button onclick="saveEditProfileForm()" class="px-6 py-2.5 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full uppercase tracking-wider">Save Matrix</button></div>
                         </div>`;
                     break;
 
                 case 'account':
                     content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Account management</h2>
-                        <p class="text-xs text-slate-400 mb-8">Make modifications to your standard personal data configuration layers.</p>
+                        <h2 class="text-2xl font-bold mb-2">Account management</h2>
                         <div class="space-y-6">
-                            <div><label class="text-[11px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">Email - Private</label><input type="email" id="setAccEmail" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm text-gray-300 outline-none" value="${profile.email}"></div>
-                            <div class="flex items-center justify-between border-b border-slate-900 pb-4"><div><h4 class="text-sm font-bold text-gray-200">Password</h4><p class="text-xs text-slate-500">Update security entry credentials strings</p></div><button onclick="triggerNotificationToast('Recovery secure protocol sent')" class="px-4 py-2 bg-slate-800 text-xs font-bold rounded-xl">Change</button></div>
-                            <div class="flex items-center justify-between border-b border-slate-900 pb-4"><div><h4 class="text-sm font-bold text-gray-200">Convert to Business</h4><p class="text-xs text-slate-500">Unlock corporate tracking and algorithmic metrics tools</p></div><button onclick="triggerNotificationToast('Business Node Deployed')" class="px-4 py-2 bg-amber-500 text-neutral-900 text-xs font-bold rounded-xl uppercase">Convert Account</button></div>
+                            <div><label class="text-[11px] font-bold block mb-1 uppercase tracking-wider">Email - Private</label><input type="email" id="setAccEmail" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-sm text-gray-300 outline-none" value="${profile.email}"></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="text-[11px] font-bold text-slate-400 block mb-1">BIRTHDATE</label><input type="date" id="setAccBirth" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs" value="${profile.birthdate}"></div>
-                                <div><label class="text-[11px] font-bold text-slate-400 block mb-1">GENDER</label><select id="setAccGender" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs"><option value="male" ${profile.gender==='male'?'selected':''}>Male</option><option value="female" ${profile.gender==='female'?'selected':''}>Female</option><option value="non-binary" ${profile.gender==='non-binary'?'selected':''}>Non-binary</option></select></div>
+                                <div><label class="text-[11px] font-bold block mb-1">BIRTHDATE</label><input type="date" id="setAccBirth" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs text-white" value="${profile.birthdate}"></div>
+                                <div><label class="text-[11px] font-bold block mb-1">GENDER</label><select id="setAccGender" class="w-full bg-[#111827] border border-slate-800 p-2.5 rounded-xl text-xs text-white"><option value="male" ${profile.gender==='male'?'selected':''}>Male</option><option value="female" ${profile.gender==='female'?'selected':''}>Female</option></select></div>
                             </div>
-                            <div class="pt-6 border-t border-slate-900 flex justify-end"><button onclick="saveAccountManagementForm()" class="px-6 py-2.5 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full uppercase">Update Account</button></div>
+                            <div class="pt-6 flex justify-end"><button onclick="saveAccountManagementForm()" class="px-6 py-2.5 bg-amber-500 text-neutral-900 text-xs font-bold rounded-full uppercase">Update Account</button></div>
                         </div>`;
                     break;
 
                 case 'visibility':
                     content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Profile visibility</h2>
-                        <p class="text-xs text-slate-400 mb-8">Manage how your global visual profile can be discovered on or off grid.</p>
-                        <div class="space-y-6 bg-[#070a13] p-6 rounded-2xl border border-slate-900">
+                        <h2 class="text-2xl font-bold mb-2">Profile visibility</h2>
+                        <div class="space-y-6 p-6 rounded-2xl border border-slate-800/80">
                             <div class="flex items-center justify-between">
-                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Private Profile</h4><p class="text-xs text-slate-500 mt-0.5">Only nodes approved manually can monitor assets.</p></div>
-                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" id="tglPrivate" onchange="toggleProfileVisibilityState('privateProfile')" ${profile.privateProfile?'checked':''} class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
-                            </div>
-                            <div class="flex items-center justify-between border-t border-slate-900 pt-4">
-                                <div class="max-w-[80%]"><h4 class="text-sm font-bold text-gray-200">Search Privacy</h4><p class="text-xs text-slate-500 mt-0.5">Hide architecture arrays from search indexing engines.</p></div>
-                                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"><input type="checkbox" id="tglSearch" onchange="toggleProfileVisibilityState('searchPrivacy')" ${profile.searchPrivacy?'checked':''} class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
+                                <div class="max-w-[80%]"><h4 class="text-sm font-bold">Private Profile</h4><p class="text-xs opacity-60 mt-0.5">Only nodes approved manually can monitor assets.</p></div>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none"><input type="checkbox" id="tglPrivate" onchange="toggleProfileVisibilityState('privateProfile')" ${profile.privateProfile?'checked':''} class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
                             </div>
                         </div>`;
-                    break;
-
-                case 'refine':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Refine recommendations</h2>
-                        <p class="text-xs text-slate-400 mb-6">Modify details LUSSO algorithms utilize to stream custom high-resolution items.</p>
-                        <div class="flex gap-4 border-b border-slate-900 pb-2 mb-6"><button class="text-xs font-bold text-amber-500 border-b-2 border-amber-500 pb-2">AI content Tuning</button><button onclick="triggerNotificationToast('History clean')" class="text-xs font-bold text-slate-500 pb-2">History Active</button></div>
-                        <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
-                            ${['Architecture', 'Cyberpunk Art', 'Dark Samurai Vibe', 'Tech Hardware Design', 'Gaming Setups Matrix', 'Minimalist Vectors'].map(topic => `
-                                <div class="flex items-center justify-between bg-slate-950/40 border border-slate-900/60 p-3 rounded-xl">
-                                    <span class="text-xs font-bold text-gray-300 uppercase">${topic}</span>
-                                    <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in"><input type="checkbox" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div>
-                                </div>`).join('')}
-                        </div>`;
-                    break;
-
-                case 'link':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Link to Pinterest & External Syncs</h2>
-                        <p class="text-xs text-slate-400 mb-8">Claim synchronization assets tracking for cross-publishing distribution pipelines.</p>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-[#070a13] border border-slate-900 rounded-xl flex items-center justify-between"><div><h4 class="text-xs font-bold text-gray-200 uppercase tracking-wide">Instagram Module</h4><p class="text-[11px] text-slate-500">Auto-publish tracking vectors directly</p></div><button onclick="triggerNotificationToast('Oauth requested')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl">Link Link</button></div>
-                            <div class="p-4 bg-[#070a13] border border-slate-900 rounded-xl flex items-center justify-between"><div><h4 class="text-xs font-bold text-gray-200 uppercase tracking-wide">Websites Domain Vector</h4><p class="text-[11px] text-slate-500">Inject dynamic script verification tags</p></div><button onclick="triggerNotificationToast('Verification engine active')" class="px-4 py-2 bg-amber-500 text-neutral-900 text-xs font-bold rounded-xl uppercase">Claim Node</button></div>
-                        </div>`;
-                    break;
-
-                case 'social':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Social permissions</h2>
-                        <p class="text-xs text-slate-400 mb-8">Manage how other entities interact with your node profile variables.</p>
-                        <div class="space-y-6">
-                            <div><label class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wide">@Mentions Rules</label>
-                                <div class="space-y-2 bg-[#070a13] p-4 rounded-xl border border-slate-900">
-                                    <label class="flex items-center gap-3 text-xs font-medium cursor-pointer text-gray-300"><input type="radio" name="mentions" checked class="accent-amber-500"> Anyone on LUSSO Matrix Grid</label>
-                                    <label class="flex items-center gap-3 text-xs font-medium cursor-pointer text-gray-500"><input type="radio" name="mentions" class="accent-amber-500"> Only profiles you track closely</label>
-                                    <label class="flex items-center gap-3 text-xs font-medium cursor-pointer text-gray-500"><input type="radio" name="mentions" class="accent-amber-500"> Turn off mentions permanently</label>
-                                </div>
-                            </div>
-                            <div><label class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wide">Comments Settings Configuration</label>
-                                <div class="flex items-center justify-between bg-[#070a13] p-4 rounded-xl border border-slate-900"><div><h5 class="text-xs font-bold text-gray-300">Allow comments on your Pins</h5><p class="text-[11px] text-slate-500">Global algorithmic switch controller</p></div><div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in"><input type="checkbox" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-slate-700 border-4 border-slate-900 appearance-none cursor-pointer"><label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-800 cursor-pointer"></label></div></div>
-                            </div>
-                            <div class="flex justify-end"><button onclick="triggerNotificationToast('Social configuration updated')" class="px-5 py-2 bg-amber-500 text-neutral-900 font-bold text-xs rounded-full uppercase">Save Changes</button></div>
-                        </div>`;
-                    break;
-
-                case 'notifications':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Notifications System</h2>
-                        <p class="text-xs text-slate-400 mb-8">Determine which warning signals and update logs dispatch to your active station.</p>
-                        <div class="space-y-3">
-                            ${['On LUSSO platform log updates', 'By Email dispatch arrays', 'Push alert telemetry vectors'].map(item => `
-                                <div class="p-4 bg-slate-950/40 border border-slate-900 rounded-xl flex justify-between items-center"><span class="text-xs font-bold text-gray-300 uppercase">${item}</span><button onclick="triggerNotificationToast('Config channel active')" class="text-xs font-bold text-amber-500 bg-amber-500/10 px-3 py-1.5 rounded-lg border border-amber-500/30">Configure</button></div>
-                            `).join('')}
-                        </div>`;
-                    break;
-
-                case 'privacy':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Privacy and data control</h2>
-                        <p class="text-xs text-slate-400 mb-8">Review data compliance structures and analytical processing blocks.</p>
-                        <div class="bg-[#070a13] border border-slate-900 rounded-xl p-5 space-y-4">
-                            <label class="flex items-start gap-3 text-xs text-gray-400"><input type="checkbox" checked class="mt-1 accent-amber-500"> <span><strong>Use personalization records:</strong> Utilize asset histories to refine AI matrix distribution grids.</span></label>
-                            <label class="flex items-start gap-3 text-xs text-gray-400 border-t border-slate-900 pt-3"><input type="checkbox" checked class="mt-1 accent-amber-500"> <span><strong>Third-party ads coordination:</strong> Share secure hash tokens with networks to optimize system banners mapping.</span></label>
-                        </div>`;
-                    break;
-
-                case 'security':
-                    content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Security Hub</h2>
-                        <p class="text-xs text-slate-400 mb-8">Maintain cryptographic safety logs and connection token authentication schemas.</p>
-                        <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center gap-3 text-xs font-bold"><i class="fa-solid fa-shield-halved text-base"></i> 2-Factor Authentication Verified Secure On-Grid</div>`;
                     break;
 
                 case 'labs':
                     content.innerHTML = `
-                        <h2 class="text-2xl font-bold text-white mb-2">Labs Experimental Matrix</h2>
-                        <p class="text-xs text-slate-400 mb-8">Test advanced structural blueprints before global master compile routines roll out.</p>
-                        <div class="p-8 border border-dashed border-slate-800 rounded-2xl text-center text-xs text-slate-600 uppercase tracking-widest font-bold">Quantum Sync Engine Layer V2.5 under simulation protocol blocks</div>`;
+                        <h2 class="text-2xl font-bold mb-2">Labs Adaptive Studio Configuration</h2>
+                        <p class="text-xs opacity-70 mb-8">Experiment with dynamic color matching frameworks. Modifying background scales down typography contrast values automatically.</p>
+                        <div class="p-6 bg-slate-900/40 rounded-2xl border border-slate-800">
+                            <label class="text-xs font-bold uppercase tracking-wider block mb-3">Select System Background Canvas Color</label>
+                            <div class="flex items-center gap-4">
+                                <input type="color" id="themeColorMatrixPicker" oninput="applyAdaptiveThemeColor(this.value)" class="w-16 h-16 bg-transparent border-0 cursor-pointer" value="${profile.bgColor}">
+                                <div>
+                                    <h4 class="text-xs font-bold">Real-time Hue Tracking</h4>
+                                    <p class="text-[11px] opacity-60">Contrast, side navigation trays, and sub borders recalibrate dynamically upon input changes.</p>
+                                </div>
+                            </div>
+                        </div>`;
+                    break;
+
+                default:
+                    content.innerHTML = `<h2 class="text-2xl font-bold mb-2">${tab} Node Space</h2><p class="text-xs opacity-60">Standard functional variables are mapped operational.</p>`;
                     break;
             }
         }
@@ -411,16 +388,22 @@
 
         function toggleProfileVisibilityState(key) {
             if(key === 'privateProfile') profile.privateProfile = document.getElementById('tglPrivate').checked;
-            if(key === 'searchPrivacy') profile.searchPrivacy = document.getElementById('tglSearch').checked;
             saveConfigStateMatrix();
         }
 
         async function initializeApplicationDataEngine() {
             try {
+                // Initialize background adaptive layout settings early
+                applyAdaptiveThemeColor(profile.bgColor);
+
                 const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
                 let dbData = data || [];
                 let locals = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
-                allAssetsDatabaseMemory = [...locals, ...dbData];
+                
+                // Injecting notification linked updates directly inside master stack framework cleanly
+                let updatesAttached = localLiveUpdatesTimeline.map(u => ({ id: u.id, title: u.title, image_url: u.targetUrl }));
+                
+                allAssetsDatabaseMemory = [...locals, ...updatesAttached, ...dbData];
                 
                 if(allAssetsDatabaseMemory.length === 0) {
                     allAssetsDatabaseMemory = [{ id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" }];
@@ -438,14 +421,12 @@
                 const card = document.createElement('div');
                 card.className = "pinterest-card group relative";
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/60"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300"></div>
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800/60"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300"></div>
                     <div class="mt-2 px-1 flex justify-between items-center relative">
-                        <span class="text-[11px] font-bold text-gray-300 truncate pr-2 max-w-[85%]">${item.title}</span>
-                        <div class="relative"><button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-gray-400 transition-colors"><i class="fa-solid fa-ellipsis text-xs"></i></button>
+                        <span class="text-[11px] font-bold truncate pr-2 max-w-[85%]">${item.title}</span>
+                        <div class="relative"><button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800/40 text-gray-400 transition-colors"><i class="fa-solid fa-ellipsis text-xs"></i></button>
                             <div id="dropdown-${item.id}" class="dropdown-menu-list hidden absolute right-0 bottom-8 w-52 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl z-[60] py-2">
-                                <button onclick="triggerNotificationToast('Algorithm refined.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase">See more like this</button>
-                                <button onclick="triggerNotificationToast('Asset hidden.')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase">See less like this</button>
-                                <button onclick="window.open('${item.image_url}','_blank')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase border-t border-slate-800 mt-1"><i class="fa-solid fa-circle-arrow-down text-emerald-500"></i> Download image</button>
+                                <button onclick="window.open('${item.image_url}','_blank')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase"><i class="fa-solid fa-circle-arrow-down text-emerald-500"></i> Download image</button>
                             </div>
                         </div>
                     </div>`;
@@ -467,11 +448,18 @@
             renderStream(item.id);
         }
 
+        // Action Triggered when Notification Update item is tapped
+        function jumpDirectToNotificationWallpaperLocation(assetId) {
+            closeAllOpenDrawers();
+            openImageDetailStudioView(assetId, true);
+            triggerNotificationToast("Viewing notification target object.");
+        }
+
         function renderStream(currentId) {
             const container = document.getElementById('sideCascadedStreamGrid'); container.innerHTML = "";
             let items = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString()).slice(0, 4);
             items.forEach(item => {
-                container.innerHTML += `<div class="w-full rounded-xl overflow-hidden border border-slate-900 bg-slate-950 group relative"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer"></div>`;
+                container.innerHTML += `<div class="w-full rounded-xl overflow-hidden border border-slate-800/60 bg-slate-950/40 group relative"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer"></div>`;
             });
         }
 
@@ -479,7 +467,7 @@
             toggleSavedProfileTabs('pins');
             const gBoards = document.getElementById('tabContent-boards'); gBoards.innerHTML = "";
             Object.keys(customUserAlbumBoards).forEach(bName => {
-                gBoards.innerHTML += `<div class="bg-[#070a13] border border-slate-900 rounded-2xl p-5 flex flex-col justify-between h-40"><div><h3 class="text-gray-200 font-bold text-xs truncate brand-font">${bName}</h3><p class="text-[9px] text-slate-500 font-bold uppercase">${customUserAlbumBoards[bName].length} Pins</p></div><button class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800">Open Board</button></div>`;
+                gBoards.innerHTML += `<div class="bg-[#070a13] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between h-40"><div><h3 class="font-bold text-xs truncate brand-font">${bName}</h3><p class="text-[9px] text-slate-500 font-bold uppercase">${customUserAlbumBoards[bName].length} Pins</p></div><button class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800">Open Board</button></div>`;
             });
         }
 
@@ -494,7 +482,7 @@
             if(name === 'pins') {
                 const pinsContainer = document.getElementById('tabContent-pins'); pinsContainer.innerHTML = "";
                 allAssetsDatabaseMemory.slice(0, 10).forEach(w => {
-                    pinsContainer.innerHTML += `<div class="pinterest-card overflow-hidden rounded-2xl border border-slate-800"><img src="${w.image_url}" class="w-full object-cover"></div>`;
+                    pinsContainer.innerHTML += `<div class="pinterest-card overflow-hidden rounded-2xl border border-slate-800/60"><img src="${w.image_url}" class="w-full object-cover"></div>`;
                 });
             }
         }
@@ -519,7 +507,14 @@
         function refreshUpdates() {
             const wrapper = document.getElementById('updatesTimelineWrapper'); wrapper.innerHTML = "";
             localLiveUpdatesTimeline.forEach(item => {
-                wrapper.innerHTML += `<div class="p-2 bg-slate-900/40 rounded-xl flex gap-3 items-center border border-slate-900"><img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0"><div class="min-w-0 flex-1"><h4 class="text-xs font-semibold text-gray-300 line-clamp-1">${item.title}</h4><span class="text-[9px] font-bold text-slate-500 block mt-0.5">${item.date}</span></div></div>`;
+                wrapper.innerHTML += `
+                    <div onclick="jumpDirectToNotificationWallpaperLocation('${item.id}')" class="p-2 bg-slate-900/30 rounded-xl flex gap-3 items-center border border-slate-800/80 cursor-pointer hover:border-amber-500/50 transition-colors">
+                        <img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0">
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-xs font-semibold line-clamp-1">${item.title}</h4>
+                            <span class="text-[9px] font-bold text-slate-500 block mt-0.5">${item.date} • <span class="text-amber-500">View Asset</span></span>
+                        </div>
+                    </div>`;
             });
         }
 
