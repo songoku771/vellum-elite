@@ -27,7 +27,6 @@
         @media (min-width: 1024px) { .pinterest-masonry { column-count: 4; } }
         @media (min-width: 1280px) { .pinterest-masonry { column-count: 5; } }
 
-        /* Prevent column breaking inside items */
         .pinterest-item {
             break-inside: avoid;
             margin-bottom: 20px;
@@ -43,12 +42,6 @@
         .brand-font {
             font-family: 'Cinzel', serif;
             letter-spacing: 0.25em;
-        }
-
-        .glass-panel {
-            background: rgba(10, 11, 16, 0.75);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(226, 186, 110, 0.08);
         }
     </style>
 </head>
@@ -113,14 +106,14 @@
             </button>
         </aside>
 
-        <div id="updatesNotificationPanel" class="fixed inset-y-0 left-0 w-80 bg-[#06070a] border-r border-white/5 z-50 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-6">
+        <div id="updatesNotificationPanel" class="fixed inset-y-0 left-0 w-85 bg-[#06070a] border-r border-white/5 z-50 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-6">
             <div class="flex items-center justify-between border-b border-white/5 pb-4 mb-5">
                 <div class="flex items-center gap-2 font-black text-xs uppercase tracking-wider text-amber-400">
-                    <i class="fa-solid fa-bell"></i> Live Feed Updates
+                    <i class="fa-solid fa-bell animate-bounce"></i> Live Feed Updates
                 </div>
                 <button onclick="toggleUpdatesPanel()" class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-slate-400"><i class="fa-solid fa-xmark text-xs"></i></button>
             </div>
-            <div id="updatesListContainer" class="flex-1 overflow-y-auto space-y-4"></div>
+            <div id="updatesListContainer" class="flex-1 overflow-y-auto space-y-4 pr-1"></div>
         </div>
 
         <div class="flex-1 pl-24 min-w-0 flex flex-col">
@@ -191,63 +184,66 @@
 
                 <div class="max-w-[1600px] mx-auto w-full">
                     <div id="tabContent-pins" class="pinterest-masonry"></div>
-
                     <div id="tabContent-boards" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
                 </div>
             </div>
 
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-6 md:px-8 py-6 app-section">
-                <div class="max-w-6xl mx-auto w-full mb-4 flex justify-between items-center">
+                <div class="max-w-[1500px] mx-auto w-full mb-6 flex justify-between items-center">
                     <button onclick="triggerBackNavigationStack()" class="px-5 py-2.5 rounded-full bg-white/5 border border-white/5 text-slate-300 font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-arrow-left text-[#e2ba6e]"></i> Back to Grid</button>
-                    <div class="flex gap-2 relative">
+                    <div class="flex gap-2">
                         <button onclick="togglePhonePreview()" class="px-4 py-2 rounded-full bg-indigo-950/40 border border-indigo-900/60 text-indigo-400 font-bold text-xs"><i class="fa-solid fa-mobile-screen-button"></i> UI Preview</button>
                         <button onclick="toggleStudioFilterCollapsePanel()" class="px-4 py-2 rounded-full bg-white/5 text-white font-bold text-xs border border-white/5">Studio Filters</button>
-                        <button onclick="toggleThreeDotsDropdown(event)" class="w-9 h-9 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-slate-200 text-xs"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                        
-                        <div id="threeDotsActionMenuHub" class="hidden absolute right-0 top-11 w-52 bg-[#0d0f14] border border-white/10 rounded-2xl shadow-2xl p-1.5 flex flex-col gap-1 z-50">
-                            <button id="dotActionDownloadBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-circle-arrow-down text-emerald-400"></i> Download Source</button>
-                            <button id="dotActionSaveToBoardBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-folder-plus text-blue-400"></i> Save to Album Board</button>
-                            <button id="dotActionShareBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-share-nodes text-indigo-400"></i> Share Vector Options</button>
-                        </div>
                     </div>
                 </div>
                 
-                <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                    <div class="lg:col-span-7 bg-white/5 rounded-3xl border border-white/5 p-4 flex flex-col items-center justify-center relative min-h-[50vh]">
-                        <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl filter-normal transition-all duration-300">
-                        <div id="phoneSimulationWrapper" class="hidden absolute w-[250px] h-[480px] bg-black/30 border-[6px] border-neutral-800 rounded-[32px] p-4 flex flex-col justify-between pointer-events-none backdrop-blur-[2px]">
+                <div class="max-w-[1500px] mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                    
+                    <div class="md:col-span-5 bg-white/5 rounded-3xl border border-white/5 p-4 flex flex-col items-center justify-center relative min-h-[50vh]">
+                        <img id="detailImg" src="" class="max-w-full max-h-[65vh] object-contain rounded-2xl filter-normal transition-all duration-300">
+                        
+                        <div id="phoneSimulationWrapper" class="hidden absolute w-[240px] h-[460px] bg-black/30 border-[6px] border-neutral-800 rounded-[32px] p-4 flex flex-col justify-between pointer-events-none backdrop-blur-[2px]">
                             <div class="w-16 h-3.5 bg-neutral-800 rounded-full mx-auto mt-[-6px]"></div>
                             <div class="flex justify-between text-[9px] font-bold text-white/70 px-1"><span>9:41</span><div class="flex gap-1"><i class="fa-solid fa-signal"></i></div></div>
                             <div class="w-20 h-1 bg-white/60 rounded-full mx-auto mb-[-2px]"></div>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-5 bg-[#07080c] border border-white/5 rounded-3xl p-6 flex flex-col justify-between min-h-[350px]">
+                    <div class="md:col-span-3 bg-[#07080c] border border-white/5 rounded-3xl p-5 flex flex-col justify-between min-h-[380px]">
                         <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <div class="flex gap-3 text-slate-400 text-xs font-bold">
-                                    <span><i class="fa-solid fa-eye text-slate-600"></i> <span id="detailViews">0</span></span>
-                                    <span><i class="fa-solid fa-download text-slate-600"></i> <span id="detailDownloads">0</span></span>
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex gap-3 text-slate-400 text-[11px] font-bold">
+                                    <span><i class="fa-solid fa-eye text-slate-600 mr-1"></i><span id="detailViews">0</span></span>
+                                    <span><i class="fa-solid fa-download text-slate-600 mr-1"></i><span id="detailDownloads">0</span></span>
                                 </div>
-                                <span class="bg-indigo-950/50 text-indigo-400 font-black text-[9px] px-2 py-0.5 rounded border border-indigo-900/40">LUSSO CORE</span>
+                                <span class="bg-amber-950/40 text-amber-400 font-black text-[9px] px-2 py-0.5 rounded border border-amber-900/40">VIP CORE</span>
                             </div>
-                            <h2 id="detailTitleText" class="text-xl font-black text-white mb-4">Asset Architecture</h2>
+                            
+                            <h2 id="detailTitleText" class="text-base font-black text-white mb-5 truncate">Asset Architecture</h2>
 
-                            <div id="aestheticEditorControls" class="hidden mt-2 border-t border-white/5 pt-4 space-y-4">
+                            <div class="space-y-2 mb-4">
+                                <span class="text-[10px] uppercase tracking-wider font-black text-slate-500 block mb-2"><i class="fa-solid fa-ellipsis text-amber-500 mr-1"></i> Core Matrix Controls</span>
+                                <button id="dotActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 bg-white/5 border border-white/5 hover:bg-white/10 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-circle-arrow-down text-emerald-400 text-sm"></i> Download Source</button>
+                                <button id="dotActionSaveToBoardBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 bg-white/5 border border-white/5 hover:bg-white/10 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-folder-plus text-blue-400 text-sm"></i> Save to Album Board</button>
+                                <button id="dotActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 bg-white/5 border border-white/5 hover:bg-white/10 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-share-nodes text-indigo-400 text-sm"></i> Share Image URL</button>
+                            </div>
+
+                            <div id="aestheticEditorControls" class="hidden mt-2 border-t border-white/5 pt-4">
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="applyEditorMatrixFilter('none')" class="py-2 bg-neutral-900 text-white font-bold text-xs rounded-xl">Original</button>
-                                    <button onclick="applyEditorMatrixFilter('grayscale')" class="py-2 bg-neutral-900 text-slate-400 font-bold text-xs rounded-xl">Grayscale</button>
-                                    <button onclick="applyEditorMatrixFilter('vintage')" class="py-2 bg-neutral-900 text-amber-600 font-bold text-xs rounded-xl">Vintage</button>
-                                    <button onclick="applyEditorMatrixFilter('cinematic')" class="py-2 bg-neutral-900 text-emerald-500 font-bold text-xs rounded-xl">Cinematic</button>
+                                    <button onclick="applyEditorMatrixFilter('none')" class="py-2 bg-neutral-900 text-white font-bold text-[10px] rounded-xl">Original</button>
+                                    <button onclick="applyEditorMatrixFilter('grayscale')" class="py-2 bg-neutral-900 text-slate-400 font-bold text-[10px] rounded-xl">Grayscale</button>
+                                    <button onclick="applyEditorMatrixFilter('vintage')" class="py-2 bg-neutral-900 text-amber-600 font-bold text-[10px] rounded-xl">Vintage</button>
+                                    <button onclick="applyEditorMatrixFilter('cinematic')" class="py-2 bg-neutral-900 text-emerald-500 font-bold text-[10px] rounded-xl">Cinematic</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="max-w-6xl mx-auto w-full mt-12 border-t border-white/5 pt-8">
-                    <h3 class="text-xs font-black tracking-wider text-slate-400 uppercase mb-4">More From This Collection</h3>
-                    <div id="relatedWallpapersGrid" class="pinterest-masonry"></div>
+                    <div class="md:col-span-4 bg-white/[0.02] border border-white/5 rounded-3xl p-4 flex flex-col">
+                        <span class="text-[10px] uppercase tracking-widest font-black text-slate-400 mb-4 block border-b border-white/5 pb-2"><i class="fa-solid fa-layer-group text-[#e2ba6e] mr-1"></i> 1-By-1 Next Stream</span>
+                        <div id="relatedWallpapersGrid" class="flex flex-col gap-4 overflow-y-auto max-h-[60vh] pr-1"></div>
+                    </div>
+
                 </div>
             </div>
 
@@ -311,12 +307,12 @@
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // GLOBAL CONFIG & BUG FIXES DEFINITION
+        // GLOBAL CONFIG LAYER - ALL VARIABLES SECURED
         let allWallpapers = []; 
         let selectedCat = 'all';
         let currentOpenAssetId = null;
         let navigationStackHistory = [];
-        let base64ImageStringData = ""; // FIXED: Declared globally to fix crash during local deployment!
+        let base64ImageStringData = ""; 
         
         let likedWallpaperIds = JSON.parse(localStorage.getItem('lusso_liked_ids')) || [];
         let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_custom_boards')) || {
@@ -326,9 +322,10 @@
             "Art wallpaper": []
         };
 
+        // PRELOADED TIMELINE CONTEXT DATA
         let timelineNotificationUpdates = [
-            { id: 1, title: "LUSSO Premium Logo Schema Synchronized", date: "June 09, 2026" },
-            { id: 2, title: "Supabase Permanent Connection Ingested", date: "June 08, 2026" }
+            { id: 1, title: "Cyberpunk Tech Mesh Loaded", date: "June 09, 2026", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" },
+            { id: 2, title: "LUSSO Premium Studio Core Setup", date: "June 08, 2026", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" }
         ];
 
         function runLussoBootEngineSequence() {
@@ -389,7 +386,7 @@
         function showToast(msg) {
             const t = document.getElementById('shareToast'); document.getElementById('toastText').innerText = msg;
             t.classList.replace('translate-y-20', 'translate-y-0'); t.classList.replace('opacity-0', 'opacity-100');
-            setTimeout(() => { t.classList.replace('translate-y-0', 'translate-y-20'); t.classList.replace('opacity-100', 'opacity-0'); }, 2000);
+            setTimeout(() => { t.classList.replace('translate-y-0', 'translate-y-20'); t.classList.replace('opacity-100', 'opacity-0'); }, 2200);
         }
 
         function checkUserSession() {
@@ -409,13 +406,17 @@
             }
         }
 
+        // FIXED: UPDATES NOW SHOW BOTH TEXT AND IMMERSIVE IMAGES
         function populateUpdatesTimelinePanel() {
             const c = document.getElementById('updatesListContainer'); c.innerHTML = "";
             timelineNotificationUpdates.forEach(up => {
                 c.innerHTML += `
-                    <div class="p-3.5 bg-white/5 border border-white/5 rounded-xl">
-                        <h4 class="text-xs font-black text-slate-200">${up.title}</h4>
-                        <span class="text-[9px] font-bold text-slate-500 block mt-1 uppercase"><i class="fa-regular fa-calendar text-amber-500 mr-1"></i> ${up.date}</span>
+                    <div class="p-3 bg-white/5 border border-white/5 rounded-2xl flex gap-3 items-center">
+                        <img src="${up.img || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100'}" class="w-12 h-16 object-cover rounded-xl border border-white/10 flex-shrink-0 bg-neutral-950">
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-xs font-bold text-slate-200 line-clamp-2">${up.title}</h4>
+                            <span class="text-[9px] font-black text-slate-500 block mt-1 uppercase"><i class="fa-regular fa-calendar text-amber-500 mr-1"></i> ${up.date}</span>
+                        </div>
                     </div>`;
             });
         }
@@ -438,7 +439,6 @@
             } catch (e) { console.error(e); }
         }
 
-        // UPDATED FOR EXACT VERTICAL STAGGERED SIZE (PINTEREST MASONRY FLOW)
         function renderWallpapersFeedItems(list) {
             const c = document.getElementById('wallpaperContainer'); c.innerHTML = '';
             if(list.length === 0) { c.innerHTML = `<p class="col-span-full py-12 text-center text-xs text-slate-500 font-bold uppercase tracking-widest">No matching assets in LUSSO array</p>`; return; }
@@ -461,6 +461,7 @@
             });
         }
 
+        // FIXED & RESTRUCTURED: THREE COLUMN DETAILED MATRIX DEPLOYMENT
         function openPinterestDetailView(id, clearHistory = false) {
             currentOpenAssetId = id;
             const wp = allWallpapers.find(item => item.id.toString() === id.toString());
@@ -469,28 +470,45 @@
             navigationStackHistory.push(id);
 
             showSection('detail');
-            document.getElementById('threeDotsActionMenuHub').classList.add('hidden');
             const img = document.getElementById('detailImg'); img.src = wp.image_url;
 
             document.getElementById('detailTitleText').innerText = wp.title;
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
 
-            document.getElementById('dotActionDownloadBtn').onclick = () => window.open(wp.image_url, '_blank');
-            document.getElementById('dotActionSaveToBoardBtn').onclick = () => saveWallpaperToSpecificAlbumBoard(wp.id);
-            document.getElementById('dotActionShareBtn').onclick = () => {
-                navigator.clipboard.writeText(wp.image_url); showToast("Link synced to system memory!");
+            document.getElementById('dotActionDownloadBtn').onclick = () => {
+                window.open(wp.image_url, '_blank');
+                showToast("Download layer opened successfully!");
             };
+            document.getElementById('dotActionSaveToBoardBtn').onclick = () => saveWallpaperToSpecificAlbumBoard(wp.id);
+            
+            // FIXED: REAL SHARE EXECUTION ENGINE WITH TOAST INJECTED
+            document.getElementById('dotActionShareBtn').onclick = () => {
+                navigator.clipboard.writeText(wp.image_url).then(() => {
+                    showToast("Wallpaper Asset Link copied safely!");
+                }).catch(() => {
+                    showToast("Error executing clipboard array copy.");
+                });
+            };
+            
             renderRelatedCollectionGridItems(wp.category, wp.id);
         }
 
+        // FIXED: STREAM FLOWS EXACTLY 1 BY 1 VERTICAL SEQUENCE AS REQ
         function renderRelatedCollectionGridItems(category, currentId) {
             const container = document.getElementById('relatedWallpapersGrid'); container.innerHTML = "";
             let items = allWallpapers.filter(w => w.category && category && w.category.toLowerCase() === category.toLowerCase() && w.id.toString() !== currentId.toString());
-            items.slice(0, 4).forEach(wp => {
+            
+            if(items.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-slate-500 font-bold py-4 uppercase">No upcoming cascade streams</p>`;
+                return;
+            }
+
+            items.forEach(wp => {
                 container.innerHTML += `
-                    <div class="pinterest-item rounded-xl overflow-hidden bg-neutral-900 border border-white/5">
+                    <div class="w-full rounded-2xl overflow-hidden border border-white/5 bg-neutral-900 group relative transition-transform hover:scale-[1.02]">
                         <img src="${wp.image_url}" onclick="openPinterestDetailView('${wp.id}', false)" class="w-full h-auto object-cover cursor-pointer block">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 p-2 text-[10px] font-bold text-white truncate pointer-events-none">${wp.title}</div>
                     </div>`;
             });
         }
@@ -509,7 +527,6 @@
             if(!localStorage.getItem('lusso_logged_user')) { openAuthModal(); return; }
             toggleSavedProfileTabs('pins');
 
-            // TAB 1: PINS (MASONRY COMPLIANT)
             const pinsContainer = document.getElementById('tabContent-pins'); pinsContainer.innerHTML = "";
             const favoritePins = allWallpapers.filter(w => likedWallpaperIds.includes(w.id.toString()));
             if(favoritePins.length === 0) {
@@ -523,7 +540,6 @@
                 });
             }
 
-            // TAB 2: BOARDS
             const boardsContainer = document.getElementById('tabContent-boards'); boardsContainer.innerHTML = "";
             Object.keys(customUserAlbumBoards).forEach(bName => {
                 const count = customUserAlbumBoards[bName].length;
@@ -572,7 +588,7 @@
         function processFileSelection(input) {
             if (input.files && input.files[0]) {
                 const r = new FileReader(); r.onload = function(e) {
-                    base64ImageStringData = e.target.result; // Working correctly now
+                    base64ImageStringData = e.target.result; 
                     document.getElementById('fileUploadPromptContainer').classList.add('hidden');
                     const preview = document.getElementById('uploadLivePreviewDisplay'); preview.src = base64ImageStringData; preview.classList.remove('hidden');
                 }; r.readAsDataURL(input.files[0]);
@@ -590,7 +606,8 @@
             let locals = JSON.parse(localStorage.getItem('lusso_local_items')) || [];
             locals.unshift(newAsset); localStorage.setItem('lusso_local_items', JSON.stringify(locals));
             
-            timelineNotificationUpdates.unshift({ id: Date.now(), title: `Ingested Asset Matrix: ${title}`, date: "June 09, 2026" });
+            // AUTOMATICALLY ADDS THE UPLOADED ITEM TO THE UPDATE PANELS WITH THUMBNAIL
+            timelineNotificationUpdates.unshift({ id: Date.now(), title: `Ingested Asset: ${title}`, date: "June 09, 2026", img: base64ImageStringData });
 
             e.target.reset(); base64ImageStringData = ""; closeLeftSlideUploadModal(); showToast("Asset synchronized safely.");
             fetchWallpapersFromDatabase(); showSection('dashboard');
@@ -605,7 +622,6 @@
             liveSearchEngineEngine();
         }
 
-        function toggleThreeDotsDropdown(e) { e.stopPropagation(); document.getElementById('threeDotsActionMenuHub').classList.toggle('hidden'); }
         function triggerBackNavigationStack() {
             navigationStackHistory.pop();
             if(navigationStackHistory.length > 0) {
@@ -615,7 +631,7 @@
 
         function toggleStudioFilterCollapsePanel() { document.getElementById('aestheticEditorControls').classList.toggle('hidden'); }
         function togglePhonePreview() { document.getElementById('phoneSimulationWrapper').classList.toggle('hidden'); }
-        function applyEditorMatrixFilter(type) { document.getElementById('detailImg').className = `max-w-full max-h-[60vh] object-contain rounded-2xl transition-all duration-300 filter-${type}`; }
+        function applyEditorMatrixFilter(type) { document.getElementById('detailImg').className = `max-w-full max-h-[65vh] object-contain rounded-2xl transition-all duration-300 filter-${type}`; }
 
         function handleAuthClusterSubmit(e) { e.preventDefault(); localStorage.setItem('lusso_logged_user', document.getElementById('authEmail').value); closeAuthModal(); checkUserSession(); showToast("Token accepted."); liveSearchEngineEngine(); }
         function handleLogout() { localStorage.removeItem('lusso_logged_user'); checkUserSession(); showSection('dashboard'); liveSearchEngineEngine(); }
