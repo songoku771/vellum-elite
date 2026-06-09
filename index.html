@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUSSO | Premium Matrix Suite</title>
+    <title>VELLUM ELITE | Premium Matrix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800&display=swap" rel="stylesheet">
     
     <style>
         body { 
-            background-color: #ffffff; 
-            color: #111111; 
+            background-color: #0b0f19; 
+            color: #f3f4f6; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
         }
         
-        /* TRUE PINTEREST MASONRY FLOW ENGINE */
+        /* PREMIUM MASONRY FLOW GRID */
         .pinterest-grid {
             column-count: 2;
             column-gap: 16px;
@@ -39,68 +39,78 @@
             letter-spacing: 0.1em;
         }
 
-        /* Smooth Hide Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-white text-neutral-900">
+<body class="bg-[#0b0f19] text-gray-200">
 
-    <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-900 text-white text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
+    <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Notification Matrix</span>
     </div>
 
     <div class="flex min-h-screen w-full">
         
-        <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center justify-between py-6 bg-white border-r border-neutral-100 z-50">
+        <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white cursor-pointer hover:scale-105 transition-transform">
-                    <i class="fa-brands fa-pinterest text-xl"></i>
+                <div onclick="forceResetToHomeGrid()" class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-neutral-900 font-extrabold text-base tracking-tighter cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.3)] brand-font hover:scale-105 transition-transform">
+                    VE
                 </div>
                 
-                <div class="flex flex-col items-center gap-6 w-full">
-                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-full flex items-center justify-center text-neutral-800 hover:bg-neutral-100 transition-all" title="Home">
-                        <i class="fa-solid fa-house text-lg"></i>
+                <div class="flex flex-col items-center gap-5 w-full">
+                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/50 transition-all gap-1" title="Home">
+                        <i class="fa-solid fa-house text-base"></i>
+                        <span class="text-[9px] font-medium tracking-wide">Home</span>
                     </button>
 
-                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-full flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-all" title="Your Saved Boards">
-                        <i class="fa-solid fa-folder-open text-lg"></i>
+                    <button onclick="navigateToAppSection('boards')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/50 transition-all gap-1" title="AI Gen">
+                        <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
+                        <span class="text-[9px] font-medium tracking-wide">AI Gen</span>
                     </button>
 
-                    <button onclick="openUploadModalSheet()" class="w-12 h-12 rounded-full flex items-center justify-center text-neutral-500 hover:bg-neutral-100 transition-all" title="Upload Asset">
-                        <i class="fa-solid fa-circle-plus text-lg text-emerald-600"></i>
+                    <button onclick="openUploadModalSheet()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 hover:bg-slate-800/50 transition-all gap-1" title="Create">
+                        <i class="fa-solid fa-square-plus text-base"></i>
+                        <span class="text-[9px] font-medium tracking-wide">Create</span>
                     </button>
 
-                    <button onclick="toggleNotificationDrawer()" class="w-12 h-12 rounded-full flex items-center justify-center text-neutral-500 hover:bg-neutral-100 relative transition-all" title="Updates">
-                        <i class="fa-solid fa-bell text-lg"></i>
-                        <span class="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full"></span>
+                    <button onclick="toggleNotificationDrawer()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-gray-100 hover:bg-slate-800/50 relative transition-all gap-1" title="Analytics">
+                        <i class="fa-solid fa-chart-pie text-base"></i>
+                        <span class="text-[9px] font-medium tracking-wide">Analytics</span>
+                        <span class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
                     </button>
                 </div>
             </div>
 
-            <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 font-bold text-sm uppercase">
-                T
-            </div>
+            <button class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-gray-300 transition-all gap-1" title="Settings">
+                <i class="fa-solid fa-gear text-base"></i>
+                <span class="text-[9px] font-medium tracking-wide">Settings</span>
+            </button>
         </aside>
 
-        <div id="updatesDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-white border-r border-neutral-200 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-xl flex flex-col p-4">
-            <div class="flex items-center justify-between border-b border-neutral-100 pb-3 mb-4">
-                <span class="font-bold text-sm text-neutral-800 uppercase tracking-wider">Updates Feed</span>
-                <button onclick="toggleNotificationDrawer()" class="text-neutral-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+        <div id="updatesDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col p-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <span class="font-bold text-xs text-gray-400 uppercase tracking-wider">Updates Engine Feed</span>
+                <button onclick="toggleNotificationDrawer()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="updatesTimelineWrapper" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
         </div>
 
         <div class="flex-1 pl-20 min-w-0 flex flex-col">
             
-            <header class="sticky top-0 z-30 px-8 py-4 bg-white flex items-center justify-between gap-4 border-b border-neutral-100">
-                <div class="flex-1 relative max-w-2xl">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm"></i>
-                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-3 bg-neutral-100 border-none rounded-full text-sm text-neutral-800 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-200" placeholder="Search your saved ideas...">
+            <header class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
+                <div class="brand-font text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500 tracking-widest hidden md:block">
+                    VELLUM ELITE.
+                </div>
+
+                <div class="flex-1 relative max-w-xl">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2.5 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 transition-colors" placeholder="Search premium matrix designs...">
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <button onclick="navigateToAppSection('boards')" class="px-4 py-2.5 bg-neutral-100 text-neutral-800 font-bold text-xs rounded-full hover:bg-neutral-200 transition-colors">Saved Boards</button>
+                    <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-xs brand-font shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+                        P
+                    </div>
                 </div>
             </header>
 
@@ -109,35 +119,35 @@
             </div>
 
             <div id="boardsSection" class="hidden w-full flex-1 app-view-block p-8">
-                <div class="flex justify-between items-center border-b border-neutral-100 pb-6 mb-6">
+                <div class="flex justify-between items-center border-b border-slate-900 pb-6 mb-6">
                     <div>
-                        <h1 class="text-2xl font-bold text-neutral-900">Tejendar Prajapati</h1>
-                        <p class="text-xs text-neutral-500 mt-1 uppercase tracking-wider font-semibold">Saved Collections</p>
+                        <h1 class="text-xl font-bold text-gray-100 brand-font">Your Saved Ideas</h1>
+                        <p class="text-[10px] text-amber-500/70 mt-1 uppercase tracking-wider font-semibold">Active Collections</p>
                     </div>
-                    <button onclick="createNewCustomBoardDialog()" class="px-5 py-2.5 bg-red-600 text-white font-bold text-xs rounded-full uppercase shadow hover:bg-red-700 transition-all">+ Create New Board</button>
+                    <button onclick="createNewCustomBoardDialog()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg hover:brightness-110 transition-all">+ Create Custom Board</button>
                 </div>
                 <div id="customBoardsGridOutput" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
             </div>
 
             <div id="detailSection" class="hidden w-full flex-1 app-view-block p-6">
-                <button onclick="triggerBackNavigation()" class="mb-6 px-4 py-2 bg-neutral-100 text-neutral-800 font-bold text-xs rounded-full flex items-center gap-2 hover:bg-neutral-200 transition-all"><i class="fa-solid fa-arrow-left"></i> Back to Feed</button>
+                <button onclick="triggerBackNavigation()" class="mb-6 px-4 py-2 bg-slate-900 border border-slate-800 text-gray-300 font-bold text-xs rounded-xl flex items-center gap-2 hover:bg-slate-800 transition-all"><i class="fa-solid fa-arrow-left text-amber-500"></i> Back to Grid</button>
                 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-                    <div class="md:col-span-6 bg-neutral-50 rounded-3xl p-4 flex items-center justify-center border border-neutral-100">
-                        <img id="detailPreviewImageNode" src="" class="max-w-full max-h-[70vh] object-contain rounded-2xl shadow-lg">
+                    <div class="md:col-span-6 bg-slate-950/40 rounded-2xl p-4 flex items-center justify-center border border-slate-900">
+                        <img id="detailPreviewImageNode" src="" class="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl">
                     </div>
 
-                    <div class="md:col-span-3 bg-neutral-50 border border-neutral-100 rounded-2xl p-5">
-                        <h2 id="detailAssetTitleText" class="text-lg font-bold text-neutral-900 mb-4 truncate">Asset Architecture</h2>
+                    <div class="md:col-span-3 bg-[#070a13] border border-slate-900 rounded-xl p-5">
+                        <h2 id="detailAssetTitleText" class="text-sm font-bold text-gray-200 mb-4 truncate brand-font tracking-wide">Premium Matrix Design</h2>
                         <div class="space-y-2">
-                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-100 rounded-xl flex items-center gap-3"><i class="fa-solid fa-download text-neutral-600 text-sm"></i> Download Image</button>
-                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-100 rounded-xl flex items-center gap-3"><i class="fa-solid fa-folder-plus text-neutral-600 text-sm"></i> Pin to Board</button>
-                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-neutral-700 bg-white border border-neutral-200 hover:bg-neutral-100 rounded-xl flex items-center gap-3"><i class="fa-solid fa-link text-neutral-600 text-sm"></i> Copy Image URL</button>
+                            <button id="detailActionDownloadBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-circle-down text-amber-500 text-sm"></i> Download File</button>
+                            <button id="detailActionSaveBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-folder-plus text-amber-500 text-sm"></i> Pin to Collection</button>
+                            <button id="detailActionShareBtn" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 bg-slate-900/60 border border-slate-800 hover:border-amber-500/30 rounded-xl flex items-center gap-3 transition-colors"><i class="fa-solid fa-link text-amber-500 text-sm"></i> Copy Matrix Link</button>
                         </div>
                     </div>
 
                     <div class="md:col-span-3">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block mb-3 pb-1 border-b border-neutral-100">Next Stream List</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-3 pb-1 border-b border-slate-900">Next Stream List</span>
                         <div id="sideCascadedStreamGrid" class="flex flex-col gap-4 max-h-[65vh] overflow-y-auto no-scrollbar"></div>
                     </div>
                 </div>
@@ -146,26 +156,26 @@
         </div>
     </div>
 
-    <div id="globalUploadModalOverlay" class="fixed inset-0 bg-black/50 hidden z-[100] flex items-center justify-center p-4 transition-all duration-300">
-        <div class="w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6 transform transition-transform duration-300">
-            <div class="flex items-center justify-between border-b border-neutral-100 pb-3 mb-4">
-                <span class="font-bold text-sm text-neutral-800 uppercase">Upload Local Design</span>
-                <button onclick="closeUploadModalSheet()" class="text-neutral-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+    <div id="globalUploadModalOverlay" class="fixed inset-0 bg-black/75 hidden z-[100] flex items-center justify-center p-4 transition-all duration-300 backdrop-blur-sm">
+        <div class="w-full max-w-sm bg-[#070a13] border border-slate-900 rounded-2xl shadow-2xl p-6">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-3 mb-4">
+                <span class="font-bold text-xs text-gray-300 uppercase tracking-widest brand-font">Upload Premium File</span>
+                <button onclick="closeUploadModalSheet()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
                 <div>
-                    <label class="block text-[10px] font-bold text-neutral-500 uppercase mb-1">Artwork Title</label>
-                    <input type="text" id="formUploadTitle" required class="w-full px-3 py-2 bg-neutral-100 border border-neutral-200 rounded-xl text-xs text-neutral-900 focus:outline-none focus:border-neutral-400">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 tracking-wider">Artwork Label</label>
+                    <input type="text" id="formUploadTitle" required class="w-full px-3 py-2.5 bg-[#111827] border border-slate-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-amber-500/50">
                 </div>
-                <div class="relative w-full h-40 border-2 border-dashed border-neutral-200 rounded-xl flex flex-col items-center justify-center bg-neutral-50 overflow-hidden cursor-pointer">
+                <div class="relative w-full h-40 border-2 border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center bg-slate-950/40 overflow-hidden cursor-pointer">
                     <div id="formPromptUploadContainer" class="flex flex-col items-center pointer-events-none">
-                        <i class="fa-solid fa-cloud-arrow-up text-neutral-400 text-xl mb-1"></i>
-                        <span class="text-[10px] text-neutral-500 font-bold uppercase">Choose Image File</span>
+                        <i class="fa-solid fa-arrow-up-from-bracket text-amber-500 text-lg mb-1"></i>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Choose Design Payload</span>
                     </div>
                     <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover">
                     <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
                 </div>
-                <button type="submit" class="w-full py-3 bg-red-600 text-white font-bold text-xs rounded-xl uppercase tracking-wider shadow hover:bg-red-700 transition-colors">Publish Pin</button>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-900 font-bold text-xs rounded-xl uppercase tracking-widest shadow-lg hover:brightness-110 transition-all">Publish Vector</button>
             </form>
         </div>
     </div>
@@ -176,13 +186,11 @@
         const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // SYSTEM DATA ARRAYS
         let allAssetsDatabaseMemory = [];
         let navigationHistoryBuffer = [];
         let base64TempImageString = "";
         let currentlyOpenDropdownMenuId = null;
 
-        // INITIAL PRELOAD POOL FOR UPDATES PANEL (WITH IMAGES)
         let localLiveUpdatesTimeline = [
             { id: 101, title: "Take a moment for yourself ❤️", date: "2d ago", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80" },
             { id: 102, title: "Inspired by you", date: "3d ago", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80" },
@@ -190,7 +198,6 @@
             { id: 104, title: "100% certified good taste", date: "5d ago", img: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&q=80" }
         ];
 
-        // LOAD CUSTOM USER BOARDS STRUCT FROM CACHE
         let customUserAlbumBoards = JSON.parse(localStorage.getItem('lusso_boards_cache')) || {
             "Wallpaper": [], "Anime wallpaper": [], "Skull wallpaper": [], "Japanese art samurai": [], "Art wallpaper": []
         };
@@ -210,7 +217,6 @@
             if (targetViewId === 'boards') renderCustomUserBoardsMarkup();
         }
 
-        // ABSOLUTE HOME CLEAN GRID RESET ENGINE
         function forceResetToHomeGrid() {
             document.getElementById('appSearchEngineInput').value = ""; 
             navigateToAppSection('dashboard');
@@ -247,17 +253,16 @@
             currentlyOpenDropdownMenuId = null;
         }
 
-        // LOAD TIMELINE DRAWER RECONSTRUCTED MATRIX
         function refreshLiveUpdatesDrawerTimeline() {
             const wrapper = document.getElementById('updatesTimelineWrapper');
             wrapper.innerHTML = "";
             localLiveUpdatesTimeline.forEach(item => {
                 wrapper.innerHTML += `
-                    <div class="p-2 hover:bg-neutral-50 rounded-xl flex gap-3 items-center border border-neutral-100 transition-colors">
-                        <img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0 bg-neutral-100">
+                    <div class="p-2 bg-slate-900/40 hover:bg-slate-900 rounded-xl flex gap-3 items-center border border-slate-900 transition-colors">
+                        <img src="${item.img}" class="w-10 h-12 object-cover rounded-md flex-shrink-0 bg-slate-800">
                         <div class="min-w-0 flex-1">
-                            <h4 class="text-xs font-bold text-neutral-800 line-clamp-1">${item.title}</h4>
-                            <span class="text-[10px] font-semibold text-neutral-400 block mt-0.5">${item.date}</span>
+                            <h4 class="text-xs font-semibold text-gray-300 line-clamp-1">${item.title}</h4>
+                            <span class="text-[9px] font-bold text-slate-500 block mt-0.5">${item.date}</span>
                         </div>
                     </div>`;
             });
@@ -276,7 +281,6 @@
                 let localUploaded = JSON.parse(localStorage.getItem('lusso_local_pins')) || [];
                 allAssetsDatabaseMemory = [...localUploaded, ...dbData];
                 
-                // If clean slate array, inject high resolution standard mock assets to populate grid
                 if(allAssetsDatabaseMemory.length === 0) {
                     allAssetsDatabaseMemory = [
                         { id: "1", title: "Berserk Dark Mark", image_url: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500&q=80" },
@@ -292,12 +296,11 @@
             } catch (err) { console.error("Database Engine Fault:", err); }
         }
 
-        // PINTEREST CLEAN FLOW GRID RENDERING MATRIX
         function renderPinterestGridItems(list) {
             const container = document.getElementById('pinterestMainMasonryContainer');
             container.innerHTML = "";
             if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-neutral-400 uppercase tracking-widest">No wallpapers array loaded</div>`;
+                container.innerHTML = `<div class="col-span-full py-12 text-center text-xs font-bold text-slate-600 uppercase tracking-widest">No matrix data mapped</div>`;
                 return;
             }
 
@@ -305,19 +308,19 @@
                 const card = document.createElement('div');
                 card.className = "pinterest-card group relative";
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-neutral-100 transition-all duration-200">
-                        <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:brightness-90 transition-all">
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-900/60 transition-all duration-200">
+                        <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', true)" class="w-full h-auto object-cover cursor-pointer block hover:scale-[1.01] transition-transform duration-300">
                     </div>
                     <div class="mt-2 px-1 flex justify-between items-center relative">
-                        <span class="text-xs font-bold text-neutral-800 truncate pr-2 max-w-[80%] pointer-events-none">${item.title}</span>
+                        <span class="text-xs font-medium text-gray-300 truncate pr-2 max-w-[8%] pointer-events-none tracking-wide">${item.title}</span>
                         <div class="relative">
-                            <button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-neutral-100 text-neutral-600 transition-colors">
+                            <button onclick="toggleCardActionDropdownMenu(event, '${item.id}')" class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-slate-800 text-gray-400 hover:text-white transition-colors">
                                 <i class="fa-solid fa-ellipsis text-xs"></i>
                             </button>
-                            <div id="dropdown-${item.id}" class="dropdown-menu-list hidden absolute right-0 bottom-8 w-40 bg-white border border-neutral-200 rounded-xl shadow-xl z-50 py-1.5 transition-all">
-                                <button onclick="triggerDirectImageDownload('${item.image_url}')" class="w-full text-left px-3 py-2 text-[11px] font-bold text-neutral-700 hover:bg-neutral-50 flex items-center gap-2"><i class="fa-solid fa-circle-arrow-down text-neutral-400"></i> Download Image</button>
-                                <button onclick="pinAssetToTargetCustomBoard('${item.id}')" class="w-full text-left px-3 py-2 text-[11px] font-bold text-neutral-700 hover:bg-neutral-50 flex items-center gap-2"><i class="fa-solid fa-folder-plus text-neutral-400"></i> Pin to Board</button>
-                                <button onclick="executeSecureImageLinkCopy('${item.image_url}')" class="w-full text-left px-3 py-2 text-[11px] font-bold text-neutral-700 hover:bg-neutral-50 flex items-center gap-2"><i class="fa-solid fa-link text-neutral-400"></i> Copy URL</button>
+                            <div id="dropdown-${item.id}" class="dropdown-menu-list hidden absolute right-0 bottom-8 w-40 bg-[#070a13] border border-slate-800 rounded-xl shadow-2xl z-50 py-1.5 transition-all">
+                                <button onclick="triggerDirectImageDownload('${item.image_url}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-circle-arrow-down text-amber-500"></i> Download</button>
+                                <button onclick="pinAssetToTargetCustomBoard('${item.id}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-folder-plus text-amber-500"></i> Pin Board</button>
+                                <button onclick="executeSecureImageLinkCopy('${item.image_url}')" class="w-full text-left px-3 py-2 text-[10px] font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-link text-amber-500"></i> Copy URL</button>
                             </div>
                         </div>
                     </div>`;
@@ -336,13 +339,11 @@
             }
         }
 
-        // GLOBAL CLICK EVENT TO DISMISS DROPDOWNS
         document.addEventListener('click', () => { closeAllActiveDropdowns(); });
 
-        function triggerDirectImageDownload(url) { window.open(url, '_blank'); triggerNotificationToast("Download stream initialized."); }
-        function executeSecureImageLinkCopy(url) { navigator.clipboard.writeText(url).then(() => triggerNotificationToast("Asset link copied safely to clipboard!")); }
+        function triggerDirectImageDownload(url) { window.open(url, '_blank'); triggerNotificationToast("Download payload triggered."); }
+        function executeSecureImageLinkCopy(url) { navigator.clipboard.writeText(url).then(() => triggerNotificationToast("Matrix URL verified & copied!")); }
 
-        // DETAILED OVERLAY STACK DISPLAY CONTROL
         function openImageDetailStudioView(id, clearHistory = false) {
             const item = allAssetsDatabaseMemory.find(w => w.id.toString() === id.toString());
             if (!item) return;
@@ -365,20 +366,18 @@
             const container = document.getElementById('sideCascadedStreamGrid');
             container.innerHTML = "";
             let remainingItems = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString());
-            
-            // Limit stream flow array count exactly to max 5 items
             let visibleSlice = remainingItems.slice(0, 5);
 
             if(visibleSlice.length === 0) {
-                container.innerHTML = `<span class="text-[10px] text-neutral-400 font-bold uppercase">No upcoming streams</span>`;
+                container.innerHTML = `<span class="text-[10px] text-slate-600 font-bold uppercase">No stream streams</span>`;
                 return;
             }
 
             visibleSlice.forEach(item => {
                 container.innerHTML += `
-                    <div class="w-full rounded-xl overflow-hidden border border-neutral-100 bg-neutral-50 group relative transition-transform duration-200 hover:scale-[1.02]">
+                    <div class="w-full rounded-xl overflow-hidden border border-slate-900 bg-slate-950/40 group relative transition-transform duration-200 hover:scale-[1.01]">
                         <img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer block">
-                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 p-2 text-[10px] font-bold text-white truncate opacity-0 group-hover:opacity-100 transition-opacity">${item.title}</div>
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 p-2 text-[9px] font-bold text-gray-200 truncate opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider">${item.title}</div>
                     </div>`;
             });
         }
@@ -390,33 +389,32 @@
             } else { forceResetToHomeGrid(); }
         }
 
-        // SAVE & PINNING ALBUM INFRASTRUCTURE
         function renderCustomUserBoardsMarkup() {
             const grid = document.getElementById('customBoardsGridOutput');
             grid.innerHTML = "";
             Object.keys(customUserAlbumBoards).forEach(bName => {
                 const list = customUserAlbumBoards[bName];
                 grid.innerHTML += `
-                    <div class="bg-neutral-50 border border-neutral-200 rounded-2xl p-5 flex flex-col justify-between h-40 hover:shadow-md transition-shadow">
+                    <div class="bg-[#070a13] border border-slate-900 rounded-2xl p-5 flex flex-col justify-between h-40 hover:border-slate-800 transition-colors">
                         <div>
-                            <h3 class="text-neutral-900 font-bold text-sm truncate"><i class="fa-solid fa-folder text-neutral-400 mr-2"></i> ${bName}</h3>
-                            <p class="text-[10px] text-neutral-400 font-bold mt-1 uppercase">${list.length} Pins Saved</p>
+                            <h3 class="text-gray-200 font-bold text-xs truncate brand-font tracking-wide"><i class="fa-solid fa-folder text-amber-500/60 mr-2"></i> ${bName}</h3>
+                            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase tracking-wider">${list.length} Vectors Vector</p>
                         </div>
-                        <button onclick="displayTargetAlbumFilteredPins('${bName}')" class="w-full py-2 bg-white text-neutral-800 font-bold text-[11px] rounded-xl border border-neutral-200 uppercase tracking-wider hover:bg-neutral-100 transition-colors">Open Board</button>
+                        <button onclick="displayTargetAlbumFilteredPins('${bName}')" class="w-full py-2 bg-slate-900 text-gray-300 font-bold text-[10px] rounded-xl border border-slate-800 uppercase tracking-widest hover:bg-slate-800 transition-colors">Open Matrix</button>
                     </div>`;
             });
         }
 
         function pinAssetToTargetCustomBoard(id) {
             const keys = Object.keys(customUserAlbumBoards);
-            const selected = prompt(`Enter target board directory array:\n[ ${keys.join(' | ')} ]`);
+            const selected = prompt(`Select Target Board Array:\n[ ${keys.join(' | ')} ]`);
             if (selected && customUserAlbumBoards[selected]) {
                 if (!customUserAlbumBoards[selected].includes(id.toString())) {
                     customUserAlbumBoards[selected].push(id.toString());
                     localStorage.setItem('lusso_boards_cache', JSON.stringify(customUserAlbumBoards));
-                    triggerNotificationToast(`Pinned safely into ${selected}`);
-                } else { triggerNotificationToast("Asset already cached in directory."); }
-            } else if (selected) { triggerNotificationToast("Directory structure mismatch."); }
+                    triggerNotificationToast(`Pinned to directory ${selected}`);
+                } else { triggerNotificationToast("Asset already loaded here."); }
+            } else if (selected) { triggerNotificationToast("Matrix directory error."); }
         }
 
         function displayTargetAlbumFilteredPins(name) {
@@ -424,20 +422,19 @@
             const filteredList = allAssetsDatabaseMemory.filter(w => pinnedIds.includes(w.id.toString()));
             navigateToAppSection('dashboard');
             renderPinterestGridItems(filteredList);
-            triggerNotificationToast(`Filtered view: ${name}`);
+            triggerNotificationToast(`Filtered Board: ${name}`);
         }
 
         function createNewCustomBoardDialog() {
-            const bName = prompt("Enter directory alignment name:");
+            const bName = prompt("Enter Custom Directory Target Name:");
             if (bName && !customUserAlbumBoards[bName]) {
                 customUserAlbumBoards[bName] = [];
                 localStorage.setItem('lusso_boards_cache', JSON.stringify(customUserAlbumBoards));
                 renderCustomUserBoardsMarkup();
-                triggerNotificationToast(`Board matrix updated: ${bName}`);
+                triggerNotificationToast(`Board initialized: ${bName}`);
             }
         }
 
-        // REAL LOCAL FILE READER BUFFER ARRAY SYSTEM
         function processLocalFileSelection(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -456,7 +453,7 @@
             e.preventDefault();
             const title = document.getElementById('formUploadTitle').value.trim();
 
-            if (!base64TempImageString) { alert("Please attach a valid image stream payload."); return; }
+            if (!base64TempImageString) { alert("Missing matrix design data stream."); return; }
 
             const generatedNewPinNode = {
                 id: "local_asset_" + Date.now().toString(),
@@ -468,7 +465,6 @@
             localPins.unshift(generatedNewPinNode);
             localStorage.setItem('lusso_local_pins', JSON.stringify(localPins));
 
-            // Instant inject tracking stream array directly inside live timeline drawer updates
             localLiveUpdatesTimeline.unshift({
                 id: Date.now(),
                 title: title,
@@ -477,7 +473,7 @@
             });
 
             closeUploadModalSheet();
-            triggerNotificationToast("Pin published successfully!");
+            triggerNotificationToast("Matrix asset loaded to dashboard!");
             initializeApplicationDataEngine();
             forceResetToHomeGrid();
         }
