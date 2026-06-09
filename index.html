@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vellum Elite - Premium 4K Wallpapers</title>
+    <title>Vellum Elite - Premium 4K Wallpapers & Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -26,10 +25,13 @@
         @media (min-width: 1024px) { .ordered-wallpaper-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
         @media (min-width: 1280px) { .ordered-wallpaper-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* STUDIO MATRIX FILTERS CONFIGURATION */
+        .filter-normal { filter: none; }
+        .filter-grayscale { filter: grayscale(100%); }
+        .filter-vintage { filter: sepia(50%) contrast(120%) saturate(80%); }
+        .filter-cinematic { filter: contrast(140%) saturate(120%) brightness(90%) hue-rotate(-10deg); }
+        .filter-cybertone { filter: hue-rotate(140deg) saturate(200%) contrast(110%); }
 
-        /* MULTI-LANGUAGE TRUE APPLE HELLO HANDWRITTEN ANIMATION */
         @keyframes appleHelloCycle {
             0% { opacity: 0; filter: blur(12px); transform: scale(0.9) translateY(10px); }
             12% { opacity: 1; filter: blur(0px); transform: scale(1) translateY(0); }
@@ -65,7 +67,7 @@
 
         <aside class="hidden md:flex flex-col items-center justify-between py-6 px-4 border-r border-slate-800/60 w-24 sticky top-0 h-screen z-50 bg-[#070a12]">
             <div class="flex flex-col items-center gap-8 w-full">
-                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-gradient-to-b from-neutral-800 to-black border border-slate-700/60 rounded-full flex items-center justify-center text-[#e2ba6e] text-base font-black cursor-pointer shadow-lg hover:scale-105 transition-transform tracking-tighter">VE</div>
+                <div onclick="showSection('dashboard')" class="w-12 h-12 bg-gradient-to-b from-neutral-800 to-black border border-slate-700/60 rounded-full flex items-center justify-center text-[#e2ba6e] text-base font-black cursor-pointer shadow-lg hover:scale-105 transition-transform">VE</div>
                 
                 <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="showSection('dashboard')" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer transition-colors">
@@ -73,12 +75,12 @@
                         <span class="text-[9px] font-bold mt-1">Home</span>
                     </button>
                     
-                    <button onclick="triggerAiWorkspace()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-indigo-400 bg-indigo-950/20 border border-indigo-900/40 hover:bg-indigo-900/40 cursor-pointer transition-all active:scale-95">
+                    <button onclick="triggerAiWorkspace()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-indigo-400 bg-indigo-950/20 border border-indigo-900/40 hover:bg-indigo-900/40 cursor-pointer transition-all">
                         <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">AI Gen</span>
                     </button>
 
-                    <button onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all active:scale-95">
+                    <button onclick="openLeftSlideUploadModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-emerald-400 bg-emerald-950/20 border border-emerald-900/40 hover:bg-emerald-900/40 cursor-pointer transition-all">
                         <i class="fa-solid fa-plus text-sm"></i>
                         <span class="text-[9px] font-bold mt-1">Create</span>
                     </button>
@@ -91,7 +93,7 @@
             </div>
 
             <div class="flex flex-col items-center gap-4">
-                <button onclick="openLeftSettingsModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all cursor-pointer">
+                <button onclick="openLeftSettingsModal()" class="w-12 h-12 rounded-2xl flex flex-col items-center justify-center text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all">
                     <i class="fa-solid fa-gears text-sm"></i>
                     <span class="text-[9px] font-bold mt-1">Settings</span>
                 </button>
@@ -104,18 +106,16 @@
                     <div class="flex items-center gap-2 text-slate-300 font-black text-xs uppercase tracking-wider">
                         <i class="fa-solid fa-gears text-base text-amber-500"></i> Control Console Panel
                     </div>
-                    <button onclick="closeLeftSettingsModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer">
-                        <i class="fa-solid fa-xmark text-xs"></i>
-                    </button>
+                    <button onclick="closeLeftSettingsModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer"><i class="fa-solid fa-xmark text-xs"></i></button>
                 </div>
                 <div class="space-y-4">
                     <div class="p-4 bg-[#0b0f19] border border-slate-800/80 rounded-2xl">
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Core Connection</h4>
-                        <p class="text-[11px] text-slate-500">System security layers are fully operational. Sync tokens verified active.</p>
+                        <h4 class="text-xs font-black text-slate-400 uppercase mb-2">Core Connection</h4>
+                        <p class="text-[11px] text-slate-500">System security layers are fully operational. Earning streams active.</p>
                     </div>
                 </div>
             </div>
-            <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Configuration Layer V1</p>
+            <p class="text-[9px] text-slate-600 font-black text-center border-t border-slate-800/60 pt-4">Configuration Layer V2</p>
         </div>
 
         <div id="leftSlideUploadModal" class="fixed inset-y-0 left-0 w-full max-w-sm bg-[#111622] border-r border-slate-800/80 z-50 transform -translate-x-full scale-95 opacity-0 transition-all duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 text-slate-200 pointer-events-none">
@@ -124,18 +124,16 @@
                     <div class="flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider">
                         <i class="fa-solid fa-circle-plus text-base"></i> Create Premium Artwork
                     </div>
-                    <button onclick="closeLeftSlideUploadModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer">
-                        <i class="fa-solid fa-xmark text-xs"></i>
-                    </button>
+                    <button onclick="closeLeftSlideUploadModal()" class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center text-slate-500 hover:text-white border border-slate-800 cursor-pointer"><i class="fa-solid fa-xmark text-xs"></i></button>
                 </div>
                 
                 <form id="assetUploadFormEngine" onsubmit="handleCommunityUploadSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Title Specification</label>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Title Specification</label>
                         <input type="text" id="userUploadTitle" required class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none focus:border-amber-500" placeholder="Art Asset Label Identity (Paste Allowed)">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target Matrix Stream</label>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Target Matrix Stream</label>
                         <select id="userUploadCategory" onchange="toggleCustomCategoryField(this.value)" class="w-full px-3 py-2.5 text-xs bg-[#0b0f19] border border-slate-800 rounded-xl text-white focus:outline-none">
                             <option value="Anime">Anime</option>
                             <option value="Gaming">Gaming</option>
@@ -145,47 +143,50 @@
                         </select>
                         <input type="text" id="userUploadCustomCategory" class="hidden w-full px-3 py-2.5 mt-2 text-xs bg-[#0b0f19] border border-amber-500/40 rounded-xl text-white focus:outline-none">
                     </div>
+                    <div class="flex items-center gap-3 py-2">
+                        <input type="checkbox" id="userUploadIsVip" class="w-4 h-4 accent-amber-500 bg-slate-900 rounded border-slate-800">
+                        <label for="userUploadIsVip" class="text-xs font-bold text-amber-400 cursor-pointer flex items-center gap-1.5"><i class="fa-solid fa-crown text-[10px]"></i> Lock as VIP Premium Asset (Monetized)</label>
+                    </div>
                     <div>
-                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Physical Media Source</label>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Physical Media Source</label>
                         <div class="relative w-full h-36 border-2 border-dashed border-slate-800 rounded-2xl flex flex-col items-center justify-center bg-[#0b0f19] overflow-hidden" id="fileZoneBox">
                             <div id="fileUploadPromptContainer" class="flex flex-col items-center justify-center p-4 text-center">
                                 <i class="fa-solid fa-plus text-lg text-slate-600 mb-1"></i>
-                                <span class="text-[9px] font-black text-slate-500 uppercase tracking-wider">Tap to Pick Artwork</span>
+                                <span class="text-[9px] font-black text-slate-500 uppercase">Tap to Pick Artwork</span>
                             </div>
                             <img id="uploadLivePreviewDisplay" class="hidden absolute inset-0 w-full h-full object-cover opacity-80">
                             <input type="file" id="userUploadFile" accept="image/*" required onchange="processFileSelectionPreview(this)" class="absolute inset-0 opacity-0 cursor-pointer">
                         </div>
                     </div>
-                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg uppercase tracking-wider transition-colors cursor-pointer">Dispatch Asset System</button>
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg uppercase transition-colors">Dispatch Asset System</button>
                 </form>
             </div>
-            <p class="text-[9px] text-slate-600 font-black uppercase tracking-widest text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
+            <p class="text-[9px] text-slate-600 font-black text-center border-t border-slate-800/60 pt-4">Vellum Operations Matrix</p>
         </div>
 
         <div class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]" id="mainRenderPipelineContainer">
 
             <nav class="sticky top-0 z-30 px-4 md:px-8 py-5 flex justify-between items-center bg-[#0b0f19]/90 backdrop-blur-xl border-b border-slate-800/40">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('dashboard')">
-                    <span class="text-sm md:text-base font-black tracking-[0.4em] bg-gradient-to-r from-[#f3d08c] via-[#e2ba6e] to-[#b38938] bg-clip-text text-transparent uppercase drop-shadow-[0_2px_10px_rgba(226,186,110,0.15)]">VELLUM ELITE<span class="text-[#e2ba6e] inline-block animate-pulse ml-0.5">.</span></span>
+                    <span class="text-sm md:text-base font-black tracking-[0.4em] bg-gradient-to-r from-[#f3d08c] via-[#e2ba6e] to-[#b38938] bg-clip-text text-transparent uppercase">VELLUM ELITE<span class="text-[#e2ba6e] inline-block animate-pulse ml-0.5">.</span></span>
                 </div>
                 
                 <div class="flex-1 max-w-xl mx-8 relative hidden sm:block">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                    <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#e2ba6e] transition-colors" placeholder="Search premium matrix designs...">
+                    <input type="text" id="searchInput" oninput="filterWallpapers()" class="w-full pl-10 pr-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#e2ba6e]" placeholder="Search premium matrix designs...">
                 </div>
 
                 <div id="authStatus" class="relative flex items-center gap-3">
-                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs shadow-md hover:brightness-110 transition-all">Sign In</button>
+                    <button id="loginBtn" onclick="openAuthModal()" class="px-5 py-2 rounded-full bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs shadow-md">Sign In</button>
                     
                     <div id="userProfileArea" class="flex items-center gap-1 relative">
-                        <button id="navAvatarButtonNode" onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-gradient-to-tr border border-slate-700 p-0 flex items-center justify-center text-xs font-black tracking-tight uppercase active:scale-95 transition-all overflow-hidden">
-                        </button>
+                        <button id="navAvatarButtonNode" onclick="toggleDropdown(event, 'profileDropdown')" class="w-9 h-9 rounded-full bg-gradient-to-tr border border-slate-700 p-0 flex items-center justify-center text-xs font-black uppercase overflow-hidden"></button>
                         
                         <div id="profileDropdown" class="hidden absolute right-0 top-11 w-56 bg-[#131926] text-slate-200 rounded-2xl border border-slate-800 shadow-2xl p-2 flex flex-col gap-1 z-50">
-                            <div id="userDisplayEmail" class="px-2.5 py-2 text-[10px] font-black tracking-wider uppercase text-slate-500 border-b border-slate-800/80 truncate">Identity Gate</div>
-                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-200 hover:bg-slate-800/80 text-xs font-bold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-box-archive text-[#e2ba6e] text-xs"></i> Saved Vault Area</button>
-                            <button onclick="showSection('profile')" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800/50 text-xs font-semibold flex items-center gap-2.5 transition-colors"><i class="fa-solid fa-user-shield text-slate-400 text-xs"></i> Edit Workspace Bio</button>
-                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800/80 mt-1 flex items-center gap-2.5 transition-all"><i class="fa-solid fa-power-off text-xs"></i> Kill Session</button>
+                            <div id="userDisplayEmail" class="px-2.5 py-2 text-[10px] font-black text-slate-500 border-b border-slate-800/80 truncate">Identity Gate</div>
+                            <button onclick="openProfileGallery()" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-200 hover:bg-slate-800/80 text-xs font-bold flex items-center gap-2.5"><i class="fa-solid fa-box-archive text-[#e2ba6e] text-xs"></i> Saved Vault Area</button>
+                            <button onclick="showSection('profile')" class="w-full text-left px-2.5 py-2 rounded-xl text-slate-300 hover:bg-slate-800/50 text-xs font-semibold flex items-center gap-2.5"><i class="fa-solid fa-user-shield text-slate-400 text-xs"></i> Edit Workspace Bio</button>
+                            <button onclick="handleLogout()" class="w-full text-left px-2.5 py-2 rounded-xl text-red-400 hover:bg-red-950/30 text-xs font-bold border-t border-slate-800/80 mt-1 flex items-center gap-2.5"><i class="fa-solid fa-power-off text-xs"></i> Kill Session</button>
                         </div>
                     </div>
                 </div>
@@ -195,21 +196,31 @@
                 <div class="max-w-[1600px] mx-auto w-full px-4 md:px-8 mt-6">
                     <h3 class="text-xs font-black text-slate-400 tracking-widest uppercase mb-3"><i class="fa-solid fa-layer-group text-[#e2ba6e]"></i> Categories</h3>
                     <div id="pinterestVisualCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 w-full">
-                        <div onclick="selectCategory('all')" id="visCat-all" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-amber-600 to-amber-900 p-3.5 flex flex-col justify-end border-2 border-transparent transition-all hover:scale-[1.01]">
-                            <span class="text-xs font-black tracking-wide text-white drop-shadow-md">All Creative Assets</span>
+                        <div onclick="selectCategory('all')" id="visCat-all" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-amber-600 to-amber-900 p-3.5 flex flex-col justify-end border-2 border-transparent transition-all">
+                            <span class="text-xs font-black text-white">All Creative Assets</span>
                         </div>
-                        <div onclick="selectCategory('Anime')" id="visCat-Anime" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#1e1b4b] to-[#311042] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all hover:scale-[1.01]">
-                            <span class="text-xs font-black tracking-wide text-purple-200">Anime</span>
+                        <div onclick="selectCategory('Anime')" id="visCat-Anime" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#1e1b4b] to-[#311042] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all">
+                            <span class="text-xs font-black text-purple-200">Anime</span>
                         </div>
-                        <div onclick="selectCategory('Gaming')" id="visCat-Gaming" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#064e3b] to-[#022c22] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all hover:scale-[1.01]">
-                            <span class="text-xs font-black tracking-wide text-emerald-200">Gaming</span>
+                        <div onclick="selectCategory('Gaming')" id="visCat-Gaming" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#064e3b] to-[#022c22] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all">
+                            <span class="text-xs font-black text-emerald-200">Gaming</span>
                         </div>
-                        <div onclick="selectCategory('Cyberpunk')" id="visCat-Cyberpunk" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#701a75] to-[#4a044e] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all hover:scale-[1.01]">
-                            <span class="text-xs font-black tracking-wide text-fuchsia-200">Cyberpunk</span>
+                        <div onclick="selectCategory('Cyberpunk')" id="visCat-Cyberpunk" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#701a75] to-[#4a044e] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all">
+                            <span class="text-xs font-black text-fuchsia-200">Cyberpunk</span>
                         </div>
-                        <div onclick="selectCategory('Cars')" id="visCat-Cars" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#7c2d12] to-[#431407] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all hover:scale-[1.01]">
-                            <span class="text-xs font-black tracking-wide text-orange-200">Cars</span>
+                        <div onclick="selectCategory('Cars')" id="visCat-Cars" class="h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-[#7c2d12] to-[#431407] p-3.5 flex flex-col justify-end border border-slate-800/80 transition-all">
+                            <span class="text-xs font-black text-orange-200">Cars</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="max-w-[1600px] mx-auto w-full px-4 md:px-8 mt-6">
+                    <div class="w-full bg-gradient-to-r from-slate-900 via-[#111726] to-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+                        <div class="flex items-center gap-3">
+                            <div class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[9px] font-black border border-amber-500/30 rounded uppercase tracking-widest">Sponsored</div>
+                            <p class="text-xs font-bold text-slate-300">Upgrade your hardware setup with NVIDIA RTX Pro Units. Up to 40% Off!</p>
+                        </div>
+                        <button onclick="showToast('Rerouting secure tracking affiliate network...')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-[11px] rounded-lg border border-slate-700 transition-colors">Check Gear</button>
                     </div>
                 </div>
 
@@ -223,12 +234,11 @@
 
             <div id="detailSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-6 app-section">
                 <div class="max-w-6xl mx-auto w-full mb-4 flex justify-between items-center">
-                    <button onclick="triggerLineByLineBackNavigation()" class="px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs flex items-center gap-2 cursor-pointer transition-transform hover:scale-105"><i class="fa-solid fa-arrow-left text-[#e2ba6e]"></i> Back to Grid</button>
+                    <button onclick="triggerLineByLineBackNavigation()" class="px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs flex items-center gap-2 transition-transform hover:scale-105"><i class="fa-solid fa-arrow-left text-[#e2ba6e]"></i> Back to Grid</button>
                     <div class="flex gap-2 relative">
-                        <button onclick="togglePhonePreview()" class="px-4 py-2 rounded-full bg-indigo-950 border border-indigo-900/60 text-indigo-400 font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-mobile-screen-button"></i> UI Preview</button>
-                        <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center gap-2 cursor-pointer"><i class="fa-solid fa-sliders"></i> Studio</button>
-                        
-                        <button onclick="toggleThreeDotsDropdownEngine(event)" class="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-200 hover:bg-slate-800 cursor-pointer text-xs"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <button onclick="togglePhonePreview()" class="px-4 py-2 rounded-full bg-indigo-950 border border-indigo-900/60 text-indigo-400 font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-mobile-screen-button"></i> UI Preview</button>
+                        <button onclick="toggleAestheticEditorPanel()" class="px-4 py-2 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-sliders"></i> Studio Filters</button>
+                        <button onclick="toggleThreeDotsDropdownEngine(event)" class="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-200 text-xs"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                         
                         <div id="threeDotsActionMenuHub" class="hidden absolute right-0 top-11 w-48 bg-[#121824] border border-slate-800 rounded-2xl shadow-2xl p-1.5 flex flex-col gap-1 z-50">
                             <button id="dotActionDownloadBtn" class="w-full text-left px-3 py-2 text-xs font-bold text-slate-200 hover:bg-slate-800 rounded-xl flex items-center gap-2.5"><i class="fa-solid fa-circle-arrow-down text-emerald-400"></i> Download Asset</button>
@@ -240,17 +250,13 @@
                 
                 <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                     <div class="lg:col-span-7 bg-[#111622] rounded-3xl border border-slate-800/80 overflow-hidden p-4 flex flex-col items-center justify-center shadow-2xl relative min-h-[50vh]">
-                        <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl transition-all duration-300">
+                        <img id="detailImg" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl filter-normal transition-all duration-300">
                         
                         <div id="phoneSimulationWrapper" class="hidden absolute w-[260px] h-[500px] bg-black/40 border-[6px] border-slate-800 rounded-[36px] shadow-2xl overflow-hidden pointer-events-none flex flex-col justify-between p-4">
                             <div class="w-20 h-4 bg-slate-800 rounded-full mx-auto mt-[-8px]"></div>
                             <div class="flex justify-between text-[10px] font-bold text-slate-300 px-2">
                                 <span>9:41</span>
                                 <div class="flex gap-1"><i class="fa-solid fa-signal"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
-                            </div>
-                            <div class="grid grid-cols-4 gap-4 my-auto px-2 opacity-80">
-                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-whatsapp"></i></div></div>
-                                <div class="flex flex-col items-center gap-1"><div class="w-10 h-10 bg-gradient-to-tr from-amber-500 to-fuchsia-600 rounded-xl flex items-center justify-center text-white text-xs"><i class="fa-brands fa-instagram"></i></div></div>
                             </div>
                             <div class="w-24 h-1 bg-white/80 rounded-full mx-auto mb-[-4px]"></div>
                         </div>
@@ -264,15 +270,24 @@
                                     <span><i class="fa-solid fa-eye text-slate-600"></i> <span id="detailViews">0</span></span>
                                     <span><i class="fa-solid fa-download text-slate-600"></i> <span id="detailDownloads">0</span></span>
                                 </div>
-                                <span id="detailRes" class="bg-indigo-950 text-indigo-400 font-black text-[9px] tracking-widest px-2 py-0.5 rounded border border-indigo-900/40">VECTOR AI CORE</span>
+                                <span id="detailRes" class="bg-indigo-950 text-indigo-400 font-black text-[9px] px-2 py-0.5 rounded border border-indigo-900/40">VECTOR AI CORE</span>
                             </div>
 
                             <h2 id="detailTitleText" class="text-xl font-black tracking-tight mb-4">Asset Array Identity</h2>
 
                             <div id="aestheticEditorControls" class="hidden mt-2 border-t border-slate-800 pt-4 bg-[#171e2e] p-4 rounded-2xl border border-slate-800/60 space-y-4">
-                                <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-[#e2ba6e]"></i> Advanced Control Mesh</h3>
+                                <h3 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-[#e2ba6e]"></i> Vellum Studio Core Filters</h3>
+                                
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="applyEditorMatrixFilter('none')" class="py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl border border-slate-800 transition-all">Original</button>
+                                    <button onclick="applyEditorMatrixFilter('grayscale')" class="py-2 bg-slate-900 hover:bg-slate-800 text-slate-400 font-bold text-xs rounded-xl border border-slate-800 transition-all">Grayscale</button>
+                                    <button onclick="applyEditorMatrixFilter('vintage')" class="py-2 bg-slate-900 hover:bg-slate-800 text-amber-600 font-bold text-xs rounded-xl border border-slate-800 transition-all">Vintage</button>
+                                    <button onclick="applyEditorMatrixFilter('cinematic')" class="py-2 bg-slate-900 hover:bg-slate-800 text-emerald-500 font-bold text-xs rounded-xl border border-slate-800 transition-all">Cinematic</button>
+                                    <button onclick="applyEditorMatrixFilter('cybertone')" class="py-2 bg-slate-900 hover:bg-slate-800 text-fuchsia-400 font-bold text-xs rounded-xl border border-slate-800/80 col-span-2 transition-all">Cyber-Tone Mesh</button>
+                                </div>
+
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Chroma Hue Color Shift Engine</label>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Chroma Hue Fine-Tuning Slider</label>
                                     <input type="range" id="chromaHueSlider" min="0" max="360" value="0" oninput="applyLiveChromaShift(this.value)" class="w-full accent-[#e2ba6e] bg-slate-900 h-1.5 rounded-lg appearance-none cursor-pointer">
                                 </div>
                                 <div class="grid grid-cols-2 gap-2">
@@ -285,13 +300,20 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">AI Smart Upscale</label>
-                                        <button onclick="triggerSuperResolutionUpscale()" class="w-full py-1.5 bg-indigo-950 border border-indigo-800 text-indigo-400 text-[11px] font-black rounded-lg hover:bg-indigo-900"><i class="fa-solid fa-bolt-lightning"></i> 4K Upscale</button>
+                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">AI Upscale</label>
+                                        <button onclick="triggerSuperResolutionUpscale()" class="w-full py-1.5 bg-indigo-950 border border-indigo-800 text-indigo-400 text-[11px] font-black rounded-lg hover:bg-indigo-900">4K Engine</button>
                                     </div>
                                 </div>
                                 <button onclick="compileAndDownloadCustomRender()" class="w-full py-2 bg-emerald-600 text-white font-black text-xs rounded-xl shadow mt-2">Export Custom Matrix Render</button>
                             </div>
                         </div>
+
+                        <div class="w-full bg-[#070a12] border border-slate-800/80 p-3 rounded-2xl flex items-center justify-between mt-4">
+                            <span class="text-[8px] font-black tracking-widest text-slate-500 uppercase bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded">Ad Slot</span>
+                            <span class="text-[11px] text-slate-400 font-semibold truncate">Build Your AI Avatar with 1-Click Interface Kit.</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#e2ba6e] cursor-pointer ml-2"></i>
+                        </div>
+
                         <div class="flex flex-col gap-2 mt-6" id="detailActionRow"></div>
                     </div>
                 </div>
@@ -309,11 +331,10 @@
                             <img id="profileAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" class="w-full h-full rounded-full border-2 border-[#e2ba6e] bg-slate-900 object-cover p-1">
                             <div class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                 <i class="fa-solid fa-camera text-white text-base mb-1"></i>
-                                <span class="text-[8px] font-bold text-slate-300 uppercase tracking-wider">Change DP</span>
                             </div>
                         </div>
                         <input type="file" id="profileAvatarInputFile" accept="image/*" onchange="processProfileAvatarChange(this)" class="hidden">
-                        <h2 id="profileNameDisplay" class="text-lg font-black tracking-wide text-white">Kira Elite Master</h2>
+                        <h2 id="profileNameDisplay" class="text-lg font-black text-white">Kira Elite Master</h2>
                         <p id="profileBioDisplay" class="text-xs text-slate-400 mt-1">Deployment space active.</p>
                     </div>
 
@@ -322,13 +343,13 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Name</label>
-                                <input type="text" id="profileNameInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-[#e2ba6e]">
+                                <input type="text" id="profileNameInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Bio</label>
-                                <input type="text" id="profileBioInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-[#e2ba6e]">
+                                <input type="text" id="profileBioInput" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-white focus:outline-none">
                             </div>
-                            <button onclick="updateProfileMetaData()" class="px-5 py-2.5 bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs rounded-xl transition-all cursor-pointer uppercase tracking-wider">Save Changes</button>
+                            <button onclick="updateProfileMetaData()" class="px-5 py-2.5 bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs rounded-xl uppercase">Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -341,12 +362,40 @@
 
             <div id="adminSection" class="hidden w-full flex-1 flex flex-col px-4 md:px-8 py-8 app-section">
                 <div class="max-w-4xl mx-auto w-full bg-[#111622] border border-slate-800 rounded-3xl p-6 mb-6">
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Items</p><p id="statTotalAssets" class="text-xl font-black mt-1">0</p></div>
+                    <h2 class="text-sm font-black uppercase text-[#e2ba6e] mb-4">Vellum Revenue Control Matrix</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-slate-400 uppercase">Total Asset Ingested</p><p id="statTotalAssets" class="text-xl font-black mt-1">0</p></div>
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-[#e2ba6e] uppercase">VIP Active Pool</p><p id="statVipAssets" class="text-xl font-black text-amber-400 mt-1">0</p></div>
+                        <div class="bg-[#171e2e] p-4 rounded-xl border border-slate-800"><p class="text-[10px] font-bold text-emerald-400 uppercase">Estimated Ad Impressions</p><p class="text-xl font-black text-emerald-400 mt-1">Ready</p></div>
                     </div>
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div id="vipPaywallModal" class="fixed inset-0 bg-black/90 hidden z-[90] flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="w-full max-w-sm bg-gradient-to-b from-[#161c2a] to-[#0e131f] border border-amber-500/40 p-8 rounded-[32px] relative shadow-2xl text-center">
+            <button onclick="closeVipPaywallModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/30 text-lg animate-bounce">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h2 class="text-base font-black uppercase tracking-wider text-white">Unlock Vellum Elite Vault</h2>
+            <p class="text-xs text-slate-400 mt-2 px-2">This is a premium locked 8K design array. Get instant absolute server downloads.</p>
+            
+            <div class="mt-6 p-4 bg-slate-900/60 border border-slate-800 rounded-2xl flex justify-between items-center text-left">
+                <div>
+                    <h4 class="text-xs font-black text-white uppercase tracking-wide">Elite Infinity Pass</h4>
+                    <p class="text-[11px] text-slate-500">Unlimited downloads & fully ad-free</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-sm font-black text-amber-400">₹149</span>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400">/ month</p>
+                </div>
+            </div>
+
+            <button onclick="processPremiumCheckoutFlow()" class="w-full py-3.5 bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs rounded-xl mt-5 shadow-lg shadow-amber-500/10 uppercase tracking-widest hover:brightness-110 transition-all">Activate Premium Pass</button>
+            <span class="block text-[9px] font-black text-slate-600 mt-4 uppercase tracking-widest">Secured via UPI Node Gateway</span>
         </div>
     </div>
 
@@ -357,9 +406,7 @@
             <form class="space-y-3.5" onsubmit="handleAuthClusterSubmit(event)">
                 <input type="email" id="authEmail" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="kira@vellum.com">
                 <input type="password" id="authPassword" required class="w-full px-3 py-2.5 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-white" value="password123">
-                <div class="flex gap-2 pt-2">
-                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs rounded-xl cursor-pointer">Login / Sign Up</button>
-                </div>
+                <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-[#e2ba6e] to-[#b38938] text-neutral-950 font-black text-xs rounded-xl">Login / Sign Up</button>
             </form>
         </div>
     </div>
@@ -390,14 +437,11 @@
         function runAppleBootEngineSequence() {
             const wordEl = document.getElementById('dynamicHelloWord');
             const progressLoader = document.getElementById('bootProgressBar');
-            
             setTimeout(() => { if(progressLoader) progressLoader.style.width = "100%"; }, 50);
-
             const wordCycleInterval = setInterval(() => {
                 currentWordIndex = (currentWordIndex + 1) % helloWords.length;
                 if(wordEl) wordEl.innerText = helloWords[currentWordIndex];
             }, 550);
-
             setTimeout(() => {
                 clearInterval(wordCycleInterval);
                 const engineOverlay = document.getElementById('iphoneBootEngine');
@@ -408,17 +452,6 @@
                 }
             }, 3200);
         }
-
-        // Title Input Patch Fixes: Direct listener that doesn't trigger component refresh loop
-        document.addEventListener("DOMContentLoaded", () => {
-            const titleField = document.getElementById("userUploadTitle");
-            if(titleField) {
-                titleField.addEventListener("paste", (e) => {
-                    // Let native browser engine write string variables seamlessly
-                    setTimeout(() => { console.log("Data text chunk securely parsed inside Vellum architecture."); }, 10);
-                });
-            }
-        });
 
         function openLeftSettingsModal() {
             const panel = document.getElementById('leftSettingsModal');
@@ -475,16 +508,25 @@
             setTimeout(() => { toast.classList.replace('translate-y-0', 'translate-y-20'); toast.classList.replace('opacity-100', 'opacity-0'); }, 2200);
         }
 
+        function openVipPaywallModal() { document.getElementById('vipPaywallModal').classList.remove('hidden'); }
+        function closeVipPaywallModal() { document.getElementById('vipPaywallModal').classList.add('hidden'); }
+        function processPremiumCheckoutFlow() {
+            showToast("Initializing UPI secure routing...");
+            setTimeout(() => {
+                showToast("Premium Access Activated!");
+                closeVipPaywallModal();
+            }, 1500);
+        }
+
         function checkUserSession() {
             const user = localStorage.getItem('vellum_logged_in_user');
             const avatarBtn = document.getElementById('navAvatarButtonNode');
-            
             if (user) {
                 document.getElementById('loginBtn').classList.add('hidden');
                 document.getElementById('userProfileArea').classList.remove('hidden');
                 document.getElementById('userDisplayEmail').innerText = user;
                 const initialLetter = user.charAt(0).toUpperCase();
-                avatarBtn.className = "w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-[#b38938] text-neutral-950 flex items-center justify-center text-sm font-black tracking-tight border border-slate-700 shadow-md active:scale-95 transition-all";
+                avatarBtn.className = "w-9 h-9 rounded-full bg-gradient-to-tr from-amber-500 to-[#b38938] text-neutral-950 flex items-center justify-center text-sm font-black border border-slate-700 shadow-md active:scale-95 transition-all";
                 avatarBtn.innerHTML = `<span>${initialLetter}</span>`;
             } else {
                 document.getElementById('loginBtn').classList.remove('hidden');
@@ -498,7 +540,22 @@
 
         function applyLiveChromaShift(value) {
             const img = document.getElementById('detailImg');
-            img.style.filter = `hue-rotate(${value}deg) ${selectedEditorFilter !== 'none' ? getFilterStyleString(selectedEditorFilter) : ''}`;
+            img.style.filter = `hue-rotate(${value}deg) ${selectedEditorFilter !== 'none' ? getStudioFilterString(selectedEditorFilter) : ''}`;
+        }
+
+        function applyEditorMatrixFilter(filterType) {
+            selectedEditorFilter = filterType;
+            const imgEl = document.getElementById('detailImg');
+            imgEl.className = `max-w-full max-h-[60vh] object-contain rounded-2xl transition-all duration-300 filter-${filterType}`;
+            showToast(`Applied Studio Filter: ${filterType.toUpperCase()}`);
+        }
+
+        function getStudioFilterString(type) {
+            if (type === 'grayscale') return "grayscale(100%)";
+            if (type === 'vintage') return "sepia(50%) contrast(120%) saturate(80%)";
+            if (type === 'cinematic') return "contrast(140%) saturate(120%) brightness(90%) hue-rotate(-10deg)";
+            if (type === 'cybertone') return "hue-rotate(140deg) saturate(200%) contrast(110%)";
+            return "";
         }
 
         function triggerAiWorkspace() {
@@ -512,7 +569,8 @@
                         title: "AI Matrix: " + promptStr,
                         category: "Cyberpunk",
                         image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000",
-                        uploaded_by: "Neural_AI"
+                        uploaded_by: "Neural_AI",
+                        is_vip: Math.random() > 0.5
                     };
                     let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
                     activeSessionItems.unshift(fakeAiAsset);
@@ -523,22 +581,10 @@
             }
         }
 
-        function togglePhonePreview() {
-            const frame = document.getElementById('phoneSimulationWrapper');
-            frame.classList.toggle('hidden');
-        }
-
+        function togglePhonePreview() { document.getElementById('phoneSimulationWrapper').classList.toggle('hidden'); }
         function triggerSuperResolutionUpscale() {
             showToast("Running Matrix Detail Upscaler Engine...");
-            setTimeout(() => {
-                document.getElementById('detailRes').innerText = "8K SUPER-RESOLUTION";
-                showToast("Enhancement complete! Textures stabilized at 8K.");
-            }, 1200);
-        }
-
-        function getFilterStyleString(type) {
-            if (type === 'grayscale') return "grayscale(100%)";
-            return "";
+            setTimeout(() => { document.getElementById('detailRes').innerText = "8K SUPER-RESOLUTION"; showToast("Enhancement complete! Textures stabilized at 8K."); }, 1200);
         }
 
         function syncProfileUIElements() {
@@ -559,10 +605,7 @@
         function processProfileAvatarChange(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profileAvatarImg').src = e.target.result;
-                    showToast("Profile avatar synced!");
-                }
+                reader.onload = function(e) { document.getElementById('profileAvatarImg').src = e.target.result; showToast("Profile avatar synced!"); }
                 reader.readAsDataURL(input.files[0]);
             }
         }
@@ -573,8 +616,8 @@
             uniqueCustomCategoriesList.forEach(cat => {
                 const card = document.createElement('div');
                 card.onclick = () => selectCategory(cat);
-                card.className = "dynamic-visual-card h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-slate-800 to-slate-900 p-3.5 flex flex-col justify-end border border-slate-800 transition-all hover:scale-[1.01] capitalize";
-                card.innerHTML = `<span class="text-xs font-black tracking-wide text-slate-300">${cat}</span>`;
+                card.className = "dynamic-visual-card h-20 rounded-2xl relative overflow-hidden cursor-pointer bg-gradient-to-br from-slate-800 to-slate-900 p-3.5 flex flex-col justify-end border border-slate-800 transition-all capitalize";
+                card.innerHTML = `<span class="text-xs font-black text-slate-300">${cat}</span>`;
                 container.appendChild(card);
             });
         }
@@ -582,7 +625,6 @@
         async function fetchWallpapers() {
             try {
                 const { data, error } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
                 let dbWallpapers = data || [];
                 let savedLocalUploads = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
                 allWallpapers = [...savedLocalUploads, ...dbWallpapers];
@@ -608,8 +650,12 @@
                 card.className = "bg-transparent overflow-hidden group cursor-pointer flex flex-col relative w-full";
                 card.innerHTML = `
                     <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-slate-900 shadow-md border border-slate-850">
-                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', true)" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
-                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
+                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', true)" class="w-full h-full object-cover">
+                        ${wp.is_vip ? `
+                        <div class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 border border-amber-400 text-neutral-950 font-black text-[9px] px-2 py-0.5 rounded shadow-lg flex items-center gap-1">
+                            <i class="fa-solid fa-crown"></i> VIP
+                        </div>` : ''}
+                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 z-10">
                             <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
                         </button>
                     </div>
@@ -630,84 +676,63 @@
             }
         });
 
-        // RECONSTRUCTED DETAILS INTERFACE WRAPPER FOR THREE DOTS & RELATED SUGGESTIONS
-        function showPinterestDetailView(id, clearStackHistory = false) {
+        async function showPinterestDetailView(id, clearStackHistory = false) {
             const wp = allWallpapers.find(item => item.id.toString() === id.toString());
             if (!wp) return;
             if(clearStackHistory) { deepNavigationHistoryTraceStack = []; }
             deepNavigationHistoryTraceStack.push(id);
 
             showSection('detail');
-            document.getElementById('threeDotsActionMenuHub').classList.add('hidden'); // Close open dropdown resets
-            document.getElementById('detailImg').src = wp.image_url;
-            document.getElementById('detailImg').style.filter = "none";
+            document.getElementById('threeDotsActionMenuHub').classList.add('hidden'); 
+            const imgEl = document.getElementById('detailImg');
+            imgEl.src = wp.image_url;
+            imgEl.className = "max-w-full max-h-[60vh] object-contain rounded-2xl filter-normal transition-all duration-300";
             document.getElementById('chromaHueSlider').value = 0;
             document.getElementById('detailTitleText').innerText = wp.title;
             document.getElementById('detailRes').innerText = wp.resolution || '4K ULTRA';
             document.getElementById('detailViews').innerText = (wp.views || 0) + 1;
             document.getElementById('detailDownloads').innerText = wp.downloads || 0;
 
+            // TRACK CONVERTER COUNTS TO DATABASE
+            try {
+                await supabaseClient.from('wallpapers').update({ views: (wp.views || 0) + 1 }).eq('id', wp.id);
+            } catch(err) {}
+
             document.getElementById('detailActionRow').innerHTML = `
-                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}')" class="w-full py-3 bg-slate-200 text-slate-900 hover:bg-white font-black text-xs rounded-full shadow-md cursor-pointer transition-colors"><i class="fa-solid fa-download"></i> Download Premium Source File</button>
+                <button onclick="triggerDownload('${wp.id}', '${wp.image_url}', ${wp.is_vip || false})" class="w-full py-3 ${wp.is_vip ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-neutral-950' : 'bg-slate-200 text-slate-900'} font-black text-xs rounded-full shadow-md transition-all">
+                    ${wp.is_vip ? '<i class="fa-solid fa-crown mr-1"></i> Unlock VIP Download' : '<i class="fa-solid fa-download"></i> Download Premium Source File'}
+                </button>
             `;
 
-            // Setup dynamic callback links inside three dots menu panel instantly
-            document.getElementById('dotActionDownloadBtn').onclick = () => triggerDownload(wp.id, wp.image_url);
-            document.getElementById('dotActionCopyLinkBtn').onclick = () => {
-                navigator.clipboard.writeText(wp.image_url);
-                showToast("Vector secure mirror address linked to clipboard!");
-                document.getElementById('threeDotsActionMenuHub').classList.add('hidden');
-            };
-            document.getElementById('dotActionShareBtn').onclick = () => {
-                showToast("Sharing routing terminal initialized successfully!");
-                document.getElementById('threeDotsActionMenuHub').classList.add('hidden');
-            };
+            document.getElementById('dotActionDownloadBtn').onclick = () => triggerDownload(wp.id, wp.image_url, wp.is_vip || false);
+            document.getElementById('dotActionCopyLinkBtn').onclick = () => { navigator.clipboard.writeText(wp.image_url); showToast("Link linked to clipboard!"); };
+            document.getElementById('dotActionShareBtn').onclick = () => showToast("Sharing interface active!");
 
-            // RENDER "MORE TO EXPLORE" RECURSIVE PATTERN
             renderRelatedExploreGrid(wp.category, wp.id);
         }
 
         function renderRelatedExploreGrid(category, currentId) {
             const container = document.getElementById('relatedWallpapersGrid');
             container.innerHTML = "";
-            
-            // Filter elements matching same tags but eliminate currently selected view node
-            let relatedList = allWallpapers.filter(item => 
-                item.category && category && 
-                item.category.toLowerCase() === category.toLowerCase() && 
-                item.id.toString() !== currentId.toString()
-            );
+            let relatedList = allWallpapers.filter(item => item.category && category && item.category.toLowerCase() === category.toLowerCase() && item.id.toString() !== currentId.toString());
+            if(relatedList.length < 3) relatedList = allWallpapers.filter(item => item.id.toString() !== currentId.toString());
 
-            // Fallback backup pool fill logic if matching category density is low
-            if(relatedList.length < 3) {
-                relatedList = allWallpapers.filter(item => item.id.toString() !== currentId.toString());
-            }
-
-            // Slice out up to 6 distinct nodes for display rows
             relatedList.slice(0, 6).forEach(wp => {
                 const isLiked = likedWallpaperIds.includes(wp.id.toString());
                 const card = document.createElement('div');
                 card.className = "bg-transparent overflow-hidden group cursor-pointer flex flex-col relative w-full";
                 card.innerHTML = `
-                    <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-slate-900 shadow-sm border border-slate-850">
-                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', false)" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
-                        <button onclick="toggleLikeAsset(event, '${wp.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center border border-slate-800 transition-all hover:scale-110 z-10">
-                            <i class="fa-heart text-xs ${isLiked ? 'fa-solid text-red-500' : 'fa-regular text-slate-400'}"></i>
-                        </button>
+                    <div class="relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-slate-900 shadow-md border border-slate-850">
+                        <img src="${wp.image_url}" onclick="showPinterestDetailView('${wp.id}', false)" class="w-full h-full object-cover">
                     </div>
                     <div class="pt-2 px-1" onclick="showPinterestDetailView('${wp.id}', false)">
-                        <h3 class="text-xs font-bold text-slate-200 truncate tracking-wide">${wp.title}</h3>
-                    </div>
-                `;
+                        <h3 class="text-xs font-bold text-slate-200 truncate">${wp.title}</h3>
+                    </div>`;
                 container.appendChild(card);
             });
         }
 
-        function toggleThreeDotsDropdownEngine(event) {
-            event.stopPropagation();
-            document.getElementById('threeDotsActionMenuHub').classList.toggle('hidden');
-        }
-
+        function toggleThreeDotsDropdownEngine(event) { event.stopPropagation(); document.getElementById('threeDotsActionMenuHub').classList.toggle('hidden'); }
         function triggerLineByLineBackNavigation() {
             deepNavigationHistoryTraceStack.pop(); 
             if(deepNavigationHistoryTraceStack.length > 0) {
@@ -720,15 +745,8 @@
 
         function toggleAestheticEditorPanel() { document.getElementById('aestheticEditorControls').classList.toggle('hidden'); }
 
-        function applyEditorMatrixFilter(filterType) {
-            selectedEditorFilter = filterType;
-            const imgEl = document.getElementById('detailImg');
-            const hueVal = document.getElementById('chromaHueSlider').value;
-            imgEl.style.filter = `hue-rotate(${hueVal}deg) ${getFilterStyleString(filterType)}`;
-        }
-
         function compileAndDownloadCustomRender() {
-            if(!localStorage.getItem('vellum_logged_in_user')) { showToast("Security Lock: Verification Required!"); openAuthModal(); return; }
+            if(!localStorage.getItem('vellum_logged_in_user')) { openAuthModal(); return; }
             const imgEl = document.getElementById('detailImg');
             const canvas = document.getElementById('editorProcessingCanvas');
             const ctx = canvas.getContext('2d');
@@ -738,7 +756,7 @@
             const baseImg = new Image();
             baseImg.crossOrigin = "anonymous"; 
             baseImg.src = imgEl.src;
-            showToast("Compiling custom output render vector...");
+            showToast("Compiling output render...");
 
             baseImg.onload = function() {
                 let targetWidth = baseImg.width; let targetHeight = baseImg.height;
@@ -749,11 +767,11 @@
                 const sx = (baseImg.width - targetWidth) / 2;
                 const sy = (baseImg.height - targetHeight) / 2;
 
-                ctx.filter = `hue-rotate(${hueVal}deg) ${getFilterStyleString(selectedEditorFilter)}`;
+                ctx.filter = `hue-rotate(${hueVal}deg) ${getStudioFilterString(selectedEditorFilter)}`;
                 ctx.drawImage(baseImg, sx, sy, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
                 try {
                     const link = document.createElement('a');
-                    link.download = `Vellum_AI_Studio_${Date.now()}.jpg`;
+                    link.download = `Vellum_Studio_${Date.now()}.jpg`;
                     link.href = canvas.toDataURL("image/jpeg", 0.9); link.click();
                 } catch(e) { window.open(imgEl.src, '_blank'); }
             };
@@ -784,13 +802,17 @@
             const title = document.getElementById('userUploadTitle').value;
             let category = document.getElementById('userUploadCategory').value;
             if(category === 'Other') { category = document.getElementById('userUploadCustomCategory').value.trim(); }
+            const isVip = document.getElementById('userUploadIsVip').checked;
             
             const runtimeNewAssetItem = { 
                 id: "local_" + Date.now().toString(), 
                 title: title, 
                 category: category, 
                 image_url: base64ImageStringData, 
-                uploaded_by: "Core Agent"
+                uploaded_by: "Core Agent",
+                is_vip: isVip,
+                views: 0,
+                downloads: 0
             };
 
             let activeSessionItems = JSON.parse(localStorage.getItem('vellum_session_injected_items')) || [];
@@ -799,7 +821,6 @@
             
             base64ImageStringData = "";
             e.target.reset(); 
-            
             closeLeftSlideUploadModal();
             showToast("Wallpaper deployed permanently!");
             fetchWallpapers(); 
@@ -843,10 +864,7 @@
             filterWallpapers();
         }
 
-        function handleLogout() { 
-            localStorage.removeItem('vellum_logged_in_user'); 
-            checkUserSession(); showSection('dashboard'); filterWallpapers(); 
-        }
+        function handleLogout() { localStorage.removeItem('vellum_logged_in_user'); checkUserSession(); showSection('dashboard'); filterWallpapers(); }
         function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
         function toggleDropdown(event, id) { if (event) event.stopPropagation(); document.getElementById(id).classList.toggle('hidden'); }
@@ -855,13 +873,10 @@
             const dropdown = document.getElementById('profileDropdown');
             const dotsMenu = document.getElementById('threeDotsActionMenuHub');
             const profileArea = document.getElementById('userProfileArea');
-            
             if (dropdown && !dropdown.classList.contains('hidden')) {
                 if (profileArea && !profileArea.contains(event.target)) dropdown.classList.add('hidden');
             }
-            if (dotsMenu && !dotsMenu.classList.contains('hidden')) {
-                dotsMenu.classList.add('hidden');
-            }
+            if (dotsMenu && !dotsMenu.classList.contains('hidden')) dotsMenu.classList.add('hidden');
         });
 
         function filterWallpapers() {
@@ -878,17 +893,22 @@
             filterWallpapers();
         }
 
-        async function triggerDownload(id, url) {
-            if(!localStorage.getItem('vellum_logged_in_user')) {
-                showToast("Download Locked! Authentication Required.");
-                openAuthModal();
-                return;
-            }
+        async function triggerDownload(id, url, isVip) {
+            if(!localStorage.getItem('vellum_logged_in_user')) { showToast("Authentication Required!"); openAuthModal(); return; }
+            if(isVip) { openVipPaywallModal(); return; }
+            
+            // TRACK DOWNLOAD TO DATABASE
+            try {
+                const wp = allWallpapers.find(item => item.id.toString() === id.toString());
+                await supabaseClient.from('wallpapers').update({ downloads: (wp.downloads || 0) + 1 }).eq('id', id);
+            } catch(e) {}
+            
             window.open(url, '_blank');
         }
 
         function compileAnalyticsDashboard() {
             document.getElementById('statTotalAssets').innerText = allWallpapers.length;
+            document.getElementById('statVipAssets').innerText = allWallpapers.filter(w => w.is_vip).length;
         }
 
         window.onload = () => { runAppleBootEngineSequence(); fetchWallpapers(); };
