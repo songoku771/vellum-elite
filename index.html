@@ -455,9 +455,10 @@
             triggerNotificationToast("Viewing notification target object.");
         }
 
+        // FIXED: Displays all remaining items to fill up the entire empty layout space beneath "More Like This"
         function renderStream(currentId) {
             const container = document.getElementById('sideCascadedStreamGrid'); container.innerHTML = "";
-            let items = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString()).slice(0, 4);
+            let items = allAssetsDatabaseMemory.filter(w => w.id.toString() !== currentId.toString());
             items.forEach(item => {
                 container.innerHTML += `<div class="w-full rounded-xl overflow-hidden border border-slate-800/60 bg-slate-950/40 group relative"><img src="${item.image_url}" onclick="openImageDetailStudioView('${item.id}', false)" class="w-full h-auto object-cover cursor-pointer"></div>`;
             });
