@@ -6,7 +6,7 @@
     <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -30,7 +30,7 @@
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* PERFECT PINTEREST MASONRY COLUMNS - DYNAMIC HANDLED BY JAVASCRIPT/CSS */
+        /* PERFECT PINTEREST MASONRY COLUMNS */
         .pinterest-grid { 
             column-gap: 16px;
             width: 100%;
@@ -61,16 +61,33 @@
             margin: 0 auto;
             min-height: 75vh;
         }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155; transition: .3s; border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #f59e0b; }
+        input:checked + .slider:before { transform: translateX(20px); }
     </style>
 </head>
 <body>
 
-    <!-- Toast Notification Node -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- Notification Drawer -->
     <div id="appNotificationDrawer" class="fixed top-20 right-6 w-80 bg-[#070a13] border border-slate-800 rounded-2xl shadow-2xl p-4 hidden z-50 transform transition-all duration-300">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500">System Logs</span>
@@ -84,7 +101,6 @@
 
     <div class="flex h-screen w-full">
         
-        <!-- Sidebar Navigation -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font">Lusso</div>
@@ -97,7 +113,6 @@
             <button onclick="navigateToAppSection('settings')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1"><i class="fa-solid fa-gear"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- Upload Side Drawer -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs brand-font">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -111,7 +126,6 @@
             </form>
         </div>
 
-        <!-- Main Window Area -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-b-slate-900/60">
                 <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-amber-400 cursor-pointer">Lusso</div>
@@ -122,26 +136,20 @@
                 <div id="navUserInitial" class="w-8 h-8 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xs">T</div>
             </header>
 
-            <!-- Grid Dashboard View -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
             </div>
 
-            <!-- Detail Modal Section Layout -->
             <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 
                 <div class="detail-container flex flex-col md:flex-row">
-                    <!-- Left Side Image -->
                     <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
                         <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
                     
-                    <!-- Right Side Details Interface -->
                     <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
-                        
                         <div>
-                            <!-- Album & Red Save Bar Option Panel -->
                             <div class="flex items-center justify-between gap-4 w-full mb-6">
                                 <div class="relative flex-1">
                                     <select id="albumSelectorDropdown" class="w-full bg-slate-800 border border-slate-700 text-gray-200 text-xs font-bold px-4 py-2.5 rounded-xl outline-none cursor-pointer appearance-none">
@@ -158,18 +166,16 @@
                             <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100 mt-4 mb-2">Asset Title</h1>
                             <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
 
-                            <!-- Profile Row Badge Info -->
                             <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
-                                <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs">T</div>
+                                <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs" id="detailProfileInit">T</div>
                                 <div>
-                                    <p class="text-xs font-bold text-gray-200">Tejendar Prajapati</p>
+                                    <p class="text-xs font-bold text-gray-200" id="detailProfileName">Tejendar Prajapati</p>
                                     <p class="text-[10px] text-slate-500">12k Followers</p>
                                 </div>
                                 <button class="ml-auto px-4 py-1.5 bg-slate-800 text-gray-300 rounded-full text-[11px] font-bold hover:bg-slate-700 transition">Follow</button>
                             </div>
                         </div>
 
-                        <!-- Action Controls Strip Panels -->
                         <div class="w-full">
                             <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80">
                                 <div class="flex items-center gap-2">
@@ -192,79 +198,141 @@
                     </div>
                 </div>
 
-                <!-- More For Your System Grid Frame -->
                 <div class="mt-20">
                     <h3 class="text-center brand-font text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
                     <div id="bottomStreamGrid" class="pinterest-grid"></div>
                 </div>
             </div>
 
-            <!-- 🔥 NEW SETTINGS CONTROL TERMINAL PANEL 🔥 -->
-            <div id="settingsSection" class="hidden w-full app-view-block p-6 md:p-12 max-w-4xl mx-auto">
+            <div id="settingsSection" class="hidden w-full app-view-block p-6 md:p-12 max-w-5xl mx-auto">
                 <div class="border-b border-slate-800 pb-4 mb-8">
-                    <h1 class="brand-font text-3xl text-amber-400 font-bold">System Settings</h1>
-                    <p class="text-xs text-slate-400 mt-1">Configure your premium matrix layout and background shading.</p>
+                    <h1 class="brand-font text-3xl text-amber-400 font-bold">System Configuration</h1>
+                    <p class="text-xs text-slate-400 mt-1">Manage your elite node profile, cloud analytics pipeline, and interface mechanics.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    
-                    <!-- Left: Profile & Cloud Integration Status -->
-                    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 space-y-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xl shadow-xl">T</div>
-                            <div>
-                                <h3 class="font-bold text-md text-gray-200">Tejendar Prajapati</h3>
-                                <p class="text-xs text-emerald-400 flex items-center gap-1"><span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> Node Creator</p>
-                            </div>
-                        </div>
-                        
-                        <div class="border-t border-slate-800 pt-4 space-y-2">
-                            <div class="flex justify-between text-xs"><span class="text-slate-400">Database Core</span><span class="text-amber-500 font-mono">Supabase PG-15</span></div>
-                            <div class="flex justify-between text-xs"><span class="text-slate-400">Storage Sync</span><span class="text-emerald-400 font-mono">Active Connected</span></div>
-                        </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-64 flex flex-col gap-1 text-left">
+                        <button onclick="switchSettingsTab('editProfileSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left bg-amber-500/10 text-amber-400 border border-amber-500/30"><i class="fa-solid fa-user mr-2"></i> Edit Profile</button>
+                        <button onclick="switchSettingsTab('accountMgmtSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-sliders mr-2"></i> Account Management</button>
+                        <button onclick="switchSettingsTab('profileVisibilitySub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-eye mr-2"></i> Profile Visibility</button>
+                        <button onclick="switchSettingsTab('recommendationsSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Matrix Core Shading</button>
                     </div>
 
-                    <!-- Right: Live Matrix Layout Tweaks -->
-                    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 space-y-6">
-                        <div>
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4"><i class="fa-solid fa-sliders text-amber-500 mr-2"></i> Grid Column Density</h3>
-                            <div class="grid grid-cols-4 gap-2">
-                                <button onclick="updateGridDensityLayout(2)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">2 Col</button>
-                                <button onclick="updateGridDensityLayout(3)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">3 Col</button>
-                                <button onclick="updateGridDensityLayout(4)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-amber-500 bg-amber-500/10 text-amber-400 transition">4 Col</button>
-                                <button onclick="updateGridDensityLayout(5)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">5 Col</button>
-                            </div>
-                            <p class="text-[10px] text-slate-500 mt-2">Manually force the system to pack assets into custom column counts.</p>
-                        </div>
-
-                        <div class="border-t border-slate-800 pt-4">
-                            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 mb-2"><i class="fa-solid fa-palette text-amber-500 mr-2"></i> Adaptive Theme Shading</h3>
+                    <div class="flex-1 bg-[#111827] border border-slate-800 rounded-3xl p-6 md:p-8">
+                        
+                        <div id="editProfileSub" class="settings-sub-section space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Public Info</h2>
                             <div class="flex items-center gap-4">
-                                <input type="color" value="#0b0f19" oninput="applyAdaptiveThemeColor(this.value)" class="w-12 h-12 bg-transparent cursor-pointer rounded-xl border border-slate-700 overflow-hidden">
+                                <div id="settingsProfilePic" class="w-16 h-16 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-2xl shadow-xl">T</div>
                                 <div>
-                                    <p class="text-xs font-bold text-gray-300">Live Custom Shading</p>
-                                    <p class="text-[10px] text-slate-500">Pick a custom color hex to adapt the app wrapper layer.</p>
+                                    <button class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl text-gray-300">Change Avatar</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Display Name</label>
+                                    <input type="text" id="settingsInputName" value="Tejendar Prajapati" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">About / Bio</label>
+                                    <textarea id="settingsInputBio" placeholder="Tell your matrix story..." class="w-full h-24 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500 resize-none">Premium asset synchronization pipeline builder.</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Website URL</label>
+                                    <input type="text" id="settingsInputWebsite" value="https://github.com" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500">
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                        <div id="accountMgmtSub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Account Control</h2>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Secure Email (Private Address)</label>
+                                    <input type="email" id="settingsInputEmail" value="prajapatitejendar@gmail.com" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500">
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-800/40">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Convert Core Node Architecture</p>
+                                        <p class="text-[10px] text-slate-500">Unlock developer analytics tools and advanced metrics logs.</p>
+                                    </div>
+                                    <button onclick="triggerNotificationToast('Pipeline upgrade active')" class="px-3 py-1.5 bg-amber-500 text-black text-xs font-bold rounded-xl">Convert Account</button>
+                                </div>
+                                <div class="flex items-center justify-between py-2">
+                                    <div>
+                                        <p class="text-xs font-bold text-red-400">Deactivate Matrix Node</p>
+                                        <p class="text-[10px] text-slate-500">Temporarily hide your profile, uploaded matrices and server syncs.</p>
+                                    </div>
+                                    <button onclick="triggerNotificationToast('Node paused')" class="px-3 py-1.5 bg-red-950/40 border border-red-900 text-red-400 text-xs font-bold rounded-xl hover:bg-red-900 hover:text-white transition">Deactivate</button>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Bottom System Actions -->
-                <div class="mt-8 bg-slate-900/40 border border-dashed border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                        <h4 class="text-xs font-bold text-gray-300">System Reset Terminal</h4>
-                        <p class="text-[10px] text-slate-500">Clear cache or disconnect local sync pipelines.</p>
+                        <div id="profileVisibilitySub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Privacy & Discoverability</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Private Profile Mode</p>
+                                        <p class="text-[10px] text-slate-500">Only approved matrix engines can view your published sync assets.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="settingsCheckPrivate">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between border-t border-slate-800/60 pt-4">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Stealth Engine Discovery</p>
+                                        <p class="text-[10px] text-slate-500">Hide your system asset feeds from indexing bots (e.g. Google Search).</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="settingsCheckStealth" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="recommendationsSub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Adaptive UI Shading</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3"><i class="fa-solid fa-sliders text-amber-500 mr-2"></i> Grid Column Density</h3>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <button onclick="updateGridDensityLayout(2)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">2 Col</button>
+                                        <button onclick="updateGridDensityLayout(3)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">3 Col</button>
+                                        <button onclick="updateGridDensityLayout(4)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-amber-500 bg-amber-500/10 text-amber-400 transition">4 Col</button>
+                                        <button onclick="updateGridDensityLayout(5)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">5 Col</button>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-800 pt-4">
+                                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"><i class="fa-solid fa-palette text-amber-500 mr-2"></i> Live Adaptive Canvas Color</h3>
+                                    <div class="flex items-center gap-4">
+                                        <input type="color" value="#0b0f19" oninput="applyAdaptiveThemeColor(this.value)" class="w-12 h-12 bg-transparent cursor-pointer rounded-xl border border-slate-700 overflow-hidden">
+                                        <div>
+                                            <p class="text-xs font-bold text-gray-300">Live Custom Shading Hex</p>
+                                            <p class="text-[10px] text-slate-500">Pick a custom styling hex to morph the application layer background.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+                            <button onclick="triggerNotificationToast('Cache Matrix Flushed')" class="text-xs font-bold text-red-400 hover:underline">Flush System Cache</button>
+                            <button onclick="saveAllApplicationSettingsData()" class="px-6 py-2.5 bg-amber-500 text-black font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg shadow-amber-500/10 hover:bg-amber-400 transition">Save Changes</button>
+                        </div>
+
                     </div>
-                    <button onclick="triggerNotificationToast('Cache Matrix Cleared')" class="px-4 py-2 bg-red-950/40 text-red-400 border border-red-900 hover:bg-red-900 hover:text-white transition rounded-xl text-xs font-bold">Flush Cache</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Engine Script Interfaces -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -273,7 +341,7 @@
 
         let allAssetsDatabaseMemory = [];
         let activeSelectedAssetUrlGlobal = "";
-        let currentForcedGridDensity = null; // Stores configuration setting overrides
+        let currentForcedGridDensity = null; 
         
         function triggerNotificationToast(msg) {
             const node = document.getElementById('appGlobalToast');
@@ -292,35 +360,26 @@
             document.getElementById('mainHeaderNode').style.backgroundColor = hex + "dd";
         }
 
-        // 🌟 SETTINGS GRID OVERRIDE CONFIGURATION FUNCTION 🌟
         function updateGridDensityLayout(columns) {
             currentForcedGridDensity = columns;
-            
-            // Toggle highlight styles across dashboard option selectors
             document.querySelectorAll('.density-btn').forEach(btn => {
                 btn.classList.remove('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
                 if(btn.innerText.includes(columns)) {
                     btn.classList.add('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
                 }
             });
-
-            // Apply direct modification rules onto structural CSS
             applyDynamicColumnsStyle(columns);
             triggerNotificationToast(`Grid optimized to ${columns} Columns!`);
         }
 
         function applyDynamicColumnsStyle(cols) {
             const grids = document.querySelectorAll('.pinterest-grid');
-            grids.forEach(g => {
-                g.style.columnCount = cols;
-            });
+            grids.forEach(g => { g.style.columnCount = cols; });
         }
 
         function navigateToAppSection(id) {
             document.querySelectorAll('.app-view-block').forEach(v => v.classList.add('hidden'));
             document.getElementById(id + 'Section').classList.remove('hidden');
-            
-            // Re-apply layout densities if switching back onto layouts
             if(id === 'dashboard' && currentForcedGridDensity) {
                 applyDynamicColumnsStyle(currentForcedGridDensity);
             }
@@ -335,13 +394,65 @@
             document.getElementById('threeDotsMenuBox').classList.toggle('hidden');
         }
 
+        /* Pinterest Tab Switch Logic */
+        function switchSettingsTab(targetId) {
+            document.querySelectorAll('.settings-sub-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(targetId).classList.remove('hidden');
+            
+            document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500/10', 'text-amber-400', 'border-amber-500/30');
+                btn.classList.add('text-slate-400');
+            });
+            event.currentTarget.classList.add('bg-amber-500/10', 'text-amber-400', 'border-amber-500/30');
+            event.currentTarget.classList.remove('text-slate-400');
+        }
+
+        /* LocalStorage + Supabase-ready Settings Sync System */
+        function saveAllApplicationSettingsData() {
+            const name = document.getElementById('settingsInputName').value;
+            const bio = document.getElementById('settingsInputBio').value;
+            const web = document.getElementById('settingsInputWebsite').value;
+            const email = document.getElementById('settingsInputEmail').value;
+            const isPrivate = document.getElementById('settingsCheckPrivate').checked;
+            const isStealth = document.getElementById('settingsCheckStealth').checked;
+
+            const profileConfigObj = { name, bio, web, email, isPrivate, isStealth };
+            localStorage.setItem('lusso_profile_config', JSON.stringify(profileConfigObj));
+
+            // Sync structural parameters instantly on UI layers
+            document.getElementById('navUserInitial').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('settingsProfilePic').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('detailProfileInit').innerText = name.charAt(0).toUpperCase();
+            document.getElementById('detailProfileName').innerText = name;
+
+            triggerNotificationToast("Matrix Settings Synced!");
+        }
+
+        function loadSavedProfileSettings() {
+            const saved = localStorage.getItem('lusso_profile_config');
+            if(saved) {
+                const config = JSON.parse(saved);
+                document.getElementById('settingsInputName').value = config.name || "Tejendar Prajapati";
+                document.getElementById('settingsInputBio').value = config.bio || "";
+                document.getElementById('settingsInputWebsite').value = config.web || "";
+                document.getElementById('settingsInputEmail').value = config.email || "";
+                document.getElementById('settingsCheckPrivate').checked = !!config.isPrivate;
+                document.getElementById('settingsCheckStealth').checked = !!config.isStealth;
+
+                document.getElementById('navUserInitial').innerText = config.name.charAt(0).toUpperCase();
+                document.getElementById('settingsProfilePic').innerText = config.name.charAt(0).toUpperCase();
+                document.getElementById('detailProfileInit').innerText = config.name.charAt(0).toUpperCase();
+                document.getElementById('detailProfileName').innerText = config.name;
+            }
+        }
+
         // --- FETCH ENGINE ---
         async function initializeApplicationDataEngine() {
+            loadSavedProfileSettings();
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
             renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
             
-            // Run reactive checks to initialize structural widths dynamically
             if(!currentForcedGridDensity) {
                 const w = window.innerWidth;
                 let autoCols = 2;
@@ -390,7 +501,6 @@
             
             navigateToAppSection('detail');
 
-            // Smart Recommendation Algorithm
             const clickedTitleLower = item.title.toLowerCase();
             const keywords = clickedTitleLower.split(/\s+/).filter(w => w.length > 2);
 
