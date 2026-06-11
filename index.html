@@ -42,16 +42,16 @@
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
         #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-        /* Detail Modal Styling - Exactly Like Image 1 */
+        /* Detail Modal Styling - Exactly Like Pinterest */
         .detail-container {
             display: flex;
-            background: #070a13;
+            background: #111827;
             border: 1px solid #1e293b;
             border-radius: 32px;
             overflow: hidden;
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
-            min-height: 80vh;
+            min-height: 75vh;
         }
     </style>
 </head>
@@ -106,41 +106,58 @@
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 
                 <div class="detail-container flex flex-col md:flex-row">
-                    <div class="w-full md:w-[55%] bg-black flex items-center justify-center">
-                        <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[85vh] object-contain">
+                    <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
+                        <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
                     
-                    <div class="w-full md:w-[45%] p-8 flex flex-col justify-between">
+                    <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
+                        
                         <div>
-                            <div class="flex justify-between items-start">
-                                <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100">Asset Title</h1>
+                            <div class="flex items-center justify-between gap-4 w-full mb-6">
+                                <div class="relative flex-1">
+                                    <select id="albumSelectorDropdown" class="w-full bg-slate-800 border border-slate-700 text-gray-200 text-xs font-bold px-4 py-2.5 rounded-xl outline-none cursor-pointer appearance-none">
+                                        <option value="Anime">Anime</option>
+                                        <option value="Gaming">Gaming</option>
+                                        <option value="Nature">Nature</option>
+                                        <option value="Dark Aesthetic">Dark Aesthetic</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                                <button onclick="saveAssetToSelectedAlbum()" class="px-6 py-2.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-red-900/20">Save</button>
+                            </div>
+
+                            <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100 mt-4 mb-2">Asset Title</h1>
+                            <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
+
+                            <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
+                                <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs">T</div>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-200">Tejendar Prajapati</p>
+                                    <p class="text-[10px] text-slate-500">12k Followers</p>
+                                </div>
+                                <button class="ml-auto px-4 py-1.5 bg-slate-800 text-gray-300 rounded-full text-[11px] font-bold">Follow</button>
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="triggerNotificationToast('Added to Liked Items')" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-regular fa-heart"></i></button>
+                                    <button onclick="triggerNotificationToast('Comments section coming soon')" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-regular fa-comment"></i></button>
+                                    <button onclick="copyAssetLinkToClipboard()" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+                                </div>
                                 
                                 <div class="relative">
-                                    <button onclick="toggleThreeDotsMenu(event)" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white"><i class="fa-solid fa-ellipsis"></i></button>
-                                    <div id="threeDotsMenuBox" class="hidden absolute right-0 mt-2 w-52 bg-[#111827] border border-slate-800 rounded-2xl shadow-2xl py-2 z-50">
-                                        <button onclick="handleRealDownload()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-download text-amber-500"></i> Download Image</button>
-                                        <button onclick="copyAssetLinkToClipboard()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-300 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-link text-amber-500"></i> Copy Link</button>
-                                        <button onclick="triggerNotificationToast('Report Logged')" class="w-full text-left px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-900/20 flex items-center gap-3"><i class="fa-solid fa-flag"></i> Report Pin</button>
+                                    <button onclick="toggleThreeDotsMenu(event)" class="w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
+                                    <div id="threeDotsMenuBox" class="hidden absolute right-0 bottom-12 w-52 bg-[#1f2937] border border-slate-700 rounded-2xl shadow-2xl py-2 z-50 animate-fade-in">
+                                        <button onclick="handleRealDownload()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-download text-amber-500"></i> Download Image</button>
+                                        <button onclick="copyAssetLinkToClipboard()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-link text-amber-500"></i> Copy Asset URL</button>
+                                        <button onclick="triggerNotificationToast('Report Logged to Matrix')" class="w-full text-left px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-950/30 flex items-center gap-3"><i class="fa-solid fa-flag"></i> Report Wallpaper</button>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="border-b border-slate-800 w-full my-6"></div>
-
-                            <div class="flex items-center gap-3 mb-8">
-                                <div class="w-12 h-12 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold">T</div>
-                                <div>
-                                    <p class="text-sm font-bold">Tejendar Prajapati</p>
-                                    <p class="text-[10px] text-slate-500">12k Followers</p>
-                                </div>
-                                <button class="ml-auto px-6 py-2 bg-slate-800 rounded-full text-xs font-bold">Follow</button>
-                            </div>
                         </div>
 
-                        <div class="space-y-3">
-                            <button onclick="handleRealDownload()" class="w-full py-4 bg-amber-500 text-black font-bold rounded-2xl text-sm uppercase">Download Now</button>
-                            <button onclick="copyAssetLinkToClipboard()" class="w-full py-3 bg-slate-800 text-white font-bold rounded-2xl text-xs uppercase">Share Matrix Link</button>
-                        </div>
                     </div>
                 </div>
 
@@ -226,6 +243,12 @@
             renderGrid(allAssetsDatabaseMemory.filter(w => w.id != id).slice(0,10), 'bottomStreamGrid');
         }
 
+        // RED BUTTON ALBUM SAVE ACTION (Image 2)
+        function saveAssetToSelectedAlbum() {
+            const selectedAlbum = document.getElementById('albumSelectorDropdown').value;
+            triggerNotificationToast(`Saved to ${selectedAlbum} Album!`);
+        }
+
         async function handleRealDownload() {
             try {
                 const response = await fetch(activeSelectedAssetUrlGlobal);
@@ -237,7 +260,7 @@
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
-                triggerNotificationToast("Matrix Downloaded");
+                triggerNotificationToast("Saved to Storage!");
             } catch (e) { triggerNotificationToast("Download Blocked"); }
         }
 
@@ -266,18 +289,14 @@
 
             try {
                 const fileName = `${Date.now()}_${selectedFile.name}`;
-                // 1. Upload to Storage
                 const { error: stErr } = await supabaseClient.storage.from('wallpapers').upload(fileName, selectedFile);
                 if(stErr) throw stErr;
 
-                // 2. Get Public URL
                 const { data: urlData } = supabaseClient.storage.from('wallpapers').getPublicUrl(fileName);
                 
-                // 3. Insert to DB
                 const { error: dbErr } = await supabaseClient.from('wallpapers').insert([{ title, image_url: urlData.publicUrl }]);
                 if(dbErr) throw dbErr;
 
-                // SUCCESS ONLY TRIGGER
                 triggerNotificationToast("Published Successfully!");
                 closeLeftSliderUploadEngine();
                 initializeApplicationDataEngine();
