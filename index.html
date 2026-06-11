@@ -29,7 +29,7 @@
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* 🌟 PERFECT PINTEREST MASONRY COLUMNS: No Stretching, Asli Size Content 🌟 */
+        /* PERFECT PINTEREST MASONRY COLUMNS */
         .pinterest-grid { 
             column-count: 2;
             column-gap: 16px;
@@ -39,7 +39,6 @@
         @media (min-width: 1024px) { .pinterest-grid { column-count: 4; } }
         @media (min-width: 1280px) { .pinterest-grid { column-count: 5; } }
 
-        /* Preventing cards from breaking across columns */
         .pinterest-card { 
             break-inside: avoid;
             margin-bottom: 16px;
@@ -244,7 +243,6 @@
             renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
         }
 
-        // 🌟 UPDATED RENDER ENGINE: Image updates dynamically with native sizes
         function renderGrid(list, containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = "";
@@ -267,14 +265,42 @@
             renderGrid(filtered, 'pinterestMainMasonryContainer');
         }
 
+        // 🌟 OPEN DETAIL ENGINE: FIXED SCROLL VIEWPORT & SMART RELATIVE SUGGESTIONS 🌟
         function openDetail(id) {
             const item = allAssetsDatabaseMemory.find(w => w.id == id);
             if(!item) return;
+            
             activeSelectedAssetUrlGlobal = item.image_url;
             document.getElementById('detailPreviewImageNode').src = item.image_url;
             document.getElementById('detailAssetTitleText').innerText = item.title;
+            
+            // Fix 1: Reset Viewport straight to top of the detail interface layout
+            const scrollContainer = document.getElementById('mainContentScrollNode');
+            if (scrollContainer) { scrollContainer.scrollTop = 0; }
+            
             navigateToAppSection('detail');
-            renderGrid(allAssetsDatabaseMemory.filter(w => w.id != id).slice(0,10), 'bottomStreamGrid');
+
+            // Fix 2: Smart Recommendation Algorithm (Filters items sharing matching phrases or titles)
+            const clickedTitleLower = item.title.toLowerCase();
+            
+            // Split title into separate words to build robust smart contextual checks
+            const keywords = clickedTitleLower.split(/\s+/).filter(w => w.length > 2);
+
+            let smartMatchingList = allAssetsDatabaseMemory.filter(w => {
+                if(w.id == id) return false; // Exclude itself
+                const targets = w.title.toLowerCase();
+                // Match category keywords or general matching words
+                return keywords.some(kw => targets.includes(kw));
+            });
+
+            // Fallback strategy: If not enough matches found, top up with generic pipeline assets
+            if(smartMatchingList.length < 8) {
+                const remaining = allAssetsDatabaseMemory.filter(w => w.id != id && !smartMatchingList.some(sm => sm.id == w.id));
+                smartMatchingList = [...smartMatchingList, ...remaining];
+            }
+
+            // Render filtered specific matching content onto suggestions stream below
+            renderGrid(smartMatchingList.slice(0, 15), 'bottomStreamGrid');
         }
 
         function saveAssetToSelectedAlbum() {
