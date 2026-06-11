@@ -29,13 +29,24 @@
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* Perfect Pinterest Column Grid */
-        .pinterest-grid { column-count: 2; column-gap: 16px; width: 100%; }
-        @media (min-width: 640px) { .pinterest-grid { column-count: 3; } }
-        @media (min-width: 1024px) { .pinterest-grid { column-count: 4; } }
-        @media (min-width: 1280px) { .pinterest-grid { column-count: 5; } }
+        /* 🔥 DENSE MATRIX GRID: No More Dead Spaces or Empty Gaps 🔥 */
+        .pinterest-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-auto-rows: 260px;
+            grid-auto-flow: dense;
+            gap: 16px; 
+            width: 100%; 
+        }
+        @media (min-width: 640px) { .pinterest-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); grid-auto-rows: 320px; } }
+        @media (min-width: 1024px) { .pinterest-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); grid-auto-rows: 340px; } }
 
-        .pinterest-card { break-inside: avoid; margin-bottom: 16px; display: inline-block; width: 100%; }
+        /* Randomly distribution to look organic like Pinterest but strictly grid locked */
+        .pinterest-card:nth-child(3n) { grid-row: span 2; }
+        .pinterest-card:nth-child(4n+1) { grid-row: span 1.5; }
+        .pinterest-card:nth-child(5n+2) { grid-row: span 1.2; }
+
+        .pinterest-card { width: 100%; height: 100%; display: flex; flex-direction: column; }
         .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
         .iphone-script-font { font-family: 'Great Vibes', cursive; font-weight: 500; }
         
@@ -149,7 +160,7 @@
                                 
                                 <div class="relative">
                                     <button onclick="toggleThreeDotsMenu(event)" class="w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
-                                    <div id="threeDotsMenuBox" class="hidden absolute right-0 bottom-12 w-52 bg-[#1f2937] border border-slate-700 rounded-2xl shadow-2xl py-2 z-50 animate-fade-in">
+                                    <div id="threeDotsMenuBox" class="hidden absolute right-0 bottom-12 w-52 bg-[#1f2937] border border-slate-700 rounded-2xl shadow-2xl py-2 z-50">
                                         <button onclick="handleRealDownload()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-download text-amber-500"></i> Download Image</button>
                                         <button onclick="copyAssetLinkToClipboard()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-link text-amber-500"></i> Copy Asset URL</button>
                                         <button onclick="triggerNotificationToast('Report Logged to Matrix')" class="w-full text-left px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-950/30 flex items-center gap-3"><i class="fa-solid fa-flag"></i> Report Wallpaper</button>
@@ -224,10 +235,9 @@
                 const card = document.createElement('div');
                 card.className = "pinterest-card group cursor-pointer";
                 card.innerHTML = `
-                    <div class="relative overflow-hidden rounded-2xl bg-slate-900 border border-slate-800">
-                        <img src="${item.image_url}" onclick="openDetail('${item.id}')" class="w-full h-auto block hover:scale-105 transition-transform duration-500">
+                    <div class="relative w-full h-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800">
+                        <img src="${item.image_url}" onclick="openDetail('${item.id}')" class="w-full h-full object-cover block hover:scale-105 transition-transform duration-500">
                     </div>
-                    <p class="mt-2 text-[11px] font-bold text-slate-300 truncate px-1">${item.title}</p>
                 `;
                 container.appendChild(card);
             });
@@ -243,7 +253,6 @@
             renderGrid(allAssetsDatabaseMemory.filter(w => w.id != id).slice(0,10), 'bottomStreamGrid');
         }
 
-        // RED BUTTON ALBUM SAVE ACTION (Image 2)
         function saveAssetToSelectedAlbum() {
             const selectedAlbum = document.getElementById('albumSelectorDropdown').value;
             triggerNotificationToast(`Saved to ${selectedAlbum} Album!`);
@@ -269,7 +278,7 @@
             triggerNotificationToast("URL Copied!");
         }
 
-        // --- UPLOAD CORE (FIXED) ---
+        // --- UPLOAD CORE ---
         let selectedFile = null;
         function processLocalFileSelection(input) {
             if(input.files[0]) {
@@ -302,7 +311,7 @@
                 initializeApplicationDataEngine();
             } catch (err) {
                 alert("Pipeline Error: Check Storage RLS Policies!");
-            } finally {
+            } finaly {
                 btn.disabled = false;
                 btn.innerText = "PUBLISH ASSET";
             }
