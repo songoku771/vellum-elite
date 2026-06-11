@@ -25,19 +25,17 @@
             margin: 0;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease;
         }
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* PERFECT PINTEREST MASONRY COLUMNS */
+        /* PERFECT PINTEREST MASONRY COLUMNS - DYNAMIC HANDLED BY JAVASCRIPT/CSS */
         .pinterest-grid { 
-            column-count: 2;
             column-gap: 16px;
             width: 100%;
+            transition: column-count 0.3s ease;
         }
-        @media (min-width: 640px) { .pinterest-grid { column-count: 3; } }
-        @media (min-width: 1024px) { .pinterest-grid { column-count: 4; } }
-        @media (min-width: 1280px) { .pinterest-grid { column-count: 5; } }
 
         .pinterest-card { 
             break-inside: avoid;
@@ -67,10 +65,12 @@
 </head>
 <body>
 
+    <!-- Toast Notification Node -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
+    <!-- Notification Drawer -->
     <div id="appNotificationDrawer" class="fixed top-20 right-6 w-80 bg-[#070a13] border border-slate-800 rounded-2xl shadow-2xl p-4 hidden z-50 transform transition-all duration-300">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500">System Logs</span>
@@ -84,6 +84,7 @@
 
     <div class="flex h-screen w-full">
         
+        <!-- Sidebar Navigation -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font">Lusso</div>
@@ -96,6 +97,7 @@
             <button onclick="navigateToAppSection('settings')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1"><i class="fa-solid fa-gear"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
+        <!-- Upload Side Drawer -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs brand-font">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -109,6 +111,7 @@
             </form>
         </div>
 
+        <!-- Main Window Area -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-b-slate-900/60">
                 <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-amber-400 cursor-pointer">Lusso</div>
@@ -119,21 +122,26 @@
                 <div id="navUserInitial" class="w-8 h-8 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xs">T</div>
             </header>
 
+            <!-- Grid Dashboard View -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
             </div>
 
+            <!-- Detail Modal Section Layout -->
             <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 
                 <div class="detail-container flex flex-col md:flex-row">
+                    <!-- Left Side Image -->
                     <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
                         <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
                     
+                    <!-- Right Side Details Interface -->
                     <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
                         
                         <div>
+                            <!-- Album & Red Save Bar Option Panel -->
                             <div class="flex items-center justify-between gap-4 w-full mb-6">
                                 <div class="relative flex-1">
                                     <select id="albumSelectorDropdown" class="w-full bg-slate-800 border border-slate-700 text-gray-200 text-xs font-bold px-4 py-2.5 rounded-xl outline-none cursor-pointer appearance-none">
@@ -150,6 +158,7 @@
                             <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100 mt-4 mb-2">Asset Title</h1>
                             <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
 
+                            <!-- Profile Row Badge Info -->
                             <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
                                 <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs">T</div>
                                 <div>
@@ -160,6 +169,7 @@
                             </div>
                         </div>
 
+                        <!-- Action Controls Strip Panels -->
                         <div class="w-full">
                             <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80">
                                 <div class="flex items-center gap-2">
@@ -182,20 +192,79 @@
                     </div>
                 </div>
 
+                <!-- More For Your System Grid Frame -->
                 <div class="mt-20">
                     <h3 class="text-center brand-font text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
                     <div id="bottomStreamGrid" class="pinterest-grid"></div>
                 </div>
             </div>
 
-            <div id="settingsSection" class="hidden w-full app-view-block p-10">
-                <h1 class="brand-font text-2xl mb-6">Settings</h1>
-                <input type="color" oninput="applyAdaptiveThemeColor(this.value)" class="w-20 h-20 bg-transparent cursor-pointer">
-                <p class="text-xs text-slate-500 mt-2">Change Grid Shading</p>
+            <!-- 🔥 NEW SETTINGS CONTROL TERMINAL PANEL 🔥 -->
+            <div id="settingsSection" class="hidden w-full app-view-block p-6 md:p-12 max-w-4xl mx-auto">
+                <div class="border-b border-slate-800 pb-4 mb-8">
+                    <h1 class="brand-font text-3xl text-amber-400 font-bold">System Settings</h1>
+                    <p class="text-xs text-slate-400 mt-1">Configure your premium matrix layout and background shading.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Left: Profile & Cloud Integration Status -->
+                    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xl shadow-xl">T</div>
+                            <div>
+                                <h3 class="font-bold text-md text-gray-200">Tejendar Prajapati</h3>
+                                <p class="text-xs text-emerald-400 flex items-center gap-1"><span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> Node Creator</p>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-slate-800 pt-4 space-y-2">
+                            <div class="flex justify-between text-xs"><span class="text-slate-400">Database Core</span><span class="text-amber-500 font-mono">Supabase PG-15</span></div>
+                            <div class="flex justify-between text-xs"><span class="text-slate-400">Storage Sync</span><span class="text-emerald-400 font-mono">Active Connected</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Live Matrix Layout Tweaks -->
+                    <div class="bg-[#111827] border border-slate-800 rounded-2xl p-6 space-y-6">
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4"><i class="fa-solid fa-sliders text-amber-500 mr-2"></i> Grid Column Density</h3>
+                            <div class="grid grid-cols-4 gap-2">
+                                <button onclick="updateGridDensityLayout(2)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">2 Col</button>
+                                <button onclick="updateGridDensityLayout(3)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">3 Col</button>
+                                <button onclick="updateGridDensityLayout(4)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-amber-500 bg-amber-500/10 text-amber-400 transition">4 Col</button>
+                                <button onclick="updateGridDensityLayout(5)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">5 Col</button>
+                            </div>
+                            <p class="text-[10px] text-slate-500 mt-2">Manually force the system to pack assets into custom column counts.</p>
+                        </div>
+
+                        <div class="border-t border-slate-800 pt-4">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300 mb-2"><i class="fa-solid fa-palette text-amber-500 mr-2"></i> Adaptive Theme Shading</h3>
+                            <div class="flex items-center gap-4">
+                                <input type="color" value="#0b0f19" oninput="applyAdaptiveThemeColor(this.value)" class="w-12 h-12 bg-transparent cursor-pointer rounded-xl border border-slate-700 overflow-hidden">
+                                <div>
+                                    <p class="text-xs font-bold text-gray-300">Live Custom Shading</p>
+                                    <p class="text-[10px] text-slate-500">Pick a custom color hex to adapt the app wrapper layer.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom System Actions -->
+                <div class="mt-8 bg-slate-900/40 border border-dashed border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-300">System Reset Terminal</h4>
+                        <p class="text-[10px] text-slate-500">Clear cache or disconnect local sync pipelines.</p>
+                    </div>
+                    <button onclick="triggerNotificationToast('Cache Matrix Cleared')" class="px-4 py-2 bg-red-950/40 text-red-400 border border-red-900 hover:bg-red-900 hover:text-white transition rounded-xl text-xs font-bold">Flush Cache</button>
+                </div>
             </div>
+
         </div>
     </div>
 
+    <!-- Engine Script Interfaces -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -204,6 +273,7 @@
 
         let allAssetsDatabaseMemory = [];
         let activeSelectedAssetUrlGlobal = "";
+        let currentForcedGridDensity = null; // Stores configuration setting overrides
         
         function triggerNotificationToast(msg) {
             const node = document.getElementById('appGlobalToast');
@@ -222,9 +292,38 @@
             document.getElementById('mainHeaderNode').style.backgroundColor = hex + "dd";
         }
 
+        // 🌟 SETTINGS GRID OVERRIDE CONFIGURATION FUNCTION 🌟
+        function updateGridDensityLayout(columns) {
+            currentForcedGridDensity = columns;
+            
+            // Toggle highlight styles across dashboard option selectors
+            document.querySelectorAll('.density-btn').forEach(btn => {
+                btn.classList.remove('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
+                if(btn.innerText.includes(columns)) {
+                    btn.classList.add('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
+                }
+            });
+
+            // Apply direct modification rules onto structural CSS
+            applyDynamicColumnsStyle(columns);
+            triggerNotificationToast(`Grid optimized to ${columns} Columns!`);
+        }
+
+        function applyDynamicColumnsStyle(cols) {
+            const grids = document.querySelectorAll('.pinterest-grid');
+            grids.forEach(g => {
+                g.style.columnCount = cols;
+            });
+        }
+
         function navigateToAppSection(id) {
             document.querySelectorAll('.app-view-block').forEach(v => v.classList.add('hidden'));
             document.getElementById(id + 'Section').classList.remove('hidden');
+            
+            // Re-apply layout densities if switching back onto layouts
+            if(id === 'dashboard' && currentForcedGridDensity) {
+                applyDynamicColumnsStyle(currentForcedGridDensity);
+            }
         }
 
         function forceResetToHomeGrid() { navigateToAppSection('dashboard'); }
@@ -241,6 +340,18 @@
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
             renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
+            
+            // Run reactive checks to initialize structural widths dynamically
+            if(!currentForcedGridDensity) {
+                const w = window.innerWidth;
+                let autoCols = 2;
+                if(w >= 1280) autoCols = 5;
+                else if(w >= 1024) autoCols = 4;
+                else if(w >= 640) autoCols = 3;
+                applyDynamicColumnsStyle(autoCols);
+            } else {
+                applyDynamicColumnsStyle(currentForcedGridDensity);
+            }
         }
 
         function renderGrid(list, containerId) {
@@ -265,7 +376,7 @@
             renderGrid(filtered, 'pinterestMainMasonryContainer');
         }
 
-        // 🌟 OPEN DETAIL ENGINE: FIXED SCROLL VIEWPORT & SMART RELATIVE SUGGESTIONS 🌟
+        // --- OPEN DETAIL ENGINE ---
         function openDetail(id) {
             const item = allAssetsDatabaseMemory.find(w => w.id == id);
             if(!item) return;
@@ -274,33 +385,28 @@
             document.getElementById('detailPreviewImageNode').src = item.image_url;
             document.getElementById('detailAssetTitleText').innerText = item.title;
             
-            // Fix 1: Reset Viewport straight to top of the detail interface layout
             const scrollContainer = document.getElementById('mainContentScrollNode');
             if (scrollContainer) { scrollContainer.scrollTop = 0; }
             
             navigateToAppSection('detail');
 
-            // Fix 2: Smart Recommendation Algorithm (Filters items sharing matching phrases or titles)
+            // Smart Recommendation Algorithm
             const clickedTitleLower = item.title.toLowerCase();
-            
-            // Split title into separate words to build robust smart contextual checks
             const keywords = clickedTitleLower.split(/\s+/).filter(w => w.length > 2);
 
             let smartMatchingList = allAssetsDatabaseMemory.filter(w => {
-                if(w.id == id) return false; // Exclude itself
+                if(w.id == id) return false;
                 const targets = w.title.toLowerCase();
-                // Match category keywords or general matching words
                 return keywords.some(kw => targets.includes(kw));
             });
 
-            // Fallback strategy: If not enough matches found, top up with generic pipeline assets
             if(smartMatchingList.length < 8) {
                 const remaining = allAssetsDatabaseMemory.filter(w => w.id != id && !smartMatchingList.some(sm => sm.id == w.id));
                 smartMatchingList = [...smartMatchingList, ...remaining];
             }
 
-            // Render filtered specific matching content onto suggestions stream below
             renderGrid(smartMatchingList.slice(0, 15), 'bottomStreamGrid');
+            if(currentForcedGridDensity) { applyDynamicColumnsStyle(currentForcedGridDensity); }
         }
 
         function saveAssetToSelectedAlbum() {
