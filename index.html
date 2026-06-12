@@ -31,7 +31,6 @@
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* PERFECT PINTEREST MASONRY COLUMNS LAYER */
         .pinterest-grid { 
             column-gap: 16px;
             width: 100%;
@@ -51,7 +50,6 @@
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
         #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-        /* Detail Modal Container look from your system code */
         .detail-container {
             display: flex;
             background: #111827;
@@ -63,7 +61,6 @@
             min-height: 75vh;
         }
 
-        /* Toggle Switch Styling */
         .switch {
             position: relative;
             display: inline-block;
@@ -82,7 +79,6 @@
         input:checked + .slider { background-color: #f59e0b; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* PREMIUM APP SPLASH ENGINE OVERLAY */
         #welcome-screen {
             position: fixed;
             top: 0;
@@ -131,7 +127,6 @@
             transform: scale(1.03);
         }
 
-        /* OVERLAY DRAWER INTERFACE FIX FOR NOTIFICATIONS */
         #appNotificationDrawer {
             transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             right: -360px;
@@ -154,16 +149,42 @@
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER (UPDATED MATCHING SCREENSHOT (454).JPG) -->
+    <!-- NEW SECURE AUTHENTICATION DIALOG POPUP LAYER -->
+    <div id="secureAuthOverlayModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+        <div class="w-full max-w-sm bg-[#070a13] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
+            <button onclick="toggleSecureAuthModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="text-center mb-6">
+                <h2 id="authModalHeadline" class="brand-font text-xl text-amber-400 font-bold">Access Terminal</h2>
+                <p id="authModalSubtext" class="text-[10px] text-slate-400 mt-1">Initialize identity to synchronize matrices</p>
+            </div>
+
+            <form onsubmit="handleSecureAuthSubmission(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Email Node Address</label>
+                    <input type="email" id="authInputEmail" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="name@domain.com">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Security Access Key</label>
+                    <input type="password" id="authInputPassword" required minlength="6" class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="••••••••">
+                </div>
+
+                <button type="submit" id="authSubmitActionButton" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition mt-2">Verify Identity</button>
+            </form>
+
+            <div class="text-center mt-4 border-t border-slate-900 pt-3">
+                <button onclick="toggleAuthModeState()" id="authModeToggleTextButton" class="text-[11px] text-slate-400 hover:text-amber-400 transition font-medium">New engine? Register terminal account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
     <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bell mr-1"></i> Updates</span>
             <button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500 hover:text-white text-xs transition">Close</button>
         </div>
-        
-        <!-- Live System Logs Streams Container -->
         <div id="systemUpdatesNotificationContainer" class="space-y-4 max-h-80 overflow-y-auto pr-1">
-            <!-- Dynamic dynamic list nodes will append here from database response -->
             <div class="text-center py-4 text-xs text-slate-500">Synchronizing database logs...</div>
         </div>
     </div>
@@ -208,7 +229,12 @@
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
                 </div>
-                <div id="navUserInitial" class="w-8 h-8 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xs shadow-md shadow-amber-500/10">T</div>
+                
+                <!-- NEW CALL-TO-ACTION DYNAMIC AUTHENTICATION ACTION HEADER INJECTOR -->
+                <div id="authHeaderControlBlockSection" class="flex items-center gap-3">
+                    <button onclick="toggleSecureAuthModal(true)" id="headerInterfaceLoginTriggerButton" class="px-4 py-1.5 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-black font-bold text-xs rounded-full transition duration-300">Login Node</button>
+                    <div id="navUserInitial" class="hidden w-8 h-8 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xs shadow-md shadow-amber-500/10 cursor-pointer" onclick="navigateToAppSection('settings')">T</div>
+                </div>
             </header>
 
             <!-- MAIN WATERFALL STREAM FEED CONTAINER VIEW -->
@@ -338,10 +364,10 @@
                                 </div>
                                 <div class="flex items-center justify-between py-2">
                                     <div>
-                                        <p class="text-xs font-bold text-red-400">Deactivate Matrix Node</p>
-                                        <p class="text-[10px] text-slate-500">Temporarily hide your profile, uploaded matrices and server syncs.</p>
+                                        <p class="text-xs font-bold text-red-400">Secure Terminal Session Exit</p>
+                                        <p class="text-[10px] text-slate-500">Sign out of your active Lusso cloud authentication engine node.</p>
                                     </div>
-                                    <button onclick="triggerNotificationToast('Node paused')" class="px-3 py-1.5 bg-red-950/40 border border-red-900 text-red-400 text-xs font-bold rounded-xl hover:bg-red-900 hover:text-white transition">Deactivate</button>
+                                    <button onclick="handleSecureCloudSignOut()" class="px-3 py-1.5 bg-red-950/40 border border-red-900 text-red-400 text-xs font-bold rounded-xl hover:bg-red-900 hover:text-white transition">Logout Node</button>
                                 </div>
                             </div>
                         </div>
@@ -395,9 +421,9 @@
                                             <p class="text-[10px] text-slate-500">Pick a custom styling hex to morph the application layer background.</p>
                                         </div>
                                     </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
                         <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
                             <button onclick="triggerNotificationToast('Cache Matrix Flushed')" class="text-xs font-bold text-red-400 hover:underline">Flush System Cache</button>
@@ -411,7 +437,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC (COMPLETE PIPELINE) -->
+    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -421,13 +447,16 @@
         let allAssetsDatabaseMemory = [];
         let activeSelectedAssetUrlGlobal = "";
         let currentForcedGridDensity = null; 
-        
-        // Initial Welcome Screen Handler (Fades out after exactly 2 seconds)
+        let currentAuthTerminalMode = "LOGIN"; // Controls whether form is login or signup
+
         document.addEventListener('DOMContentLoaded', () => {
             const welcomeOverlay = document.getElementById('welcome-screen');
             setTimeout(() => {
                 if (welcomeOverlay) welcomeOverlay.classList.add('welcome-fade-out');
             }, 2000);
+            
+            // Monitor Active Auth Session Logs
+            monitorActiveAuthSessions();
         });
 
         function triggerNotificationToast(msg) {
@@ -498,6 +527,98 @@
             event.currentTarget.classList.remove('text-slate-400');
         }
 
+        // --- NEW SUPABASE AUTHENTICATION SYSTEM MANAGEMENT CORE ---
+        function toggleSecureAuthModal(show) {
+            const modal = document.getElementById('secureAuthOverlayModal');
+            if(show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function toggleAuthModeState() {
+            const headline = document.getElementById('authModalHeadline');
+            const subtext = document.getElementById('authModalSubtext');
+            const submitBtn = document.getElementById('authSubmitActionButton');
+            const switchBtn = document.getElementById('authModeToggleTextButton');
+
+            if(currentAuthTerminalMode === "LOGIN") {
+                currentAuthTerminalMode = "SIGNUP";
+                headline.innerText = "Register Node";
+                subtext.innerText = "Deploy a new terminal configuration identity";
+                submitBtn.innerText = "Deploy Account";
+                switchBtn.innerText = "Existing engine? Return to login";
+            } else {
+                currentAuthTerminalMode = "LOGIN";
+                headline.innerText = "Access Terminal";
+                subtext.innerText = "Initialize identity to synchronize matrices";
+                submitBtn.innerText = "Verify Identity";
+                switchBtn.innerText = "New engine? Register terminal account";
+            }
+        }
+
+        async function handleSecureAuthSubmission(e) {
+            e.preventDefault();
+            const email = document.getElementById('authInputEmail').value;
+            const password = document.getElementById('authInputPassword').value;
+            const actionBtn = document.getElementById('authSubmitActionButton');
+
+            actionBtn.disabled = true;
+            actionBtn.innerText = "PROCESSING RESPONSE...";
+
+            if (currentAuthTerminalMode === "SIGNUP") {
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                if(error) {
+                    alert(`Registration Refused: ${error.message}`);
+                } else {
+                    triggerNotificationToast("Confirmation Pipeline Dispatched!");
+                    alert("Account configuration initialized! Check your email to confirm the deployment link.");
+                    toggleSecureAuthModal(false);
+                }
+            } else {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if(error) {
+                    alert(`Access Denied: ${error.message}`);
+                } else {
+                    triggerNotificationToast("Matrix Identity Verified!");
+                    toggleSecureAuthModal(false);
+                }
+            }
+            actionBtn.disabled = false;
+            actionBtn.innerText = currentAuthTerminalMode === "LOGIN" ? "Verify Identity" : "Deploy Account";
+        }
+
+        async function handleSecureCloudSignOut() {
+            const { error } = await supabaseClient.auth.signOut();
+            if(!error) {
+                triggerNotificationToast("Session Destroyed");
+                location.reload();
+            }
+        }
+
+        function monitorActiveAuthSessions() {
+            supabaseClient.auth.onAuthStateChange((event, session) => {
+                const loginBtn = document.getElementById('headerInterfaceLoginTriggerButton');
+                const avatarIcon = document.getElementById('navUserInitial');
+                
+                if (session && session.user) {
+                    // User is signed in securely
+                    if(loginBtn) loginBtn.classList.add('hidden');
+                    if(avatarIcon) {
+                        avatarIcon.classList.remove('hidden');
+                        const letter = (session.user.email || "T").charAt(0).toUpperCase();
+                        avatarIcon.innerText = letter;
+                        document.getElementById('settingsProfilePic').innerText = letter;
+                        document.getElementById('detailProfileInit').innerText = letter;
+                        document.getElementById('settingsInputEmail').value = session.user.email;
+                        document.getElementById('detailProfileName').innerText = session.user.email.split('@')[0];
+                    }
+                } else {
+                    // User is logged out
+                    if(loginBtn) loginBtn.classList.remove('hidden');
+                    if(avatarIcon) avatarIcon.classList.add('hidden');
+                }
+            });
+        }
+
         function saveAllApplicationSettingsData() {
             const name = document.getElementById('settingsInputName').value;
             const bio = document.getElementById('settingsInputBio').value;
@@ -539,7 +660,6 @@
             }
         }
 
-        // --- NEW HELPER FUNCTION FOR RELATIVE TIMEGAP (AS REQUESTED) ---
         function calculateRelativeTimeDifference(dateString) {
             if(!dateString) return "1h";
             const now = new Date();
@@ -555,7 +675,6 @@
             return `${deltaDays}d`;
         }
 
-        // --- HELPER TO POPULATE UPDATES PANEL ACCORDING TO SCREENSHOT (454).JPG ---
         function populateDynamicUpdatesPanel(items) {
             const container = document.getElementById('systemUpdatesNotificationContainer');
             if(!container) return;
@@ -566,7 +685,6 @@
                 return;
             }
 
-            // Separate items into New (pichle 24 ghante) aur Seen (24 ghante se purane)
             const rightNow = new Date();
             const newItems = [];
             const seenItems = [];
@@ -583,7 +701,6 @@
 
             let trackingHtml = "";
 
-            // New Section
             if(newItems.length > 0) {
                 trackingHtml += `<div class="text-xs font-bold text-gray-200 px-1 pt-1 mb-2">New</div>`;
                 newItems.forEach(item => {
@@ -601,14 +718,13 @@
                 });
             }
 
-            // Seen Section
             if(seenItems.length > 0) {
                 trackingHtml += `<div class="text-xs font-bold text-gray-400 px-1 pt-3 mb-2">Seen</div>`;
-                seenItems.slice(0, 8).forEach(item => { // Showing last 8 seen items to keep it clean
+                seenItems.slice(0, 8).forEach(item => {
                     const relativeTime = calculateRelativeTimeDifference(item.created_at);
                     trackingHtml += `
                         <div onclick="openDetail('${item.id}')" class="flex items-center gap-3 p-2 bg-slate-900/20 hover:bg-slate-800/40 rounded-xl border border-slate-900/50 cursor-pointer transition opacity-75 hover:opacity-100">
-                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-900">
+                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-[11px] font-medium text-slate-300 truncate">${item.title || 'Untitled Asset'}</h4>
                                 <p class="text-[10px] text-slate-600 mt-0.5">Matrix stream verified</p>
@@ -622,14 +738,12 @@
             container.innerHTML = trackingHtml;
         }
 
-        // --- FETCH ENGINE (YOUR ORIGINAL DYNAMIC SUPABASE CODE) ---
         async function initializeApplicationDataEngine() {
             loadSavedProfileSettings();
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
             renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
             
-            // Populating Pinterest Style Updates Tray
             populateDynamicUpdatesPanel(allAssetsDatabaseMemory);
 
             if(!currentForcedGridDensity) {
@@ -660,14 +774,12 @@
             });
         }
 
-        // --- SEARCH ENGINE INTERFACE ---
         function executeLiveSearchQuery() {
             const q = document.getElementById('appSearchEngineInput').value.toLowerCase();
             const filtered = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(q));
             renderGrid(filtered, 'pinterestMainMasonryContainer');
         }
 
-        // --- OPEN DETAIL ENGINE ---
         function openDetail(id) {
             const item = allAssetsDatabaseMemory.find(w => w.id == id);
             if(!item) return;
@@ -726,7 +838,6 @@
             triggerNotificationToast("URL Copied!");
         }
 
-        // --- UPLOAD PIPELINE PROCESSOR ---
         let selectedFile = null;
         function processLocalFileSelection(input) {
             if(input.files && input.files[0]) {
@@ -738,6 +849,15 @@
 
         async function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
+            
+            // SECURITY CHECK: Ensure user is logged in before allowing upload pipeline execution
+            const session = await supabaseClient.auth.getSession();
+            if(!session.data.session) {
+                alert("Access Revoked: Please Login to dispatch asset streaming nodes.");
+                toggleSecureAuthModal(true);
+                return;
+            }
+
             const btn = document.getElementById('formSubmitBtn');
             const title = document.getElementById('formUploadTitle').value;
             
@@ -772,7 +892,6 @@
             }
         }
 
-        // Global Window Click Event Handler
         window.onclick = (e) => {
             const threeDotsBox = document.getElementById('threeDotsMenuBox');
             if(threeDotsBox) threeDotsBox.classList.add('hidden');
@@ -782,6 +901,11 @@
             if (drawer && drawer.classList.contains('open-panel') && !drawer.contains(e.target) && !bellBtn.contains(e.target)) {
                 drawer.classList.remove('open-panel');
                 if (bellBtn) bellBtn.classList.remove('text-amber-500');
+            }
+
+            const authOverlay = document.getElementById('secureAuthOverlayModal');
+            if(e.target === authOverlay) {
+                toggleSecureAuthModal(false);
             }
         };
 
