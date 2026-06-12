@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUSSO | Premium Matrix System</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* --- Base Reset & Core Setup --- */
+        /* --- 1. CORE RESET & ORIGINAL VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
@@ -17,35 +17,25 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        :root {
-            --bg-dark: #0d0d11;
-            --panel-bg: rgba(20, 20, 28, 0.85);
-            --panel-solid: #14141c;
-            --accent-red: #e60023;
-            --text-main: #ffffff;
-            --text-muted: #a0a0b0;
-            --border-color: rgba(255, 255, 255, 0.08);
-        }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow: hidden;
+            background-color: #0b0b0f;
+            color: #ffffff;
             height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
         }
 
-        /* --- 1. WELCOME LAYER ANIMATION --- */
+        /* --- 2. WELCOME TO LUSSO ENGINE SCREEN (NEW ADDITION) --- */
         #welcome-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-dark);
-            z-index: 9999;
+            background-color: #0b0b0f;
+            z-index: 9999; /* Isse screen sabse upar load hogi */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,27 +46,27 @@
         .welcome-title {
             font-family: 'Cinzel', serif;
             font-size: 3.5rem;
-            font-weight: 800;
-            letter-spacing: 10px;
-            color: var(--text-main);
-            text-shadow: 0 0 25px rgba(230, 0, 35, 0.6);
-            margin-bottom: 12px;
+            font-weight: 900;
+            letter-spacing: 12px;
+            color: #ffffff;
+            text-shadow: 0 0 30px rgba(230, 0, 35, 0.6);
+            margin-bottom: 15px;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInLusso 1.2s forwards 0.2s;
+            animation: lussoFadeIn 1.2s forwards 0.3s;
         }
 
         .welcome-subtitle {
-            font-size: 1rem;
-            color: var(--text-muted);
-            letter-spacing: 5px;
+            font-size: 0.95rem;
+            color: #a0a0b0;
+            letter-spacing: 6px;
             text-transform: uppercase;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInLusso 1.2s forwards 0.6s;
+            animation: lussoFadeIn 1.2s forwards 0.8s;
         }
 
-        @keyframes fadeInLusso {
+        @keyframes lussoFadeIn {
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -86,30 +76,32 @@
         .welcome-fade-out {
             opacity: 0;
             pointer-events: none;
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
-        /* --- 2. MAIN DYNAMIC DESKTOP WALLPAPER BACKGROUND --- */
-        #desktop-wallpaper-container {
+        /* --- 3. ORIGINAL DYNAMIC GRADIENT BACKGROUND --- */
+        /* Aapka vellum-elite wala iconic vibrant red-blue gradient mesh setup */
+        .desktop-bg-gradient {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: linear-gradient(135deg, #7c0014 0%, #1a0033 40%, #0044ff 100%);
             z-index: 1;
-            object-fit: cover;
             pointer-events: none;
         }
 
-        /* --- 3. PREMIUM HEADER (LUSSO STYLE) --- */
+        /* --- 4. ORIGINAL LUSSO HEADER & BRANDING BAR --- */
         header {
-            background: linear-gradient(to bottom, rgba(20,20,28,0.95), rgba(20,20,28,0.8));
+            background-color: rgba(15, 15, 22, 0.6);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             z-index: 10;
         }
@@ -117,351 +109,338 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
 
-        .brand-logo {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, var(--accent-red), #990012);
-            border-radius: 8px;
+        /* Original premium icon container look */
+        .brand-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #e60023, #7c0014);
+            border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 15px rgba(230, 0, 35, 0.4);
+            box-shadow: 0 0 12px rgba(230, 0, 35, 0.3);
         }
 
-        .brand-logo i {
-            color: white;
-            font-size: 1.1rem;
+        .brand-logo-icon i {
+            color: #ffffff;
+            font-size: 1rem;
         }
 
-        .brand-name {
+        .brand-name-text {
             font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            color: var(--text-main);
+            font-size: 1.7rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #ffffff;
         }
 
-        .nav-actions {
+        .nav-actions-right {
             display: flex;
-            gap: 15px;
+            gap: 18px;
             align-items: center;
         }
 
-        .icon-btn {
+        .action-icon-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+            color: #a0a0b0;
+            font-size: 1.25rem;
             cursor: pointer;
             position: relative;
-            padding: 10px;
+            padding: 8px;
             border-radius: 50%;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .icon-btn:hover, .icon-btn.active {
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.08);
+        .action-icon-btn:hover, .action-icon-btn.active {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.06);
         }
 
-        .badge {
+        /* Red notification dot element on bell icon */
+        .notification-alert-dot {
             position: absolute;
             top: 6px;
             right: 6px;
-            background-color: var(--accent-red);
-            width: 8px;
-            height: 8px;
+            background-color: #e60023;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-red);
+            box-shadow: 0 0 8px #e60023;
         }
 
-        /* --- 4. PURANA WORKSPACE ENGINE LAYER --- */
-        .workspace {
+        /* --- 5. ORIGINAL WORKSPACE WINDOW CONTAINER LAYOUT --- */
+        .workspace-canvas {
             position: relative;
             flex: 1;
-            z-index: 5; /* Wallpaper ke upar dikhega */
-            padding: 20px;
+            z-index: 5;
+            padding: 25px;
             display: flex;
             gap: 20px;
             align-items: flex-start;
         }
 
-        /* Purani Grid Elements, Chat Aur Window System Unchanged */
-        .window-frame {
-            background: var(--panel-bg);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border-color);
+        /* Original Glassmorphic Window Design from image_68a27a */
+        .original-window-frame {
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            width: 460px;
+            height: 340px;
         }
 
-        /* Image viewport handle context mimicking requested styles */
-        .image-viewer-window {
-            width: 480px; 
-            height: 380px;
-        }
-
-        .window-header {
+        .window-top-bar {
             background: rgba(0, 0, 0, 0.2);
             padding: 12px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .window-title-text {
+        .window-title {
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--text-main);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .window-body {
+        .window-controls-mock {
+            display: flex;
+            gap: 12px;
+            opacity: 0.6;
+            font-size: 0.85rem;
+        }
+
+        .window-content-body {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
-            position: relative;
         }
 
-        /* Divider underline as requested below elements */
-        .section-underline {
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-red), transparent);
-            margin: 15px 0;
-        }
-
-        /* --- 5. PINTEREST UPDATES PANEL SIDEBAR (NEW SLIDE-IN) --- */
-        .updates-panel {
+        /* --- 6. PINTEREST UPDATES PANEL OVERLAY (SIDEBAR) --- */
+        .pinterest-updates-sidebar {
             position: absolute;
             top: 0;
-            left: -360px; /* Hidden state */
+            left: -360px; /* Hidden outside the screen by default */
             width: 350px;
             height: 100%;
-            background-color: var(--panel-solid);
-            border-right: 1px solid var(--border-color);
+            background-color: #14141c; /* Solid structure dark theme */
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 15px 0 40px rgba(0, 0, 0, 0.6);
             transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 100; /* Sub-elements se upar render hoga */
+            z-index: 100; /* Sidebar window boxes ke upar overlay hogi */
             display: flex;
             flex-direction: column;
         }
 
-        .updates-panel.open {
-            left: 0; /* Slide in trigger */
+        .pinterest-updates-sidebar.open {
+            left: 0; /* Slide in inside screen */
         }
 
-        .panel-header {
-            padding: 22px 20px;
-            border-bottom: 1px solid var(--border-color);
+        .panel-top-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .panel-header h2 {
-            font-size: 1.3rem;
+        .panel-top-header h2 {
+            font-size: 1.25rem;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
-        .close-btn {
+        .panel-close-cross-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: #a0a0b0;
             font-size: 1.2rem;
             cursor: pointer;
             transition: color 0.2s;
         }
 
-        .close-btn:hover {
-            color: var(--text-main);
+        .panel-close-cross-btn:hover {
+            color: #ffffff;
         }
 
-        .panel-content {
+        .panel-scroll-area {
             flex: 1;
             overflow-y: auto;
             padding: 10px 15px;
         }
 
-        .section-label {
+        .panel-category-tag {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: #a0a0b0;
             font-weight: 600;
             margin: 15px 5px 10px 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Pinterest Match List Layout Row Items */
-        .update-item {
+        /* Notification Elements Styling based on your image_690b1e */
+        .notification-card-row {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 12px 10px;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .update-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+        .notification-card-row:hover {
+            background-color: rgba(255, 255, 255, 0.04);
         }
 
-        .update-thumb {
-            width: 55px;
-            height: 55px;
-            border-radius: 10px;
+        .notification-thumbnail-img {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
             object-fit: cover;
             background-color: #252530;
         }
 
-        .update-details {
+        .notification-info-text-block {
             flex: 1;
         }
 
-        .update-text {
+        .notification-main-msg {
             font-size: 0.9rem;
-            color: var(--text-main);
+            color: #ffffff;
             line-height: 1.35;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
-        .update-time {
+        .notification-timestamp {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #a0a0b0;
         }
 
-        .update-opt-btn {
+        .notification-more-options-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: #a0a0b0;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 5px;
         }
-        
-        .update-opt-btn:hover {
-            color: var(--text-main);
+
+        .notification-more-options-btn:hover {
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. INITIAL WELCOME SCREEN OVERLAY -->
     <div id="welcome-screen">
         <div class="welcome-title">LUSSO</div>
         <div class="welcome-subtitle">Welcome To Lusso System</div>
     </div>
 
-    <!-- 2. PURANA WALLPAPER CONTAINER (DASHBOARD BACKGROUND EFFECT) -->
-    <!-- Aapka dynamic ya static current wallpaper path src="" me apply rahega -->
-    <img id="desktop-wallpaper-container" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=1600&auto=format&fit=crop" alt="Matrix Base Background">
+    <div class="desktop-bg-gradient"></div>
 
-    <!-- 3. HEADER WITH RESTORED BRANDING STYLE -->
     <header>
         <div class="brand">
-            <div class="brand-logo">
-                <i class="fa-solid fa-layer-group"></i>
+            <div class="brand-logo-icon">
+                <i class="fa-solid fa-cube"></i>
             </div>
-            <div class="brand-name">LUSSO</div>
+            <div class="brand-name-text">LUSSO</div>
         </div>
-        <div class="nav-actions">
-            <!-- New Notification Panel Button (Updates Menu Element) -->
-            <button class="icon-btn" id="update-toggle-btn" title="Updates">
+        <div class="nav-actions-right">
+            <button class="action-icon-btn" id="bell-updates-toggle-trigger" title="Updates">
                 <i class="fa-solid fa-bell"></i>
-                <div class="badge"></div>
+                <div class="notification-alert-dot"></div>
             </button>
-            <button class="icon-btn" title="System Status">
-                <i class="fa-solid fa-terminal"></i>
+            <button class="action-icon-btn" title="Navigation">
+                <i class="fa-solid fa-chevron-right"></i>
             </button>
         </div>
     </header>
 
-    <!-- 4. CORE DESKTOP WORKSPACE (PURA PURANA CODE & DATA WORKSPACE AREA) -->
     <div class="wrapper" style="position: relative; flex: 1; display: flex;">
         
-        <!-- PINTEREST STYLE UPDATES PANEL SIDEBAR INTERFACE -->
-        <div class="updates-panel" id="side-updates-panel">
-            <div class="panel-header">
+        <div class="pinterest-updates-sidebar" id="app-updates-slidebar-panel">
+            <div class="panel-top-header">
                 <h2>Updates</h2>
-                <button class="close-btn" id="panel-close-btn">
+                <button class="panel-close-cross-btn" id="app-updates-panel-close-trigger">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="panel-content">
+            <div class="panel-scroll-area">
                 
-                <div class="section-label">New</div>
+                <div class="panel-category-tag">New</div>
                 
-                <!-- Notification Row 1 -->
-                <div class="update-item">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="update thumb" class="update-thumb">
-                    <div class="update-details">
-                        <div class="update-text">Take a moment for yourself ❤️</div>
-                        <div class="update-time">1h</div>
+                <div class="notification-card-row">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
+                    <div class="notification-info-text-block">
+                        <div class="notification-main-msg">Take a moment for yourself ❤️</div>
+                        <div class="notification-timestamp">1h</div>
                     </div>
-                    <button class="update-opt-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
                 </div>
 
-                <!-- Notification Row 2 -->
-                <div class="update-item">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=100&auto=format&fit=crop" alt="update thumb" class="update-thumb">
-                    <div class="update-details">
-                        <div class="update-text">Your inspo awaits</div>
-                        <div class="update-time">1d</div>
+                <div class="notification-card-row">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
+                    <div class="notification-info-text-block">
+                        <div class="notification-main-msg">Your inspo awaits</div>
+                        <div class="notification-timestamp">1d</div>
                     </div>
-                    <button class="update-opt-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
                 </div>
 
-                <!-- Notification Row 3 -->
-                <div class="update-item">
-                    <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=100&auto=format&fit=crop" alt="update thumb" class="update-thumb">
-                    <div class="update-details">
-                        <div class="update-text">New ideas are calling</div>
-                        <div class="update-time">2d</div>
+                <div class="notification-card-row">
+                    <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
+                    <div class="notification-info-text-block">
+                        <div class="notification-main-msg">New ideas are calling</div>
+                        <div class="notification-timestamp">2d</div>
                     </div>
-                    <button class="update-opt-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
                 </div>
 
-                <div class="section-label">Seen</div>
+                <div class="panel-category-tag">Seen</div>
 
-                <!-- Notification Row 4 -->
-                <div class="update-item" style="opacity: 0.65;">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="update thumb" class="update-thumb">
-                    <div class="update-details">
-                        <div class="update-text">Take a moment for yourself ❤️</div>
-                        <div class="update-time">5d</div>
+                <div class="notification-card-row" style="opacity: 0.65;">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
+                    <div class="notification-info-text-block">
+                        <div class="notification-main-msg">Take a moment for yourself ❤️</div>
+                        <div class="notification-timestamp">5d</div>
                     </div>
-                    <button class="update-opt-btn"><i class="fa-solid fa-ellipsis"></i></button>
+                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
                 </div>
 
             </div>
         </div>
 
-        <!-- PURANI WINDOWS LAYER (Aapki Image sizing, large rules aur Chat windows yahan load hoti hain) -->
-        <div class="workspace">
+        <div class="workspace-canvas">
             
-            <!-- EXAMPLED WORKSPACE WINDOW MATCHING YOUR ARCHITECTURE -->
-            <div class="window-frame image-viewer-window">
-                <div class="window-header">
-                    <div class="window-title-text"><i class="fa-regular fa-image" style="margin-right: 6px;"></i> Lusso Media Engine</div>
-                    <div style="display:flex; gap:8px; opacity:0.7;"><i class="fa-solid fa-minus"></i><i class="fa-solid fa-expand"></i><i class="fa-solid fa-xmark"></i></div>
+            <div class="original-window-frame">
+                <div class="window-top-bar">
+                    <div class="window-title">
+                        <i class="fa-regular fa-image"></i> Lusso Media Engine
+                    </div>
+                    <div class="window-controls-mock">
+                        <i class="fa-solid fa-minus"></i>
+                        <i class="fa-solid fa-expand"></i>
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
                 </div>
-                <div class="window-body">
-                    <p style="font-size:0.85rem; color:var(--text-muted);">Main System Active Viewport</p>
-                    
-                    <!-- Badi Underline Structure (Jo aapne dynamic features ke niche build karwayi thi) -->
-                    <div class="section-underline"></div>
-                    
-                    <!-- Placeholder representing your chat or layout configuration -->
-                    <div style="font-size:0.9rem; color:rgba(255,255,255,0.9);">
+                <div class="window-content-body">
+                    <p style="font-size: 0.85rem; color: #a0a0b0; margin-bottom: 12px;">Main System Active Viewport</p>
+                    <div style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.95);">
                         Aapka dynamic content container aur functional workflows yahan chalte rhenge...
                     </div>
                 </div>
@@ -470,43 +449,42 @@
         </div>
     </div>
 
-    <!-- 5. INTERACTION ENGINE JAVASCRIPT -->
     <script>
-        // 1. Welcome Screen Animation Control (Runs for 2 seconds then unblocks interface)
+        // 1. Welcome Screen Display Countdown (Fades out after exactly 2 seconds)
         document.addEventListener('DOMContentLoaded', () => {
-            const welcomeScreen = document.getElementById('welcome-screen');
+            const welcomeOverlay = document.getElementById('welcome-screen');
             setTimeout(() => {
-                welcomeScreen.classList.add('welcome-fade-out');
+                welcomeOverlay.classList.add('welcome-fade-out');
             }, 2000);
         });
 
-        // 2. Sidebar Functional Control
-        const updateToggleBtn = document.getElementById('update-toggle-btn');
-        const panelCloseBtn = document.getElementById('panel-close-btn');
-        const sideUpdatesPanel = document.getElementById('side-updates-panel');
+        // 2. Sidebar Transition System Mechanics
+        const bellTriggerBtn = document.getElementById('bell-updates-toggle-trigger');
+        const closeTriggerBtn = document.getElementById('app-updates-panel-close-trigger');
+        const updatesSidebarPanel = document.getElementById('app-updates-slidebar-panel');
 
-        // Toggle Open/Close
-        updateToggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sideUpdatesPanel.classList.toggle('open');
-            updateToggleBtn.classList.toggle('active');
+        // Click on Bell: Toggle sliding action
+        bellTriggerBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            updatesSidebarPanel.classList.toggle('open');
+            bellTriggerBtn.classList.toggle('active');
             
-            // Hide badge dot upon check
-            const badge = updateToggleBtn.querySelector('.badge');
-            if(badge) badge.style.display = 'none';
+            // Notification badge hidden action upon active view
+            const alertDot = bellTriggerBtn.querySelector('.notification-alert-dot');
+            if (alertDot) alertDot.style.display = 'none';
         });
 
-        // Close panel via Cross button
-        panelCloseBtn.addEventListener('click', () => {
-            sideUpdatesPanel.classList.remove('open');
-            updateToggleBtn.classList.remove('active');
+        // Click on X: Close current sidebar panel
+        closeTriggerBtn.addEventListener('click', () => {
+            updatesSidebarPanel.classList.remove('open');
+            bellTriggerBtn.classList.remove('active');
         });
 
-        // Safe Auto-close when clicked outside the panel boundaries on workspace
-        document.addEventListener('click', (e) => {
-            if (!sideUpdatesPanel.contains(e.target) && e.target !== updateToggleBtn && !updateToggleBtn.contains(e.target)) {
-                sideUpdatesPanel.classList.remove('open');
-                updateToggleBtn.classList.remove('active');
+        // Smart Close feature: Closes side window if user clicks anywhere else on wallpaper area
+        document.addEventListener('click', (event) => {
+            if (!updatesSidebarPanel.contains(event.target) && event.target !== bellTriggerBtn && !bellTriggerBtn.contains(event.target)) {
+                updatesSidebarPanel.classList.remove('open');
+                bellTriggerBtn.classList.remove('active');
             }
         });
     </script>
