@@ -42,6 +42,7 @@
             margin-bottom: 16px;
             width: 100%; 
             display: block;
+            position: relative;
         }
         
         .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
@@ -139,7 +140,7 @@
         .slide-panel-node {
             position: fixed;
             top: 0;
-            left: 80px; /* Right next to sidebar */
+            left: 80px;
             width: calc(100% - 80px);
             height: 100vh;
             background-color: #0b0f19;
@@ -151,22 +152,30 @@
         .slide-panel-node.active-slide {
             transform: translateX(0);
         }
+
+        /* NEW PREMIUM SKELETON SHIMMER KEYFRAMES BUILDER */
+        .skeleton-shimmer-node {
+            background: linear-gradient(90deg, #111827 25%, #1e293b 50%, #111827 75%);
+            background-size: 200% 100%;
+            animation: lussoLoadingShimmer 1.5s infinite linear;
+        }
+        @keyframes lussoLoadingShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- APP SHIFT OVERLAY SCREEN INITIALIZATION -->
     <div id="welcome-screen">
         <div class="welcome-title">LUSSO</div>
         <div class="welcome-subtitle">Welcome To Lusso System</div>
     </div>
 
-    <!-- GLOBAL NOTIFICATION ARCHITECTURE LAYER -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- NEW SECURE AUTHENTICATION DIALOG POPUP LAYER -->
     <div id="secureAuthOverlayModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
         <div class="w-full max-w-sm bg-[#070a13] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="toggleSecureAuthModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
@@ -195,7 +204,6 @@
         </div>
     </div>
 
-    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
     <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bell mr-1"></i> Updates</span>
@@ -206,27 +214,21 @@
         </div>
     </div>
 
-    <!-- MAIN INTERFACE CORE WRAPPER LAYOUT -->
     <div class="flex h-screen w-full">
         
-        <!-- SIDEBAR NAVIGATION PLATFORM STRUCTURE -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font transition transform hover:scale-105">Lusso</div>
                 <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
                     <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-1 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
-                    
-                    <!-- UPGRADED "YOUR BOARDS" SIDEBAR BUTTON NODE -->
                     <button onclick="openYourBoardsPanelSection()" id="your-boards-trigger-node" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-rose-400 gap-1 transition relative"><i class="fa-solid fa-folder-heart text-sm"></i><span class="text-[9px]">Boards</span></button>
-                    
                     <button onclick="toggleGlobalNotificationDrawer()" id="notification-bell-trigger-node" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-amber-500 relative gap-1 transition"><i class="fa-solid fa-bell text-sm"></i><span class="text-[9px]">Updates</span><span id="active-red-dot-node" class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full shadow-md shadow-amber-500"></span></button>
                 </div>
             </div>
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- LEFT CONTROL DRAWER PUBLISHING CONSOLE ENGINE -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs brand-font text-amber-400">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -240,10 +242,8 @@
             </form>
         </div>
 
-        <!-- CORE CONTENT STREAM LAYER -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             
-            <!-- STICKY CONTROL APP HEADER MODULE -->
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
                 <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-amber-400 cursor-pointer tracking-wide">Lusso</div>
                 <div class="flex-1 relative max-w-xl">
@@ -251,16 +251,13 @@
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
                 </div>
                 
-                <!-- NEW USER MENU DROP ARCHITECTURE INTERACTOR SECTION -->
                 <div id="authHeaderControlBlockSection" class="relative">
-                    <!-- Guest Button / User Avatar Trigger -->
                     <button onclick="toggleUserDropdownAccountMenu(event)" id="headerInterfaceLoginTriggerButton" class="px-4 py-1.5 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-black font-bold text-xs rounded-full transition duration-300 flex items-center gap-2">
                         <span>Account Node</span> <i class="fa-solid fa-caret-down text-[10px]"></i>
                     </button>
                     
                     <div id="navUserInitial" class="hidden w-9 h-9 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20 cursor-pointer transition transform hover:scale-105" onclick="toggleUserDropdownAccountMenu(event)">T</div>
                     
-                    <!-- Dropdown Box Floating Overlay -->
                     <div id="headerAccountDropdownMenuBox" class="hidden absolute right-0 mt-3 w-56 bg-[#070a13] border border-slate-800 rounded-2xl shadow-2xl py-2 z-[60]">
                         <div id="dropdownUserMetaSection" class="px-4 py-2 border-b border-slate-900 hidden">
                             <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Active Secure Node</p>
@@ -273,18 +270,16 @@
                 </div>
             </header>
 
-            <!-- MAIN WATERFALL STREAM FEED CONTAINER VIEW -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
             </div>
 
-            <!-- DETAIL VIEW STREAM HUB LAYER -->
             <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 
                 <div class="detail-container flex flex-col md:flex-row">
                     <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
-                        <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
+                        <img id="detailPreviewImageNode" src="" onerror="handleBrokenImageFallback(this)" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
                     
                     <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
@@ -343,7 +338,6 @@
                 </div>
             </div>
 
-            <!-- NEW YOUR BOARDS EXCLUSIVE ARCHIVE GRID LAYER -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <div>
@@ -362,7 +356,6 @@
 
         </div>
 
-        <!-- RE-ENGINEERED SMOOTH TRANSITION SLIDE PANEL ENVIRONMENT FOR SYSTEM SETTINGS -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition shadow-xl"><i class="fa-solid fa-xmark"></i></button>
@@ -456,7 +449,6 @@
 
     </div>
 
-    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -497,7 +489,7 @@
         }
 
         function openSlidePanelAnimationLayer(id) {
-            closeSlidePanelAnimationLayer(); // reset
+            closeSlidePanelAnimationLayer();
             document.getElementById(id).classList.add('active-slide');
         }
 
@@ -534,7 +526,6 @@
             const targetSection = document.getElementById(id + 'Section');
             if(targetSection) targetSection.classList.remove('hidden');
             
-            // Sync Sidebar Button Colors
             document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('text-amber-500'));
             if(id === 'dashboard') document.querySelector('.sidebar-btn i.fa-house').parentElement.classList.add('text-amber-500');
             if(id === 'yourBoards') document.getElementById('your-boards-trigger-node').classList.add('text-amber-500');
@@ -685,7 +676,6 @@
             closeSlidePanelAnimationLayer();
         }
 
-        // --- CORE CLIENT-SIDE BOARDS ARCHITECTURE STORAGE MECHANICS ---
         function getSavedBoardsStorageArray() {
             const activeUserKey = globalUserSessionObject ? globalUserSessionObject.user.id : "guest_session_node";
             const data = localStorage.getItem(`lusso_board_${activeUserKey}`);
@@ -695,13 +685,17 @@
         function saveAssetToSelectedAlbum() {
             if(!activeSelectedAssetIdGlobal) return;
             const albumName = document.getElementById('albumSelectorDropdown').value;
+            executeDirectSaveAction(activeSelectedAssetIdGlobal, albumName);
+        }
+
+        /* DYNAMIC DIRECT OVERLAY QUICK-SAVE ENGINE */
+        function executeDirectSaveAction(assetId, albumName = "Anime Collection") {
             const savedItems = getSavedBoardsStorageArray();
-            
-            if(savedItems.some(item => item.id == activeSelectedAssetIdGlobal)) {
+            if(savedItems.some(item => item.id == assetId)) {
                 return triggerNotificationToast("Asset already cached in boards!");
             }
 
-            const targetAsset = allAssetsDatabaseMemory.find(w => w.id == activeSelectedAssetIdGlobal);
+            const targetAsset = allAssetsDatabaseMemory.find(w => w.id == assetId);
             if(targetAsset) {
                 savedItems.push({ ...targetAsset, album_node_label: albumName });
                 const activeUserKey = globalUserSessionObject ? globalUserSessionObject.user.id : "guest_session_node";
@@ -754,7 +748,7 @@
                 newItems.forEach(item => {
                     trackingHtml += `
                         <div onclick="openDetail('${item.id}')" class="flex items-center gap-3 p-2 bg-slate-900/40 hover:bg-slate-800/60 rounded-xl border border-slate-800/50 cursor-pointer transition">
-                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
+                            <img src="${item.image_url}" onerror="handleBrokenImageFallback(this)" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-[11px] font-semibold text-slate-200 truncate">${item.title || 'Untitled Asset'}</h4>
                             </div>
@@ -768,13 +762,53 @@
                 seenItems.slice(0, 5).forEach(item => {
                     trackingHtml += `
                         <div onclick="openDetail('${item.id}')" class="flex items-center gap-3 p-2 bg-slate-900/20 hover:bg-slate-800/40 rounded-xl border border-slate-900/50 cursor-pointer transition opacity-75">
-                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
+                            <img src="${item.image_url}" onerror="handleBrokenImageFallback(this)" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
                             <div class="flex-1 min-w-0"><h4 class="text-[11px] text-slate-300 truncate">${item.title || 'Untitled Asset'}</h4></div>
                         </div>
                     `;
                 });
             }
             container.innerHTML = trackingHtml;
+        }
+
+        /* BROKEN IMAGE FALLBACK FRAME LOGIC */
+        function handleBrokenImageFallback(imgElement) {
+            imgElement.onerror = null; 
+            imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%销' height='100%' fill='%23111827'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%23475569'>Lusso Premium Asset Asset Offline</text></svg>";
+        }
+
+        /* RENDER GENUINE MASONRY WITH SKELETON TIMEOUT & HOVER SAVE CAPABILITY */
+        function renderGrid(list, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = "";
+            
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "pinterest-card group cursor-pointer";
+                
+                // Skeleton Screen Layer Injection
+                card.innerHTML = `
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-md">
+                        <div class="skeleton-shimmer-node w-full h-72 rounded-2xl transition-all duration-300"></div>
+                        
+                        <img src="${item.image_url}" 
+                             onload="this.previousElementSibling.remove(); this.classList.remove('opacity-0');"
+                             onerror="handleBrokenImageFallback(this); this.previousElementSibling.remove(); this.classList.remove('opacity-0');"
+                             onclick="openDetail('${item.id}')" 
+                             class="w-full h-auto block opacity-0 hover:scale-105 transition-all duration-500 object-cover rounded-2xl">
+                        
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3 z-20">
+                            <div class="flex justify-end pointer-events-auto">
+                                <button onclick="event.stopPropagation(); executeDirectSaveAction('${item.id}');" class="px-3.5 py-1.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-[11px] rounded-full shadow-lg transition transform hover:scale-105">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         async function initializeApplicationDataEngine() {
@@ -789,22 +823,6 @@
             else if(w >= 1024) autoCols = 4;
             else if(w >= 640) autoCols = 3;
             applyDynamicColumnsStyle(autoCols);
-        }
-
-        function renderGrid(list, containerId) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            container.innerHTML = "";
-            list.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "pinterest-card group cursor-pointer";
-                card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-md">
-                        <img src="${item.image_url}" onclick="openDetail('${item.id}')" class="w-full h-auto block hover:scale-105 transition-transform duration-500 object-cover">
-                    </div>
-                `;
-                container.appendChild(card);
-            });
         }
 
         function executeLiveSearchQuery() {
