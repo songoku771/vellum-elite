@@ -4,38 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUSSO | Premium Matrix System</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- 1. CORE RESET & ORIGINAL VARIABLES --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --bg-color: #0b0f19;
+            --sidebar-color: #070a13;
+            --card-bg: #111827;
+            --text-primary: #f3f4f6;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(30, 41, 59, 0.8);
         }
 
-        body {
-            background-color: #0b0b0f;
-            color: #ffffff;
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            transition: background-color 0.3s ease;
             position: relative;
         }
+        
+        #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* --- 2. WELCOME TO LUSSO ENGINE SCREEN (NEW ADDITION) --- */
+        /* PERFECT PINTEREST MASONRY COLUMNS LAYER */
+        .pinterest-grid { 
+            column-gap: 16px;
+            width: 100%;
+            transition: column-count 0.3s ease;
+        }
+
+        .pinterest-card { 
+            break-inside: avoid;
+            margin-bottom: 16px;
+            width: 100%; 
+            display: block;
+        }
+        
+        .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
+        .iphone-script-font { font-family: 'Great Vibes', cursive; font-weight: 500; }
+        
+        #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
+        #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+        /* Detail Modal Container look from your system code */
+        .detail-container {
+            display: flex;
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 32px;
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 75vh;
+        }
+
+        /* Toggle Switch Styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155; transition: .3s; border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #f59e0b; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* PREMIUM APP SPLASH ENGINE OVERLAY */
         #welcome-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #0b0b0f;
-            z-index: 9999; /* Isse screen sabse upar load hogi */
+            background-color: #0b0f19;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -49,7 +104,7 @@
             font-weight: 900;
             letter-spacing: 12px;
             color: #ffffff;
-            text-shadow: 0 0 30px rgba(230, 0, 35, 0.6);
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
             margin-bottom: 15px;
             opacity: 0;
             transform: translateY(20px);
@@ -58,7 +113,7 @@
 
         .welcome-subtitle {
             font-size: 0.95rem;
-            color: #a0a0b0;
+            color: #94a3b8;
             letter-spacing: 6px;
             text-transform: uppercase;
             opacity: 0;
@@ -67,10 +122,7 @@
         }
 
         @keyframes lussoFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .welcome-fade-out {
@@ -79,369 +131,283 @@
             transform: scale(1.03);
         }
 
-        /* --- 3. ORIGINAL DYNAMIC GRADIENT BACKGROUND --- */
-        /* Aapka vellum-elite wala iconic vibrant red-blue gradient mesh setup */
-        .desktop-bg-gradient {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #7c0014 0%, #1a0033 40%, #0044ff 100%);
-            z-index: 1;
-            pointer-events: none;
+        /* OVERLAY DRAWER INTERFACE FIX FOR NOTIFICATIONS */
+        #appNotificationDrawer {
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            right: -360px;
         }
-
-        /* --- 4. ORIGINAL LUSSO HEADER & BRANDING BAR --- */
-        header {
-            background-color: rgba(15, 15, 22, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            z-index: 10;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        /* Original premium icon container look */
-        .brand-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #e60023, #7c0014);
-            border-radius: 6px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 12px rgba(230, 0, 35, 0.3);
-        }
-
-        .brand-logo-icon i {
-            color: #ffffff;
-            font-size: 1rem;
-        }
-
-        .brand-name-text {
-            font-family: 'Cinzel', serif;
-            font-size: 1.7rem;
-            font-weight: 900;
-            letter-spacing: 4px;
-            color: #ffffff;
-        }
-
-        .nav-actions-right {
-            display: flex;
-            gap: 18px;
-            align-items: center;
-        }
-
-        .action-icon-btn {
-            background: none;
-            border: none;
-            color: #a0a0b0;
-            font-size: 1.25rem;
-            cursor: pointer;
-            position: relative;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.25s ease;
-        }
-
-        .action-icon-btn:hover, .action-icon-btn.active {
-            color: #ffffff;
-            background-color: rgba(255, 255, 255, 0.06);
-        }
-
-        /* Red notification dot element on bell icon */
-        .notification-alert-dot {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background-color: #e60023;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #e60023;
-        }
-
-        /* --- 5. ORIGINAL WORKSPACE WINDOW CONTAINER LAYOUT --- */
-        .workspace-canvas {
-            position: relative;
-            flex: 1;
-            z-index: 5;
-            padding: 25px;
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        /* Original Glassmorphic Window Design from image_68a27a */
-        .original-window-frame {
-            background: rgba(20, 20, 28, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            width: 460px;
-            height: 340px;
-        }
-
-        .window-top-bar {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 12px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .window-title {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .window-controls-mock {
-            display: flex;
-            gap: 12px;
-            opacity: 0.6;
-            font-size: 0.85rem;
-        }
-
-        .window-content-body {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        /* --- 6. PINTEREST UPDATES PANEL OVERLAY (SIDEBAR) --- */
-        .pinterest-updates-sidebar {
-            position: absolute;
-            top: 0;
-            left: -360px; /* Hidden outside the screen by default */
-            width: 350px;
-            height: 100%;
-            background-color: #14141c; /* Solid structure dark theme */
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 15px 0 40px rgba(0, 0, 0, 0.6);
-            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 100; /* Sidebar window boxes ke upar overlay hogi */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pinterest-updates-sidebar.open {
-            left: 0; /* Slide in inside screen */
-        }
-
-        .panel-top-header {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-top-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .panel-close-cross-btn {
-            background: none;
-            border: none;
-            color: #a0a0b0;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .panel-close-cross-btn:hover {
-            color: #ffffff;
-        }
-
-        .panel-scroll-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 15px;
-        }
-
-        .panel-category-tag {
-            font-size: 0.85rem;
-            color: #a0a0b0;
-            font-weight: 600;
-            margin: 15px 5px 10px 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Notification Elements Styling based on your image_690b1e */
-        .notification-card-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            margin-bottom: 6px;
-        }
-
-        .notification-card-row:hover {
-            background-color: rgba(255, 255, 255, 0.04);
-        }
-
-        .notification-thumbnail-img {
-            width: 52px;
-            height: 52px;
-            border-radius: 8px;
-            object-fit: cover;
-            background-color: #252530;
-        }
-
-        .notification-info-text-block {
-            flex: 1;
-        }
-
-        .notification-main-msg {
-            font-size: 0.9rem;
-            color: #ffffff;
-            line-height: 1.35;
-            margin-bottom: 2px;
-        }
-
-        .notification-timestamp {
-            font-size: 0.75rem;
-            color: #a0a0b0;
-        }
-
-        .notification-more-options-btn {
-            background: none;
-            border: none;
-            color: #a0a0b0;
-            cursor: pointer;
-            font-size: 0.95rem;
-            padding: 5px;
-        }
-
-        .notification-more-options-btn:hover {
-            color: #ffffff;
+        #appNotificationDrawer.open-panel {
+            right: 24px !important;
         }
     </style>
 </head>
 <body>
 
+    <!-- APP SHIFT OVERLAY SCREEN INITIALIZATION -->
     <div id="welcome-screen">
         <div class="welcome-title">LUSSO</div>
         <div class="welcome-subtitle">Welcome To Lusso System</div>
     </div>
 
-    <div class="desktop-bg-gradient"></div>
+    <!-- GLOBAL NOTIFICATION ARCHITECTURE LAYER -->
+    <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
+        <span id="toastMessageText">Syncing...</span>
+    </div>
 
-    <header>
-        <div class="brand">
-            <div class="brand-logo-icon">
-                <i class="fa-solid fa-cube"></i>
+    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
+    <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bolt mr-1"></i> System Logs</span>
+            <button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500 hover:text-white text-xs transition">Close</button>
+        </div>
+        <div class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+            <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-800/60 text-[11px] text-slate-300 flex items-start gap-2.5">
+                <div class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0 shadow-lg shadow-amber-500/50"></div>
+                <div>Lusso Matrix core node updated successfully.</div>
             </div>
-            <div class="brand-name-text">LUSSO</div>
+            <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-800/60 text-[11px] text-slate-300 flex items-start gap-2.5">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0 shadow-lg shadow-emerald-500/50"></div>
+                <div>Supabase Storage buckets connected.</div>
+            </div>
         </div>
-        <div class="nav-actions-right">
-            <button class="action-icon-btn" id="bell-updates-toggle-trigger" title="Updates">
-                <i class="fa-solid fa-bell"></i>
-                <div class="notification-alert-dot"></div>
-            </button>
-            <button class="action-icon-btn" title="Navigation">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
-    </header>
+    </div>
 
-    <div class="wrapper" style="position: relative; flex: 1; display: flex;">
+    <!-- MAIN INTERFACE CORE WRAPPER LAYOUT -->
+    <div class="flex h-screen w-full">
         
-        <div class="pinterest-updates-sidebar" id="app-updates-slidebar-panel">
-            <div class="panel-top-header">
-                <h2>Updates</h2>
-                <button class="panel-close-cross-btn" id="app-updates-panel-close-trigger">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+        <!-- SIDEBAR NAVIGATION PLATFORM STRUCTURE -->
+        <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
+            <div class="flex flex-col items-center gap-8 w-full">
+                <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font transition transform hover:scale-105">Lusso</div>
+                <div class="flex flex-col items-center gap-5 w-full">
+                    <button onclick="forceResetToHomeGrid()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
+                    <button onclick="openLeftSliderUploadEngine()" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-1 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
+                    <button onclick="toggleGlobalNotificationDrawer()" id="notification-bell-trigger-node" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-amber-500 relative gap-1 transition"><i class="fa-solid fa-bell text-sm"></i><span class="text-[9px]">Updates</span><span id="active-red-dot-node" class="absolute top-2 right-3 w-1.5 h-1.5 bg-amber-500 rounded-full shadow-md shadow-amber-500"></span></button>
+                </div>
             </div>
-            <div class="panel-scroll-area">
-                
-                <div class="panel-category-tag">New</div>
-                
-                <div class="notification-card-row">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
-                    <div class="notification-info-text-block">
-                        <div class="notification-main-msg">Take a moment for yourself ❤️</div>
-                        <div class="notification-timestamp">1h</div>
-                    </div>
-                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
+            <button onclick="navigateToAppSection('settings')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
+        </aside>
+
+        <!-- LEFT CONTROL DRAWER PUBLISHING CONSOLE ENGINE -->
+        <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs brand-font text-amber-400">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
+            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
+                <input type="text" id="formUploadTitle" placeholder="Asset Title" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition">
+                <div class="relative w-full h-56 border-2 border-dashed border-slate-800 rounded-2xl flex items-center justify-center bg-slate-950/40 cursor-pointer overflow-hidden hover:border-amber-500/50 transition">
+                    <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover z-10">
+                    <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 z-20 cursor-pointer">
+                    <div class="text-center p-4"><i class="fa-solid fa-cloud-arrow-up text-amber-500 text-2xl"></i><p class="text-[10px] text-slate-500 mt-2">Tap to Select</p></div>
                 </div>
-
-                <div class="notification-card-row">
-                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
-                    <div class="notification-info-text-block">
-                        <div class="notification-main-msg">Your inspo awaits</div>
-                        <div class="notification-timestamp">1d</div>
-                    </div>
-                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-
-                <div class="notification-card-row">
-                    <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
-                    <div class="notification-info-text-block">
-                        <div class="notification-main-msg">New ideas are calling</div>
-                        <div class="notification-timestamp">2d</div>
-                    </div>
-                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-
-                <div class="panel-category-tag">Seen</div>
-
-                <div class="notification-card-row" style="opacity: 0.65;">
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop" alt="thumb" class="notification-thumbnail-img">
-                    <div class="notification-info-text-block">
-                        <div class="notification-main-msg">Take a moment for yourself ❤️</div>
-                        <div class="notification-timestamp">5d</div>
-                    </div>
-                    <button class="notification-more-options-btn"><i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-
-            </div>
+                <button type="submit" id="formSubmitBtn" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition">Publish Asset</button>
+            </form>
         </div>
 
-        <div class="workspace-canvas">
+        <!-- CORE CONTENT STREAM LAYER -->
+        <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             
-            <div class="original-window-frame">
-                <div class="window-top-bar">
-                    <div class="window-title">
-                        <i class="fa-regular fa-image"></i> Lusso Media Engine
+            <!-- STICKY CONTROL APP HEADER MODULE -->
+            <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
+                <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-amber-400 cursor-pointer tracking-wide">Lusso</div>
+                <div class="flex-1 relative max-w-xl">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
+                </div>
+                <div id="navUserInitial" class="w-8 h-8 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-xs shadow-md shadow-amber-500/10">T</div>
+            </header>
+
+            <!-- MAIN WATERFALL STREAM FEED CONTAINER VIEW -->
+            <div id="dashboardSection" class="w-full app-view-block p-6">
+                <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
+            </div>
+
+            <!-- DETAIL VIEW STREAM HUB LAYER -->
+            <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
+                <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                
+                <div class="detail-container flex flex-col md:flex-row">
+                    <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
+                        <img id="detailPreviewImageNode" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
-                    <div class="window-controls-mock">
-                        <i class="fa-solid fa-minus"></i>
-                        <i class="fa-solid fa-expand"></i>
-                        <i class="fa-solid fa-xmark"></i>
+                    
+                    <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
+                        <div>
+                            <div class="flex items-center justify-between gap-4 w-full mb-6">
+                                <div class="relative flex-1">
+                                    <select id="albumSelectorDropdown" class="w-full bg-slate-800 border border-slate-700 text-gray-200 text-xs font-bold px-4 py-2.5 rounded-xl outline-none cursor-pointer appearance-none">
+                                        <option value="Anime">Anime</option>
+                                        <option value="Gaming">Gaming</option>
+                                        <option value="Nature">Nature</option>
+                                        <option value="Dark Aesthetic">Dark Aesthetic</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] pointer-events-none"></i>
+                                </div>
+                                <button onclick="saveAssetToSelectedAlbum()" class="px-6 py-2.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-red-900/20">Save</button>
+                            </div>
+
+                            <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100 mt-4 mb-2">Asset Title</h1>
+                            <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
+
+                            <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
+                                <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs" id="detailProfileInit">T</div>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-200" id="detailProfileName">Tejendar Prajapati</p>
+                                    <p class="text-[10px] text-slate-500">12k Followers</p>
+                                </div>
+                                <button class="ml-auto px-4 py-1.5 bg-slate-800 text-gray-300 rounded-full text-[11px] font-bold hover:bg-slate-700 transition">Follow</button>
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80">
+                                <div class="flex items-center gap-2">
+                                    <button onclick="triggerNotificationToast('Added to Liked Items')" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-regular fa-heart"></i></button>
+                                    <button onclick="triggerNotificationToast('Comments section coming soon')" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-regular fa-comment"></i></button>
+                                    <button onclick="copyAssetLinkToClipboard()" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+                                </div>
+                                
+                                <div class="relative">
+                                    <button onclick="toggleThreeDotsMenu(event)" class="w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
+                                    <div id="threeDotsMenuBox" class="hidden absolute right-0 bottom-12 w-52 bg-[#1f2937] border border-slate-700 rounded-2xl shadow-2xl py-2 z-50">
+                                        <button onclick="handleRealDownload()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-download text-amber-500"></i> Download Image</button>
+                                        <button onclick="copyAssetLinkToClipboard()" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-200 hover:bg-slate-800 flex items-center gap-3"><i class="fa-solid fa-link text-amber-500"></i> Copy Asset URL</button>
+                                        <button onclick="triggerNotificationToast('Report Logged to Matrix')" class="w-full text-left px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-950/30 flex items-center gap-3"><i class="fa-solid fa-flag"></i> Report Wallpaper</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="window-content-body">
-                    <p style="font-size: 0.85rem; color: #a0a0b0; margin-bottom: 12px;">Main System Active Viewport</p>
-                    <div style="font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.95);">
-                        Aapka dynamic content container aur functional workflows yahan chalte rhenge...
+
+                <div class="mt-20">
+                    <h3 class="text-center brand-font text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
+                    <div id="bottomStreamGrid" class="pinterest-grid"></div>
+                </div>
+            </div>
+
+            <!-- ADMINISTRATIVE CONFIGURATION ENVIRONMENT VIEW -->
+            <div id="settingsSection" class="hidden w-full app-view-block p-6 md:p-12 max-w-5xl mx-auto">
+                <div class="border-b border-slate-800 pb-4 mb-8">
+                    <h1 class="brand-font text-3xl text-amber-400 font-bold">System Configuration</h1>
+                    <p class="text-xs text-slate-400 mt-1">Manage your elite node profile, cloud analytics pipeline, and interface mechanics.</p>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-64 flex flex-col gap-1 text-left">
+                        <button onclick="switchSettingsTab('editProfileSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left bg-amber-500/10 text-amber-400 border border-amber-500/30"><i class="fa-solid fa-user mr-2"></i> Edit Profile</button>
+                        <button onclick="switchSettingsTab('accountMgmtSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-sliders mr-2"></i> Account Management</button>
+                        <button onclick="switchSettingsTab('profileVisibilitySub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-eye mr-2"></i> Profile Visibility</button>
+                        <button onclick="switchSettingsTab('recommendationsSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Matrix Core Shading</button>
+                    </div>
+
+                    <div class="flex-1 bg-[#111827] border border-slate-800 rounded-3xl p-6 md:p-8">
+                        
+                        <div id="editProfileSub" class="settings-sub-section space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Public Info</h2>
+                            <div class="flex items-center gap-4">
+                                <div id="settingsProfilePic" class="w-16 h-16 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-2xl shadow-xl">T</div>
+                                <div>
+                                    <button class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-xl text-gray-300 transition">Change Avatar</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Display Name</label>
+                                    <input type="text" id="settingsInputName" value="Tejendar Prajapati" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">About / Bio</label>
+                                    <textarea id="settingsInputBio" placeholder="Tell your matrix story..." class="w-full h-24 px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500 resize-none transition">Premium asset synchronization pipeline builder.</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Website URL</label>
+                                    <input type="text" id="settingsInputWebsite" value="https://github.com" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500 transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="accountMgmtSub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Account Control</h2>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-[11px] uppercase text-slate-400 font-bold mb-1">Secure Email (Private Address)</label>
+                                    <input type="email" id="settingsInputEmail" value="prajapatitejendar@gmail.com" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white outline-none focus:border-amber-500 transition">
+                                </div>
+                                <div class="flex items-center justify-between py-2 border-b border-slate-800/40">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Convert Core Node Architecture</p>
+                                        <p class="text-[10px] text-slate-500">Unlock developer analytics tools and advanced metrics logs.</p>
+                                    </div>
+                                    <button onclick="triggerNotificationToast('Pipeline upgrade active')" class="px-3 py-1.5 bg-amber-500 text-black text-xs font-bold rounded-xl hover:bg-amber-400 transition">Convert Account</button>
+                                </div>
+                                <div class="flex items-center justify-between py-2">
+                                    <div>
+                                        <p class="text-xs font-bold text-red-400">Deactivate Matrix Node</p>
+                                        <p class="text-[10px] text-slate-500">Temporarily hide your profile, uploaded matrices and server syncs.</p>
+                                    </div>
+                                    <button onclick="triggerNotificationToast('Node paused')" class="px-3 py-1.5 bg-red-950/40 border border-red-900 text-red-400 text-xs font-bold rounded-xl hover:bg-red-900 hover:text-white transition">Deactivate</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="profileVisibilitySub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Privacy & Discoverability</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Private Profile Mode</p>
+                                        <p class="text-[10px] text-slate-500">Only approved matrix engines can view your published sync assets.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="settingsCheckPrivate">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between border-t border-slate-800/60 pt-4">
+                                    <div>
+                                        <p class="text-xs font-bold text-gray-200">Stealth Engine Discovery</p>
+                                        <p class="text-[10px] text-slate-500">Hide your system asset feeds from indexing bots.</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="settingsCheckStealth" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="recommendationsSub" class="settings-sub-section hidden space-y-6">
+                            <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Adaptive UI Shading</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3"><i class="fa-solid fa-sliders text-amber-500 mr-2"></i> Grid Column Density</h3>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <button onclick="updateGridDensityLayout(2)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">2 Col</button>
+                                        <button onclick="updateGridDensityLayout(3)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">3 Col</button>
+                                        <button onclick="updateGridDensityLayout(4)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-amber-500 bg-amber-500/10 text-amber-400 transition">4 Col</button>
+                                        <button onclick="updateGridDensityLayout(5)" class="density-btn p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">5 Col</button>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-800 pt-4">
+                                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2"><i class="fa-solid fa-palette text-amber-500 mr-2"></i> Live Adaptive Canvas Color</h3>
+                                    <div class="flex items-center gap-4">
+                                        <input type="color" value="#0b0f19" oninput="applyAdaptiveThemeColor(this.value)" class="w-12 h-12 bg-transparent cursor-pointer rounded-xl border border-slate-700 overflow-hidden">
+                                        <div>
+                                            <p class="text-xs font-bold text-gray-300">Live Custom Shading Hex</p>
+                                            <p class="text-[10px] text-slate-500">Pick a custom styling hex to morph the application layer background.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+                            <button onclick="triggerNotificationToast('Cache Matrix Flushed')" class="text-xs font-bold text-red-400 hover:underline">Flush System Cache</button>
+                            <button onclick="saveAllApplicationSettingsData()" class="px-6 py-2.5 bg-amber-500 text-black font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg shadow-amber-500/10 hover:bg-amber-400 transition">Save Changes</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -449,44 +415,295 @@
         </div>
     </div>
 
+    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC (COMPLETE PIPELINE) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 1. Welcome Screen Display Countdown (Fades out after exactly 2 seconds)
+        const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let allAssetsDatabaseMemory = [];
+        let activeSelectedAssetUrlGlobal = "";
+        let currentForcedGridDensity = null; 
+        
+        // Initial Welcome Screen Handler (Fades out after exactly 2 seconds)
         document.addEventListener('DOMContentLoaded', () => {
             const welcomeOverlay = document.getElementById('welcome-screen');
             setTimeout(() => {
-                welcomeOverlay.classList.add('welcome-fade-out');
+                if (welcomeOverlay) welcomeOverlay.classList.add('welcome-fade-out');
             }, 2000);
         });
 
-        // 2. Sidebar Transition System Mechanics
-        const bellTriggerBtn = document.getElementById('bell-updates-toggle-trigger');
-        const closeTriggerBtn = document.getElementById('app-updates-panel-close-trigger');
-        const updatesSidebarPanel = document.getElementById('app-updates-slidebar-panel');
+        function triggerNotificationToast(msg) {
+            const node = document.getElementById('appGlobalToast');
+            document.getElementById('toastMessageText').innerText = msg;
+            node.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => node.classList.add('opacity-0', 'translate-y-4'), 3000);
+        }
 
-        // Click on Bell: Toggle sliding action
-        bellTriggerBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            updatesSidebarPanel.classList.toggle('open');
-            bellTriggerBtn.classList.toggle('active');
+        function toggleGlobalNotificationDrawer() {
+            const drawer = document.getElementById('appNotificationDrawer');
+            const bellBtn = document.getElementById('notification-bell-trigger-node');
+            const activeRedDot = document.getElementById('active-red-dot-node');
             
-            // Notification badge hidden action upon active view
-            const alertDot = bellTriggerBtn.querySelector('.notification-alert-dot');
-            if (alertDot) alertDot.style.display = 'none';
-        });
+            drawer.classList.toggle('open-panel');
+            if (bellBtn) bellBtn.classList.toggle('text-amber-500');
+            if (activeRedDot) activeRedDot.style.display = 'none'; 
+        }
 
-        // Click on X: Close current sidebar panel
-        closeTriggerBtn.addEventListener('click', () => {
-            updatesSidebarPanel.classList.remove('open');
-            bellTriggerBtn.classList.remove('active');
-        });
+        function applyAdaptiveThemeColor(hex) {
+            document.documentElement.style.setProperty('--bg-color', hex);
+            document.getElementById('mainHeaderNode').style.backgroundColor = hex + "dd";
+        }
 
-        // Smart Close feature: Closes side window if user clicks anywhere else on wallpaper area
-        document.addEventListener('click', (event) => {
-            if (!updatesSidebarPanel.contains(event.target) && event.target !== bellTriggerBtn && !bellTriggerBtn.contains(event.target)) {
-                updatesSidebarPanel.classList.remove('open');
-                bellTriggerBtn.classList.remove('active');
+        function updateGridDensityLayout(columns) {
+            currentForcedGridDensity = columns;
+            document.querySelectorAll('.density-btn').forEach(btn => {
+                btn.classList.remove('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
+                if(btn.innerText.includes(columns)) {
+                    btn.classList.add('border-amber-500', 'bg-amber-500/10', 'text-amber-400');
+                }
+            });
+            applyDynamicColumnsStyle(columns);
+            triggerNotificationToast(`Grid optimized to ${columns} Columns!`);
+        }
+
+        function applyDynamicColumnsStyle(cols) {
+            const grids = document.querySelectorAll('.pinterest-grid');
+            grids.forEach(g => { g.style.columnCount = cols; });
+        }
+
+        function navigateToAppSection(id) {
+            document.querySelectorAll('.app-view-block').forEach(v => v.classList.add('hidden'));
+            document.getElementById(id + 'Section').classList.remove('hidden');
+            if(id === 'dashboard' && currentForcedGridDensity) {
+                applyDynamicColumnsStyle(currentForcedGridDensity);
             }
-        });
+        }
+
+        function forceResetToHomeGrid() { navigateToAppSection('dashboard'); }
+        function openLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full'); }
+        function closeLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full'); }
+
+        function toggleThreeDotsMenu(e) {
+            e.stopPropagation();
+            document.getElementById('threeDotsMenuBox').classList.toggle('hidden');
+        }
+
+        function switchSettingsTab(targetId) {
+            document.querySelectorAll('.settings-sub-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(targetId).classList.remove('hidden');
+            
+            document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500/10', 'text-amber-400', 'border-amber-500/30');
+                btn.classList.add('text-slate-400');
+            });
+            event.currentTarget.classList.add('bg-amber-500/10', 'text-amber-400', 'border-amber-500/30');
+            event.currentTarget.classList.remove('text-slate-400');
+        }
+
+        function saveAllApplicationSettingsData() {
+            const name = document.getElementById('settingsInputName').value;
+            const bio = document.getElementById('settingsInputBio').value;
+            const web = document.getElementById('settingsInputWebsite').value;
+            const email = document.getElementById('settingsInputEmail').value;
+            const isPrivate = document.getElementById('settingsCheckPrivate').checked;
+            const isStealth = document.getElementById('settingsCheckStealth').checked;
+
+            const profileConfigObj = { name, bio, web, email, isPrivate, isStealth };
+            localStorage.setItem('lusso_profile_config', JSON.stringify(profileConfigObj));
+
+            const charInitial = (name || "T").charAt(0).toUpperCase();
+            document.getElementById('navUserInitial').innerText = charInitial;
+            document.getElementById('settingsProfilePic').innerText = charInitial;
+            document.getElementById('detailProfileInit').innerText = charInitial;
+            document.getElementById('detailProfileName').innerText = name || "Tejendar Prajapati";
+
+            triggerNotificationToast("Matrix Settings Synced!");
+        }
+
+        function loadSavedProfileSettings() {
+            const saved = localStorage.getItem('lusso_profile_config');
+            if(saved) {
+                const config = JSON.parse(saved);
+                document.getElementById('settingsCheckPrivate').checked = !!config.isPrivate;
+                document.getElementById('settingsCheckStealth').checked = !!config.isStealth;
+
+                if(config.name) {
+                    const letter = config.name.charAt(0).toUpperCase();
+                    document.getElementById('navUserInitial').innerText = letter;
+                    document.getElementById('settingsProfilePic').innerText = letter;
+                    document.getElementById('detailProfileInit').innerText = letter;
+                    document.getElementById('detailProfileName').innerText = config.name;
+                    document.getElementById('settingsInputName').value = config.name;
+                }
+                if(config.bio) document.getElementById('settingsInputBio').value = config.bio;
+                if(config.web) document.getElementById('settingsInputWebsite').value = config.web;
+                if(config.email) document.getElementById('settingsInputEmail').value = config.email;
+            }
+        }
+
+        // --- FETCH ENGINE (YOUR ORIGINAL DYNAMIC SUPABASE CODE) ---
+        async function initializeApplicationDataEngine() {
+            loadSavedProfileSettings();
+            const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
+            allAssetsDatabaseMemory = data || [];
+            renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
+            
+            if(!currentForcedGridDensity) {
+                const w = window.innerWidth;
+                let autoCols = 2;
+                if(w >= 1280) autoCols = 5;
+                else if(w >= 1024) autoCols = 4;
+                else if(w >= 640) autoCols = 3;
+                applyDynamicColumnsStyle(autoCols);
+            } else {
+                applyDynamicColumnsStyle(currentForcedGridDensity);
+            }
+        }
+
+        function renderGrid(list, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = "";
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "pinterest-card group cursor-pointer";
+                card.innerHTML = `
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-md">
+                        <img src="${item.image_url}" onclick="openDetail('${item.id}')" class="w-full h-auto block hover:scale-105 transition-transform duration-500 object-cover">
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- SEARCH ENGINE INTERFACE ---
+        function executeLiveSearchQuery() {
+            const q = document.getElementById('appSearchEngineInput').value.toLowerCase();
+            const filtered = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(q));
+            renderGrid(filtered, 'pinterestMainMasonryContainer');
+        }
+
+        // --- OPEN DETAIL ENGINE ---
+        function openDetail(id) {
+            const item = allAssetsDatabaseMemory.find(w => w.id == id);
+            if(!item) return;
+            
+            activeSelectedAssetUrlGlobal = item.image_url;
+            document.getElementById('detailPreviewImageNode').src = item.image_url;
+            document.getElementById('detailAssetTitleText').innerText = item.title || "Asset Title";
+            
+            const scrollContainer = document.getElementById('mainContentScrollNode');
+            if (scrollContainer) { scrollContainer.scrollTop = 0; }
+            
+            navigateToAppSection('detail');
+
+            const clickedTitleLower = (item.title || "").toLowerCase();
+            const keywords = clickedTitleLower.split(/\s+/).filter(w => w.length > 2);
+
+            let smartMatchingList = allAssetsDatabaseMemory.filter(w => {
+                if(w.id == id) return false;
+                const targets = (w.title || "").toLowerCase();
+                return keywords.some(kw => targets.includes(kw));
+            });
+
+            if(smartMatchingList.length < 8) {
+                const remaining = allAssetsDatabaseMemory.filter(w => w.id != id && !smartMatchingList.some(sm => sm.id == w.id));
+                smartMatchingList = [...smartMatchingList, ...remaining];
+            }
+
+            renderGrid(smartMatchingList.slice(0, 15), 'bottomStreamGrid');
+            if(currentForcedGridDensity) { applyDynamicColumnsStyle(currentForcedGridDensity); }
+        }
+
+        function saveAssetToSelectedAlbum() {
+            const selectedAlbum = document.getElementById('albumSelectorDropdown').value;
+            triggerNotificationToast(`Saved to ${selectedAlbum} Album!`);
+        }
+
+        async function handleRealDownload() {
+            if(!activeSelectedAssetUrlGlobal) return;
+            try {
+                const response = await fetch(activeSelectedAssetUrlGlobal);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Lusso-${Date.now()}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                triggerNotificationToast("Saved to Storage!");
+            } catch (e) { triggerNotificationToast("Download Blocked"); }
+        }
+
+        function copyAssetLinkToClipboard() {
+            if(!activeSelectedAssetUrlGlobal) return;
+            navigator.clipboard.writeText(activeSelectedAssetUrlGlobal);
+            triggerNotificationToast("URL Copied!");
+        }
+
+        // --- UPLOAD PIPELINE PROCESSOR ---
+        let selectedFile = null;
+        function processLocalFileSelection(input) {
+            if(input.files && input.files[0]) {
+                selectedFile = input.files[0];
+                document.getElementById('formLiveImagePreview').src = URL.createObjectURL(selectedFile);
+                document.getElementById('formLiveImagePreview').classList.remove('hidden');
+            }
+        }
+
+        async function handleLocalFormUploadSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('formSubmitBtn');
+            const title = document.getElementById('formUploadTitle').value;
+            
+            if(!selectedFile) return alert("Select an image first!");
+
+            btn.disabled = true;
+            btn.innerText = "STREAMING...";
+
+            try {
+                const fileName = `${Date.now()}_${selectedFile.name}`;
+                const { error: stErr } = await supabaseClient.storage.from('wallpapers').upload(fileName, selectedFile);
+                if(stErr) throw stErr;
+
+                const { data: urlData } = supabaseClient.storage.from('wallpapers').getPublicUrl(fileName);
+                
+                const { error: dbErr } = await supabaseClient.from('wallpapers').insert([{ title, image_url: urlData.publicUrl }]);
+                if(dbErr) throw dbErr;
+
+                triggerNotificationToast("Published Successfully!");
+                closeLeftSliderUploadEngine();
+                
+                document.getElementById('formUploadTitle').value = "";
+                document.getElementById('formLiveImagePreview').classList.add('hidden');
+                selectedFile = null;
+
+                initializeApplicationDataEngine();
+            } catch (err) {
+                alert("Pipeline Error: Check Storage RLS Policies!");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "PUBLISH ASSET";
+            }
+        }
+
+        // Global Window Click Event Handler
+        window.onclick = (e) => {
+            const threeDotsBox = document.getElementById('threeDotsMenuBox');
+            if(threeDotsBox) threeDotsBox.classList.add('hidden');
+            
+            const drawer = document.getElementById('appNotificationDrawer');
+            const bellBtn = document.getElementById('notification-bell-trigger-node');
+            if (drawer && drawer.classList.contains('open-panel') && !drawer.contains(e.target) && !bellBtn.contains(e.target)) {
+                drawer.classList.remove('open-panel');
+                if (bellBtn) bellBtn.classList.remove('text-amber-500');
+            }
+        };
+
+        window.onload = () => initializeApplicationDataEngine();
     </script>
 </body>
 </html>
