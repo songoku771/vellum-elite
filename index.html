@@ -154,21 +154,17 @@
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
+    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER (UPDATED MATCHING SCREENSHOT (454).JPG) -->
     <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bolt mr-1"></i> System Logs</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bell mr-1"></i> Updates</span>
             <button onclick="toggleGlobalNotificationDrawer()" class="text-slate-500 hover:text-white text-xs transition">Close</button>
         </div>
-        <div class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-            <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-800/60 text-[11px] text-slate-300 flex items-start gap-2.5">
-                <div class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0 shadow-lg shadow-amber-500/50"></div>
-                <div>Lusso Matrix core node updated successfully.</div>
-            </div>
-            <div class="p-2.5 bg-slate-900/60 rounded-xl border border-slate-800/60 text-[11px] text-slate-300 flex items-start gap-2.5">
-                <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0 shadow-lg shadow-emerald-500/50"></div>
-                <div>Supabase Storage buckets connected.</div>
-            </div>
+        
+        <!-- Live System Logs Streams Container -->
+        <div id="systemUpdatesNotificationContainer" class="space-y-4 max-h-80 overflow-y-auto pr-1">
+            <!-- Dynamic dynamic list nodes will append here from database response -->
+            <div class="text-center py-4 text-xs text-slate-500">Synchronizing database logs...</div>
         </div>
     </div>
 
@@ -543,6 +539,89 @@
             }
         }
 
+        // --- NEW HELPER FUNCTION FOR RELATIVE TIMEGAP (AS REQUESTED) ---
+        function calculateRelativeTimeDifference(dateString) {
+            if(!dateString) return "1h";
+            const now = new Date();
+            const uploadedTime = new Date(dateString);
+            const deltaSeconds = Math.floor((now - uploadedTime) / 1000);
+            
+            if (deltaSeconds < 60) return "Just now";
+            const deltaMinutes = Math.floor(deltaSeconds / 60);
+            if (deltaMinutes < 60) return `${deltaMinutes}m`;
+            const deltaHours = Math.floor(deltaMinutes / 60);
+            if (deltaHours < 24) return `${deltaHours}h`;
+            const deltaDays = Math.floor(deltaHours / 24);
+            return `${deltaDays}d`;
+        }
+
+        // --- HELPER TO POPULATE UPDATES PANEL ACCORDING TO SCREENSHOT (454).JPG ---
+        function populateDynamicUpdatesPanel(items) {
+            const container = document.getElementById('systemUpdatesNotificationContainer');
+            if(!container) return;
+            container.innerHTML = "";
+
+            if(items.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No recent matrix logs.</div>`;
+                return;
+            }
+
+            // Separate items into New (pichle 24 ghante) aur Seen (24 ghante se purane)
+            const rightNow = new Date();
+            const newItems = [];
+            const seenItems = [];
+
+            items.forEach(item => {
+                const itemTime = item.created_at ? new Date(item.created_at) : new Date();
+                const diffHours = Math.abs(rightNow - itemTime) / 36e5;
+                if(diffHours <= 24) {
+                    newItems.push(item);
+                } else {
+                    seenItems.push(item);
+                }
+            });
+
+            let trackingHtml = "";
+
+            // New Section
+            if(newItems.length > 0) {
+                trackingHtml += `<div class="text-xs font-bold text-gray-200 px-1 pt-1 mb-2">New</div>`;
+                newItems.forEach(item => {
+                    const relativeTime = calculateRelativeTimeDifference(item.created_at);
+                    trackingHtml += `
+                        <div onclick="openDetail('${item.id}')" class="flex items-center gap-3 p-2 bg-slate-900/40 hover:bg-slate-800/60 rounded-xl border border-slate-800/50 cursor-pointer transition">
+                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-800">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[11px] font-semibold text-slate-200 truncate">${item.title || 'Untitled Asset'}</h4>
+                                <p class="text-[10px] text-slate-500 mt-0.5">New system asset synchronized</p>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-medium shrink-0 pr-1">${relativeTime}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            // Seen Section
+            if(seenItems.length > 0) {
+                trackingHtml += `<div class="text-xs font-bold text-gray-400 px-1 pt-3 mb-2">Seen</div>`;
+                seenItems.slice(0, 8).forEach(item => { // Showing last 8 seen items to keep it clean
+                    const relativeTime = calculateRelativeTimeDifference(item.created_at);
+                    trackingHtml += `
+                        <div onclick="openDetail('${item.id}')" class="flex items-center gap-3 p-2 bg-slate-900/20 hover:bg-slate-800/40 rounded-xl border border-slate-900/50 cursor-pointer transition opacity-75 hover:opacity-100">
+                            <img src="${item.image_url}" class="w-12 h-14 object-cover rounded-lg bg-slate-950 shrink-0 border border-slate-900">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-[11px] font-medium text-slate-300 truncate">${item.title || 'Untitled Asset'}</h4>
+                                <p class="text-[10px] text-slate-600 mt-0.5">Matrix stream verified</p>
+                            </div>
+                            <span class="text-[10px] text-slate-500 shrink-0 pr-1">${relativeTime}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = trackingHtml;
+        }
+
         // --- FETCH ENGINE (YOUR ORIGINAL DYNAMIC SUPABASE CODE) ---
         async function initializeApplicationDataEngine() {
             loadSavedProfileSettings();
@@ -550,6 +629,9 @@
             allAssetsDatabaseMemory = data || [];
             renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
             
+            // Populating Pinterest Style Updates Tray
+            populateDynamicUpdatesPanel(allAssetsDatabaseMemory);
+
             if(!currentForcedGridDensity) {
                 const w = window.innerWidth;
                 let autoCols = 2;
