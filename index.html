@@ -6,7 +6,7 @@
     <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;800;900&family=Great+Vibes&family=Poppins:wght=300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -44,9 +44,32 @@
             display: block;
             position: relative;
         }
-        
-        .brand-font { font-family: 'Cinzel', serif; letter-spacing: 0.1em; }
-        .iphone-script-font { font-family: 'Great Vibes', cursive; font-weight: 500; }
+
+        /* RESTORED ORIGINAL BRAND STYLING FROM IMAGE_5BDCF4.JPG */
+        .sidebar-logo-circle {
+            width: 56px;
+            height: 56px;
+            background-color: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: -1.5px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .sidebar-logo-circle:hover { transform: scale(1.03); }
+
+        .header-brand-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f59e0b;
+            letter-spacing: -0.5px;
+        }
         
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
         #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
@@ -96,12 +119,10 @@
         }
 
         .welcome-title {
-            font-family: 'Cinzel', serif;
             font-size: 3.5rem;
-            font-weight: 900;
-            letter-spacing: 12px;
-            color: #ffffff;
-            text-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #f59e0b;
             margin-bottom: 15px;
             opacity: 0;
             transform: translateY(20px);
@@ -111,7 +132,7 @@
         .welcome-subtitle {
             font-size: 0.95rem;
             color: #94a3b8;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             opacity: 0;
             transform: translateY(20px);
@@ -132,11 +153,8 @@
             transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
             right: -360px;
         }
-        #appNotificationDrawer.open-panel {
-            right: 24px !important;
-        }
+        #appNotificationDrawer.open-panel { right: 24px !important; }
 
-        /* SLIDE IN PANELS FOR UPGRADE/SETTINGS VIA SIDEBAR DIRECTION */
         .slide-panel-node {
             position: fixed;
             top: 0;
@@ -149,11 +167,8 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
         }
-        .slide-panel-node.active-slide {
-            transform: translateX(0);
-        }
+        .slide-panel-node.active-slide { transform: translateX(0); }
 
-        /* NEW PREMIUM SKELETON SHIMMER KEYFRAMES BUILDER */
         .skeleton-shimmer-node {
             background: linear-gradient(90deg, #111827 25%, #1e293b 50%, #111827 75%);
             background-size: 200% 100%;
@@ -167,21 +182,24 @@
 </head>
 <body>
 
+    <!-- APP SHIFT OVERLAY SCREEN INITIALIZATION -->
     <div id="welcome-screen">
-        <div class="welcome-title">LUSSO</div>
+        <div class="welcome-title">Lusso</div>
         <div class="welcome-subtitle">Welcome To Lusso System</div>
     </div>
 
+    <!-- GLOBAL NOTIFICATION ARCHITECTURE LAYER -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
+    <!-- NEW SECURE AUTHENTICATION DIALOG POPUP LAYER -->
     <div id="secureAuthOverlayModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
         <div class="w-full max-w-sm bg-[#070a13] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="toggleSecureAuthModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="text-center mb-6">
-                <h2 id="authModalHeadline" class="brand-font text-xl text-amber-400 font-bold">Access Terminal</h2>
+                <h2 id="authModalHeadline" class="text-xl text-amber-400 font-bold">Access Terminal</h2>
                 <p id="authModalSubtext" class="text-[10px] text-slate-400 mt-1">Initialize identity to synchronize matrices</p>
             </div>
 
@@ -204,6 +222,7 @@
         </div>
     </div>
 
+    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
     <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bell mr-1"></i> Updates</span>
@@ -214,11 +233,15 @@
         </div>
     </div>
 
+    <!-- MAIN INTERFACE CORE WRAPPER LAYOUT -->
     <div class="flex h-screen w-full">
         
+        <!-- SIDEBAR NAVIGATION PLATFORM STRUCTURE -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
-                <div onclick="forceResetToHomeGrid()" class="w-14 h-14 bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 rounded-full flex items-center justify-center text-neutral-900 text-3xl cursor-pointer shadow-xl iphone-script-font transition transform hover:scale-105">Lusso</div>
+                <!-- LOGO RESTORED FROM IMAGE_5BDCF4.JPG -->
+                <div onclick="forceResetToHomeGrid()" class="sidebar-logo-circle">lusso</div>
+                
                 <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
                     <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-1 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
@@ -229,8 +252,9 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
+        <!-- LEFT CONTROL DRAWER PUBLISHING CONSOLE ENGINE -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs brand-font text-amber-400">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
                 <input type="text" id="formUploadTitle" placeholder="Asset Title" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition">
                 <div class="relative w-full h-56 border-2 border-dashed border-slate-800 rounded-2xl flex items-center justify-center bg-slate-950/40 cursor-pointer overflow-hidden hover:border-amber-500/50 transition">
@@ -242,10 +266,14 @@
             </form>
         </div>
 
+        <!-- CORE CONTENT STREAM LAYER -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
             
+            <!-- STICKY CONTROL APP HEADER MODULE -->
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <div onclick="forceResetToHomeGrid()" class="iphone-script-font text-3xl font-bold text-amber-400 cursor-pointer tracking-wide">Lusso</div>
+                <!-- HEADER TEXT RESTORED FROM IMAGE_5BDCF4.JPG -->
+                <div onclick="forceResetToHomeGrid()" class="header-brand-text cursor-pointer">Lusso</div>
+                
                 <div class="flex-1 relative max-w-xl">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
@@ -270,10 +298,12 @@
                 </div>
             </header>
 
+            <!-- MAIN WATERFALL STREAM FEED CONTAINER VIEW -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
             </div>
 
+            <!-- DETAIL VIEW STREAM HUB LAYER -->
             <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 
@@ -297,7 +327,7 @@
                                 <button onclick="saveAssetToSelectedAlbum()" class="px-6 py-2.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-red-900/20">Save</button>
                             </div>
 
-                            <h1 id="detailAssetTitleText" class="text-2xl font-bold brand-font text-gray-100 mt-4 mb-2">Asset Title</h1>
+                            <h1 id="detailAssetTitleText" class="text-2xl font-bold text-gray-100 mt-4 mb-2">Asset Title</h1>
                             <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
 
                             <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
@@ -333,15 +363,16 @@
                 </div>
 
                 <div class="mt-20">
-                    <h3 class="text-center brand-font text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
+                    <h3 class="text-center text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
                     <div id="bottomStreamGrid" class="pinterest-grid"></div>
                 </div>
             </div>
 
+            <!-- YOUR BOARDS EXCLUSIVE ARCHIVE GRID LAYER -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <div>
-                        <h1 class="brand-font text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Your Boards & Saved Pins</h1>
+                        <h1 class="text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Your Boards & Saved Pins</h1>
                         <p class="text-xs text-slate-400 mt-1">Personalized matrix vault storing your synchronized wallpapers.</p>
                     </div>
                     <button onclick="clearAllSavedBoardsStorage()" class="text-slate-500 hover:text-red-400 text-xs transition border border-slate-800 rounded-full px-4 py-1.5"><i class="fa-solid fa-trash-can mr-1"></i> Clear Board</button>
@@ -356,12 +387,13 @@
 
         </div>
 
+        <!-- SMOOTH TRANSITION SLIDE PANEL ENVIRONMENT FOR SYSTEM SETTINGS -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition shadow-xl"><i class="fa-solid fa-xmark"></i></button>
                 
                 <div class="border-b border-slate-800 pb-4 mb-8">
-                    <h1 class="brand-font text-3xl text-amber-400 font-bold">System Configuration</h1>
+                    <h1 class="text-3xl text-amber-400 font-bold">System Configuration</h1>
                     <p class="text-xs text-slate-400 mt-1">Manage your elite node profile, cloud analytics pipeline, and interface mechanics.</p>
                 </div>
 
@@ -449,6 +481,7 @@
 
     </div>
 
+    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -688,7 +721,6 @@
             executeDirectSaveAction(activeSelectedAssetIdGlobal, albumName);
         }
 
-        /* DYNAMIC DIRECT OVERLAY QUICK-SAVE ENGINE */
         function executeDirectSaveAction(assetId, albumName = "Anime Collection") {
             const savedItems = getSavedBoardsStorageArray();
             if(savedItems.some(item => item.id == assetId)) {
@@ -771,13 +803,11 @@
             container.innerHTML = trackingHtml;
         }
 
-        /* BROKEN IMAGE FALLBACK FRAME LOGIC */
         function handleBrokenImageFallback(imgElement) {
             imgElement.onerror = null; 
-            imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%销' height='100%' fill='%23111827'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%23475569'>Lusso Premium Asset Asset Offline</text></svg>";
+            imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23111827'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%23475569'>Lusso Premium Asset Offline</text></svg>";
         }
 
-        /* RENDER GENUINE MASONRY WITH SKELETON TIMEOUT & HOVER SAVE CAPABILITY */
         function renderGrid(list, containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -787,7 +817,6 @@
                 const card = document.createElement('div');
                 card.className = "pinterest-card group cursor-pointer";
                 
-                // Skeleton Screen Layer Injection
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-md">
                         <div class="skeleton-shimmer-node w-full h-72 rounded-2xl transition-all duration-300"></div>
