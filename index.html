@@ -45,7 +45,6 @@
             position: relative;
         }
 
-        /* RESTORED ORIGINAL BRAND STYLING FROM IMAGE_5BDCF4.JPG */
         .sidebar-logo-circle {
             width: 56px;
             height: 56px;
@@ -182,27 +181,22 @@
 </head>
 <body>
 
-    <!-- APP SHIFT OVERLAY SCREEN INITIALIZATION -->
     <div id="welcome-screen">
         <div class="welcome-title">Lusso</div>
         <div class="welcome-subtitle">Welcome To Lusso System</div>
     </div>
 
-    <!-- GLOBAL NOTIFICATION ARCHITECTURE LAYER -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- NEW SECURE AUTHENTICATION DIALOG POPUP LAYER -->
     <div id="secureAuthOverlayModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
         <div class="w-full max-w-sm bg-[#070a13] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="toggleSecureAuthModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
-            
             <div class="text-center mb-6">
                 <h2 id="authModalHeadline" class="text-xl text-amber-400 font-bold">Access Terminal</h2>
                 <p id="authModalSubtext" class="text-[10px] text-slate-400 mt-1">Initialize identity to synchronize matrices</p>
             </div>
-
             <form onsubmit="handleSecureAuthSubmission(event)" class="space-y-4">
                 <div>
                     <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Email Node Address</label>
@@ -212,17 +206,14 @@
                     <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Security Access Key</label>
                     <input type="password" id="authInputPassword" required minlength="6" class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="••••••••">
                 </div>
-
                 <button type="submit" id="authSubmitActionButton" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition mt-2">Verify Identity</button>
             </form>
-
             <div class="text-center mt-4 border-t border-slate-900 pt-3">
                 <button onclick="toggleAuthModeState()" id="authModeToggleTextButton" class="text-[11px] text-slate-400 hover:text-amber-400 transition font-medium">New engine? Register terminal account</button>
             </div>
         </div>
     </div>
 
-    <!-- CLEAN SLIDE PANEL SYSTEM DRAWER -->
     <div id="appNotificationDrawer" class="fixed top-24 w-80 bg-[#070a13] border border-slate-800/80 rounded-2xl shadow-2xl p-4 z-50">
         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-500"><i class="fa-solid fa-bell mr-1"></i> Updates</span>
@@ -233,15 +224,11 @@
         </div>
     </div>
 
-    <!-- MAIN INTERFACE CORE WRAPPER LAYOUT -->
     <div class="flex h-screen w-full">
         
-        <!-- SIDEBAR NAVIGATION PLATFORM STRUCTURE -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
-                <!-- LOGO RESTORED FROM IMAGE_5BDCF4.JPG -->
                 <div onclick="forceResetToHomeGrid()" class="sidebar-logo-circle">lusso</div>
-                
                 <div class="flex flex-col items-center gap-4 w-full">
                     <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
                     <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-1 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
@@ -252,7 +239,6 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- LEFT CONTROL DRAWER PUBLISHING CONSOLE ENGINE -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -266,26 +252,19 @@
             </form>
         </div>
 
-        <!-- CORE CONTENT STREAM LAYER -->
-        <div id="mainContentScrollNode" class="flex-1 flex flex-col relative">
+        <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
             
-            <!-- STICKY CONTROL APP HEADER MODULE -->
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <!-- HEADER TEXT RESTORED FROM IMAGE_5BDCF4.JPG -->
                 <div onclick="forceResetToHomeGrid()" class="header-brand-text cursor-pointer">Lusso</div>
-                
                 <div class="flex-1 relative max-w-xl">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
                     <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
                 </div>
-                
                 <div id="authHeaderControlBlockSection" class="relative">
                     <button onclick="toggleUserDropdownAccountMenu(event)" id="headerInterfaceLoginTriggerButton" class="px-4 py-1.5 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-black font-bold text-xs rounded-full transition duration-300 flex items-center gap-2">
                         <span>Account Node</span> <i class="fa-solid fa-caret-down text-[10px]"></i>
                     </button>
-                    
                     <div id="navUserInitial" class="hidden w-9 h-9 rounded-full bg-amber-500 text-neutral-900 flex items-center justify-center font-bold text-sm shadow-md shadow-amber-500/20 cursor-pointer transition transform hover:scale-105" onclick="toggleUserDropdownAccountMenu(event)">T</div>
-                    
                     <div id="headerAccountDropdownMenuBox" class="hidden absolute right-0 mt-3 w-56 bg-[#070a13] border border-slate-800 rounded-2xl shadow-2xl py-2 z-[60]">
                         <div id="dropdownUserMetaSection" class="px-4 py-2 border-b border-slate-900 hidden">
                             <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Active Secure Node</p>
@@ -298,20 +277,23 @@
                 </div>
             </header>
 
-            <!-- MAIN WATERFALL STREAM FEED CONTAINER VIEW -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
+                
+                <!-- INFINITE SCROLL LOADER ANIMATION HOLDER -->
+                <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full flex justify-center py-8">
+                    <div class="flex gap-2 items-center text-amber-500 text-xs font-bold tracking-widest uppercase">
+                        <i class="fa-solid fa-circle-notch animate-spin text-sm"></i> Syncing next pipeline...
+                    </div>
+                </div>
             </div>
 
-            <!-- DETAIL VIEW STREAM HUB LAYER -->
             <div id="detailSection" class="hidden w-full app-view-block p-4 md:p-10">
                 <button onclick="forceResetToHomeGrid()" class="mb-6 text-slate-400 text-sm flex items-center gap-2 hover:text-white transition"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                
                 <div class="detail-container flex flex-col md:flex-row">
                     <div class="w-full md:w-[50%] bg-black flex items-center justify-center p-2">
                         <img id="detailPreviewImageNode" src="" onerror="handleBrokenImageFallback(this)" class="w-full h-auto max-h-[80vh] object-contain rounded-2xl">
                     </div>
-                    
                     <div class="w-full md:w-[50%] p-8 flex flex-col justify-between bg-[#111827]">
                         <div>
                             <div class="flex items-center justify-between gap-4 w-full mb-6">
@@ -326,10 +308,8 @@
                                 </div>
                                 <button onclick="saveAssetToSelectedAlbum()" class="px-6 py-2.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-red-900/20">Save</button>
                             </div>
-
                             <h1 id="detailAssetTitleText" class="text-2xl font-bold text-gray-100 mt-4 mb-2">Asset Title</h1>
                             <p class="text-xs text-slate-400 mb-6">Premium asset synchronization pipeline.</p>
-
                             <div class="flex items-center gap-3 mb-8 border-t border-b border-slate-800/60 py-4">
                                 <div class="w-10 h-10 rounded-full bg-amber-500 text-black flex items-center justify-center font-bold text-xs" id="detailProfileInit">T</div>
                                 <div>
@@ -339,7 +319,6 @@
                                 <button class="ml-auto px-4 py-1.5 bg-slate-800 text-gray-300 rounded-full text-[11px] font-bold hover:bg-slate-700 transition">Follow</button>
                             </div>
                         </div>
-
                         <div class="w-full">
                             <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80">
                                 <div class="flex items-center gap-2">
@@ -347,7 +326,6 @@
                                     <button onclick="triggerNotificationToast('Comments section coming soon')" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-regular fa-comment"></i></button>
                                     <button onclick="copyAssetLinkToClipboard()" class="w-10 h-10 rounded-full hover:bg-slate-800 flex items-center justify-center text-slate-300 transition text-sm"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
                                 </div>
-                                
                                 <div class="relative">
                                     <button onclick="toggleThreeDotsMenu(event)" class="w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
                                     <div id="threeDotsMenuBox" class="hidden absolute right-0 bottom-12 w-52 bg-[#1f2937] border border-slate-700 rounded-2xl shadow-2xl py-2 z-50">
@@ -358,17 +336,14 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
                 <div class="mt-20">
                     <h3 class="text-center text-slate-500 mb-8 uppercase tracking-widest text-xs">More For Your System</h3>
                     <div id="bottomStreamGrid" class="pinterest-grid"></div>
                 </div>
             </div>
 
-            <!-- YOUR BOARDS EXCLUSIVE ARCHIVE GRID LAYER -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <div>
@@ -387,16 +362,13 @@
 
         </div>
 
-        <!-- SMOOTH TRANSITION SLIDE PANEL ENVIRONMENT FOR SYSTEM SETTINGS -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition shadow-xl"><i class="fa-solid fa-xmark"></i></button>
-                
                 <div class="border-b border-slate-800 pb-4 mb-8">
                     <h1 class="text-3xl text-amber-400 font-bold">System Configuration</h1>
                     <p class="text-xs text-slate-400 mt-1">Manage your elite node profile, cloud analytics pipeline, and interface mechanics.</p>
                 </div>
-
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="w-full md:w-64 flex flex-col gap-1 text-left">
                         <button onclick="switchSettingsTab('editProfileSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left bg-amber-500/10 text-amber-400 border border-amber-500/30"><i class="fa-solid fa-user mr-2"></i> Edit Profile</button>
@@ -404,9 +376,7 @@
                         <button onclick="switchSettingsTab('profileVisibilitySub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-eye mr-2"></i> Profile Visibility</button>
                         <button onclick="switchSettingsTab('recommendationsSub')" class="settings-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-left text-slate-400 hover:bg-slate-800/50"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Matrix Core Shading</button>
                     </div>
-
                     <div class="flex-1 bg-[#111827] border border-slate-800 rounded-3xl p-6 md:p-8">
-                        
                         <div id="editProfileSub" class="settings-sub-section space-y-6">
                             <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Public Info</h2>
                             <div class="flex items-center gap-4">
@@ -424,7 +394,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div id="accountMgmtSub" class="settings-sub-section hidden space-y-6">
                             <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Account Control</h2>
                             <div class="grid grid-cols-1 gap-4">
@@ -434,7 +403,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div id="profileVisibilitySub" class="settings-sub-section hidden space-y-6">
                             <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Privacy & Discoverability</h2>
                             <div class="space-y-4">
@@ -447,7 +415,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div id="recommendationsSub" class="settings-sub-section hidden space-y-6">
                             <h2 class="text-lg font-bold text-gray-200 border-b border-slate-800 pb-2">Adaptive UI Shading</h2>
                             <div class="space-y-4">
@@ -468,12 +435,10 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
                             <button onclick="triggerNotificationToast('Cache Matrix Flushed')" class="text-xs font-bold text-red-400 hover:underline">Flush System Cache</button>
                             <button onclick="saveAllApplicationSettingsData()" class="px-6 py-2.5 bg-amber-500 text-black font-bold text-xs rounded-xl uppercase tracking-wider shadow-lg shadow-amber-500/10 hover:bg-amber-400 transition">Save Changes</button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -481,7 +446,6 @@
 
     </div>
 
-    <!-- SCRIPTS INTEGRATION & COMPILATION LOGIC -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -489,11 +453,19 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAssetsDatabaseMemory = [];
+        let displayedAssetsMemory = []; // Tracks currently rendered assets on the DOM
         let activeSelectedAssetUrlGlobal = "";
         let activeSelectedAssetIdGlobal = null; 
         let currentForcedGridDensity = null; 
         let currentAuthTerminalMode = "LOGIN"; 
         let globalUserSessionObject = null;
+
+        // PAGINATION CORE VARIABLES
+        const ITEMS_PER_PAGE = 12;
+        let currentPaginationPage = 1;
+        let isInfiniteScrollLoadingActive = false;
+        let isDatabaseCompletelyExhausted = false;
+        let activeFilterSearchQuery = "";
 
         document.addEventListener('DOMContentLoaded', () => {
             const welcomeOverlay = document.getElementById('welcome-screen');
@@ -747,7 +719,7 @@
                 emptyState.classList.remove('hidden');
             } else {
                 emptyState.classList.add('hidden');
-                renderGrid(items, 'yourSavedPinsMasonryGrid');
+                renderGrid(items, 'yourSavedPinsMasonryGrid', false);
             }
         }
 
@@ -808,10 +780,11 @@
             imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'><rect width='100%' height='100%' fill='%23111827'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%23475569'>Lusso Premium Asset Offline</text></svg>";
         }
 
-        function renderGrid(list, containerId) {
+        // UPDATED RENDERGRID TO SUPPORT APPEND MODES FOR PAGINATION
+        function renderGrid(list, containerId, appendMode = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
-            container.innerHTML = "";
+            if (!appendMode) container.innerHTML = "";
             
             list.forEach(item => {
                 const card = document.createElement('div');
@@ -829,7 +802,7 @@
                         
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-between p-3 z-20">
                             <div class="flex justify-end pointer-events-auto">
-                                <button onclick="event.stopPropagation(); executeDirectSaveAction('${item.id}');" class="px-3.5 py-1.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-[11px] rounded-full shadow-lg transition transform hover:scale-105">
+                                <button onclick="event.stopPropagation(); executeDirectSaveAction('${item.id}');" class="px-3.5 py-1.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-[11px] rounded-full shadow-lg transition transform scale-105">
                                     Save
                                 </button>
                             </div>
@@ -840,11 +813,34 @@
             });
         }
 
+        // CHUNKING SYSTEM ENGINE FOR INFINITE SCROLL LOADER
+        function getPagedBatchFromMemory(sourceList, page) {
+            const startIndex = (page - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            return sourceList.slice(startIndex, endIndex);
+        }
+
         async function initializeApplicationDataEngine() {
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
-            renderGrid(allAssetsDatabaseMemory, 'pinterestMainMasonryContainer');
             populateDynamicUpdatesPanel(allAssetsDatabaseMemory);
+
+            // Reset pagination state fields
+            currentPaginationPage = 1;
+            isDatabaseCompletelyExhausted = false;
+            
+            // Initial filter list setup
+            let activeSource = allAssetsDatabaseMemory;
+            if (activeFilterSearchQuery) {
+                activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
+            }
+
+            displayedAssetsMemory = getPagedBatchFromMemory(activeSource, currentPaginationPage);
+            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+
+            if (displayedAssetsMemory.length >= activeSource.length) {
+                isDatabaseCompletelyExhausted = true;
+            }
 
             const w = window.innerWidth;
             let autoCols = 2;
@@ -854,10 +850,70 @@
             applyDynamicColumnsStyle(autoCols);
         }
 
+        // TRIGGER COMPILER FOR SCROLL DETECTION INTERFACE
+        function handleWindowInfiniteScrollTrigger() {
+            // Only load infinite pages when active tab is dashboard
+            const dashboardSection = document.getElementById('dashboardSection');
+            if (dashboardSection.classList.contains('hidden')) return;
+            if (isInfiniteScrollLoadingActive || isDatabaseCompletelyExhausted) return;
+
+            const scrollNode = document.getElementById('mainContentScrollNode');
+            const totalScrollHeight = scrollNode.scrollHeight;
+            const currentScrollTop = scrollNode.scrollTop;
+            const visibleHeight = scrollNode.clientHeight;
+
+            // Trigger fetch when user scrolls down to 85% of layout depth
+            if ((currentScrollTop + visibleHeight) >= (totalScrollHeight - 150)) {
+                executeNextBatchPipelineFetch();
+            }
+        }
+
+        function executeNextBatchPipelineFetch() {
+            isInfiniteScrollLoadingActive = true;
+            const indicator = document.getElementById('infiniteScrollLoadStatusIndicator');
+            if (indicator) indicator.classList.remove('hidden');
+
+            // Simulated premium transition latency for responsive desktop feel
+            setTimeout(() => {
+                currentPaginationPage++;
+                
+                let activeSource = allAssetsDatabaseMemory;
+                if (activeFilterSearchQuery) {
+                    activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
+                }
+
+                const nextBatch = getPagedBatchFromMemory(activeSource, currentPaginationPage);
+                
+                if (nextBatch.length > 0) {
+                    displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch);
+                    renderGrid(nextBatch, 'pinterestMainMasonryContainer', true);
+                }
+
+                if (displayedAssetsMemory.length >= activeSource.length || nextBatch.length === 0) {
+                    isDatabaseCompletelyExhausted = true;
+                }
+
+                isInfiniteScrollLoadingActive = false;
+                if (indicator) indicator.classList.add('hidden');
+            }, 800);
+        }
+
         function executeLiveSearchQuery() {
-            const q = document.getElementById('appSearchEngineInput').value.toLowerCase();
-            const filtered = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(q));
-            renderGrid(filtered, 'pinterestMainMasonryContainer');
+            activeFilterSearchQuery = document.getElementById('appSearchEngineInput').value.toLowerCase();
+            currentPaginationPage = 1;
+            isDatabaseCompletelyExhausted = false;
+
+            let filtered = allAssetsDatabaseMemory;
+            if (activeFilterSearchQuery) {
+                filtered = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
+            }
+
+            displayedAssetsMemory = getPagedBatchFromMemory(filtered, currentPaginationPage);
+            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+
+            if (displayedAssetsMemory.length >= filtered.length) {
+                isDatabaseCompletelyExhausted = true;
+            }
         }
 
         function openDetail(id) {
@@ -873,7 +929,7 @@
             navigateToAppSection('detail');
 
             let remaining = allAssetsDatabaseMemory.filter(w => w.id != id);
-            renderGrid(remaining.slice(0, 10), 'bottomStreamGrid');
+            renderGrid(remaining.slice(0, 10), 'bottomStreamGrid', false);
         }
 
         async function handleRealDownload() {
