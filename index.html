@@ -6,17 +6,19 @@
     <title>LUSSO | Elite Premium Matrix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Luxury Fonts Imported -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --sidebar-color: #070a13;
-            --card-bg: #111827;
+            --bg-color: #05070c;
+            --sidebar-color: #020306;
+            --card-bg: #0b0f19;
             --text-primary: #f3f4f6;
             --text-secondary: #94a3b8;
-            --border-color: rgba(30, 41, 59, 0.8);
+            --border-color: rgba(30, 41, 59, 0.5);
+            --gold-primary: #dfb76c;
+            --gold-light: #f7e7c4;
         }
 
         body { 
@@ -26,19 +28,36 @@
             margin: 0;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.3s ease;
         }
         
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
 
-        /* Luxury Styling for LUSSO Branding */
-        .luxury-brand {
+        /* Ultra Luxury Brand Style for Logo & Header Text */
+        .luxury-brand-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7e7c4 0%, #dfb76c 50%, #b2873f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 10px rgba(223, 183, 108, 0.3));
+            transition: all 0.4s ease;
+        }
+        
+        .luxury-brand-title:hover {
+            filter: drop-shadow(0px 4px 15px rgba(247, 231, 196, 0.6));
+            transform: scale(1.02);
+        }
+
+        /* Sidebar Logo Circle Typography */
+        .luxury-brand-icon {
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #f59e0b;
-            text-shadow: 0px 0px 12px rgba(245, 158, 11, 0.2);
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #f7e7c4 0%, #dfb76c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .pinterest-grid { 
@@ -55,16 +74,16 @@
         }
         
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
-        #mainContentScrollNode::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        #mainContentScrollNode::-webkit-scrollbar-thumb { background: rgba(223, 183, 108, 0.2); border-radius: 10px; }
 
-        /* Slide Over Panel Setup */
+        /* Slide Panels */
         .slide-panel-node {
             position: fixed;
             top: 0;
             left: 80px;
             width: calc(100% - 80px);
             height: 100vh;
-            background-color: #0b0f19;
+            background-color: #05070c;
             z-index: 40;
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -72,9 +91,9 @@
         }
         .slide-panel-node.active-slide { transform: translateX(0); }
 
-        /* Shimmer Base Class */
+        /* Shimmer Loaders */
         .skeleton-shimmer-node {
-            background: linear-gradient(90deg, #111827 25%, #1e293b 50%, #111827 75%);
+            background: linear-gradient(90deg, #0b0f19 25%, #1e293b 50%, #0b0f19 75%);
             background-size: 200% 100%;
             animation: lussoLoadingShimmer 1.5s infinite linear;
         }
@@ -86,19 +105,17 @@
 </head>
 <body>
 
-    <!-- Global Custom Toast Notification -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- PREMIUM LIGHTBOX QUICK VIEW MODAL -->
-    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[150] p-4 animate-fade-in" onclick="closePremiumLightbox()">
+    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[150] p-4 animate-fade-in" onclick="closePremiumLightbox()">
         <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl transition" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
-        <div class="max-w-4xl w-full flex flex-col md:flex-row bg-[#070a13] border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+        <div class="max-w-4xl w-full flex flex-col md:flex-row bg-[#020306] border border-slate-800/60 rounded-3xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
             <div class="w-full md:w-3/5 bg-black flex items-center justify-center p-2 relative min-h-[40vh] md:min-h-[70vh]">
                 <img id="lightboxImage" src="" class="max-w-full max-h-[75vh] object-contain rounded-xl">
             </div>
-            <div class="w-full md:w-2/5 p-6 flex flex-col justify-between bg-[#111827]">
+            <div class="w-full md:w-2/5 p-6 flex flex-col justify-between bg-[#0b0f19]">
                 <div>
                     <h2 id="lightboxTitle" class="text-xl font-bold text-gray-100 uppercase tracking-wide font-sans">Asset Title</h2>
                     <p class="text-[11px] text-slate-400 mt-2">Matrix Vault Synced Synchronization Node.</p>
@@ -115,9 +132,8 @@
         </div>
     </div>
 
-    <!-- AUTHENTICATION TERMINAL MODAL -->
     <div id="secureAuthOverlayModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
-        <div class="w-full max-w-sm bg-[#070a13] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
+        <div class="w-full max-w-sm bg-[#020306] border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
             <button onclick="toggleSecureAuthModal(false)" class="absolute top-4 right-4 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
             <div class="text-center mb-6">
                 <h2 id="authModalHeadline" class="text-xl text-amber-400 font-bold">Access Terminal</h2>
@@ -126,27 +142,26 @@
             <form onsubmit="handleSecureAuthSubmission(event)" class="space-y-4">
                 <div>
                     <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Email Node Address</label>
-                    <input type="email" id="authInputEmail" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="name@domain.com">
+                    <input type="email" id="authInputEmail" required class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="name@domain.com">
                 </div>
                 <div>
                     <label class="block text-[10px] uppercase text-slate-400 font-bold mb-1">Security Access Key</label>
-                    <input type="password" id="authInputPassword" required minlength="6" class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="••••••••">
+                    <input type="password" id="authInputPassword" required minlength="6" class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition" placeholder="••••••••">
                 </div>
                 <button type="submit" id="authSubmitActionButton" class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition mt-2">Verify Identity</button>
             </form>
         </div>
     </div>
 
-    <!-- CORE INTERFACE WRAPPER -->
     <div class="flex h-screen w-full">
         
-        <!-- SIDEBAR SYSTEM -->
-        <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#070a13] border-r border-slate-900/80 z-50">
+        <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#020306] border-r border-slate-900/60 z-50">
             <div class="flex flex-col items-center gap-8 w-full">
-                <!-- Luxury Logo Circle -->
-                <div onclick="forceResetToHomeGrid()" class="luxury-brand text-xl cursor-pointer hover:scale-105 transition-transform">L</div>
+                <div onclick="forceResetToHomeGrid()" class="w-10 h-10 rounded-full border border-amber-500/30 flex items-center justify-center cursor-pointer hover:border-amber-400/80 transition-all duration-300 shadow-lg shadow-amber-500/5">
+                    <span class="luxury-brand-icon text-lg">L</span>
+                </div>
                 <div class="flex flex-col items-center gap-4 w-full">
-                    <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500 hover:bg-slate-800/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
+                    <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-amber-500/90 hover:bg-slate-900/40 gap-1 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
                     <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-1 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
                     <button onclick="openYourBoardsPanelSection()" id="your-boards-trigger-node" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-rose-400 gap-1 transition"><i class="fa-solid fa-folder-heart text-sm"></i><span class="text-[9px]">Boards</span></button>
                 </div>
@@ -154,11 +169,10 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- UPLOAD DRAWER (Fixed Verification Check from your image_08527f.png) -->
-        <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#070a13] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
+        <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#020306] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400 uppercase tracking-wider">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
-                <input type="text" id="formUploadTitle" placeholder="Asset Title" required class="w-full px-3 py-2 bg-[#111827] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition">
+                <input type="text" id="formUploadTitle" placeholder="Asset Title" required class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition">
                 <div class="relative w-full h-56 border-2 border-dashed border-slate-800 rounded-2xl flex items-center justify-center bg-slate-950/40 cursor-pointer overflow-hidden hover:border-amber-500/50 transition">
                     <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover z-10">
                     <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 z-20 cursor-pointer">
@@ -168,28 +182,26 @@
             </form>
         </div>
 
-        <!-- MAIN WINDOW PIPELINE -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
             
-            <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#0b0f19]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/60">
-                <!-- Luxury Font Logo Built Here -->
-                <div onclick="forceResetToHomeGrid()" class="luxury-brand text-2xl cursor-pointer tracking-[6px]">Lusso</div>
-                <div class="flex-1 relative max-w-xl">
+            <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#05070c]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/40">
+                <div onclick="forceResetToHomeGrid()" class="luxury-brand-title text-2xl md:text-3xl cursor-pointer">Lusso</div>
+                
+                <div class="flex-1 relative max-w-xl mx-4">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#111827] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
+                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery()" class="w-full pl-11 pr-4 py-2 bg-[#0b0f19] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
                 </div>
+                
                 <div id="authHeaderControlBlockSection" class="relative">
-                    <button onclick="toggleSecureAuthModal(true)" id="headerInterfaceLoginTriggerButton" class="px-4 py-1.5 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-black font-bold text-xs rounded-full transition duration-300">
-                        Account Node
+                    <button onclick="toggleSecureAuthModal(true)" id="headerInterfaceLoginTriggerButton" class="px-5 py-2 border border-amber-500/30 text-amber-400/90 hover:bg-amber-500 hover:text-black font-bold text-xs rounded-full transition duration-300 tracking-wider shadow-lg shadow-amber-500/5">
+                        ACCOUNT NODE
                     </button>
                 </div>
             </header>
 
-            <!-- WALLPAPER DASHBOARD GRID VIEW -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
                 
-                <!-- INFINITE SKELETON LOADERS CONTAINER -->
                 <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8">
                     <div class="pinterest-grid" id="shimmerLoadersMockGrid">
                         <div class="pinterest-card h-64 rounded-2xl skeleton-shimmer-node"></div>
@@ -200,7 +212,6 @@
                 </div>
             </div>
 
-            <!-- BOARDS SAVED SECTION -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <div>
@@ -213,14 +224,13 @@
 
         </div>
 
-        <!-- SETTINGS SLIDE OVER LAYER -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 hover:bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition shadow-xl"><i class="fa-solid fa-xmark"></i></button>
                 <div class="border-b border-slate-800 pb-4 mb-8">
                     <h1 class="text-2xl text-amber-400 font-bold uppercase tracking-wider font-sans">Configuration Panel</h1>
                 </div>
-                <div class="bg-[#111827] border border-slate-800 rounded-3xl p-6">
+                <div class="bg-[#0b0f19] border border-slate-800 rounded-3xl p-6">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Grid Layout Optimization</h3>
                     <div class="grid grid-cols-4 gap-2 max-w-sm">
                         <button onclick="updateGridDensityLayout(2)" class="p-2 bg-slate-800 rounded-xl text-xs font-bold border border-slate-700 hover:border-amber-500 transition">2 Col</button>
@@ -234,7 +244,6 @@
 
     </div>
 
-    <!-- SUPABASE BASE CDN IMPORTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
@@ -245,7 +254,6 @@
         let displayedAssetsMemory = []; 
         let currentForcedGridDensity = null; 
 
-        // PAGINATION & LIGHTBOX PARAMS
         const ITEMS_PER_PAGE = 12;
         let currentPaginationPage = 1;
         let isInfiniteScrollLoadingActive = false;
@@ -293,7 +301,6 @@
         function closeLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full'); }
         function toggleSecureAuthModal(show) { document.getElementById('secureAuthOverlayModal').classList.toggle('hidden', !show); }
 
-        // LIGHTBOX MECHANICS ENGINE
         function openPremiumLightbox(id) {
             const item = allAssetsDatabaseMemory.find(w => w.id == id);
             if (!item) return;
@@ -337,10 +344,9 @@
 
         function handleBrokenImageFallback(imgElement) {
             imgElement.onerror = null; 
-            imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='100%' height='100%' fill='%23111827'/></svg>";
+            imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='100%' height='100%' fill='%230b0f19'/></svg>";
         }
 
-        // GRID RENDERER USING INTUITIVE SKELETON INTERCEPTORS
         function renderGrid(list, containerId, appendMode = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -351,8 +357,7 @@
                 card.className = "pinterest-card group cursor-pointer";
                 
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-slate-900 border border-slate-800/80 shadow-md">
-                        <!-- Shimmer box active initially -->
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-[#0b0f19] border border-slate-800/40 shadow-md">
                         <div class="skeleton-shimmer-node w-full h-72 rounded-2xl transition-all duration-300"></div>
                         
                         <img src="${item.image_url}" 
@@ -363,7 +368,7 @@
                         
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-3 z-20">
                             <div class="flex justify-end pointer-events-auto">
-                                <button onclick="event.stopPropagation(); openPremiumLightbox('${item.id}');" class="px-4 py-1.5 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-[11px] rounded-full shadow-lg transition">
+                                <button onclick="event.stopPropagation(); openPremiumLightbox('${item.id}');" class="px-4 py-1.5 bg-[#dfb76c] text-black font-bold text-[11px] rounded-full shadow-lg transition hover:bg-[#f7e7c4]">
                                     View
                                 </button>
                             </div>
@@ -478,7 +483,6 @@
             }
         }
 
-        // Verification-Bypass Upload Pipeline for Guest Dev State
         async function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('formSubmitBtn');
