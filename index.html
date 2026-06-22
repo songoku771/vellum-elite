@@ -61,21 +61,32 @@
 </head>
 <body>
 
+    <!-- Global Toast Alert -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[150] p-4 md:p-8" onclick="closePremiumLightbox()">
-        <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-3xl transition z-[160]" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- PINTEREST-STYLE GIANT FULL SIZE INTERFACE MODAL -->
+    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-start justify-center切换 z-[150] overflow-y-auto" onclick="closePremiumLightbox()">
+        <!-- Close Button Top Fixed Area -->
+        <div class="fixed top-6 right-8 z-[170] flex gap-3">
+            <button class="w-12 h-12 bg-neutral-900/80 border border-neutral-800 text-slate-300 hover:text-white rounded-full flex items-center justify-center text-xl transition" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
         
-        <button onclick="navigateLightboxAsset(-1, event)" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-left"></i></button>
-        <button onclick="navigateLightboxAsset(1, event)" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-right"></i></button>
+        <!-- Large Navigation Controls -->
+        <button onclick="navigateLightboxAsset(-1, event)" class="fixed left-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-left"></i></button>
+        <button onclick="navigateLightboxAsset(1, event)" class="fixed right-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-right"></i></button>
 
-        <div id="modalScrollNode" class="max-w-4xl w-full h-[90vh] bg-[#0b0f19] border border-slate-800/80 rounded-3xl shadow-2xl overflow-y-auto custom-lightbox-scroll" onclick="event.stopPropagation()" onscroll="handleModalInfiniteScrollTrigger()">
-            <div class="flex flex-col md:flex-row border-b border-slate-900">
-                <div class="w-full md:w-1/2 bg-black/40 flex items-center justify-center p-6 min-h-[45vh]">
-                    <img id="lightboxImage" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl shadow-lg">
+        <!-- Big Window Display Pipeline -->
+        <div id="modalScrollNode" class="max-w-7xl w-full min-h-screen bg-[#05070c] p-4 md:p-12" onclick="event.stopPropagation()">
+            
+            <!-- Main Content Card Box (Split layout for targeted item) -->
+            <div class="max-w-4xl mx-auto bg-[#0b0f19] border border-slate-800/80 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden mb-16">
+                <!-- Large Image Box -->
+                <div class="w-full md:w-1/2 bg-black/40 flex items-center justify-center p-6 min-h-[50vh]">
+                    <img id="lightboxImage" src="" class="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-xl">
                 </div>
+                <!-- Controls Frame -->
                 <div class="w-full md:w-1/2 p-8 flex flex-col justify-between bg-[#070a12]">
                     <div>
                         <div class="flex justify-between items-center mb-6">
@@ -84,31 +95,34 @@
                                 <button onclick="toggleModalDropdown(event)" class="w-9 h-9 bg-slate-900 hover:bg-slate-800 text-white rounded-full flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
                                 <button onclick="saveFromLightbox()" class="px-5 py-2 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-full transition">Save</button>
                                 
+                                <!-- Dropdown options inside modal -->
                                 <div id="modalActionDropdown" class="hidden absolute right-12 top-0 w-48 bg-[#0b0f19] border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50">
                                     <button onclick="triggerInlineActionSeeMoreFromModal()" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/60 transition flex items-center gap-2"><i class="fa-solid fa-eye text-amber-400"></i> See more like this</button>
                                     <button onclick="downloadFromLightbox()" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/60 transition flex items-center gap-2"><i class="fa-solid fa-download text-green-400"></i> Download image</button>
-                                    <button onclick="triggerNotificationToast('Report logged.')" class="w-full text-left px-4 py-2.5 text-xs text-red-400 hover:bg-slate-800/60 transition flex items-center gap-2"><i class="fa-solid fa-flag"></i> Report Pin</button>
                                 </div>
                             </div>
                         </div>
-                        <h2 id="lightboxTitle" class="text-2xl font-bold text-white tracking-wide uppercase">Asset Title</h2>
-                        <p class="text-xs text-slate-400 mt-3 leading-relaxed">High fidelity ultra-premium environment resource allocation grid mapping verified pipeline output.</p>
+                        <h2 id="lightboxTitle" class="text-3xl font-bold text-white tracking-wide uppercase">Asset Title</h2>
+                        <p class="text-xs text-slate-400 mt-4 leading-relaxed">High fidelity ultra-premium environment resource allocation grid mapping verified pipeline output.</p>
                     </div>
                     <div class="mt-8">
-                        <button onclick="downloadFromLightbox()" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/10"><i class="fa-solid fa-download"></i> Download Matrix Asset</button>
+                        <button onclick="downloadFromLightbox()" class="w-full py-4 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg"><i class="fa-solid fa-download"></i> Download Matrix Asset</button>
                     </div>
                 </div>
             </div>
 
-            <div class="p-8 bg-[#05070c]">
-                <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 text-center">More Like This</h3>
+            <!-- Pinterest Grid Section (Wide Width layout) -->
+            <div class="w-full border-t border-slate-900 pt-10">
+                <h3 class="text-base font-bold text-gray-200 uppercase tracking-wider mb-8 text-center">More Like This</h3>
                 <div id="lightboxRelatedGridStream" class="pinterest-grid"></div>
-                <div id="modalInfiniteScrollIndicator" class="hidden w-full py-4 text-center text-xs text-amber-500">Loading deeper recommendations...</div>
+                <div id="modalInfiniteScrollIndicator" class="hidden w-full py-8 text-center text-xs text-amber-500"><i class="fa-solid fa-spinner animate-spin mr-2"></i>Loading deeper recommendations...</div>
             </div>
         </div>
     </div>
 
+    <!-- MAIN INTERFACE LAYOUT -->
     <div class="flex h-screen w-full">
+        <!-- SIDEBAR PLATFORM -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#020306] border-r border-slate-900/60 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-10 h-10 rounded-full border border-amber-500/30 flex items-center justify-center cursor-pointer hover:border-amber-400/80 transition">
@@ -128,6 +142,7 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
+        <!-- NOTIFICATION DRAWER -->
         <div id="updatesNotificationDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#020306] border-r border-slate-900/80 z-40 transform -translate-x-full transition-transform duration-300 p-5 overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
                 <span class="font-bold text-sm text-gray-200 tracking-wide">Updates</span>
@@ -136,6 +151,7 @@
             <div id="updatesNotificationsContainerList" class="space-y-3"></div>
         </div>
 
+        <!-- UPLOAD DRAWER -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#020306] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400 uppercase tracking-wider">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -149,6 +165,7 @@
             </form>
         </div>
 
+        <!-- MAIN WINDOW VIEW SYSTEM -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#05070c]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/40">
                 <div onclick="forceResetToHomeGrid()" class="luxury-brand-title text-2xl md:text-3xl cursor-pointer">Lusso</div>
@@ -159,15 +176,18 @@
                 <button class="px-5 py-2 border border-amber-500/30 text-amber-400/90 font-bold text-xs rounded-full tracking-wider">ACCOUNT NODE</button>
             </header>
 
+            <!-- WALLPAPER DISPLAY STREAM -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
                 <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8 text-center text-xs text-amber-500">Loading new dimensions...</div>
             </div>
 
+            <!-- EXPLORE BLOCK -->
             <div id="exploreSection" class="hidden w-full app-view-block p-6">
                 <div id="exploreMasonryContainerGrid" class="pinterest-grid"></div>
             </div>
 
+            <!-- VAULT BOARDS -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <h1 class="text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Vault Boards</h1>
@@ -177,6 +197,7 @@
             </div>
         </div>
 
+        <!-- SETTINGS CONFIG PANEL -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
@@ -206,7 +227,7 @@
         let modalCurrentPage = 1;
         let isModalLoading = false;
         let currentForcedGridDensity = null;
-        const ITEMS_PER_PAGE = 12;
+        const ITEMS_PER_PAGE = 15;
         let currentPaginationPage = 1;
         let isInfiniteScrollLoadingActive = false;
         let isDatabaseCompletelyExhausted = false;
@@ -226,7 +247,6 @@
             if(target) target.classList.add('active-slide');
         }
 
-        /* Essential platform alignment commands */
         function closeSlidePanelAnimationLayer() { document.querySelectorAll('.slide-panel-node').forEach(panel => panel.classList.remove('active-slide')); }
         function updateGridDensityLayout(columns) { currentForcedGridDensity = columns; applyDynamicColumnsStyle(columns); }
         function applyDynamicColumnsStyle(cols) { document.querySelectorAll('.pinterest-grid').forEach(g => { g.style.columnCount = cols; }); }
@@ -249,7 +269,7 @@
         function openUpdatesNotificationDrawer() { closeLeftSliderUploadEngine(); document.getElementById('updatesNotificationDrawerPanel').classList.remove('-translate-x-full'); document.getElementById('notificationBadge').classList.add('hidden'); populateUpdatesNotificationPanelItems(); }
         function closeUpdatesNotificationDrawer() { document.getElementById('updatesNotificationDrawerPanel').classList.add('-translate-x-full'); }
 
-        // ENTER MODAL INTERFACE VIA WALLPAPER CLICK
+        // ENTER HIGH FIDELITY PINTEREST LARGE INTERFACE
         function openPremiumLightbox(id) {
             currentActiveIndexInLightbox = allAssetsDatabaseMemory.findIndex(w => w.id == id);
             if (currentActiveIndexInLightbox === -1) return;
@@ -260,17 +280,23 @@
             document.getElementById('premiumLightboxModal').classList.remove('hidden');
             document.getElementById('modalActionDropdown').classList.add('hidden');
             
-            // Set up Modal/Related Grid Infinite Stream parameters
+            // Setup Infinite Stream Parameters inside Modal View
             modalCurrentPage = 1;
             const innerStreamGrid = document.getElementById('lightboxRelatedGridStream');
             innerStreamGrid.innerHTML = "";
             
             const relatedSource = allAssetsDatabaseMemory.filter(w => w.id != item.id);
-            modalDisplayedAssets = relatedSource.slice(0, 6);
+            // Dynamic Initial Load (Load 15 Items for 5 Column Layout matching image_9e6e41.jpg)
+            modalDisplayedAssets = relatedSource.slice(0, 15);
             
             renderRelatedModalGrid(modalDisplayedAssets);
-            innerStreamGrid.style.columnCount = 3;
-            document.getElementById('modalScrollNode').scrollTop = 0;
+            
+            // Enforce Premium 5-Column Grid Layout Style inside Recommendations Node
+            let modalCols = window.innerWidth >= 1280 ? 5 : (window.innerWidth >= 1024 ? 4 : 2);
+            innerStreamGrid.style.columnCount = modalCols;
+            
+            // Reset main display scroll wrapper structure
+            document.getElementById('premiumLightboxModal').scrollTop = 0;
         }
 
         function renderRelatedModalGrid(list) {
@@ -278,17 +304,24 @@
             list.forEach(rel => {
                 const card = document.createElement('div');
                 card.className = "pinterest-card group cursor-pointer relative overflow-hidden rounded-2xl border border-slate-800/40";
-                card.innerHTML = `<img src="${rel.image_url}" onclick="openPremiumLightbox('${rel.id}')" class="w-full h-auto block rounded-2xl hover:scale-102 transition duration-300">`;
+                card.innerHTML = `
+                    <div class="relative w-full overflow-hidden bg-[#0b0f19] rounded-2xl">
+                        <img src="${rel.image_url}" onclick="openPremiumLightbox('${rel.id}')" class="w-full h-auto block rounded-2xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none flex items-end p-3 z-20">
+                            <span class="text-[10px] text-white truncate max-w-full bg-black/50 px-2 py-0.5 rounded">${rel.title || 'Premium Pin'}</span>
+                        </div>
+                    </div>
+                `;
                 innerStreamGrid.appendChild(card);
             });
         }
 
-        // UNLIMITED SCROLL INSIDE PINTEREST MODAL SUGGESTIONS
-        function handleModalInfiniteScrollTrigger() {
+        // GLOBAL SCROLL HANDLING FOR MODAL OVERLAY STREAM
+        document.getElementById('premiumLightboxModal').onscroll = function() {
             if (isModalLoading || currentActiveIndexInLightbox === -1) return;
-            const modalScroll = document.getElementById('modalScrollNode');
+            const containerNode = document.getElementById('premiumLightboxModal');
             
-            if ((modalScroll.scrollTop + modalScroll.clientHeight) >= (modalScroll.scrollHeight - 120)) {
+            if ((containerNode.scrollTop + containerNode.clientHeight) >= (containerNode.scrollHeight - 200)) {
                 isModalLoading = true;
                 document.getElementById('modalInfiniteScrollIndicator').classList.remove('hidden');
                 
@@ -297,8 +330,8 @@
                     const currentItem = allAssetsDatabaseMemory[currentActiveIndexInLightbox];
                     const relatedSource = allAssetsDatabaseMemory.filter(w => w.id != currentItem.id);
                     
-                    const start = (modalCurrentPage - 1) * 6;
-                    const nextBatch = relatedSource.slice(start, start + 6);
+                    const start = (modalCurrentPage - 1) * 10;
+                    const nextBatch = relatedSource.slice(start, start + 10);
                     
                     if (nextBatch.length > 0) {
                         modalDisplayedAssets = modalDisplayedAssets.concat(nextBatch);
@@ -308,7 +341,7 @@
                     document.getElementById('modalInfiniteScrollIndicator').classList.add('hidden');
                 }, 400);
             }
-        }
+        };
 
         function navigateLightboxAsset(direction, event) {
             if(event) event.stopPropagation();
@@ -322,7 +355,6 @@
         function closePremiumLightbox() { document.getElementById('premiumLightboxModal').classList.add('hidden'); }
         function toggleCardDropdown(id, event) { event.stopPropagation(); document.querySelectorAll('.card-dropdown-menu').forEach(el => { if(el.id !== `drop-${id}`) el.classList.add('hidden'); }); const drop = document.getElementById(`drop-${id}`); if(drop) drop.classList.toggle('hidden'); }
         function toggleModalDropdown(event) { event.stopPropagation(); document.getElementById('modalActionDropdown').classList.toggle('hidden'); }
-        function triggerInlineActionSeeMore(title, event) { event.stopPropagation(); executeLiveSearchQuery(title || "Anime"); triggerNotificationToast("Filtering matching spaces..."); }
         
         function triggerInlineActionSeeMoreFromModal() {
             if(currentActiveIndexInLightbox !== -1) {
@@ -405,7 +437,6 @@
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden bg-[#0b0f19]">
                         <img src="${item.image_url}" onclick="openPremiumLightbox('${item.id}')" class="w-full h-auto block hover:scale-105 transition-all duration-500 rounded-2xl relative z-10 cursor-pointer">
-                        
                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4 pointer-events-none">
                             <div class="flex justify-between items-center w-full pointer-events-auto">
                                 <span onclick="openPremiumLightbox('${item.id}')" class="text-xs text-white/80 font-medium truncate max-w-[50%] bg-black/40 px-2 py-1 rounded cursor-pointer">${item.title || 'Anime'}</span>
@@ -414,9 +445,8 @@
                             <div class="flex justify-end items-center gap-1.5 relative w-full pointer-events-auto">
                                 <button onclick="handleInlineActionDownload('${item.image_url}', event)" class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-arrow-down text-xs"></i></button>
                                 <button onclick="toggleCardDropdown('${item.id}', event)" class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-ellipsis text-xs"></i></button>
-                                
                                 <div id="drop-${item.id}" class="card-dropdown-menu hidden absolute right-0 bottom-10 w-44 bg-[#0b0f19] border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50">
-                                    <button onclick="triggerInlineActionSeeMore('${item.title}', event)" class="w-full text-left px-4 py-2 text-[11px] text-slate-300 hover:bg-slate-800 transition flex items-center gap-2"><i class="fa-solid fa-eye text-amber-400"></i> See more like this</button>
+                                    <button onclick="executeLiveSearchQuery('${item.title}', event)" class="w-full text-left px-4 py-2 text-[11px] text-slate-300 hover:bg-slate-800 transition flex items-center gap-2"><i class="fa-solid fa-eye text-amber-400"></i> See more like this</button>
                                     <button onclick="handleInlineActionDownload('${item.image_url}', event)" class="w-full text-left px-4 py-2 text-[11px] text-slate-300 hover:bg-slate-800 transition flex items-center gap-2"><i class="fa-solid fa-download text-green-400"></i> Download image</button>
                                 </div>
                             </div>
