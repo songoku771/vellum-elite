@@ -3,411 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUSSO | Premium Matrix System</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>LUSSO | Premium Matrix Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* Pinterest Style Masonry Grid Layout */
-        .masonry-grid {
-            column-count: 2;
-            column-gap: 16px;
+        :root {
+            --bg-color: #05070c;
+            --sidebar-color: #020306;
+            --card-bg: #0b0f19;
+            --text-primary: #f3f4f6;
+            --text-secondary: #94a3b8;
+            --gold-primary: #dfb76c;
+            --gold-light: #f7e7c4;
         }
-        @media (min-width: 640px) { .masonry-grid { column-count: 3; } }
-        @media (min-width: 1024px) { .masonry-grid { column-count: 4; } }
-        @media (min-width: 1280px) { .masonry-grid { column-count: 5; } }
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 16px;
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-primary); 
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
         }
-        /* Custom Scrollbar for Sleek Dark Theme */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
+        .luxury-brand-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7e7c4 0%, #dfb76c 50%, #b2873f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 10px rgba(223, 183, 108, 0.3));
+            transition: all 0.4s ease;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #09090b;
+        .luxury-brand-icon {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f7e7c4 0%, #dfb76c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 10px;
+        .pinterest-grid { column-gap: 20px; width: 100%; }
+        .pinterest-card { break-inside: avoid; margin-bottom: 20px; width: 100%; display: block; position: relative; }
+        #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
+        #mainContentScrollNode::-webkit-scrollbar-thumb { background: rgba(223, 183, 108, 0.2); border-radius: 10px; }
+        .slide-panel-node {
+            position: fixed; top: 0; left: 80px; width: calc(100% - 80px); height: 100vh;
+            background-color: #05070c; z-index: 40; transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+        .slide-panel-node.active-slide { transform: translateX(0); }
+        .skeleton-shimmer-node {
+            background: linear-gradient(90deg, #0b0f19 25%, #1e293b 50%, #0b0f19 75%);
+            background-size: 200% 100%; animation: lussoLoadingShimmer 1.5s infinite linear;
+        }
+        @keyframes lussoLoadingShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
-<body class="bg-black text-white font-sans antialiased overflow-hidden">
+<body>
 
-    <div class="flex h-screen w-screen overflow-hidden">
+    <!-- Global Toast Alert -->
+    <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
+        <span id="toastMessageText">Syncing...</span>
+    </div>
+
+    <!-- ULTIMATE DEEP SLIDER MODAL (With Next/Prev Controls & Related Wallpapers Slider) -->
+    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[150] p-4" onclick="closePremiumLightbox()">
+        <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl transition z-50" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
         
-        <aside class="w-20 md:w-24 bg-zinc-950 border-r border-zinc-900 flex flex-col items-center py-6 justify-between z-20">
-            <div class="flex flex-col items-center gap-8 w-full">
-                <div class="text-xl font-black tracking-widest text-red-600 cursor-pointer" onclick="navigateToAppSection('dashboard')">LUSSO</div>
-                
-                <nav class="flex flex-col gap-6 w-full items-center">
-                    <button onclick="navigateToAppSection('dashboard')" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-house text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Home</span>
-                    </button>
-                    <button onclick="navigateToAppSection('explore')" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-compass text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Explore</span>
-                    </button>
-                    <button onclick="openYourBoardsPanelSection()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-bookmark text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Saved Vault</span>
-                    </button>
-                    <button onclick="openLeftSliderUploadEngine()" class="p-3 rounded-xl bg-zinc-900 hover:bg-red-900/40 text-red-500 hover:text-red-400 transition group relative">
-                        <i class="fa-solid fa-plus text-lg"></i>
-                        <span id="notificationBadge" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden"></span>
-                    </button>
-                </nav>
+        <!-- Left Nav Control -->
+        <button onclick="navigateLightboxAsset(-1; event)" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/60 border border-slate-800 rounded-full flex items-center justify-center text-amber-400 text-xl hover:bg-amber-500 hover:text-black transition z-50"><i class="fa-solid fa-chevron-left"></i></button>
+        
+        <!-- Right Nav Control -->
+        <button onclick="navigateLightboxAsset(1; event)" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/60 border border-slate-800 rounded-full flex items-center justify-center text-amber-400 text-xl hover:bg-amber-500 hover:text-black transition z-50"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <div class="max-w-5xl w-full max-h-[90vh] overflow-y-auto flex flex-col bg-[#020306] border border-slate-800/60 rounded-3xl shadow-2xl" onclick="event.stopPropagation()">
+            <div class="flex flex-col md:flex-row">
+                <!-- Wallpaper Render Window -->
+                <div class="w-full md:w-3/5 bg-black flex items-center justify-center p-2 relative min-h-[40vh] md:min-h-[60vh]">
+                    <img id="lightboxImage" src="" class="max-w-full max-h-[55vh] object-contain rounded-xl">
+                </div>
+                <!-- Controls Frame -->
+                <div class="w-full md:w-2/5 p-6 flex flex-col justify-between bg-[#0b0f19]">
+                    <div>
+                        <h2 id="lightboxTitle" class="text-xl font-bold text-gray-100 uppercase tracking-wide">Asset Title</h2>
+                        <p class="text-[11px] text-slate-400 mt-2">Verified secure cloud pipeline node injection.</p>
+                    </div>
+                    <div class="space-y-3 mt-6">
+                        <button onclick="downloadFromLightbox()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition"><i class="fa-solid fa-download"></i> Download Matrix</button>
+                        <button onclick="saveFromLightbox()" class="w-full py-3 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition"><i class="fa-solid fa-folder-heart"></i> Save to Boards</button>
+                    </div>
+                </div>
             </div>
-            <button onclick="clearAllSavedBoardsStorage()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-600 hover:text-red-500 transition group relative">
-                <i class="fa-solid fa-trash text-sm"></i>
-                <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Clear Vault</span>
-            </button>
+
+            <!-- Deep Scroll Core Layout (More Like This Component) -->
+            <div class="p-6 border-t border-slate-900 bg-[#05070c]">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-4"><i class="fa-solid fa-layer-group mr-2"></i>Related Asset Matrix</h3>
+                <div id="lightboxRelatedHorizontalGrid" class="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-500/20">
+                    <!-- Related nodes dynamically injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI ARCHITECTURE WRAPPER -->
+    <div class="flex h-screen w-full">
+        <!-- SIDEBAR PLATFORM -->
+        <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#020306] border-r border-slate-900/60 z-50">
+            <div class="flex flex-col items-center gap-6 w-full">
+                <div onclick="forceResetToHomeGrid()" class="w-10 h-10 rounded-full border border-amber-500/30 flex items-center justify-center cursor-pointer hover:border-amber-400/80 transition">
+                    <span class="luxury-brand-icon text-lg">L</span>
+                </div>
+                <div class="flex flex-col items-center gap-3 w-full">
+                    <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-amber-500/90 hover:bg-slate-900/40 gap-0.5 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
+                    <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-0.5 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
+                    
+                    <!-- Core Center Navigation Explore Node -->
+                    <button onclick="navigateToAppSection('explore')" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-cyan-400 gap-0.5 transition"><i class="fa-solid fa-compass text-sm"></i><span class="text-[9px]">Explore</span></button>
+                    
+                    <button onclick="openYourBoardsPanelSection()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-rose-400 gap-0.5 transition"><i class="fa-solid fa-folder-heart text-sm"></i><span class="text-[9px]">Boards</span></button>
+                    
+                    <button onclick="openUpdatesNotificationDrawer()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 gap-0.5 transition relative">
+                        <i class="fa-solid fa-bell text-sm"></i><span class="text-[9px]">Updates</span>
+                        <span id="notificationBadge" class="hidden absolute top-2 right-3 w-2 h-2 bg-amber-500 rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+            <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <main id="mainContentScrollNode" class="flex-1 h-full overflow-y-auto bg-zinc-950 relative custom-scrollbar pb-20" onscroll="handleWindowInfiniteScrollTrigger()">
-            
-            <header class="sticky top-0 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 px-6 py-4 flex items-center justify-between z-10">
-                <div class="w-full max-w-xl relative" id="topSearchBarContainer">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
-                    <input id="appSearchEngineInput" oninput="executeLiveSearchQuery()" type="text" placeholder="Search across the asset core matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+        <!-- NOTIFICATION UPDATES SYSTEM -->
+        <div id="updatesNotificationDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#020306] border-r border-slate-900/80 z-40 transform -translate-x-full transition-transform duration-300 p-5 overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
+                <span class="font-bold text-sm text-gray-200 tracking-wide">Updates</span>
+                <button onclick="closeUpdatesNotificationDrawer()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="updatesNotificationsContainerList" class="space-y-3"></div>
+        </div>
+
+        <!-- IMAGE CREATION PANEL -->
+        <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#020306] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400 uppercase tracking-wider">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
+            <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
+                <input type="text" id="formUploadTitle" placeholder="Asset Title" required class="w-full px-3 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs outline-none text-white focus:border-amber-500 transition">
+                <div class="relative w-full h-56 border-2 border-dashed border-slate-800 rounded-2xl flex items-center justify-center bg-slate-950/40 cursor-pointer overflow-hidden hover:border-amber-500/50 transition">
+                    <img id="formLiveImagePreview" class="hidden absolute inset-0 w-full h-full object-cover z-10">
+                    <input type="file" id="formFileInputTrigger" accept="image/*" required onchange="processLocalFileSelection(this)" class="absolute inset-0 opacity-0 z-20 cursor-pointer">
+                    <div class="text-center p-4"><i class="fa-cloud-arrow-up fa-solid text-amber-500 text-2xl"></i><p class="text-[10px] text-slate-500 mt-2">Select Wall Asset</p></div>
                 </div>
-                <div class="w-full max-w-xl relative hidden" id="exploreSearchBarContainer">
-                    <i class="fa-solid fa-compass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
-                    <input id="exploreSearchEngineInput" oninput="executeExploreGridLocalSearch()" type="text" placeholder="Filter explore node matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+                <button type="submit" id="formSubmitBtn" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider transition">Publish Asset</button>
+            </form>
+        </div>
+
+        <!-- MAIN DASHBOARD SCROLL GRID FRAME -->
+        <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
+            <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#05070c]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/40">
+                <div onclick="forceResetToHomeGrid()" class="luxury-brand-title text-2xl md:text-3xl cursor-pointer">Lusso</div>
+                <div class="flex-1 relative max-w-xl mx-4">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                    <input type="text" id="appSearchEngineInput" oninput="executeLiveSearchQuery(this.value)" class="w-full pl-11 pr-4 py-2 bg-[#0b0f19] border border-slate-800 rounded-full text-xs text-gray-200 outline-none focus:border-slate-700 transition" placeholder="Search elite matrices...">
                 </div>
-                <div>
-                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-mono tracking-wider">SECURE_NODE_OK</span>
-                </div>
+                <button class="px-5 py-2 border border-amber-500/30 text-amber-400/90 font-bold text-xs rounded-full tracking-wider">ACCOUNT NODE</button>
             </header>
 
-            <section id="dashboardSection" class="p-6">
-                <div id="pinterestMainMasonryContainer" class="masonry-grid w-full"></div>
-                <div id="infiniteScrollLoadStatusIndicator" class="w-full text-center py-8 text-zinc-500 text-xs font-mono tracking-widest hidden">
-                    <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> FETCHING NEXT LAYER DATA...
-                </div>
-            </section>
-
-            <section id="exploreSection" class="p-6 hidden">
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold tracking-tight">Explore Network Core</h2>
-                    <p class="text-xs text-zinc-500">Curated trending matrices across public databanks.</p>
-                </div>
-                <div id="exploreMasonryContainerGrid" class="masonry-grid w-full"></div>
-            </section>
-
-            <section id="yourBoardsSection" class="p-6 hidden">
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold tracking-tight text-red-500">Your Offline Saved Vault</h2>
-                    <p class="text-xs text-zinc-500">Assets cached locally inside browser client storage block.</p>
-                </div>
-                <div id="yourSavedPinsMasonryGrid" class="masonry-grid w-full"></div>
-            </section>
-        </main>
-    </div>
-
-    <div id="leftSliderUploadEngine" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 translate-x-[-100%] transition-transform duration-300 ease-in-out flex">
-        <div class="w-full max-w-md bg-zinc-950 border-r border-zinc-900 h-full p-6 flex flex-col justify-between overflow-y-auto">
-            <div>
-                <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-lg font-bold font-mono text-red-500 tracking-wider">// DISPATCH NEW ASSET</h3>
-                    <button onclick="closeLeftSliderUploadEngine()" class="text-zinc-500 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-                <form onsubmit="handleLocalFormUploadSubmit(event)" id="uploadAssetForm" class="space-y-5">
-                    <div>
-                        <label class="block text-xs text-zinc-500 font-mono mb-2">ASSET TITLE</label>
-                        <input id="formUploadTitle" type="text" required placeholder="Enter asset label..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition">
+            <!-- WALLPAPER STREAM -->
+            <div id="dashboardSection" class="w-full app-view-block p-6">
+                <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
+                <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8">
+                    <div class="pinterest-grid">
+                        <div class="pinterest-card h-64 rounded-2xl skeleton-shimmer-node"></div>
+                        <div class="pinterest-card h-80 rounded-2xl skeleton-shimmer-node"></div>
                     </div>
-                    <div>
-                        <label class="block text-xs text-zinc-500 font-mono mb-2">SELECT IMAGE FILE</label>
-                        <input type="file" accept="image/*" onchange="processLocalFileSelection(this)" class="w-full text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-zinc-900 file:text-zinc-300 hover:file:bg-zinc-800 cursor-pointer">
-                    </div>
-                    <div class="pt-2">
-                        <img id="formLiveImagePreview" src="" alt="Preview" class="w-full max-h-48 object-cover rounded-lg hidden border border-zinc-800">
-                    </div>
-                </form>
+                </div>
             </div>
-            <div class="pt-6 border-t border-zinc-900">
-                <button type="submit" form="uploadAssetForm" id="formSubmitBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg text-xs font-mono font-bold tracking-widest transition">PUBLISH ASSET</button>
+
+            <!-- DEDICATED EXPLORE COMPONENT -->
+            <div id="exploreSection" class="hidden w-full app-view-block p-6">
+                <div class="max-w-4xl mx-auto mb-8 bg-gradient-to-r from-amber-500/10 to-transparent p-6 rounded-3xl border border-amber-500/10">
+                    <h2 class="text-xl text-amber-400 font-bold mb-2 uppercase tracking-wide">Explore Premium Matrices</h2>
+                    <div class="relative w-full max-w-md">
+                        <i class="fa-solid fa-compass absolute left-4 top-1/2 -translate-y-1/2 text-amber-500"></i>
+                        <input type="text" id="exploreSearchEngineInput" oninput="executeLiveSearchQuery(this.value)" class="w-full pl-10 pr-4 py-2 bg-[#0b0f19] border border-slate-800 rounded-xl text-xs text-gray-200 outline-none focus:border-amber-500 transition" placeholder="Explore specific tags or labels...">
+                    </div>
+                </div>
+                <div id="exploreMasonryContainerGrid" class="pinterest-grid"></div>
+            </div>
+
+            <!-- SAVED BOARDS MODULE -->
+            <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
+                <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
+                    <h1 class="text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Vault Boards</h1>
+                    <button onclick="clearAllSavedBoardsStorage()" class="text-slate-500 hover:text-red-400 text-xs transition border border-slate-800 rounded-full px-4 py-1.5">Clear Board</button>
+                </div>
+                <div id="yourSavedPinsMasonryGrid" class="pinterest-grid"></div>
             </div>
         </div>
-        <div class="flex-1 h-full" onclick="closeLeftSliderUploadEngine()"></div>
-    </div>
 
-    <div id="globalAssetDetailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden overflow-y-auto custom-scrollbar p-4 md:p-10">
-        <button onclick="closeGlobalAssetDetailModal()" class="fixed top-6 right-6 bg-zinc-900/80 hover:bg-zinc-800 text-white p-3 rounded-full transition z-50 border border-zinc-800">
-            <i class="fa-solid fa-arrow-left text-sm mr-1"></i> Back
-        </button>
-
-        <div class="max-w-5xl mx-auto space-y-10 mt-10">
-            <div class="bg-zinc-950 border border-zinc-900 rounded-3xl flex flex-col md:flex-row overflow-hidden min-h-[550px]">
-                
-                <div class="w-full md:w-1/2 bg-zinc-900/40 flex items-center justify-center p-4 border-b md:border-b-0 md:border-r border-zinc-900">
-                    <img id="modalHeroElementImage" src="" alt="" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl">
-                </div>
-
-                <div class="w-full md:w-1/2 p-8 flex flex-col justify-between relative">
-                    <div class="space-y-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <button id="modalDownloadIconBtn" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Download">
-                                    <i class="fa-solid fa-download text-sm"></i>
-                                </button>
-                                
-                                <div class="relative inline-block text-left">
-                                    <button onclick="toggleSettingsDropdownNode(event)" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Options">
-                                        <i class="fa-solid fa-ellipsis text-sm"></i>
-                                    </button>
-                                    <div id="settingsDropdownMenuBox" class="absolute left-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl hidden z-30 py-1 font-mono text-xs">
-                                        <button id="dropdownCopyLinkAction" class="w-full text-left px-4 py-2.5 hover:bg-zinc-800 text-zinc-300 transition flex items-center gap-2">
-                                            <i class="fa-solid fa-link text-zinc-500"></i> Copy Asset Link
-                                        </button>
-                                        <button id="dropdownDeleteAction" class="w-full text-left px-4 py-2.5 hover:bg-red-950/40 text-red-400 transition flex items-center gap-2 border-t border-zinc-800/60">
-                                            <i class="fa-solid fa-trash-can text-red-500"></i> Delete Asset Node
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button id="modalSaveVaultActionButton" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold font-mono px-5 py-2.5 rounded-full tracking-wider transition shadow-lg">
-                                SAVE ASSET
-                            </button>
-                        </div>
-
-                        <hr class="border-zinc-900">
-
-                        <div>
-                            <h2 id="modalHeroElementTitle" class="text-3xl font-black tracking-tight text-white mb-2">Asset Identity Label</h2>
-                            <p class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">Node Stream: SECURE_CORE_MATRIX</p>
-                            <p class="text-sm text-zinc-400 leading-relaxed">This premium digital asset matrix framework is rendered and synchronized directly across cloud-allocated clusters inside your Supabase application pipeline.</p>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 border-t border-zinc-900 mt-8 flex justify-between items-center text-[10px] font-mono text-zinc-600">
-                        <span>CONTEXT: SHA256_VERIFIED</span>
-                        <span id="modalAssetSystemIdNode">ID: NULL_NODE</span>
+        <!-- SETTINGS WINDOW LAYER -->
+        <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
+            <div class="max-w-5xl mx-auto relative">
+                <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+                <div class="border-b border-slate-800 pb-4 mb-8"><h1 class="text-2xl text-amber-400 font-bold uppercase tracking-wide">Configuration</h1></div>
+                <div class="bg-[#0b0f19] border border-slate-800 rounded-3xl p-6">
+                    <h3 class="text-xs font-bold uppercase text-slate-400 mb-3">Grid Density Modification</h3>
+                    <div class="grid grid-cols-4 gap-2 max-w-sm">
+                        <button onclick="updateGridDensityLayout(2)" class="p-2 bg-slate-800 rounded-xl text-xs font-bold transition">2 Col</button>
+                        <button onclick="updateGridDensityLayout(3)" class="p-2 bg-slate-800 rounded-xl text-xs font-bold transition">3 Col</button>
+                        <button onclick="updateGridDensityLayout(4)" class="p-2 bg-amber-500 text-black rounded-xl text-xs font-bold transition">4 Col</button>
+                        <button onclick="updateGridDensityLayout(5)" class="p-2 bg-slate-800 rounded-xl text-xs font-bold transition">5 Col</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="space-y-6 pt-4">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
-                    <h3 class="text-lg font-bold font-mono tracking-wider text-zinc-200">// MORE LIKE THIS (SCROLL FOR MORE)</h3>
-                    <span class="text-xs text-zinc-500 font-mono" id="suggestionsCountNode">0 Assets Linked</span>
-                </div>
-                
-                <div id="modalSuggestionsMasonryGrid" class="masonry-grid w-full"></div>
             </div>
         </div>
     </div>
 
-    <div id="globalNotificationToast" class="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl text-xs font-mono tracking-wide shadow-2xl translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
-        <i class="fa-solid fa-circle-check text-red-500 text-sm"></i>
-        <span id="toastMessageNode">Execution Operation Finished!</span>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // CONFIGURATION PARAMETERS MATRIX
-        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Update with real URL
-        const SUPABASE_ANON_KEY = "your-anon-key"; // Update with real Key
-        
-        const supabaseClient = netlifyInternalSupabaseInstance || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const SUPABASE_URL = "https://ezfxgevsjxfyluxprkls.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_jlyevQqezPjFmlqar5pmNw_EV8DTtVL"; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAssetsDatabaseMemory = [];
-        let displayedAssetsMemory = [];
+        let displayedAssetsMemory = []; 
+        let currentForcedGridDensity = null; 
+        const ITEMS_PER_PAGE = 12;
         let currentPaginationPage = 1;
-        const memoryBatchLimitSize = 12;
-
-        let activeFilterSearchQuery = "";
         let isInfiniteScrollLoadingActive = false;
         let isDatabaseCompletelyExhausted = false;
-        let activeSelectedAssetContext = null;
+        let activeFilterSearchQuery = "";
+        let currentActiveIndexInLightbox = -1;
 
-        // FETCH INITIAL STREAMS
-        async function initializeApplicationDataEngine() {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('wallpapers')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+        function triggerNotificationToast(msg) {
+            const node = document.getElementById('appGlobalToast');
+            document.getElementById('toastMessageText').innerText = msg;
+            node.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => node.classList.add('opacity-0', 'translate-y-4'), 3000);
+        }
 
-                if(error) throw error;
+        function openSlidePanelAnimationLayer(id) {
+            closeSlidePanelAnimationLayer();
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active-slide');
+        }
 
-                allAssetsDatabaseMemory = data || [];
-                currentPaginationPage = 1;
-                isDatabaseCompletelyExhausted = false;
+        function closeSlidePanelAnimationLayer() {
+            document.querySelectorAll('.slide-panel-node').forEach(panel => panel.classList.remove('active-slide'));
+        }
 
-                displayedAssetsMemory = getPagedBatchFromMemory(allAssetsDatabaseMemory, currentPaginationPage);
-                renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+        function updateGridDensityLayout(columns) {
+            currentForcedGridDensity = columns;
+            applyDynamicColumnsStyle(columns);
+        }
 
-                if (displayedAssetsMemory.length >= allAssetsDatabaseMemory.length) isDatabaseCompletelyExhausted = true;
-            } catch(e) {
-                console.error(e);
-                triggerNotificationToast("Failed to sync cloud asset layers.");
+        function applyDynamicColumnsStyle(cols) {
+            document.querySelectorAll('.pinterest-grid').forEach(g => { g.style.columnCount = cols; });
+        }
+
+        function navigateToAppSection(id) {
+            closeSlidePanelAnimationLayer();
+            closeUpdatesNotificationDrawer();
+            document.querySelectorAll('.app-view-block').forEach(v => v.classList.add('hidden'));
+            const targetSection = document.getElementById(id + 'Section');
+            if(targetSection) targetSection.classList.remove('hidden');
+            if(currentForcedGridDensity) applyDynamicColumnsStyle(currentForcedGridDensity);
+            
+            if(id === 'explore') {
+                renderGrid(allAssetsDatabaseMemory.slice(0, 8), 'exploreMasonryContainerGrid', false);
             }
         }
 
-        function getPagedBatchFromMemory(sourceArray, pageIndex) {
-            const indexStart = (pageIndex - 1) * memoryBatchLimitSize;
-            return sourceArray.slice(indexStart, indexStart + memoryBatchLimitSize);
+        function forceResetToHomeGrid() { navigateToAppSection('dashboard'); }
+        function openLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full'); }
+        function closeLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full'); }
+
+        function openUpdatesNotificationDrawer() {
+            closeLeftSliderUploadEngine();
+            document.getElementById('updatesNotificationDrawerPanel').classList.remove('-translate-x-full');
+            document.getElementById('notificationBadge').classList.add('hidden');
+            populateUpdatesNotificationPanelItems();
         }
 
-        // GRID GENERATOR PIPELINE
-        function renderGrid(dataset, containerId, appendMode = false) {
-            const container = document.getElementById(containerId);
-            if(!container) return;
+        function closeUpdatesNotificationDrawer() {
+            document.getElementById('updatesNotificationDrawerPanel').classList.add('-translate-x-full');
+        }
 
-            if(!appendMode) container.innerHTML = "";
-
-            if(dataset.length === 0 && !appendMode) {
-                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono">// END OF STREAM / MATRIX VACANT //</div>`;
-                return;
-            }
-
-            dataset.forEach(item => {
-                const itemNode = document.createElement('div');
-                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-2xl cursor-pointer border border-zinc-900 hover:border-zinc-800 transition duration-300 shadow-sm hover:shadow-xl";
-                
-                itemNode.onclick = () => openGlobalAssetDetailModal(item);
-
-                itemNode.innerHTML = `
-                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition duration-300" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
-                        <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Matrix'}</p>
-                    </div>
-                `;
-                container.appendChild(itemNode);
+        // DEEP INTERACTIVE SLIDER MODE FOR LIGHTBOX VIEW (ARROW NAVIGATION + RELATED TILES)
+        function openPremiumLightbox(id) {
+            currentActiveIndexInLightbox = allAssetsDatabaseMemory.findIndex(w => w.id == id);
+            if (currentActiveIndexInLightbox === -1) return;
+            
+            const item = allAssetsDatabaseMemory[currentActiveIndexInLightbox];
+            document.getElementById('lightboxImage').src = item.image_url;
+            document.getElementById('lightboxTitle').innerText = item.title || "Untitled Asset";
+            document.getElementById('premiumLightboxModal').classList.remove('hidden');
+            
+            // Build Dynamic Related Horizon Loop Nodes
+            const relatedContainer = document.getElementById('lightboxRelatedHorizontalGrid');
+            relatedContainer.innerHTML = "";
+            const relatedSubset = allAssetsDatabaseMemory.filter(w => w.id != item.id).slice(0, 8);
+            
+            relatedSubset.forEach(rel => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "min-w-[110px] w-[110px] h-[140px] rounded-xl overflow-hidden cursor-pointer border border-slate-800 hover:border-amber-500 transition-all duration-300 flex-shrink-0";
+                itemDiv.onclick = () => { openPremiumLightbox(rel.id); };
+                itemDiv.innerHTML = `<img src="${rel.image_url}" class="w-full h-full object-cover">`;
+                relatedContainer.appendChild(itemDiv);
             });
         }
 
-        // OPEN ADVANCED PINTEREST DETAIL OVERLAY WINDOW MODAL
-        function openGlobalAssetDetailModal(asset) {
-            activeSelectedAssetContext = asset;
-            const modal = document.getElementById('globalAssetDetailModal');
+        function navigateLightboxAsset(direction, event) {
+            if(event) event.stopPropagation();
+            if(allAssetsDatabaseMemory.length === 0) return;
+            currentActiveIndexInLightbox += direction;
+            if(currentActiveIndexInLightbox < 0) currentActiveIndexInLightbox = allAssetsDatabaseMemory.length - 1;
+            if(currentActiveIndexInLightbox >= allAssetsDatabaseMemory.length) currentActiveIndexInLightbox = 0;
             
-            // Inject Primary Core Frame Metrics
-            document.getElementById('modalHeroElementImage').src = asset.image_url;
-            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Frame';
-            document.getElementById('modalAssetSystemIdNode').innerText = `ID: OBJ_${asset.id.toString().substring(0,10)}`;
+            openPremiumLightbox(allAssetsDatabaseMemory[currentActiveIndexInLightbox].id);
+        }
 
-            // Assign Event Pipelines
-            document.getElementById('modalDownloadIconBtn').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
-            document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
+        function closePremiumLightbox() {
+            document.getElementById('premiumLightboxModal').classList.add('hidden');
+        }
+
+        // SMART SEARCH LINKING CONTROLLER (URL PARAMS MANAGEMENT SYSTEM)
+        function executeLiveSearchQuery(val) {
+            activeFilterSearchQuery = val.toLowerCase();
+            document.getElementById('appSearchEngineInput').value = val;
+            document.getElementById('exploreSearchEngineInput').value = val;
+
+            // Push state dynamically into URL parameter context without structural reloads
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + (val ? `?search=${encodeURIComponent(val)}` : '');
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            currentPaginationPage = 1;
+            isDatabaseCompletelyExhausted = false;
+
+            let filtered = allAssetsDatabaseMemory.filter(item => !activeFilterSearchQuery || (item.title && item.title.toLowerCase().includes(activeFilterSearchQuery)));
+            displayedAssetsMemory = filtered.slice(0, ITEMS_PER_PAGE);
             
-            // Dropdown Click Handlers Link setup
-            document.getElementById('dropdownCopyLinkAction').onclick = () => {
-                navigator.clipboard.writeText(asset.image_url);
-                triggerNotificationToast("Asset address copied to clipboard network!");
-                hideSettingsDropdownMenuNode();
-            };
-            document.getElementById('dropdownDeleteAction').onclick = () => executeAssetCloudDeletionPipeline(asset.id);
+            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+            if(!document.getElementById('exploreSection').classList.contains('hidden')) {
+                renderGrid(filtered.slice(0, 10), 'exploreMasonryContainerGrid', false);
+            }
 
-            // Fetch Related Contextual Suggestions Block
-            const balanceData = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
-            const recommendationSlice = balanceData.sort(() => 0.5 - Math.random()).slice(0, 10);
+            if (displayedAssetsMemory.length >= filtered.length) isDatabaseCompletelyExhausted = true;
+        }
+
+        async function initializeApplicationDataEngine() {
+            const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
+            allAssetsDatabaseMemory = data || [];
+
+            // Read explicit params setup upon index payload initialization 
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('search');
+            if(queryParam) {
+                activeFilterSearchQuery = queryParam.toLowerCase();
+                document.getElementById('appSearchEngineInput').value = queryParam;
+                document.getElementById('exploreSearchEngineInput').value = queryParam;
+            }
+
+            currentPaginationPage = 1;
+            isDatabaseCompletelyExhausted = false;
             
-            document.getElementById('suggestionsCountNode').innerText = `${recommendationSlice.length} Assets Core Identified`;
-            renderGrid(recommendationSlice, 'modalSuggestionsMasonryGrid', false);
-
-            // Open Visual Modal Frame Layer Node & Lock main body background scrolling action
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            hideSettingsDropdownMenuNode();
-
-            // Auto Scroll back to top inside modal layout
-            modal.scrollTop = 0;
-        }
-
-        function closeGlobalAssetDetailModal() {
-            document.getElementById('globalAssetDetailModal').classList.add('hidden');
-            document.body.style.overflow = ''; // Unlock background scroll activity
-            activeSelectedAssetContext = null;
-        }
-
-        // SETTINGS DROPDOWN COMPONENT LAYER CONTROLS
-        function toggleSettingsDropdownNode(e) {
-            e.stopPropagation();
-            const box = document.getElementById('settingsDropdownMenuBox');
-            box.classList.toggle('hidden');
-        }
-
-        function hideSettingsDropdownMenuNode() {
-            const box = document.getElementById('settingsDropdownMenuBox');
-            if(box) box.classList.add('hidden');
-        }
-
-        // CONNECTIVE CLOUD DELETION CONTROLLER
-        async function executeAssetCloudDeletionPipeline(assetId) {
-            if(!confirm("Are you certain you wish to purge this asset entity row permanently from the database core?")) return;
-            try {
-                const { error } = await supabaseClient.from('wallpapers').delete().eq('id', assetId);
-                if(error) throw error;
-
-                triggerNotificationToast("Asset Row Expunged successfully!");
-                closeGlobalAssetDetailModal();
-                await initializeApplicationDataEngine(); // Refresh background layer state
-            } catch(e) {
-                console.error(e);
-                alert("Operation Refused: Ensure active Anon system permissions allow structural DELETE mutations.");
+            let activeSource = allAssetsDatabaseMemory;
+            if (activeFilterSearchQuery) {
+                activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
             }
+
+            displayedAssetsMemory = activeSource.slice(0, ITEMS_PER_PAGE);
+            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+
+            if (displayedAssetsMemory.length >= activeSource.length) isDatabaseCompletelyExhausted = true;
+
+            const w = window.innerWidth;
+            let autoCols = w >= 1280 ? 5 : (w >= 1024 ? 4 : (w >= 640 ? 3 : 2));
+            applyDynamicColumnsStyle(autoCols);
         }
 
-        // DOWNLOAD INTERACTION FILE PIPELINE
-        async function downloadTargetSystemFile(url, filename) {
-            try {
-                triggerNotificationToast("Pulling network file stream down...");
-                const res = await fetch(url);
-                const blob = await res.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = `${filename || 'LUSSO'}_${Date.now()}.jpg`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(blobUrl);
-                triggerNotificationToast("Download Complete!");
-            } catch(e) {
-                window.open(url, '_blank');
-            }
-        }
-
-        // VAULT LOCALSTORAGE UTILITIES
-        function cacheAssetIntoLocalBoard(asset) {
-            let currentVault = getSavedBoardsStorageArray();
-            if(currentVault.some(item => item.id === asset.id)) {
-                return triggerNotificationToast("Object context already locked inside vault memory.");
-            }
-            currentVault.push(asset);
-            localStorage.setItem('lusso_guest_board', JSON.stringify(currentVault));
-            triggerNotificationToast("Linked into Offline Vault Caches!");
-        }
-
-        function navigateToAppSection(sectionId) {
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('exploreSection').classList.add('hidden');
-            document.getElementById('yourBoardsSection').classList.add('hidden');
-            document.getElementById('topSearchBarContainer').classList.add('hidden');
-            document.getElementById('exploreSearchBarContainer').classList.add('hidden');
-
-            if(sectionId === 'dashboard') {
-                document.getElementById('dashboardSection').classList.remove('hidden');
-                document.getElementById('topSearchBarContainer').classList.remove('hidden');
-            } else if (sectionId === 'explore') {
-                document.getElementById('exploreSection').classList.remove('hidden');
-                document.getElementById('exploreSearchBarContainer').classList.remove('hidden');
-                renderGrid(allAssetsDatabaseMemory.slice(0, 10), 'exploreMasonryContainerGrid', false);
-            } else if (sectionId === 'yourBoards') {
-                document.getElementById('yourBoardsSection').classList.remove('hidden');
-            }
-        }
-
-        // INFINITE SCROLL SYSTEM
         function handleWindowInfiniteScrollTrigger() {
             const dashboardSection = document.getElementById('dashboardSection');
             if (dashboardSection.classList.contains('hidden')) return;
@@ -415,76 +392,70 @@
 
             const scrollNode = document.getElementById('mainContentScrollNode');
             if ((scrollNode.scrollTop + scrollNode.clientHeight) >= (scrollNode.scrollHeight - 150)) {
-                executeNextBatchPipelineFetch();
+                isInfiniteScrollLoadingActive = true;
+                document.getElementById('infiniteScrollLoadStatusIndicator').classList.remove('hidden');
+
+                setTimeout(() => {
+                    currentPaginationPage++;
+                    let activeSource = allAssetsDatabaseMemory;
+                    if (activeFilterSearchQuery) {
+                        activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
+                    }
+
+                    const start = (currentPaginationPage - 1) * ITEMS_PER_PAGE;
+                    const nextBatch = activeSource.slice(start, start + ITEMS_PER_PAGE);
+                    
+                    if (nextBatch.length > 0) {
+                        displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch);
+                        renderGrid(nextBatch, 'pinterestMainMasonryContainer', true);
+                    }
+
+                    if (displayedAssetsMemory.length >= activeSource.length || nextBatch.length === 0) isDatabaseCompletelyExhausted = true;
+                    isInfiniteScrollLoadingActive = false;
+                    document.getElementById('infiniteScrollLoadStatusIndicator').classList.add('hidden');
+                }, 600);
             }
         }
 
-        function executeNextBatchPipelineFetch() {
-            isInfiniteScrollLoadingActive = true;
-            const indicator = document.getElementById('infiniteScrollLoadStatusIndicator');
-            if (indicator) indicator.classList.remove('hidden');
-
-            setTimeout(() => {
-                currentPaginationPage++;
-                let activeSource = allAssetsDatabaseMemory;
-                if (activeFilterSearchQuery) {
-                    activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
-                }
-
-                const nextBatch = getPagedBatchFromMemory(activeSource, currentPaginationPage);
-                if (nextBatch.length > 0) {
-                    displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch);
-                    renderGrid(nextBatch, 'pinterestMainMasonryContainer', true);
-                }
-
-                if (displayedAssetsMemory.length >= activeSource.length || nextBatch.length === 0) isDatabaseCompletelyExhausted = true;
-
-                isInfiniteScrollLoadingActive = false;
-                if (indicator) indicator.classList.add('hidden');
-            }, 800);
+        function renderGrid(list, containerId, appendMode = false) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            if (!appendMode) container.innerHTML = "";
+            
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "pinterest-card group cursor-pointer";
+                card.innerHTML = `
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-[#0b0f19] border border-slate-800/40">
+                        <div class="skeleton-shimmer-node w-full h-64 rounded-2xl"></div>
+                        <img src="${item.image_url}" 
+                             onload="this.previousElementSibling.remove(); this.classList.remove('opacity-0');"
+                             onerror="this.src='data:image/svg+xml;utf8,<rect width=\'100%\' height=\'100%\' fill=\'%23111827\'/>'; this.previousElementSibling.remove();"
+                             onclick="openPremiumLightbox('${item.id}')" 
+                             class="w-full h-auto block opacity-0 hover:scale-105 transition-all duration-500 rounded-2xl">
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function executeLiveSearchQuery() {
-            activeFilterSearchQuery = document.getElementById('appSearchEngineInput').value.toLowerCase();
-            currentPaginationPage = 1;
-            isDatabaseCompletelyExhausted = false;
-
-            let filtered = allAssetsDatabaseMemory.filter(item => !activeFilterSearchQuery || (item.title && item.title.toLowerCase().includes(activeFilterSearchQuery)));
-            displayedAssetsMemory = getPagedBatchFromMemory(filtered, currentPaginationPage);
-            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
-
-            if (displayedAssetsMemory.length >= filtered.length) isDatabaseCompletelyExhausted = true;
-        }
-
-        function executeExploreGridLocalSearch() {
-            const query = document.getElementById('exploreSearchEngineInput').value.toLowerCase();
-            let matches = allAssetsDatabaseMemory.filter(item => !query || (item.title && item.title.toLowerCase().includes(query)));
-            renderGrid(matches.slice(0, 10), 'exploreMasonryContainerGrid', false);
-        }
-
-        function getSavedBoardsStorageArray() {
-            const data = localStorage.getItem('lusso_guest_board');
-            return data ? JSON.parse(data) : [];
-        }
-
-        function openYourBoardsPanelSection() {
-            navigateToAppSection('yourBoards');
-            const items = getSavedBoardsStorageArray();
-            renderGrid(items, 'yourSavedPinsMasonryGrid', false);
-        }
-
-        function clearAllSavedBoardsStorage() {
-            localStorage.removeItem('lusso_guest_board');
-            triggerNotificationToast("Vault Cleared!");
-            openYourBoardsPanelSection();
-        }
-
-        function openLeftSliderUploadEngine() {
-            document.getElementById('leftSliderUploadEngine').classList.remove('translate-x-[-100%]');
-        }
-
-        function closeLeftSliderUploadEngine() {
-            document.getElementById('leftSliderUploadEngine').classList.add('translate-x-[-100%]');
+        function populateUpdatesNotificationPanelItems() {
+            const container = document.getElementById('updatesNotificationsContainerList');
+            if(!container || allAssetsDatabaseMemory.length === 0) return;
+            container.innerHTML = "";
+            allAssetsDatabaseMemory.slice(0, 5).forEach(asset => {
+                const row = document.createElement('div');
+                row.className = "flex items-center gap-3 p-2 rounded-xl hover:bg-slate-900/60 cursor-pointer transition";
+                row.onclick = () => openPremiumLightbox(asset.id);
+                row.innerHTML = `
+                    <img src="${asset.image_url}" class="w-10 h-12 rounded-lg object-cover border border-slate-800">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-semibold text-gray-200 truncate">${asset.title || 'Premium Wallpaper'}</h4>
+                        <p class="text-[10px] text-slate-400">Stream synchronized.</p>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
         }
 
         let selectedFile = null;
@@ -500,48 +471,25 @@
             e.preventDefault();
             const btn = document.getElementById('formSubmitBtn');
             const title = document.getElementById('formUploadTitle').value;
-            if(!selectedFile) return alert("Select an image first!");
+            if(!selectedFile) return;
 
-            btn.disabled = true;
-            btn.innerText = "STREAMING NODE...";
-
+            btn.disabled = true; btn.innerText = "STREAMING NODE...";
             try {
                 const fileName = `${Date.now()}_${selectedFile.name.replace(/\s+/g, '_')}`;
-                const { data: uploadData, error: stErr } = await supabaseClient.storage
-                    .from('wallpapers')
-                    .upload(fileName, selectedFile, { cacheControl: '3600', upsert: true });
-                
-                if(stErr) throw stErr;
+                await supabaseClient.storage.from('wallpapers').upload(fileName, selectedFile, { cacheControl: '3600', upsert: true });
                 const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/wallpapers/${fileName}`;
-
-                const { error: dbErr } = await supabaseClient
-                    .from('wallpapers')
-                    .insert([{ title: title, image_url: publicUrl }]);
+                await supabaseClient.from('wallpapers').insert([{ title: title, image_url: publicUrl }]);
                 
-                if(dbErr) throw dbErr;
-
                 triggerNotificationToast("Asset Stream Dispatched!");
-                document.getElementById('notificationBadge').classList.remove('hidden');
                 closeLeftSliderUploadEngine();
                 await initializeApplicationDataEngine();
-            } catch (err) { 
-                console.error(err);
-                alert("Pipeline Connection Refused."); 
-            } finally { 
-                btn.disabled = false; 
-                btn.innerText = "PUBLISH ASSET"; 
-            }
+            } catch (err) { alert("Pipeline connection refused."); }
+            finally { btn.disabled = false; btn.innerText = "PUBLISH ASSET"; }
         }
 
-        function triggerNotificationToast(message) {
-            const toast = document.getElementById('globalNotificationToast');
-            document.getElementById('toastMessageNode').innerText = message;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
-        }
-
-        // Global Window Click to dismiss custom dropdown panel
-        window.onclick = () => hideSettingsDropdownMenuNode();
+        function getSavedBoardsStorageArray() { return localStorage.getItem('lusso_guest_board') ? JSON.parse(localStorage.getItem('lusso_guest_board')) : []; }
+        function openYourBoardsPanelSection() { navigateToAppSection('yourBoards'); renderGrid(getSavedBoardsStorageArray(), 'yourSavedPinsMasonryGrid', false); }
+        function clearAllSavedBoardsStorage() { localStorage.removeItem('lusso_guest_board'); openYourBoardsPanelSection(); }
 
         window.onload = () => initializeApplicationDataEngine();
     </script>
