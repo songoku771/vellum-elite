@@ -45,10 +45,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .pinterest-grid { column-gap: 20px; width: 100%; }
-        .pinterest-card { break-inside: avoid; margin-bottom: 20px; width: 100%; display: block; position: relative; }
+        .pinterest-grid { column-gap: 16px; width: 100%; }
+        .pinterest-card { break-inside: avoid; margin-bottom: 16px; width: 100%; display: block; position: relative; }
         #mainContentScrollNode::-webkit-scrollbar { width: 6px; }
         #mainContentScrollNode::-webkit-scrollbar-thumb { background: rgba(223, 183, 108, 0.2); border-radius: 10px; }
+        
+        /* Smooth Custom Scrollbar for Lightbox Content */
+        .custom-lightbox-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-lightbox-scroll::-webkit-scrollbar-thumb { background: #dfb76c; border-radius: 10px; }
+
         .slide-panel-node {
             position: fixed; top: 0; left: 80px; width: calc(100% - 80px); height: 100vh;
             background-color: #05070c; z-index: 40; transform: translateX(100%);
@@ -67,53 +72,48 @@
 </head>
 <body>
 
-    <!-- Global Toast Alert -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- ULTIMATE DEEP SLIDER MODAL (With Next/Prev Controls & Related Wallpapers Slider) -->
-    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[150] p-4" onclick="closePremiumLightbox()">
-        <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-2xl transition z-50" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[150] p-4 md:p-8" onclick="closePremiumLightbox()">
+        <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-3xl transition z-[160]" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
         
-        <!-- Left Nav Control -->
-        <button onclick="navigateLightboxAsset(-1; event)" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/60 border border-slate-800 rounded-full flex items-center justify-center text-amber-400 text-xl hover:bg-amber-500 hover:text-black transition z-50"><i class="fa-solid fa-chevron-left"></i></button>
-        
-        <!-- Right Nav Control -->
-        <button onclick="navigateLightboxAsset(1; event)" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/60 border border-slate-800 rounded-full flex items-center justify-center text-amber-400 text-xl hover:bg-amber-500 hover:text-black transition z-50"><i class="fa-solid fa-chevron-right"></i></button>
+        <button onclick="navigateLightboxAsset(-1, event)" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-left"></i></button>
+        <button onclick="navigateLightboxAsset(1, event)" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-right"></i></button>
 
-        <div class="max-w-5xl w-full max-h-[90vh] overflow-y-auto flex flex-col bg-[#020306] border border-slate-800/60 rounded-3xl shadow-2xl" onclick="event.stopPropagation()">
-            <div class="flex flex-col md:flex-row">
-                <!-- Wallpaper Render Window -->
-                <div class="w-full md:w-3/5 bg-black flex items-center justify-center p-2 relative min-h-[40vh] md:min-h-[60vh]">
-                    <img id="lightboxImage" src="" class="max-w-full max-h-[55vh] object-contain rounded-xl">
+        <div class="max-w-4xl w-full h-[90vh] bg-[#0b0f19] border border-slate-800/80 rounded-3xl shadow-2xl overflow-y-auto custom-lightbox-scroll" onclick="event.stopPropagation()">
+            <div class="flex flex-col md:flex-row border-b border-slate-900">
+                <div class="w-full md:w-1/2 bg-black/40 flex items-center justify-center p-6 min-h-[45vh]">
+                    <img id="lightboxImage" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl shadow-lg">
                 </div>
-                <!-- Controls Frame -->
-                <div class="w-full md:w-2/5 p-6 flex flex-col justify-between bg-[#0b0f19]">
+                <div class="w-full md:w-1/2 p-8 flex flex-col justify-between bg-[#070a12]">
                     <div>
-                        <h2 id="lightboxTitle" class="text-xl font-bold text-gray-100 uppercase tracking-wide">Asset Title</h2>
-                        <p class="text-[11px] text-slate-400 mt-2">Verified secure cloud pipeline node injection.</p>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-bold text-amber-500 uppercase tracking-widest">Premium Node</span>
+                            <div class="flex gap-2">
+                                <button class="w-9 h-9 bg-slate-900 hover:bg-slate-800 text-white rounded-full flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
+                                <button onclick="saveFromLightbox()" class="px-5 py-2 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-full transition">Save</button>
+                            </div>
+                        </div>
+                        <h2 id="lightboxTitle" class="text-2xl font-bold text-white tracking-wide uppercase">Asset Title</h2>
+                        <p class="text-xs text-slate-400 mt-3 leading-relaxed">High fidelity ultra-premium environment resource allocation grid mapping verified pipeline output.</p>
                     </div>
-                    <div class="space-y-3 mt-6">
-                        <button onclick="downloadFromLightbox()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition"><i class="fa-solid fa-download"></i> Download Matrix</button>
-                        <button onclick="saveFromLightbox()" class="w-full py-3 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition"><i class="fa-solid fa-folder-heart"></i> Save to Boards</button>
+                    <div class="mt-8">
+                        <button onclick="downloadFromLightbox()" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-amber-500/10"><i class="fa-solid fa-download"></i> Download Matrix Asset</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Deep Scroll Core Layout (More Like This Component) -->
-            <div class="p-6 border-t border-slate-900 bg-[#05070c]">
-                <h3 class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-4"><i class="fa-solid fa-layer-group mr-2"></i>Related Asset Matrix</h3>
-                <div id="lightboxRelatedHorizontalGrid" class="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-500/20">
-                    <!-- Related nodes dynamically injected here -->
-                </div>
+            <div class="p-8 bg-[#05070c]">
+                <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 text-center">More Like This</h3>
+                <div id="lightboxRelatedGridStream" class="pinterest-grid">
+                    </div>
             </div>
         </div>
     </div>
 
-    <!-- UI ARCHITECTURE WRAPPER -->
     <div class="flex h-screen w-full">
-        <!-- SIDEBAR PLATFORM -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#020306] border-r border-slate-900/60 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-10 h-10 rounded-full border border-amber-500/30 flex items-center justify-center cursor-pointer hover:border-amber-400/80 transition">
@@ -122,12 +122,8 @@
                 <div class="flex flex-col items-center gap-3 w-full">
                     <button onclick="forceResetToHomeGrid()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-amber-500/90 hover:bg-slate-900/40 gap-0.5 transition"><i class="fa-solid fa-house text-sm"></i><span class="text-[9px]">Home</span></button>
                     <button onclick="openLeftSliderUploadEngine()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 gap-0.5 transition"><i class="fa-solid fa-square-plus text-sm"></i><span class="text-[9px]">Create</span></button>
-                    
-                    <!-- Core Center Navigation Explore Node -->
                     <button onclick="navigateToAppSection('explore')" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-cyan-400 gap-0.5 transition"><i class="fa-solid fa-compass text-sm"></i><span class="text-[9px]">Explore</span></button>
-                    
                     <button onclick="openYourBoardsPanelSection()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-rose-400 gap-0.5 transition"><i class="fa-solid fa-folder-heart text-sm"></i><span class="text-[9px]">Boards</span></button>
-                    
                     <button onclick="openUpdatesNotificationDrawer()" class="sidebar-btn w-14 h-14 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 gap-0.5 transition relative">
                         <i class="fa-solid fa-bell text-sm"></i><span class="text-[9px]">Updates</span>
                         <span id="notificationBadge" class="hidden absolute top-2 right-3 w-2 h-2 bg-amber-500 rounded-full"></span>
@@ -137,7 +133,6 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="sidebar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- NOTIFICATION UPDATES SYSTEM -->
         <div id="updatesNotificationDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#020306] border-r border-slate-900/80 z-40 transform -translate-x-full transition-transform duration-300 p-5 overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
                 <span class="font-bold text-sm text-gray-200 tracking-wide">Updates</span>
@@ -146,7 +141,6 @@
             <div id="updatesNotificationsContainerList" class="space-y-3"></div>
         </div>
 
-        <!-- IMAGE CREATION PANEL -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#020306] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400 uppercase tracking-wider">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -160,7 +154,6 @@
             </form>
         </div>
 
-        <!-- MAIN DASHBOARD SCROLL GRID FRAME -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#05070c]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/40">
                 <div onclick="forceResetToHomeGrid()" class="luxury-brand-title text-2xl md:text-3xl cursor-pointer">Lusso</div>
@@ -171,18 +164,14 @@
                 <button class="px-5 py-2 border border-amber-500/30 text-amber-400/90 font-bold text-xs rounded-full tracking-wider">ACCOUNT NODE</button>
             </header>
 
-            <!-- WALLPAPER STREAM -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
-                <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8">
-                    <div class="pinterest-grid">
-                        <div class="pinterest-card h-64 rounded-2xl skeleton-shimmer-node"></div>
-                        <div class="pinterest-card h-80 rounded-2xl skeleton-shimmer-node"></div>
-                    </div>
+                <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8" style="column-count: 4;">
+                    <div class="pinterest-card h-64 rounded-2xl skeleton-shimmer-node"></div>
+                    <div class="pinterest-card h-80 rounded-2xl skeleton-shimmer-node"></div>
                 </div>
             </div>
 
-            <!-- DEDICATED EXPLORE COMPONENT -->
             <div id="exploreSection" class="hidden w-full app-view-block p-6">
                 <div class="max-w-4xl mx-auto mb-8 bg-gradient-to-r from-amber-500/10 to-transparent p-6 rounded-3xl border border-amber-500/10">
                     <h2 class="text-xl text-amber-400 font-bold mb-2 uppercase tracking-wide">Explore Premium Matrices</h2>
@@ -194,7 +183,6 @@
                 <div id="exploreMasonryContainerGrid" class="pinterest-grid"></div>
             </div>
 
-            <!-- SAVED BOARDS MODULE -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <h1 class="text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Vault Boards</h1>
@@ -204,7 +192,6 @@
             </div>
         </div>
 
-        <!-- SETTINGS WINDOW LAYER -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
@@ -292,7 +279,7 @@
             document.getElementById('updatesNotificationDrawerPanel').classList.add('-translate-x-full');
         }
 
-        // DEEP INTERACTIVE SLIDER MODE FOR LIGHTBOX VIEW (ARROW NAVIGATION + RELATED TILES)
+        // PINTEREST STYLE MODAL DISPLAY METHOD
         function openPremiumLightbox(id) {
             currentActiveIndexInLightbox = allAssetsDatabaseMemory.findIndex(w => w.id == id);
             if (currentActiveIndexInLightbox === -1) return;
@@ -302,18 +289,22 @@
             document.getElementById('lightboxTitle').innerText = item.title || "Untitled Asset";
             document.getElementById('premiumLightboxModal').classList.remove('hidden');
             
-            // Build Dynamic Related Horizon Loop Nodes
-            const relatedContainer = document.getElementById('lightboxRelatedHorizontalGrid');
-            relatedContainer.innerHTML = "";
-            const relatedSubset = allAssetsDatabaseMemory.filter(w => w.id != item.id).slice(0, 8);
+            // Generate clean masonry flow streams underneath recommendations list
+            const innerStreamGrid = document.getElementById('lightboxRelatedGridStream');
+            innerStreamGrid.innerHTML = "";
+            const relatedElements = allAssetsDatabaseMemory.filter(w => w.id != item.id).slice(0, 8);
             
-            relatedSubset.forEach(rel => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "min-w-[110px] w-[110px] h-[140px] rounded-xl overflow-hidden cursor-pointer border border-slate-800 hover:border-amber-500 transition-all duration-300 flex-shrink-0";
-                itemDiv.onclick = () => { openPremiumLightbox(rel.id); };
-                itemDiv.innerHTML = `<img src="${rel.image_url}" class="w-full h-full object-cover">`;
-                relatedContainer.appendChild(itemDiv);
+            relatedElements.forEach(rel => {
+                const card = document.createElement('div');
+                card.className = "pinterest-card group cursor-pointer";
+                card.innerHTML = `
+                    <div class="relative w-full overflow-hidden rounded-2xl bg-[#141a29] border border-slate-800/40">
+                        <img src="${rel.image_url}" onclick="openPremiumLightbox('${rel.id}')" class="w-full h-auto block hover:scale-105 transition-all duration-500 rounded-2xl">
+                    </div>
+                `;
+                innerStreamGrid.appendChild(card);
             });
+            innerStreamGrid.style.columnCount = 3;
         }
 
         function navigateLightboxAsset(direction, event) {
@@ -330,13 +321,51 @@
             document.getElementById('premiumLightboxModal').classList.add('hidden');
         }
 
-        // SMART SEARCH LINKING CONTROLLER (URL PARAMS MANAGEMENT SYSTEM)
+        // Action Handlers from Cards / Buttons
+        function handleInlineActionSave(id, event) {
+            if(event) event.stopPropagation();
+            const asset = allAssetsDatabaseMemory.find(w => w.id == id);
+            if(!asset) return;
+            let currentPins = getSavedBoardsStorageArray();
+            if(!currentPins.some(p => p.id == id)) {
+                currentPins.push(asset);
+                localStorage.setItem('lusso_guest_board', JSON.stringify(currentPins));
+                triggerNotificationToast("Saved to Vault Boards!");
+            } else {
+                triggerNotificationToast("Already in Vault!");
+            }
+        }
+
+        function handleInlineActionDownload(url, event) {
+            if(event) event.stopPropagation();
+            if(!url) return;
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = "_blank";
+            link.download = "LUSSO_Premium_Matrix.jpg";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            triggerNotificationToast("Download Pipe Stream Initialized!");
+        }
+
+        function saveFromLightbox() {
+            if(currentActiveIndexInLightbox !== -1) {
+                handleInlineActionSave(allAssetsDatabaseMemory[currentActiveIndexInLightbox].id, null);
+            }
+        }
+
+        function downloadFromLightbox() {
+            if(currentActiveIndexInLightbox !== -1) {
+                handleInlineActionDownload(allAssetsDatabaseMemory[currentActiveIndexInLightbox].image_url, null);
+            }
+        }
+
         function executeLiveSearchQuery(val) {
             activeFilterSearchQuery = val.toLowerCase();
             document.getElementById('appSearchEngineInput').value = val;
             document.getElementById('exploreSearchEngineInput').value = val;
 
-            // Push state dynamically into URL parameter context without structural reloads
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + (val ? `?search=${encodeURIComponent(val)}` : '');
             window.history.pushState({ path: newUrl }, '', newUrl);
 
@@ -358,7 +387,6 @@
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
 
-            // Read explicit params setup upon index payload initialization 
             const urlParams = new URLSearchParams(window.location.search);
             const queryParam = urlParams.get('search');
             if(queryParam) {
@@ -417,6 +445,7 @@
             }
         }
 
+        // RENDERS CARDS COMPREHENSIVELY WITH ACTIONS DIRECTLY ACCESSIBLE ON OVERLAY
         function renderGrid(list, containerId, appendMode = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -424,15 +453,28 @@
             
             list.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "pinterest-card group cursor-pointer";
+                card.className = "pinterest-card group cursor-pointer relative overflow-hidden rounded-2xl border border-slate-800/40";
                 card.innerHTML = `
-                    <div class="relative w-full overflow-hidden rounded-2xl bg-[#0b0f19] border border-slate-800/40">
-                        <div class="skeleton-shimmer-node w-full h-64 rounded-2xl"></div>
+                    <div class="relative w-full overflow-hidden bg-[#0b0f19]">
+                        <div class="skeleton-shimmer-node w-full h-64 rounded-2xl absolute inset-0"></div>
                         <img src="${item.image_url}" 
-                             onload="this.previousElementSibling.remove(); this.classList.remove('opacity-0');"
-                             onerror="this.src='data:image/svg+xml;utf8,<rect width=\'100%\' height=\'100%\' fill=\'%23111827\'/>'; this.previousElementSibling.remove();"
+                             onload="this.previousElementSibling ? this.previousElementSibling.remove() : null; this.classList.remove('opacity-0');"
+                             onerror="this.src='data:image/svg+xml;utf8,<rect width=\'100%\' height=\'100%\' fill=\'%23111827\'/>';"
                              onclick="openPremiumLightbox('${item.id}')" 
-                             class="w-full h-auto block opacity-0 hover:scale-105 transition-all duration-500 rounded-2xl">
+                             class="w-full h-auto block opacity-0 hover:scale-105 transition-all duration-500 rounded-2xl relative z-10">
+                        
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4 pointer-events-none">
+                            <div class="flex justify-end pointer-events-auto">
+                                <button onclick="handleInlineActionSave('${item.id}', event)" class="bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs px-4 py-2 rounded-full shadow-md transition">Save</button>
+                            </div>
+                            <div class="flex justify-between items-center pointer-events-auto">
+                                <span class="text-xs font-semibold text-white truncate max-w-[60%] bg-black/60 px-2 py-1 rounded">${item.title || 'Matrix'}</span>
+                                <div class="flex gap-1">
+                                    <button onclick="handleInlineActionDownload('${item.image_url}', event)" class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-arrow-down text-xs"></i></button>
+                                    <button class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-ellipsis text-xs"></i></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
