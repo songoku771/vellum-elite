@@ -25,7 +25,6 @@
             height: 100vh;
             overflow: hidden;
         }
-        /* Fixed scroll container issue */
         #mainContentScrollNode { height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
         .luxury-brand-title {
             font-family: 'Cinzel Decorative', serif;
@@ -58,40 +57,25 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto;
         }
         .slide-panel-node.active-slide { transform: translateX(0); }
-        
-        .skeleton-shimmer-node {
-            background: linear-gradient(90deg, #0b0f19 25%, #1e293b 50%, #0b0f19 75%);
-            background-size: 200% 100%; animation: lussoLoadingShimmer 1.5s infinite linear;
-        }
-        @keyframes lussoLoadingShimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Global Toast Alert -->
     <div id="appGlobalToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-neutral-900 text-xs font-bold px-6 py-3 rounded-full shadow-2xl z-[999] opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4">
         <span id="toastMessageText">Syncing...</span>
     </div>
 
-    <!-- PINTEREST-STYLE SCROLLABLE MODAL INTERFACE -->
     <div id="premiumLightboxModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[150] p-4 md:p-8" onclick="closePremiumLightbox()">
         <button class="absolute top-6 right-6 text-slate-400 hover:text-white text-3xl transition z-[160]" onclick="closePremiumLightbox()"><i class="fa-solid fa-xmark"></i></button>
         
-        <!-- Navigation Controls -->
         <button onclick="navigateLightboxAsset(-1, event)" class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-left"></i></button>
         <button onclick="navigateLightboxAsset(1, event)" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-neutral-900/80 border border-neutral-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-white hover:text-black transition z-[160]"><i class="fa-solid fa-chevron-right"></i></button>
 
-        <!-- Dynamic Deep Scroll Content Window -->
-        <div class="max-w-4xl w-full h-[90vh] bg-[#0b0f19] border border-slate-800/80 rounded-3xl shadow-2xl overflow-y-auto custom-lightbox-scroll" onclick="event.stopPropagation()">
+        <div id="modalScrollNode" class="max-w-4xl w-full h-[90vh] bg-[#0b0f19] border border-slate-800/80 rounded-3xl shadow-2xl overflow-y-auto custom-lightbox-scroll" onclick="event.stopPropagation()" onscroll="handleModalInfiniteScrollTrigger()">
             <div class="flex flex-col md:flex-row border-b border-slate-900">
-                <!-- Wallpaper Render Panel -->
                 <div class="w-full md:w-1/2 bg-black/40 flex items-center justify-center p-6 min-h-[45vh]">
                     <img id="lightboxImage" src="" class="max-w-full max-h-[60vh] object-contain rounded-2xl shadow-lg">
                 </div>
-                <!-- Action Controls Frame -->
                 <div class="w-full md:w-1/2 p-8 flex flex-col justify-between bg-[#070a12]">
                     <div>
                         <div class="flex justify-between items-center mb-6">
@@ -100,7 +84,6 @@
                                 <button onclick="toggleModalDropdown(event)" class="w-9 h-9 bg-slate-900 hover:bg-slate-800 text-white rounded-full flex items-center justify-center transition"><i class="fa-solid fa-ellipsis"></i></button>
                                 <button onclick="saveFromLightbox()" class="px-5 py-2 bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs rounded-full transition">Save</button>
                                 
-                                <!-- Modal Dropdown Menu (image_9df682.jpg style) -->
                                 <div id="modalActionDropdown" class="hidden absolute right-12 top-0 w-48 bg-[#0b0f19] border border-slate-800 rounded-xl shadow-2xl overflow-hidden z-50">
                                     <button onclick="triggerInlineActionSeeMoreFromModal()" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/60 transition flex items-center gap-2"><i class="fa-solid fa-eye text-amber-400"></i> See more like this</button>
                                     <button onclick="downloadFromLightbox()" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800/60 transition flex items-center gap-2"><i class="fa-solid fa-download text-green-400"></i> Download image</button>
@@ -117,17 +100,15 @@
                 </div>
             </div>
 
-            <!-- Deep Recommendation Stream Section -->
             <div class="p-8 bg-[#05070c]">
                 <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wider mb-6 text-center">More Like This</h3>
                 <div id="lightboxRelatedGridStream" class="pinterest-grid"></div>
+                <div id="modalInfiniteScrollIndicator" class="hidden w-full py-4 text-center text-xs text-amber-500">Loading deeper recommendations...</div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN INTERFACE LAYOUT -->
     <div class="flex h-screen w-full">
-        <!-- SIDEBAR PLATFORM (RESTORED ALL ICONS) -->
         <aside id="sidebarMainNode" class="w-20 flex flex-col items-center justify-between py-6 bg-[#020306] border-r border-slate-900/60 z-50">
             <div class="flex flex-col items-center gap-6 w-full">
                 <div onclick="forceResetToHomeGrid()" class="w-10 h-10 rounded-full border border-amber-500/30 flex items-center justify-center cursor-pointer hover:border-amber-400/80 transition">
@@ -147,8 +128,7 @@
             <button onclick="openSlidePanelAnimationLayer('settingsSection')" class="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-slate-500 hover:text-amber-500 gap-1 transition"><i class="fa-solid fa-gear text-sm"></i><span class="text-[9px]">Settings</span></button>
         </aside>
 
-        <!-- NOTIFICATION DRAWER -->
-        <div id="updatesNotificationDrawerPanel" class="fixed inset-y-0 Bash left-20 w-80 bg-[#020306] border-r border-slate-900/80 z-40 transform -translate-x-full transition-transform duration-300 p-5 overflow-y-auto">
+        <div id="updatesNotificationDrawerPanel" class="fixed inset-y-0 left-20 w-80 bg-[#020306] border-r border-slate-900/80 z-40 transform -translate-x-full transition-transform duration-300 p-5 overflow-y-auto">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
                 <span class="font-bold text-sm text-gray-200 tracking-wide">Updates</span>
                 <button onclick="closeUpdatesNotificationDrawer()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
@@ -156,7 +136,6 @@
             <div id="updatesNotificationsContainerList" class="space-y-3"></div>
         </div>
 
-        <!-- UPLOAD DRAWER -->
         <div id="premiumUploadSideDrawer" class="fixed inset-y-0 left-20 w-88 bg-[#020306] border-r border-slate-900 z-40 transform -translate-x-full transition-transform duration-300 p-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5"><span class="font-bold text-xs text-amber-400 uppercase tracking-wider">Upload Terminal</span><button onclick="closeLeftSliderUploadEngine()" class="text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button></div>
             <form onsubmit="handleLocalFormUploadSubmit(event)" class="space-y-4">
@@ -170,7 +149,6 @@
             </form>
         </div>
 
-        <!-- MAIN WINDOW VIEW SYSTEM -->
         <div id="mainContentScrollNode" class="flex-1 flex flex-col relative" onscroll="handleWindowInfiniteScrollTrigger()">
             <header id="mainHeaderNode" class="sticky top-0 z-30 px-8 py-4 bg-[#05070c]/90 backdrop-blur-md flex items-center justify-between gap-4 border-b border-slate-900/40">
                 <div onclick="forceResetToHomeGrid()" class="luxury-brand-title text-2xl md:text-3xl cursor-pointer">Lusso</div>
@@ -181,18 +159,15 @@
                 <button class="px-5 py-2 border border-amber-500/30 text-amber-400/90 font-bold text-xs rounded-full tracking-wider">ACCOUNT NODE</button>
             </header>
 
-            <!-- WALLPAPER DISPLAY STREAM -->
             <div id="dashboardSection" class="w-full app-view-block p-6">
                 <div id="pinterestMainMasonryContainer" class="pinterest-grid"></div>
                 <div id="infiniteScrollLoadStatusIndicator" class="hidden w-full py-8 text-center text-xs text-amber-500">Loading new dimensions...</div>
             </div>
 
-            <!-- EXPLORE BLOCK -->
             <div id="exploreSection" class="hidden w-full app-view-block p-6">
                 <div id="exploreMasonryContainerGrid" class="pinterest-grid"></div>
             </div>
 
-            <!-- VAULT BOARDS -->
             <div id="yourBoardsSection" class="hidden w-full app-view-block p-6">
                 <div class="border-b border-slate-800 pb-4 mb-8 flex items-center justify-between">
                     <h1 class="text-2xl text-rose-400 font-bold"><i class="fa-solid fa-folder-heart mr-2"></i>Vault Boards</h1>
@@ -202,7 +177,6 @@
             </div>
         </div>
 
-        <!-- SETTINGS CONFIG PANEL -->
         <div id="settingsSection" class="slide-panel-node p-6 md:p-12">
             <div class="max-w-5xl mx-auto relative">
                 <button onclick="closeSlidePanelAnimationLayer()" class="absolute top-0 right-0 bg-slate-900 border border-slate-800 w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
@@ -228,6 +202,9 @@
 
         let allAssetsDatabaseMemory = [];
         let displayedAssetsMemory = []; 
+        let modalDisplayedAssets = [];
+        let modalCurrentPage = 1;
+        let isModalLoading = false;
         let currentForcedGridDensity = null;
         const ITEMS_PER_PAGE = 12;
         let currentPaginationPage = 1;
@@ -249,18 +226,10 @@
             if(target) target.classList.add('active-slide');
         }
 
-        function closeSlidePanelAnimationLayer() {
-            document.querySelectorAll('.slide-panel-node').forEach(panel => panel.classList.remove('active-slide'));
-        }
-
-        function updateGridDensityLayout(columns) {
-            currentForcedGridDensity = columns;
-            applyDynamicColumnsStyle(columns);
-        }
-
-        function applyDynamicColumnsStyle(cols) {
-            document.querySelectorAll('.pinterest-grid').forEach(g => { g.style.columnCount = cols; });
-        }
+        /* Essential platform alignment commands */
+        function closeSlidePanelAnimationLayer() { document.querySelectorAll('.slide-panel-node').forEach(panel => panel.classList.remove('active-slide')); }
+        function updateGridDensityLayout(columns) { currentForcedGridDensity = columns; applyDynamicColumnsStyle(columns); }
+        function applyDynamicColumnsStyle(cols) { document.querySelectorAll('.pinterest-grid').forEach(g => { g.style.columnCount = cols; }); }
 
         function navigateToAppSection(id) {
             closeSlidePanelAnimationLayer();
@@ -271,23 +240,16 @@
             
             let currentCols = currentForcedGridDensity || (window.innerWidth >= 1280 ? 5 : (window.innerWidth >= 1024 ? 4 : 2));
             applyDynamicColumnsStyle(currentCols);
-            
             if(id === 'explore') renderGrid(allAssetsDatabaseMemory.slice(0, 8), 'exploreMasonryContainerGrid');
         }
 
         function forceResetToHomeGrid() { navigateToAppSection('dashboard'); }
         function openLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.remove('-translate-x-full'); }
         function closeLeftSliderUploadEngine() { document.getElementById('premiumUploadSideDrawer').classList.add('-translate-x-full'); }
-
-        function openUpdatesNotificationDrawer() {
-            closeLeftSliderUploadEngine();
-            document.getElementById('updatesNotificationDrawerPanel').classList.remove('-translate-x-full');
-            document.getElementById('notificationBadge').classList.add('hidden');
-            populateUpdatesNotificationPanelItems();
-        }
-
+        function openUpdatesNotificationDrawer() { closeLeftSliderUploadEngine(); document.getElementById('updatesNotificationDrawerPanel').classList.remove('-translate-x-full'); document.getElementById('notificationBadge').classList.add('hidden'); populateUpdatesNotificationPanelItems(); }
         function closeUpdatesNotificationDrawer() { document.getElementById('updatesNotificationDrawerPanel').classList.add('-translate-x-full'); }
 
+        // ENTER MODAL INTERFACE VIA WALLPAPER CLICK
         function openPremiumLightbox(id) {
             currentActiveIndexInLightbox = allAssetsDatabaseMemory.findIndex(w => w.id == id);
             if (currentActiveIndexInLightbox === -1) return;
@@ -298,17 +260,54 @@
             document.getElementById('premiumLightboxModal').classList.remove('hidden');
             document.getElementById('modalActionDropdown').classList.add('hidden');
             
+            // Set up Modal/Related Grid Infinite Stream parameters
+            modalCurrentPage = 1;
             const innerStreamGrid = document.getElementById('lightboxRelatedGridStream');
             innerStreamGrid.innerHTML = "";
-            const relatedElements = allAssetsDatabaseMemory.filter(w => w.id != item.id).slice(0, 6);
             
-            relatedElements.forEach(rel => {
+            const relatedSource = allAssetsDatabaseMemory.filter(w => w.id != item.id);
+            modalDisplayedAssets = relatedSource.slice(0, 6);
+            
+            renderRelatedModalGrid(modalDisplayedAssets);
+            innerStreamGrid.style.columnCount = 3;
+            document.getElementById('modalScrollNode').scrollTop = 0;
+        }
+
+        function renderRelatedModalGrid(list) {
+            const innerStreamGrid = document.getElementById('lightboxRelatedGridStream');
+            list.forEach(rel => {
                 const card = document.createElement('div');
                 card.className = "pinterest-card group cursor-pointer relative overflow-hidden rounded-2xl border border-slate-800/40";
-                card.innerHTML = `<img src="${rel.image_url}" onclick="openPremiumLightbox('${rel.id}')" class="w-full h-auto block rounded-2xl">`;
+                card.innerHTML = `<img src="${rel.image_url}" onclick="openPremiumLightbox('${rel.id}')" class="w-full h-auto block rounded-2xl hover:scale-102 transition duration-300">`;
                 innerStreamGrid.appendChild(card);
             });
-            innerStreamGrid.style.columnCount = 3;
+        }
+
+        // UNLIMITED SCROLL INSIDE PINTEREST MODAL SUGGESTIONS
+        function handleModalInfiniteScrollTrigger() {
+            if (isModalLoading || currentActiveIndexInLightbox === -1) return;
+            const modalScroll = document.getElementById('modalScrollNode');
+            
+            if ((modalScroll.scrollTop + modalScroll.clientHeight) >= (modalScroll.scrollHeight - 120)) {
+                isModalLoading = true;
+                document.getElementById('modalInfiniteScrollIndicator').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    modalCurrentPage++;
+                    const currentItem = allAssetsDatabaseMemory[currentActiveIndexInLightbox];
+                    const relatedSource = allAssetsDatabaseMemory.filter(w => w.id != currentItem.id);
+                    
+                    const start = (modalCurrentPage - 1) * 6;
+                    const nextBatch = relatedSource.slice(start, start + 6);
+                    
+                    if (nextBatch.length > 0) {
+                        modalDisplayedAssets = modalDisplayedAssets.concat(nextBatch);
+                        renderRelatedModalGrid(nextBatch);
+                    }
+                    isModalLoading = false;
+                    document.getElementById('modalInfiniteScrollIndicator').classList.add('hidden');
+                }, 400);
+            }
         }
 
         function navigateLightboxAsset(direction, event) {
@@ -321,27 +320,10 @@
         }
 
         function closePremiumLightbox() { document.getElementById('premiumLightboxModal').classList.add('hidden'); }
-
-        function toggleCardDropdown(id, event) {
-            event.stopPropagation();
-            document.querySelectorAll('.card-dropdown-menu').forEach(el => {
-                if(el.id !== `drop-${id}`) el.classList.add('hidden');
-            });
-            const drop = document.getElementById(`drop-${id}`);
-            if(drop) drop.classList.toggle('hidden');
-        }
-
-        function toggleModalDropdown(event) {
-            event.stopPropagation();
-            document.getElementById('modalActionDropdown').classList.toggle('hidden');
-        }
-
-        function triggerInlineActionSeeMore(title, event) {
-            event.stopPropagation();
-            executeLiveSearchQuery(title || "Anime");
-            triggerNotificationToast("Filtering matching spaces...");
-        }
-
+        function toggleCardDropdown(id, event) { event.stopPropagation(); document.querySelectorAll('.card-dropdown-menu').forEach(el => { if(el.id !== `drop-${id}`) el.classList.add('hidden'); }); const drop = document.getElementById(`drop-${id}`); if(drop) drop.classList.toggle('hidden'); }
+        function toggleModalDropdown(event) { event.stopPropagation(); document.getElementById('modalActionDropdown').classList.toggle('hidden'); }
+        function triggerInlineActionSeeMore(title, event) { event.stopPropagation(); executeLiveSearchQuery(title || "Anime"); triggerNotificationToast("Filtering matching spaces..."); }
+        
         function triggerInlineActionSeeMoreFromModal() {
             if(currentActiveIndexInLightbox !== -1) {
                 const item = allAssetsDatabaseMemory[currentActiveIndexInLightbox];
@@ -359,40 +341,25 @@
                 currentPins.push(asset);
                 localStorage.setItem('lusso_guest_board', JSON.stringify(currentPins));
                 triggerNotificationToast("Saved to Vault Boards!");
-            } else {
-                triggerNotificationToast("Already in Vault!");
-            }
+            } else { triggerNotificationToast("Already in Vault!"); }
         }
 
         function handleInlineActionDownload(url, event) {
             if(event) event.stopPropagation();
             const link = document.createElement('a');
-            link.href = url;
-            link.target = "_blank";
-            link.download = "LUSSO_Asset.jpg";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            link.href = url; link.target = "_blank"; link.download = "LUSSO_Asset.jpg";
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
-        function saveFromLightbox() {
-            if(currentActiveIndexInLightbox !== -1) handleInlineActionSave(allAssetsDatabaseMemory[currentActiveIndexInLightbox].id, null);
-        }
-
-        function downloadFromLightbox() {
-            if(currentActiveIndexInLightbox !== -1) handleInlineActionDownload(allAssetsDatabaseMemory[currentActiveIndexInLightbox].image_url, null);
-        }
+        function saveFromLightbox() { if(currentActiveIndexInLightbox !== -1) handleInlineActionSave(allAssetsDatabaseMemory[currentActiveIndexInLightbox].id, null); }
+        function downloadFromLightbox() { if(currentActiveIndexInLightbox !== -1) handleInlineActionDownload(allAssetsDatabaseMemory[currentActiveIndexInLightbox].image_url, null); }
 
         function executeLiveSearchQuery(val) {
             activeFilterSearchQuery = val.toLowerCase();
             document.getElementById('appSearchEngineInput').value = val;
-
-            currentPaginationPage = 1;
-            isDatabaseCompletelyExhausted = false;
-
+            currentPaginationPage = 1; isDatabaseCompletelyExhausted = false;
             let filtered = allAssetsDatabaseMemory.filter(item => !activeFilterSearchQuery || (item.title && item.title.toLowerCase().includes(activeFilterSearchQuery)));
             displayedAssetsMemory = filtered.slice(0, ITEMS_PER_PAGE);
-            
             renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
             if (displayedAssetsMemory.length >= filtered.length) isDatabaseCompletelyExhausted = true;
         }
@@ -400,10 +367,8 @@
         async function initializeApplicationDataEngine() {
             const { data } = await supabaseClient.from('wallpapers').select('*').order('created_at', { ascending: false });
             allAssetsDatabaseMemory = data || [];
-
             displayedAssetsMemory = allAssetsDatabaseMemory.slice(0, ITEMS_PER_PAGE);
             renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
-
             let autoCols = window.innerWidth >= 1280 ? 5 : (window.innerWidth >= 1024 ? 4 : 2);
             applyDynamicColumnsStyle(autoCols);
         }
@@ -412,30 +377,19 @@
             const dashboardSection = document.getElementById('dashboardSection');
             if (dashboardSection.classList.contains('hidden')) return;
             if (isInfiniteScrollLoadingActive || isDatabaseCompletelyExhausted) return;
-
             const scrollNode = document.getElementById('mainContentScrollNode');
             if ((scrollNode.scrollTop + scrollNode.clientHeight) >= (scrollNode.scrollHeight - 150)) {
                 isInfiniteScrollLoadingActive = true;
                 document.getElementById('infiniteScrollLoadStatusIndicator').classList.remove('hidden');
-
                 setTimeout(() => {
                     currentPaginationPage++;
                     let activeSource = allAssetsDatabaseMemory;
-                    if (activeFilterSearchQuery) {
-                        activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
-                    }
-
+                    if (activeFilterSearchQuery) { activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery)); }
                     const start = (currentPaginationPage - 1) * ITEMS_PER_PAGE;
                     const nextBatch = activeSource.slice(start, start + ITEMS_PER_PAGE);
-                    
-                    if (nextBatch.length > 0) {
-                        displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch);
-                        renderGrid(nextBatch, 'pinterestMainMasonryContainer', true);
-                    }
-
+                    if (nextBatch.length > 0) { displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch); renderGrid(nextBatch, 'pinterestMainMasonryContainer', true); }
                     if (displayedAssetsMemory.length >= activeSource.length || nextBatch.length === 0) isDatabaseCompletelyExhausted = true;
-                    isInfiniteScrollLoadingActive = false;
-                    document.getElementById('infiniteScrollLoadStatusIndicator').classList.add('hidden');
+                    isInfiniteScrollLoadingActive = false; document.getElementById('infiniteScrollLoadStatusIndicator').classList.add('hidden');
                 }, 500);
             }
         }
@@ -447,18 +401,17 @@
             
             list.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "pinterest-card group cursor-pointer relative overflow-hidden rounded-2xl border border-slate-800/40";
+                card.className = "pinterest-card group relative overflow-hidden rounded-2xl border border-slate-800/40";
                 card.innerHTML = `
                     <div class="relative w-full overflow-hidden bg-[#0b0f19]">
-                        <img src="${item.image_url}" onclick="openPremiumLightbox('${item.id}')" class="w-full h-auto block hover:scale-105 transition-all duration-500 rounded-2xl relative z-10">
+                        <img src="${item.image_url}" onclick="openPremiumLightbox('${item.id}')" class="w-full h-auto block hover:scale-105 transition-all duration-500 rounded-2xl relative z-10 cursor-pointer">
                         
-                        <!-- Actions Overlay Layer -->
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4">
-                            <div class="flex justify-between items-center w-full">
-                                <span class="text-xs text-white/80 font-medium truncate max-w-[50%] bg-black/40 px-2 py-1 rounded">${item.title || 'Anime'}</span>
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4 pointer-events-none">
+                            <div class="flex justify-between items-center w-full pointer-events-auto">
+                                <span onclick="openPremiumLightbox('${item.id}')" class="text-xs text-white/80 font-medium truncate max-w-[50%] bg-black/40 px-2 py-1 rounded cursor-pointer">${item.title || 'Anime'}</span>
                                 <button onclick="handleInlineActionSave('${item.id}', event)" class="bg-[#e60023] hover:bg-[#b6001a] text-white font-bold text-xs px-4 py-2 rounded-full shadow-md transition">Save</button>
                             </div>
-                            <div class="flex justify-end items-center gap-1.5 relative w-full">
+                            <div class="flex justify-end items-center gap-1.5 relative w-full pointer-events-auto">
                                 <button onclick="handleInlineActionDownload('${item.image_url}', event)" class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-arrow-down text-xs"></i></button>
                                 <button onclick="toggleCardDropdown('${item.id}', event)" class="w-8 h-8 bg-white hover:bg-neutral-200 text-black rounded-full flex items-center justify-center shadow-md transition"><i class="fa-solid fa-ellipsis text-xs"></i></button>
                                 
@@ -476,58 +429,33 @@
 
         function populateUpdatesNotificationPanelItems() {
             const container = document.getElementById('updatesNotificationsContainerList');
-            if(!container || allAssetsDatabaseMemory.length === 0) return;
-            container.innerHTML = "";
+            if(!container || allAssetsDatabaseMemory.length === 0) return; container.innerHTML = "";
             allAssetsDatabaseMemory.slice(0, 5).forEach(asset => {
                 const row = document.createElement('div');
                 row.className = "flex items-center gap-3 p-2 rounded-xl hover:bg-slate-900/60 cursor-pointer transition";
                 row.onclick = () => openPremiumLightbox(asset.id);
-                row.innerHTML = `
-                    <img src="${asset.image_url}" class="w-10 h-12 rounded-lg object-cover border border-slate-800">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-xs font-semibold text-gray-200 truncate">${asset.title || 'Premium Wallpaper'}</h4>
-                        <p class="text-[10px] text-slate-400">Stream synchronized.</p>
-                    </div>
-                `;
+                row.innerHTML = `<img src="${asset.image_url}" class="w-10 h-12 rounded-lg object-cover border border-slate-800"><div class="flex-1 min-w-0"><h4 class="text-xs font-semibold text-gray-200 truncate">${asset.title || 'Premium Wallpaper'}</h4><p class="text-[10px] text-slate-400">Stream synchronized.</p></div>`;
                 container.appendChild(row);
             });
         }
 
         let selectedFile = null;
-        function processLocalFileSelection(input) {
-            if(input.files && input.files[0]) {
-                selectedFile = input.files[0];
-                document.getElementById('formLiveImagePreview').src = URL.createObjectURL(selectedFile);
-                document.getElementById('formLiveImagePreview').classList.remove('hidden');
-            }
-        }
+        function processLocalFileSelection(input) { if(input.files && input.files[0]) { selectedFile = input.files[0]; document.getElementById('formLiveImagePreview').src = URL.createObjectURL(selectedFile); document.getElementById('formLiveImagePreview').classList.remove('hidden'); } }
 
         async function handleLocalFormUploadSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('formSubmitBtn');
-            const title = document.getElementById('formUploadTitle').value;
-            if(!selectedFile) return;
-
+            e.preventDefault(); const btn = document.getElementById('formSubmitBtn'); const title = document.getElementById('formUploadTitle').value; if(!selectedFile) return;
             btn.disabled = true; btn.innerText = "STREAMING NODE...";
             try {
                 const fileName = `${Date.now()}_${selectedFile.name.replace(/\s+/g, '_')}`;
                 await supabaseClient.storage.from('wallpapers').upload(fileName, selectedFile, { cacheControl: '3600', upsert: true });
                 const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/wallpapers/${fileName}`;
                 await supabaseClient.from('wallpapers').insert([{ title: title, image_url: publicUrl }]);
-                
-                triggerNotificationToast("Asset Stream Dispatched!");
-                closeLeftSliderUploadEngine();
-                await initializeApplicationDataEngine();
+                triggerNotificationToast("Asset Stream Dispatched!"); closeLeftSliderUploadEngine(); await initializeApplicationDataEngine();
             } catch (err) { alert("Pipeline connection refused."); }
             finally { btn.disabled = false; btn.innerText = "PUBLISH ASSET"; }
         }
 
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.card-dropdown-menu').forEach(el => el.classList.add('hidden'));
-            const modDrop = document.getElementById('modalActionDropdown');
-            if(modDrop) modDrop.classList.add('hidden');
-        });
-
+        document.addEventListener('click', () => { document.querySelectorAll('.card-dropdown-menu').forEach(el => el.classList.add('hidden')); const modDrop = document.getElementById('modalActionDropdown'); if(modDrop) modDrop.classList.add('hidden'); });
         function getSavedBoardsStorageArray() { return localStorage.getItem('lusso_guest_board') ? JSON.parse(localStorage.getItem('lusso_guest_board')) : []; }
         function openYourBoardsPanelSection() { navigateToAppSection('yourBoards'); renderGrid(getSavedBoardsStorageArray(), 'yourSavedPinsMasonryGrid'); }
         function clearAllSavedBoardsStorage() { localStorage.removeItem('lusso_guest_board'); openYourBoardsPanelSection(); }
