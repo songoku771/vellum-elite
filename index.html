@@ -3,379 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUSSO | Premium Matrix System v2.0</title>
+    <title>LUSSO | Premium Matrix System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root {
-            --bg-dark: #09090d;
-            --sidebar-bg: #111116;
-            --card-bg: #181822;
-            --accent-color: #ff0055; /* Premium LUSSO Neon Pink */
-            --accent-success: #00ffaa; /* Matrix Green */
-            --text-main: #ffffff;
-            --text-muted: #8e8e9f;
-            --border-color: #222232;
+        /* Custom Masonry / Smooth scroll styles if needed */
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 16px;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        @media (min-width: 640px) { .masonry-grid { column-count: 3; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 4; } }
+        @media (min-width: 1280px) { .masonry-grid { column-count: 5; } }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .settings-container {
-            display: flex;
-            width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 300px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sidebar-header {
-            padding: 10px 15px;
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--accent-color);
-            letter-spacing: 3px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border-color);
-            text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 14px 15px;
-            text-align: left;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-        }
-
-        .nav-btn.active {
-            border-left: 4px solid var(--accent-color);
-            padding-left: 11px;
-            box-shadow: inset 10px 0 15px -10px rgba(255, 0, 85, 0.2);
-        }
-
-        /* Content Area */
-        .content-area {
-            flex: 1;
-            padding: 50px;
-            overflow-y: auto;
-        }
-
-        .section-panel {
-            display: none;
-            background-color: var(--card-bg);
-            padding: 35px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            max-width: 800px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .section-panel.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            margin-bottom: 8px;
-            font-size: 26px;
-            letter-spacing: 0.5px;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        /* Form Layouts */
-        .form-group {
-            margin-bottom: 22px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        input[type="text"], input[type="password"], textarea, select {
-            width: 100%;
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 8px rgba(255, 0, 85, 0.2);
-        }
-
-        /* Progress Bar (Storage) */
-        .progress-bar-container {
-            background-color: var(--bg-dark);
-            border-radius: 10px;
-            height: 12px;
-            width: 100%;
-            margin-top: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, var(--accent-color), var(--accent-success));
-            height: 100%;
-            width: 35%; /* Demo 35% filled */
-        }
-
-        /* Toggle Button Styles */
-        .toggle-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .toggle-info h4 {
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .toggle-info p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--border-color);
-            transition: .4s; border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
-
-        input:checked + .slider { background-color: var(--accent-color); }
-        input:checked + .slider:before { transform: translateX(24px); }
-
-        /* Action Buttons */
-        .button-group {
-            display: flex; justify-content: flex-end; gap: 12px; margin-top: 30px;
-            padding-top: 20px; border-top: 1px solid var(--border-color);
-        }
-
-        .btn-secondary { background: none; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: 600; }
-        .btn-primary { background-color: var(--accent-color); border: none; color: var(--text-main); padding: 12px 28px; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.3); }
-        .btn-success { background-color: var(--accent-success); border: none; color: #000; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; }
     </style>
 </head>
-<body>
+<body class="bg-black text-white font-sans antialiased overflow-hidden">
 
-    <div class="settings-container">
-        <!-- Sidebar Navigation -->
-        <div class="sidebar">
-            <div class="sidebar-header">LUSSO MATRIX</div>
-            <button class="nav-btn active" onclick="openSection(event, 'edit-profile')">Edit Profile</button>
-            <button class="nav-btn" onclick="openSection(event, 'domain-hosting')">Domain & Hosting</button>
-            <button class="nav-btn" onclick="openSection(event, 'monetization')">Monetization & Analytics</button>
-            <button class="nav-btn" onclick="openSection(event, 'security-api')">Security & API Keys</button>
-            <button class="nav-btn" onclick="openSection(event, 'profile-vis')">Privacy Settings</button>
-        </div>
+    <div class="flex h-screen w-screen overflow-hidden">
+        
+        <aside class="w-20 md:w-24 bg-zinc-950 border-r border-zinc-900 flex flex-col items-center py-6 justify-between z-20">
+            <div class="flex flex-col items-center gap-8 w-full">
+                <div class="text-xl font-black tracking-widest text-red-600 cursor-pointer" onclick="navigateToAppSection('dashboard')">LUSSO</div>
+                
+                <nav class="flex flex-col gap-6 w-full items-center">
+                    <button onclick="navigateToAppSection('dashboard')" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
+                        <i class="fa-solid fa-house text-lg"></i>
+                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Home</span>
+                    </button>
+                    <button onclick="navigateToAppSection('explore')" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
+                        <i class="fa-solid fa-compass text-lg"></i>
+                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Explore</span>
+                    </button>
+                    <button onclick="openYourBoardsPanelSection()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
+                        <i class="fa-solid fa-bookmark text-lg"></i>
+                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Saved Vault</span>
+                    </button>
+                    <button onclick="openLeftSliderUploadEngine()" class="p-3 rounded-xl bg-zinc-900 hover:bg-red-900/40 text-red-500 hover:text-red-400 transition group relative">
+                        <i class="fa-solid fa-plus text-lg"></i>
+                        <span id="notificationBadge" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                    </button>
+                </nav>
+            </div>
+            <button onclick="clearAllSavedBoardsStorage()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-600 hover:text-red-500 transition group relative">
+                <i class="fa-solid fa-trash text-sm"></i>
+                <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Clear Vault</span>
+            </button>
+        </aside>
 
-        <!-- Main Panels -->
-        <div class="content-area">
+        <main id="mainContentScrollNode" class="flex-1 h-full overflow-y-auto bg-zinc-950 relative custom-scrollbar pb-20" onscroll="handleWindowInfiniteScrollTrigger()">
             
-            <!-- 1. Edit Profile Panel -->
-            <div id="edit-profile" class="section-panel active">
-                <h2>Edit Profile</h2>
-                <p class="section-desc">Manage your public identity on the LUSSO matrix network.</p>
-                <form>
-                    <div class="form-group">
-                        <label>Public Name</label>
-                        <input type="text" value="Tejendar Prajapati">
+            <header class="sticky top-0 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 px-6 py-4 flex items-center justify-between z-10">
+                <div class="w-full max-w-xl relative" id="topSearchBarContainer">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                    <input id="appSearchEngineInput" oninput="executeLiveSearchQuery()" type="text" placeholder="Search across the asset core matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+                </div>
+                <div class="w-full max-w-xl relative hidden" id="exploreSearchBarContainer">
+                    <i class="fa-solid fa-compass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                    <input id="exploreSearchEngineInput" oninput="executeExploreGridLocalSearch()" type="text" placeholder="Filter explore node matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+                </div>
+                <div>
+                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-mono tracking-wider">SECURE_NODE_OK</span>
+                </div>
+            </header>
+
+            <section id="dashboardSection" class="p-6">
+                <div id="pinterestMainMasonryContainer" class="masonry-grid w-full"></div>
+                <div id="infiniteScrollLoadStatusIndicator" class="w-full text-center py-8 text-zinc-500 text-xs font-mono tracking-widest hidden">
+                    <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> FETCHING NEXT LAYER DATA...
+                </div>
+            </section>
+
+            <section id="exploreSection" class="p-6 hidden">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold tracking-tight">Explore Network Core</h2>
+                    <p class="text-xs text-zinc-500">Curated trending matrices across public databanks.</p>
+                </div>
+                <div id="exploreMasonryContainerGrid" class="masonry-grid w-full"></div>
+            </section>
+
+            <section id="yourBoardsSection" class="p-6 hidden">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold tracking-tight text-red-500">Your Offline Saved Vault</h2>
+                    <p class="text-xs text-zinc-500">Assets cached locally inside browser client storage block.</p>
+                </div>
+                <div id="yourSavedPinsMasonryGrid" class="masonry-grid w-full"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="leftSliderUploadEngine" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 translate-x-[-100%] transition-transform duration-300 ease-in-out flex">
+        <div class="w-full max-w-md bg-zinc-950 border-r border-zinc-900 h-full p-6 flex flex-col justify-between overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-lg font-bold font-mono text-red-500 tracking-wider">// DISPATCH NEW ASSET</h3>
+                    <button onclick="closeLeftSliderUploadEngine()" class="text-zinc-500 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                
+                <form onsubmit="handleLocalFormUploadSubmit(e)" id="uploadAssetForm" class="space-y-5">
+                    <div>
+                        <label class="block text-xs text-zinc-500 font-mono mb-2">ASSET TITLE</label>
+                        <input id="formUploadTitle" type="text" required placeholder="Enter asset label..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition">
                     </div>
-                    <div class="form-group">
-                        <label>Bio / Description</label>
-                        <textarea placeholder="Gaming UI Architect & Full Stack Developer..."></textarea>
+                    <div>
+                        <label class="block text-xs text-zinc-500 font-mono mb-2">SELECT IMAGE FILE</label>
+                        <input type="file" accept="image/*" onchange="processLocalFileSelection(this)" class="w-full text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-zinc-900 file:text-zinc-300 hover:file:bg-zinc-800 cursor-pointer">
                     </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn-primary">Save Changes</button>
+                    <div class="pt-2">
+                        <img id="formLiveImagePreview" src="" alt="Preview" class="w-full max-h-48 object-cover rounded-lg hidden border border-zinc-800">
                     </div>
                 </form>
             </div>
+            <div class="pt-6 border-t border-zinc-900">
+                <button type="submit" form="uploadAssetForm" id="formSubmitBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg text-xs font-mono font-bold tracking-widest transition">PUBLISH ASSET</button>
+            </div>
+        </div>
+        <div class="flex-1 h-full" onclick="closeLeftSliderUploadEngine()"></div>
+    </div>
 
-            <!-- 2. NEW: Domain & Hosting Panel -->
-            <div id="domain-hosting" class="section-panel">
-                <h2>Domain & Hosting Settings</h2>
-                <p class="section-desc">Connect your custom domain name and monitor cloud asset architecture.</p>
-                
-                <div class="form-group">
-                    <label>Custom Domain Name</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="domainInput" placeholder="e.g., www.yourname.com" value="lusso.xyz/tejendar">
-                        <button type="button" class="btn-success" onclick="connectDomain()">Connect</button>
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Point your DNS A-Record to <code>192.0.2.1</code> to activate.</p>
-                </div>
+    <div id="globalAssetDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-zinc-950 border border-zinc-900 w-full max-w-5xl h-[90vh] rounded-2xl flex flex-col md:flex-row overflow-hidden relative">
+            <button onclick="closeGlobalAssetDetailModal()" class="absolute top-4 right-4 bg-black/60 border border-zinc-800 text-zinc-400 hover:text-white p-2 rounded-full transition z-10">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
 
-                <div class="form-group" style="margin-top: 30px;">
-                    <label>Cloud Storage Usage (For Thumbnails & Code)</label>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);">
-                        <span>3.5 GB Used</span>
-                        <span>10 GB Total</span>
+            <div class="w-full md:w-3/5 bg-zinc-900 flex items-center justify-center relative p-2 h-1/2 md:h-full border-b md:border-b-0 md:border-r border-zinc-900">
+                <img id="modalHeroElementImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
+            </div>
+
+            <div class="w-full md:w-2/5 h-1/2 md:h-full flex flex-col overflow-y-auto custom-scrollbar p-6 justify-between bg-zinc-950">
+                <div class="space-y-6">
+                    <div>
+                        <h2 id="modalHeroElementTitle" class="text-2xl font-black tracking-tight text-white mb-1">Asset Frame Identity</h2>
+                        <span class="text-xs font-mono text-zinc-500 tracking-wider">STATUS: VERIFIED_PUBLIC_OBJECT</span>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-fill"></div>
+
+                    <div class="flex gap-3">
+                        <button id="modalDownloadActionButton" class="flex-1 bg-white hover:bg-zinc-200 text-black py-2.5 rounded-full text-xs font-bold font-mono tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-download"></i> DOWNLOAD
+                        </button>
+                        <button id="modalSaveVaultActionButton" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 py-2.5 px-4 rounded-full text-xs font-bold transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bookmark"></i> SAVE
+                        </button>
+                    </div>
+
+                    <hr class="border-zinc-900">
+
+                    <div>
+                        <h4 class="text-xs font-mono font-bold tracking-widest text-red-500 mb-4">// MORE LIKE THIS (SUGGESTIONS)</h4>
+                        <div id="modalSuggestionsMasonryGrid" class="masonry-grid w-full"></div>
                     </div>
                 </div>
             </div>
-
-            <!-- 3. NEW: Monetization & Analytics Panel -->
-            <div id="monetization" class="section-panel">
-                <h2>Monetization & Analytics</h2>
-                <p class="section-desc">Track your earnings from freelance thumbnail custom systems and setup designs.</p>
-
-                <div class="toggle-container">
-                    <div class="toggle-info">
-                        <h4>Enable Order Button</h4>
-                        <p>Allow clients to directly order premium designs or hire you from your pins.</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div style="margin-top: 25px; padding: 20px; background-color: var(--bg-dark); border-radius: 8px; border: 1px solid var(--border-color);">
-                    <h4 style="color: var(--accent-success); margin-bottom: 5px;">Estimated Monthly Reach</h4>
-                    <p style="font-size: 24px; font-weight: 800;">45,280 <span style="font-size: 14px; color: var(--text-muted); font-weight: 400;">Views this month</span></p>
-                </div>
-            </div>
-
-            <!-- 4. NEW: Security & API Keys Panel -->
-            <div id="security-api" class="section-panel">
-                <h2>Security & Core API Access</h2>
-                <p class="section-desc">Manage authentication protocols and server-side keys for এआई integrations.</p>
-
-                <div class="toggle-container">
-                    <div class="toggle-info">
-                        <h4>Two-Factor Authentication (2FA)</h4>
-                        <p>Secure your creator assets with an extra mobile token layer.</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <div class="form-group" style="margin-top: 25px;">
-                    <label>Developer API Secret Key</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="password" id="apiKey" value="LUSSO_MAIN_MATRIX_KEY_883219472" disabled>
-                        <button type="button" class="change-btn" style="border-radius: 8px;" onclick="toggleKey()">Show</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. Privacy Settings Panel -->
-            <div id="profile-vis" class="section-panel">
-                <h2>Privacy Settings</h2>
-                <p class="section-desc">Manage system node indexing and external search visibility.</p>
-
-                <div class="toggle-container">
-                    <div class="toggle-info">
-                        <h4>Private Profile</h4>
-                        <p>Hide your repository boards from non-authenticated nodes.</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
         </div>
     </div>
 
+    <div id="globalNotificationToast" class="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl text-xs font-mono tracking-wide shadow-2xl translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-red-500 text-sm"></i>
+        <span id="toastMessageNode">Pipeline Core Execution Success!</span>
+    </div>
+
     <script>
-        function openSection(evt, sectionId) {
-            const panels = document.getElementsByClassName("section-panel");
-            for (let i = 0; i < panels.length; i++) { panels[i].classList.remove("active"); }
-            
-            const buttons = document.getElementsByClassName("nav-btn");
-            for (let i = 0; i < buttons.length; i++) { buttons[i].classList.remove("active"); }
+        // CLIENT ENVIRONMENT CONFIGURATION METRICS
+        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Replace with your URL
+        const SUPABASE_ANON_KEY = "your-anon-key"; // Replace with your Key
+        
+        const supabaseClient = netlifyInternalSupabaseInstance || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            document.getElementById(sectionId).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
+        // REALTIME SYSTEM DATABANK ENGINE MEMORY
+        let allAssetsDatabaseMemory = [];
+        let displayedAssetsMemory = [];
+        let currentPaginationPage = 1;
+        const memoryBatchLimitSize = 12;
 
-        function connectDomain() {
-            const domain = document.getElementById('domainInput').value;
-            alert('LUSSO System connecting to domain: ' + domain + '\nDNS validation in progress...');
-        }
+        let activeFilterSearchQuery = "";
+        let isInfiniteScrollLoadingActive = false;
+        let isDatabaseCompletelyExhausted = false;
 
-        function toggleKey() {
-            const keyField = document.getElementById('apiKey');
-            if (keyField.type === "password") {
-                keyField.type = "text";
-            } else {
-                keyField.type = "password";
+        // INITIALIZE DATABANK ENGINE
+        async function initializeApplicationDataEngine() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('wallpapers')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if(error) throw error;
+
+                allAssetsDatabaseMemory = data || [];
+                currentPaginationPage = 1;
+                isDatabaseCompletelyExhausted = false;
+
+                // Slice memory array context for pagination layer
+                displayedAssetsMemory = getPagedBatchFromMemory(allAssetsDatabaseMemory, currentPaginationPage);
+                renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+
+                if (displayedAssetsMemory.length >= allAssetsDatabaseMemory.length) {
+                    isDatabaseCompletelyExhausted = true;
+                }
+            } catch(e) {
+                console.error("Data Pipeline Fault:", e);
+                triggerNotificationToast("Failed to fetch cloud asset pipeline stream.");
             }
         }
+
+        // PAGINATION MATHEMATICAL EXTRACTOR
+        function getPagedBatchFromMemory(sourceArray, pageIndex) {
+            const indexStart = (pageIndex - 1) * memoryBatchLimitSize;
+            return sourceArray.slice(indexStart, indexStart + memoryBatchLimitSize);
+        }
+
+        // DYNAMIC MASONRY RENDER ENGINE MATRIX
+        function renderGrid(dataset, containerId, appendMode = false) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+
+            if(!appendMode) container.innerHTML = "";
+
+            if(dataset.length === 0 && !appendMode) {
+                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono tracking-wider">// NO MATRIX OBJECTS RETURNED IN THIS LAYER //</div>`;
+                return;
+            }
+
+            dataset.forEach(item => {
+                const itemNode = document.createElement('div');
+                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-xl cursor-pointer transition border border-zinc-900 hover:border-zinc-800";
+                
+                // Clicking on an item opens the modal view along with recommendations
+                itemNode.onclick = () => openGlobalAssetDetailModal(item);
+
+                itemNode.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition duration-300 loading="lazy"">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
+                        <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Matrix'}</p>
+                        <p class="text-[10px] font-mono text-zinc-400 mt-1">ID: OBJ_${item.id.toString().substring(0,6)}</p>
+                    </div>
+                `;
+                container.appendChild(itemNode);
+            });
+        }
+
+        // GLOBAL DETAIL MODAL ACTION + SUGGESTIONS ENGINE
+        function openGlobalAssetDetailModal(asset) {
+            const modal = document.getElementById('globalAssetDetailModal');
+            document.getElementById('modalHeroElementImage').src = asset.image_url;
+            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Node';
+
+            // Set Action Event Triggers for Download & Save
+            document.getElementById('modalDownloadActionButton').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
+            document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
+
+            // SUGGESTIONS ENGINE SYSTEM LOGIC
+            // Main item को हटाकर बाकी items में से कुछ random suggestions चुनें 
+            const balanceSuggestions = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
+            // Shuffle array structure to extract 6 unique items
+            const shuffled = balanceSuggestions.sort(() => 0.5 - Math.random()).slice(0, 6);
+
+            // Render Suggestions into Inner Grid Layer
+            renderGrid(shuffled, 'modalSuggestionsMasonryGrid', false);
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeGlobalAssetDetailModal() {
+            document.getElementById('globalAssetDetailModal').classList.add('hidden');
+        }
+
+        // SYSTEM FILE DOWNLOAD ENGINE PIPELINE
+        async function downloadTargetSystemFile(url, filename) {
+            try {
+                triggerNotificationToast("Initializing direct download stream...");
+                const res = await fetch(url);
+                const blob = await res.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = `${filename || 'LUSSO_ASSET'}_${Date.now()}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+                triggerNotificationToast("Download Core Executed!");
+            } catch(e) {
+                // Failover alternative
+                window.open(url, '_blank');
+            }
+        }
+
+        // LOCAL REPOSITORY CACHING (BOARDS VAULT)
+        function cacheAssetIntoLocalBoard(asset) {
+            let currentVault = getSavedBoardsStorageArray();
+            if(currentVault.some(item => item.id === asset.id)) {
+                return triggerNotificationToast("Asset already cached inside vault matrix.");
+            }
+            currentVault.push(asset);
+            localStorage.setItem('lusso_guest_board', JSON.stringify(currentVault));
+            triggerNotificationToast("Asset Cached to Local Vault!");
+        }
+
+        // SECTION UTILITIES SWITCHER
+        function navigateToAppSection(sectionId) {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('exploreSection').classList.add('hidden');
+            document.getElementById('yourBoardsSection').classList.add('hidden');
+            
+            document.getElementById('topSearchBarContainer').classList.add('hidden');
+            document.getElementById('exploreSearchBarContainer').classList.add('hidden');
+
+            if(sectionId === 'dashboard') {
+                document.getElementById('dashboardSection').classList.remove('hidden');
+                document.getElementById('topSearchBarContainer').classList.remove('hidden');
+            } else if (sectionId === 'explore') {
+                document.getElementById('exploreSection').classList.remove('hidden');
+                document.getElementById('exploreSearchBarContainer').classList.remove('hidden');
+                // Auto load initial batch array context for explore
+                renderGrid(allAssetsDatabaseMemory.slice(0, 10), 'exploreMasonryContainerGrid', false);
+            } else if (sectionId === 'yourBoards') {
+                document.getElementById('yourBoardsSection').classList.remove('hidden');
+            }
+        }
+
+        // INFINITE SCROLL LAYER INTERACTION
+        function handleWindowInfiniteScrollTrigger() {
+            const dashboardSection = document.getElementById('dashboardSection');
+            if (dashboardSection.classList.contains('hidden')) return;
+            if (isInfiniteScrollLoadingActive || isDatabaseCompletelyExhausted) return;
+
+            const scrollNode = document.getElementById('mainContentScrollNode');
+            if ((scrollNode.scrollTop + scrollNode.clientHeight) >= (scrollNode.scrollHeight - 150)) {
+                executeNextBatchPipelineFetch();
+            }
+        }
+
+        function executeNextBatchPipelineFetch() {
+            isInfiniteScrollLoadingActive = true;
+            const indicator = document.getElementById('infiniteScrollLoadStatusIndicator');
+            if (indicator) indicator.classList.remove('hidden');
+
+            setTimeout(() => {
+                currentPaginationPage++;
+                let activeSource = allAssetsDatabaseMemory;
+                if (activeFilterSearchQuery) {
+                    activeSource = allAssetsDatabaseMemory.filter(item => item.title && item.title.toLowerCase().includes(activeFilterSearchQuery));
+                }
+
+                const nextBatch = getPagedBatchFromMemory(activeSource, currentPaginationPage);
+                if (nextBatch.length > 0) {
+                    displayedAssetsMemory = displayedAssetsMemory.concat(nextBatch);
+                    renderGrid(nextBatch, 'pinterestMainMasonryContainer', true);
+                }
+
+                if (displayedAssetsMemory.length >= activeSource.length || nextBatch.length === 0) isDatabaseCompletelyExhausted = true;
+
+                isInfiniteScrollLoadingActive = false;
+                if (indicator) indicator.classList.add('hidden');
+            }, 800);
+        }
+
+        // LIVE SEARCH ENGINES
+        function executeLiveSearchQuery() {
+            activeFilterSearchQuery = document.getElementById('appSearchEngineInput').value.toLowerCase();
+            currentPaginationPage = 1;
+            isDatabaseCompletelyExhausted = false;
+
+            let filtered = allAssetsDatabaseMemory.filter(item => !activeFilterSearchQuery || (item.title && item.title.toLowerCase().includes(activeFilterSearchQuery)));
+            displayedAssetsMemory = getPagedBatchFromMemory(filtered, currentPaginationPage);
+            renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
+
+            if (displayedAssetsMemory.length >= filtered.length) isDatabaseCompletelyExhausted = true;
+        }
+
+        function executeExploreGridLocalSearch() {
+            const query = document.getElementById('exploreSearchEngineInput').value.toLowerCase();
+            let matches = allAssetsDatabaseMemory.filter(item => !query || (item.title && item.title.toLowerCase().includes(query)));
+            renderGrid(matches.slice(0, 10), 'exploreMasonryContainerGrid', false);
+        }
+
+        // STORAGE INFRASTRUCTURE MANAGEMENT
+        function getSavedBoardsStorageArray() {
+            const data = localStorage.getItem('lusso_guest_board');
+            return data ? JSON.parse(data) : [];
+        }
+
+        function openYourBoardsPanelSection() {
+            navigateToAppSection('yourBoards');
+            const items = getSavedBoardsStorageArray();
+            renderGrid(items, 'yourSavedPinsMasonryGrid', false);
+        }
+
+        function clearAllSavedBoardsStorage() {
+            localStorage.removeItem('lusso_guest_board');
+            triggerNotificationToast("Vault Cleared!");
+            openYourBoardsPanelSection();
+        }
+
+        // UPLOAD ENGINE INTERACTION HANDLERS
+        function openLeftSliderUploadEngine() {
+            document.getElementById('leftSliderUploadEngine').classList.remove('translate-x-[-100%]');
+        }
+
+        function closeLeftSliderUploadEngine() {
+            document.getElementById('leftSliderUploadEngine').classList.add('translate-x-[-100%]');
+        }
+
+        let selectedFile = null;
+        function processLocalFileSelection(input) {
+            if(input.files && input.files[0]) {
+                selectedFile = input.files[0];
+                document.getElementById('formLiveImagePreview').src = URL.createObjectURL(selectedFile);
+                document.getElementById('formLiveImagePreview').classList.remove('hidden');
+            }
+        }
+
+        // SUPABASE BACKEND UPLOAD PIPELINE
+        async function handleLocalFormUploadSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('formSubmitBtn');
+            const title = document.getElementById('formUploadTitle').value;
+            if(!selectedFile) return alert("Select an image first!");
+
+            btn.disabled = true;
+            btn.innerText = "STREAMING NODE...";
+
+            try {
+                const fileName = `${Date.now()}_${selectedFile.name.replace(/\s+/g, '_')}`;
+                
+                const { data: uploadData, error: stErr } = await supabaseClient.storage
+                    .from('wallpapers')
+                    .upload(fileName, selectedFile, { cacheControl: '3600', upsert: true });
+                
+                if(stErr) throw stErr;
+
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/wallpapers/${fileName}`;
+
+                const { error: dbErr } = await supabaseClient
+                    .from('wallpapers')
+                    .insert([{ title: title, image_url: publicUrl }]);
+                
+                if(dbErr) throw dbErr;
+
+                triggerNotificationToast("Asset Stream Dispatched!");
+                document.getElementById('notificationBadge').classList.remove('hidden');
+                closeLeftSliderUploadEngine();
+                
+                await initializeApplicationDataEngine();
+            } catch (err) { 
+                console.error(err);
+                alert("Pipeline Connection Refused. Ensure your Supabase Storage bucket allows public 'Anon' inserts."); 
+            } finally { 
+                btn.disabled = false; 
+                btn.innerText = "PUBLISH ASSET"; 
+            }
+        }
+
+        // TOAST INTERACTION PIPELINE
+        function triggerNotificationToast(message) {
+            const toast = document.getElementById('globalNotificationToast');
+            document.getElementById('toastMessageNode').innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        window.onload = () => initializeApplicationDataEngine();
     </script>
 </body>
 </html>
