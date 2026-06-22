@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* Custom Masonry / Smooth scroll styles if needed */
+        /* Pinterest Style Masonry Grid Layout */
         .masonry-grid {
             column-count: 2;
             column-gap: 16px;
@@ -19,6 +19,20 @@
         .masonry-item {
             break-inside: avoid;
             margin-bottom: 16px;
+        }
+        /* Custom Scrollbar for Sleek Dark Theme */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
         }
     </style>
 </head>
@@ -103,8 +117,7 @@
                     <h3 class="text-lg font-bold font-mono text-red-500 tracking-wider">// DISPATCH NEW ASSET</h3>
                     <button onclick="closeLeftSliderUploadEngine()" class="text-zinc-500 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
-                
-                <form onsubmit="handleLocalFormUploadSubmit(e)" id="uploadAssetForm" class="space-y-5">
+                <form onsubmit="handleLocalFormUploadSubmit(event)" id="uploadAssetForm" class="space-y-5">
                     <div>
                         <label class="block text-xs text-zinc-500 font-mono mb-2">ASSET TITLE</label>
                         <input id="formUploadTitle" type="text" required placeholder="Enter asset label..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition">
@@ -125,56 +138,85 @@
         <div class="flex-1 h-full" onclick="closeLeftSliderUploadEngine()"></div>
     </div>
 
-    <div id="globalAssetDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-zinc-950 border border-zinc-900 w-full max-w-5xl h-[90vh] rounded-2xl flex flex-col md:flex-row overflow-hidden relative">
-            <button onclick="closeGlobalAssetDetailModal()" class="absolute top-4 right-4 bg-black/60 border border-zinc-800 text-zinc-400 hover:text-white p-2 rounded-full transition z-10">
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
+    <div id="globalAssetDetailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden overflow-y-auto custom-scrollbar p-4 md:p-10">
+        <button onclick="closeGlobalAssetDetailModal()" class="fixed top-6 right-6 bg-zinc-900/80 hover:bg-zinc-800 text-white p-3 rounded-full transition z-50 border border-zinc-800">
+            <i class="fa-solid fa-arrow-left text-sm mr-1"></i> Back
+        </button>
 
-            <div class="w-full md:w-3/5 bg-zinc-900 flex items-center justify-center relative p-2 h-1/2 md:h-full border-b md:border-b-0 md:border-r border-zinc-900">
-                <img id="modalHeroElementImage" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg">
-            </div>
+        <div class="max-w-5xl mx-auto space-y-10 mt-10">
+            <div class="bg-zinc-950 border border-zinc-900 rounded-3xl flex flex-col md:flex-row overflow-hidden min-h-[550px]">
+                
+                <div class="w-full md:w-1/2 bg-zinc-900/40 flex items-center justify-center p-4 border-b md:border-b-0 md:border-r border-zinc-900">
+                    <img id="modalHeroElementImage" src="" alt="" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl">
+                </div>
 
-            <div class="w-full md:w-2/5 h-1/2 md:h-full flex flex-col overflow-y-auto custom-scrollbar p-6 justify-between bg-zinc-950">
-                <div class="space-y-6">
-                    <div>
-                        <h2 id="modalHeroElementTitle" class="text-2xl font-black tracking-tight text-white mb-1">Asset Frame Identity</h2>
-                        <span class="text-xs font-mono text-zinc-500 tracking-wider">STATUS: VERIFIED_PUBLIC_OBJECT</span>
+                <div class="w-full md:w-1/2 p-8 flex flex-col justify-between relative">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <button id="modalDownloadIconBtn" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Download">
+                                    <i class="fa-solid fa-download text-sm"></i>
+                                </button>
+                                
+                                <div class="relative inline-block text-left">
+                                    <button onclick="toggleSettingsDropdownNode(event)" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Options">
+                                        <i class="fa-solid fa-ellipsis text-sm"></i>
+                                    </button>
+                                    <div id="settingsDropdownMenuBox" class="absolute left-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl hidden z-30 py-1 font-mono text-xs">
+                                        <button id="dropdownCopyLinkAction" class="w-full text-left px-4 py-2.5 hover:bg-zinc-800 text-zinc-300 transition flex items-center gap-2">
+                                            <i class="fa-solid fa-link text-zinc-500"></i> Copy Asset Link
+                                        </button>
+                                        <button id="dropdownDeleteAction" class="w-full text-left px-4 py-2.5 hover:bg-red-950/40 text-red-400 transition flex items-center gap-2 border-t border-zinc-800/60">
+                                            <i class="fa-solid fa-trash-can text-red-500"></i> Delete Asset Node
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="modalSaveVaultActionButton" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold font-mono px-5 py-2.5 rounded-full tracking-wider transition shadow-lg">
+                                SAVE ASSET
+                            </button>
+                        </div>
+
+                        <hr class="border-zinc-900">
+
+                        <div>
+                            <h2 id="modalHeroElementTitle" class="text-3xl font-black tracking-tight text-white mb-2">Asset Identity Label</h2>
+                            <p class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">Node Stream: SECURE_CORE_MATRIX</p>
+                            <p class="text-sm text-zinc-400 leading-relaxed">This premium digital asset matrix framework is rendered and synchronized directly across cloud-allocated clusters inside your Supabase application pipeline.</p>
+                        </div>
                     </div>
 
-                    <div class="flex gap-3">
-                        <button id="modalDownloadActionButton" class="flex-1 bg-white hover:bg-zinc-200 text-black py-2.5 rounded-full text-xs font-bold font-mono tracking-wider transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-download"></i> DOWNLOAD
-                        </button>
-                        <button id="modalSaveVaultActionButton" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 py-2.5 px-4 rounded-full text-xs font-bold transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bookmark"></i> SAVE
-                        </button>
-                    </div>
-
-                    <hr class="border-zinc-900">
-
-                    <div>
-                        <h4 class="text-xs font-mono font-bold tracking-widest text-red-500 mb-4">// MORE LIKE THIS (SUGGESTIONS)</h4>
-                        <div id="modalSuggestionsMasonryGrid" class="masonry-grid w-full"></div>
+                    <div class="pt-6 border-t border-zinc-900 mt-8 flex justify-between items-center text-[10px] font-mono text-zinc-600">
+                        <span>CONTEXT: SHA256_VERIFIED</span>
+                        <span id="modalAssetSystemIdNode">ID: NULL_NODE</span>
                     </div>
                 </div>
+            </div>
+
+            <div class="space-y-6 pt-4">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
+                    <h3 class="text-lg font-bold font-mono tracking-wider text-zinc-200">// MORE LIKE THIS (SCROLL FOR MORE)</h3>
+                    <span class="text-xs text-zinc-500 font-mono" id="suggestionsCountNode">0 Assets Linked</span>
+                </div>
+                
+                <div id="modalSuggestionsMasonryGrid" class="masonry-grid w-full"></div>
             </div>
         </div>
     </div>
 
     <div id="globalNotificationToast" class="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl text-xs font-mono tracking-wide shadow-2xl translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-red-500 text-sm"></i>
-        <span id="toastMessageNode">Pipeline Core Execution Success!</span>
+        <span id="toastMessageNode">Execution Operation Finished!</span>
     </div>
 
     <script>
-        // CLIENT ENVIRONMENT CONFIGURATION METRICS
-        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Replace with your URL
-        const SUPABASE_ANON_KEY = "your-anon-key"; // Replace with your Key
+        // CONFIGURATION PARAMETERS MATRIX
+        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Update with real URL
+        const SUPABASE_ANON_KEY = "your-anon-key"; // Update with real Key
         
         const supabaseClient = netlifyInternalSupabaseInstance || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // REALTIME SYSTEM DATABANK ENGINE MEMORY
         let allAssetsDatabaseMemory = [];
         let displayedAssetsMemory = [];
         let currentPaginationPage = 1;
@@ -183,8 +225,9 @@
         let activeFilterSearchQuery = "";
         let isInfiniteScrollLoadingActive = false;
         let isDatabaseCompletelyExhausted = false;
+        let activeSelectedAssetContext = null;
 
-        // INITIALIZE DATABANK ENGINE
+        // FETCH INITIAL STREAMS
         async function initializeApplicationDataEngine() {
             try {
                 const { data, error } = await supabaseClient
@@ -198,26 +241,22 @@
                 currentPaginationPage = 1;
                 isDatabaseCompletelyExhausted = false;
 
-                // Slice memory array context for pagination layer
                 displayedAssetsMemory = getPagedBatchFromMemory(allAssetsDatabaseMemory, currentPaginationPage);
                 renderGrid(displayedAssetsMemory, 'pinterestMainMasonryContainer', false);
 
-                if (displayedAssetsMemory.length >= allAssetsDatabaseMemory.length) {
-                    isDatabaseCompletelyExhausted = true;
-                }
+                if (displayedAssetsMemory.length >= allAssetsDatabaseMemory.length) isDatabaseCompletelyExhausted = true;
             } catch(e) {
-                console.error("Data Pipeline Fault:", e);
-                triggerNotificationToast("Failed to fetch cloud asset pipeline stream.");
+                console.error(e);
+                triggerNotificationToast("Failed to sync cloud asset layers.");
             }
         }
 
-        // PAGINATION MATHEMATICAL EXTRACTOR
         function getPagedBatchFromMemory(sourceArray, pageIndex) {
             const indexStart = (pageIndex - 1) * memoryBatchLimitSize;
             return sourceArray.slice(indexStart, indexStart + memoryBatchLimitSize);
         }
 
-        // DYNAMIC MASONRY RENDER ENGINE MATRIX
+        // GRID GENERATOR PIPELINE
         function renderGrid(dataset, containerId, appendMode = false) {
             const container = document.getElementById(containerId);
             if(!container) return;
@@ -225,93 +264,134 @@
             if(!appendMode) container.innerHTML = "";
 
             if(dataset.length === 0 && !appendMode) {
-                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono tracking-wider">// NO MATRIX OBJECTS RETURNED IN THIS LAYER //</div>`;
+                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono">// END OF STREAM / MATRIX VACANT //</div>`;
                 return;
             }
 
             dataset.forEach(item => {
                 const itemNode = document.createElement('div');
-                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-xl cursor-pointer transition border border-zinc-900 hover:border-zinc-800";
+                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-2xl cursor-pointer border border-zinc-900 hover:border-zinc-800 transition duration-300 shadow-sm hover:shadow-xl";
                 
-                // Clicking on an item opens the modal view along with recommendations
                 itemNode.onclick = () => openGlobalAssetDetailModal(item);
 
                 itemNode.innerHTML = `
-                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-80 group-hover:opacity-100 transition duration-300 loading="lazy"">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
+                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition duration-300" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
                         <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Matrix'}</p>
-                        <p class="text-[10px] font-mono text-zinc-400 mt-1">ID: OBJ_${item.id.toString().substring(0,6)}</p>
                     </div>
                 `;
                 container.appendChild(itemNode);
             });
         }
 
-        // GLOBAL DETAIL MODAL ACTION + SUGGESTIONS ENGINE
+        // OPEN ADVANCED PINTEREST DETAIL OVERLAY WINDOW MODAL
         function openGlobalAssetDetailModal(asset) {
+            activeSelectedAssetContext = asset;
             const modal = document.getElementById('globalAssetDetailModal');
+            
+            // Inject Primary Core Frame Metrics
             document.getElementById('modalHeroElementImage').src = asset.image_url;
-            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Node';
+            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Frame';
+            document.getElementById('modalAssetSystemIdNode').innerText = `ID: OBJ_${asset.id.toString().substring(0,10)}`;
 
-            // Set Action Event Triggers for Download & Save
-            document.getElementById('modalDownloadActionButton').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
+            // Assign Event Pipelines
+            document.getElementById('modalDownloadIconBtn').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
             document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
+            
+            // Dropdown Click Handlers Link setup
+            document.getElementById('dropdownCopyLinkAction').onclick = () => {
+                navigator.clipboard.writeText(asset.image_url);
+                triggerNotificationToast("Asset address copied to clipboard network!");
+                hideSettingsDropdownMenuNode();
+            };
+            document.getElementById('dropdownDeleteAction').onclick = () => executeAssetCloudDeletionPipeline(asset.id);
 
-            // SUGGESTIONS ENGINE SYSTEM LOGIC
-            // Main item को हटाकर बाकी items में से कुछ random suggestions चुनें 
-            const balanceSuggestions = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
-            // Shuffle array structure to extract 6 unique items
-            const shuffled = balanceSuggestions.sort(() => 0.5 - Math.random()).slice(0, 6);
+            // Fetch Related Contextual Suggestions Block
+            const balanceData = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
+            const recommendationSlice = balanceData.sort(() => 0.5 - Math.random()).slice(0, 10);
+            
+            document.getElementById('suggestionsCountNode').innerText = `${recommendationSlice.length} Assets Core Identified`;
+            renderGrid(recommendationSlice, 'modalSuggestionsMasonryGrid', false);
 
-            // Render Suggestions into Inner Grid Layer
-            renderGrid(shuffled, 'modalSuggestionsMasonryGrid', false);
-
+            // Open Visual Modal Frame Layer Node & Lock main body background scrolling action
             modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            hideSettingsDropdownMenuNode();
+
+            // Auto Scroll back to top inside modal layout
+            modal.scrollTop = 0;
         }
 
         function closeGlobalAssetDetailModal() {
             document.getElementById('globalAssetDetailModal').classList.add('hidden');
+            document.body.style.overflow = ''; // Unlock background scroll activity
+            activeSelectedAssetContext = null;
         }
 
-        // SYSTEM FILE DOWNLOAD ENGINE PIPELINE
+        // SETTINGS DROPDOWN COMPONENT LAYER CONTROLS
+        function toggleSettingsDropdownNode(e) {
+            e.stopPropagation();
+            const box = document.getElementById('settingsDropdownMenuBox');
+            box.classList.toggle('hidden');
+        }
+
+        function hideSettingsDropdownMenuNode() {
+            const box = document.getElementById('settingsDropdownMenuBox');
+            if(box) box.classList.add('hidden');
+        }
+
+        // CONNECTIVE CLOUD DELETION CONTROLLER
+        async function executeAssetCloudDeletionPipeline(assetId) {
+            if(!confirm("Are you certain you wish to purge this asset entity row permanently from the database core?")) return;
+            try {
+                const { error } = await supabaseClient.from('wallpapers').delete().eq('id', assetId);
+                if(error) throw error;
+
+                triggerNotificationToast("Asset Row Expunged successfully!");
+                closeGlobalAssetDetailModal();
+                await initializeApplicationDataEngine(); // Refresh background layer state
+            } catch(e) {
+                console.error(e);
+                alert("Operation Refused: Ensure active Anon system permissions allow structural DELETE mutations.");
+            }
+        }
+
+        // DOWNLOAD INTERACTION FILE PIPELINE
         async function downloadTargetSystemFile(url, filename) {
             try {
-                triggerNotificationToast("Initializing direct download stream...");
+                triggerNotificationToast("Pulling network file stream down...");
                 const res = await fetch(url);
                 const blob = await res.blob();
                 const blobUrl = URL.createObjectURL(blob);
                 
                 const link = document.createElement('a');
                 link.href = blobUrl;
-                link.download = `${filename || 'LUSSO_ASSET'}_${Date.now()}.jpg`;
+                link.download = `${filename || 'LUSSO'}_${Date.now()}.jpg`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(blobUrl);
-                triggerNotificationToast("Download Core Executed!");
+                triggerNotificationToast("Download Complete!");
             } catch(e) {
-                // Failover alternative
                 window.open(url, '_blank');
             }
         }
 
-        // LOCAL REPOSITORY CACHING (BOARDS VAULT)
+        // VAULT LOCALSTORAGE UTILITIES
         function cacheAssetIntoLocalBoard(asset) {
             let currentVault = getSavedBoardsStorageArray();
             if(currentVault.some(item => item.id === asset.id)) {
-                return triggerNotificationToast("Asset already cached inside vault matrix.");
+                return triggerNotificationToast("Object context already locked inside vault memory.");
             }
             currentVault.push(asset);
             localStorage.setItem('lusso_guest_board', JSON.stringify(currentVault));
-            triggerNotificationToast("Asset Cached to Local Vault!");
+            triggerNotificationToast("Linked into Offline Vault Caches!");
         }
 
-        // SECTION UTILITIES SWITCHER
         function navigateToAppSection(sectionId) {
             document.getElementById('dashboardSection').classList.add('hidden');
             document.getElementById('exploreSection').classList.add('hidden');
             document.getElementById('yourBoardsSection').classList.add('hidden');
-            
             document.getElementById('topSearchBarContainer').classList.add('hidden');
             document.getElementById('exploreSearchBarContainer').classList.add('hidden');
 
@@ -321,14 +401,13 @@
             } else if (sectionId === 'explore') {
                 document.getElementById('exploreSection').classList.remove('hidden');
                 document.getElementById('exploreSearchBarContainer').classList.remove('hidden');
-                // Auto load initial batch array context for explore
                 renderGrid(allAssetsDatabaseMemory.slice(0, 10), 'exploreMasonryContainerGrid', false);
             } else if (sectionId === 'yourBoards') {
                 document.getElementById('yourBoardsSection').classList.remove('hidden');
             }
         }
 
-        // INFINITE SCROLL LAYER INTERACTION
+        // INFINITE SCROLL SYSTEM
         function handleWindowInfiniteScrollTrigger() {
             const dashboardSection = document.getElementById('dashboardSection');
             if (dashboardSection.classList.contains('hidden')) return;
@@ -365,7 +444,6 @@
             }, 800);
         }
 
-        // LIVE SEARCH ENGINES
         function executeLiveSearchQuery() {
             activeFilterSearchQuery = document.getElementById('appSearchEngineInput').value.toLowerCase();
             currentPaginationPage = 1;
@@ -384,7 +462,6 @@
             renderGrid(matches.slice(0, 10), 'exploreMasonryContainerGrid', false);
         }
 
-        // STORAGE INFRASTRUCTURE MANAGEMENT
         function getSavedBoardsStorageArray() {
             const data = localStorage.getItem('lusso_guest_board');
             return data ? JSON.parse(data) : [];
@@ -402,7 +479,6 @@
             openYourBoardsPanelSection();
         }
 
-        // UPLOAD ENGINE INTERACTION HANDLERS
         function openLeftSliderUploadEngine() {
             document.getElementById('leftSliderUploadEngine').classList.remove('translate-x-[-100%]');
         }
@@ -420,7 +496,6 @@
             }
         }
 
-        // SUPABASE BACKEND UPLOAD PIPELINE
         async function handleLocalFormUploadSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('formSubmitBtn');
@@ -432,13 +507,11 @@
 
             try {
                 const fileName = `${Date.now()}_${selectedFile.name.replace(/\s+/g, '_')}`;
-                
                 const { data: uploadData, error: stErr } = await supabaseClient.storage
                     .from('wallpapers')
                     .upload(fileName, selectedFile, { cacheControl: '3600', upsert: true });
                 
                 if(stErr) throw stErr;
-
                 const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/wallpapers/${fileName}`;
 
                 const { error: dbErr } = await supabaseClient
@@ -450,27 +523,25 @@
                 triggerNotificationToast("Asset Stream Dispatched!");
                 document.getElementById('notificationBadge').classList.remove('hidden');
                 closeLeftSliderUploadEngine();
-                
                 await initializeApplicationDataEngine();
             } catch (err) { 
                 console.error(err);
-                alert("Pipeline Connection Refused. Ensure your Supabase Storage bucket allows public 'Anon' inserts."); 
+                alert("Pipeline Connection Refused."); 
             } finally { 
                 btn.disabled = false; 
                 btn.innerText = "PUBLISH ASSET"; 
             }
         }
 
-        // TOAST INTERACTION PIPELINE
         function triggerNotificationToast(message) {
             const toast = document.getElementById('globalNotificationToast');
             document.getElementById('toastMessageNode').innerText = message;
             toast.classList.remove('translate-y-20', 'opacity-0');
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
+
+        // Global Window Click to dismiss custom dropdown panel
+        window.onclick = () => hideSettingsDropdownMenuNode();
 
         window.onload = () => initializeApplicationDataEngine();
     </script>
