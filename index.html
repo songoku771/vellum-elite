@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link class="ui-icons" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* Pinterest Style Masonry Grid Layout */
@@ -42,9 +42,11 @@
         
         <aside class="w-20 md:w-24 bg-zinc-950 border-r border-zinc-900 flex flex-col items-center py-6 justify-between z-20">
             <div class="flex flex-col items-center gap-8 w-full">
+                <!-- Logo clicks redirect to home and scroll to top -->
                 <div class="text-xl font-black tracking-widest text-red-600 cursor-pointer" onclick="backToHomeStart()">LUSSO</div>
                 
                 <nav class="flex flex-col gap-6 w-full items-center">
+                    <!-- Home click redirects to home and scroll to top -->
                     <button onclick="backToHomeStart()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
                         <i class="fa-solid fa-house text-lg"></i>
                         <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Home</span>
@@ -215,7 +217,7 @@
         const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Update with real URL
         const SUPABASE_ANON_KEY = "your-anon-key"; // Update with real Key
         
-        // Netlify standard check to prevent blank screen crashes
+        // Anti-crash instance check
         const supabaseClient = (typeof netlifyInternalSupabaseInstance !== 'undefined') ? netlifyInternalSupabaseInstance : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAssetsDatabaseMemory = [];
@@ -285,12 +287,12 @@
             });
         }
 
-        // HOME REDIRECT & SCROLL TO TOP CONTROLLER
+        // HOME NAVIGATION WITH AUTO SCROLL TO TOP PIPELINE
         function backToHomeStart() {
             navigateToAppSection('dashboard');
-            const scrollNode = document.getElementById('mainContentScrollNode');
-            if (scrollNode) {
-                scrollNode.scrollTo({ top: 0, behavior: 'smooth' });
+            const mainScrollContainer = document.getElementById('mainContentScrollNode');
+            if (mainScrollContainer) {
+                mainScrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
@@ -308,7 +310,7 @@
             document.getElementById('modalDownloadIconBtn').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
             document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
             
-            // Dropdown Actions setup
+            // Dropdown Click Handlers Link setup
             document.getElementById('dropdownCopyLinkAction').onclick = () => {
                 navigator.clipboard.writeText(asset.image_url);
                 triggerNotificationToast("Asset address copied to clipboard network!");
