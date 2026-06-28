@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link class="ui-icons" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* Pinterest Style Masonry Grid Layout */
         .masonry-grid {
             column-count: 2;
-            column-gap: 16px;
+            column-gap: 20px;
         }
         @media (min-width: 640px) { .masonry-grid { column-count: 3; } }
         @media (min-width: 1024px) { .masonry-grid { column-count: 4; } }
         @media (min-width: 1280px) { .masonry-grid { column-count: 5; } }
         .masonry-item {
             break-inside: avoid;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         /* Custom Scrollbar for Sleek Dark Theme */
         .custom-scrollbar::-webkit-scrollbar {
@@ -40,40 +40,40 @@
 
     <div class="flex h-screen w-screen overflow-hidden">
         
-        <aside class="w-20 md:w-24 bg-zinc-950 border-r border-zinc-900 flex flex-col items-center py-6 justify-between z-20">
-            <div class="flex flex-col items-center gap-8 w-full">
-                <!-- Logo clicks redirect to home and scroll to top -->
-                <div class="text-xl font-black tracking-widest text-red-600 cursor-pointer" onclick="backToHomeStart()">LUSSO</div>
+        <aside class="w-64 bg-zinc-950 border-r border-zinc-900 flex flex-col py-6 justify-between z-20 px-4">
+            <div class="flex flex-col gap-8 w-full">
+                <div class="text-2xl font-black tracking-widest text-red-600 px-3 cursor-pointer" onclick="backToHomeStart()">LUSSO</div>
                 
-                <nav class="flex flex-col gap-6 w-full items-center">
-                    <!-- Home click redirects to home and scroll to top -->
-                    <button onclick="backToHomeStart()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-house text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Home</span>
+                <nav class="flex flex-col gap-2 w-full">
+                    <button onclick="backToHomeStart()" class="flex items-center gap-4 w-full px-4 py-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group">
+                        <i class="fa-solid fa-house text-lg w-6"></i>
+                        <span class="text-sm font-medium tracking-wide">Home</span>
                     </button>
-                    <button onclick="navigateToAppSection('explore')" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-compass text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Explore</span>
+                    <button onclick="navigateToAppSection('explore')" class="flex items-center gap-4 w-full px-4 py-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group">
+                        <i class="fa-solid fa-compass text-lg w-6"></i>
+                        <span class="text-sm font-medium tracking-wide">Explore</span>
                     </button>
-                    <button onclick="openYourBoardsPanelSection()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
-                        <i class="fa-solid fa-bookmark text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Saved Vault</span>
+                    <button onclick="openYourBoardsPanelSection()" class="flex items-center gap-4 w-full px-4 py-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group">
+                        <i class="fa-solid fa-bookmark text-lg w-6"></i>
+                        <span class="text-sm font-medium tracking-wide">Saved Vault</span>
                     </button>
-                    <button onclick="openLeftSliderUploadEngine()" class="p-3 rounded-xl bg-zinc-900 hover:bg-red-900/40 text-red-500 hover:text-red-400 transition group relative">
-                        <i class="fa-solid fa-plus text-lg"></i>
-                        <span id="notificationBadge" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                    <button onclick="openLeftSliderUploadEngine()" class="flex items-center gap-4 w-full px-4 py-3 mt-4 rounded-xl bg-zinc-900 hover:bg-red-950/40 text-red-500 hover:text-red-400 transition group relative">
+                        <i class="fa-solid fa-plus text-lg w-6"></i>
+                        <span class="text-sm font-bold tracking-wider">Publish Asset</span>
+                        <span id="notificationBadge" class="absolute top-4 right-4 w-2 h-2 bg-red-500 rounded-full hidden"></span>
                     </button>
                 </nav>
             </div>
-            <button onclick="clearAllSavedBoardsStorage()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-600 hover:text-red-500 transition group relative">
-                <i class="fa-solid fa-trash text-sm"></i>
-                <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Clear Vault</span>
+            
+            <button onclick="clearAllSavedBoardsStorage()" class="flex items-center gap-4 w-full px-4 py-3 rounded-xl hover:bg-zinc-900 text-zinc-600 hover:text-red-500 transition group">
+                <i class="fa-solid fa-trash text-sm w-6"></i>
+                <span class="text-xs font-mono tracking-wider">Clear Vault</span>
             </button>
         </aside>
 
         <main id="mainContentScrollNode" class="flex-1 h-full overflow-y-auto bg-zinc-950 relative custom-scrollbar pb-20" onscroll="handleWindowInfiniteScrollTrigger()">
             
-            <header class="sticky top-0 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 px-6 py-4 flex items-center justify-between z-10">
+            <header class="sticky top-0 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 px-8 py-5 flex items-center justify-between z-10">
                 <div class="w-full max-w-xl relative" id="topSearchBarContainer">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
                     <input id="appSearchEngineInput" oninput="executeLiveSearchQuery()" type="text" placeholder="Search across the asset core matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
@@ -83,18 +83,18 @@
                     <input id="exploreSearchEngineInput" oninput="executeExploreGridLocalSearch()" type="text" placeholder="Filter explore node matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
                 </div>
                 <div>
-                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-mono tracking-wider">SECURE_NODE_OK</span>
+                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-4 py-2 rounded-full font-mono tracking-wider">SECURE_NODE_OK</span>
                 </div>
             </header>
 
-            <section id="dashboardSection" class="p-6">
+            <section id="dashboardSection" class="p-8">
                 <div id="pinterestMainMasonryContainer" class="masonry-grid w-full"></div>
                 <div id="infiniteScrollLoadStatusIndicator" class="w-full text-center py-8 text-zinc-500 text-xs font-mono tracking-widest hidden">
                     <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> FETCHING NEXT LAYER DATA...
                 </div>
             </section>
 
-            <section id="exploreSection" class="p-6 hidden">
+            <section id="exploreSection" class="p-8 hidden">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold tracking-tight">Explore Network Core</h2>
                     <p class="text-xs text-zinc-500">Curated trending matrices across public databanks.</p>
@@ -102,7 +102,7 @@
                 <div id="exploreMasonryContainerGrid" class="masonry-grid w-full"></div>
             </section>
 
-            <section id="yourBoardsSection" class="p-6 hidden">
+            <section id="yourBoardsSection" class="p-8 hidden">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold tracking-tight text-red-500">Your Offline Saved Vault</h2>
                     <p class="text-xs text-zinc-500">Assets cached locally inside browser client storage block.</p>
@@ -213,11 +213,9 @@
     </div>
 
     <script>
-        // CONFIGURATION PARAMETERS MATRIX
-        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Update with real URL
-        const SUPABASE_ANON_KEY = "your-anon-key"; // Update with real Key
+        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; 
+        const SUPABASE_ANON_KEY = "your-anon-key"; 
         
-        // Anti-crash instance check
         const supabaseClient = (typeof netlifyInternalSupabaseInstance !== 'undefined') ? netlifyInternalSupabaseInstance : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAssetsDatabaseMemory = [];
@@ -230,7 +228,6 @@
         let isDatabaseCompletelyExhausted = false;
         let activeSelectedAssetContext = null;
 
-        // FETCH INITIAL STREAMS
         async function initializeApplicationDataEngine() {
             try {
                 const { data, error } = await supabaseClient
@@ -259,7 +256,6 @@
             return sourceArray.slice(indexStart, indexStart + memoryBatchLimitSize);
         }
 
-        // GRID GENERATOR PIPELINE
         function renderGrid(dataset, containerId, appendMode = false) {
             const container = document.getElementById(containerId);
             if(!container) return;
@@ -273,13 +269,13 @@
 
             dataset.forEach(item => {
                 const itemNode = document.createElement('div');
-                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-2xl cursor-pointer border border-zinc-900 hover:border-zinc-800 transition duration-300 shadow-sm hover:shadow-xl";
+                itemNode.className = "masonry-item group relative overflow-hidden bg-zinc-900 rounded-2xl cursor-pointer border border-zinc-900 hover:border-zinc-700 transition duration-300 shadow-sm hover:shadow-xl";
                 
                 itemNode.onclick = () => openGlobalAssetDetailModal(item);
 
                 itemNode.innerHTML = `
-                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition duration-300" loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
+                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition duration-300" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
                         <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Matrix'}</p>
                     </div>
                 `;
@@ -287,7 +283,6 @@
             });
         }
 
-        // HOME NAVIGATION WITH AUTO SCROLL TO TOP PIPELINE
         function backToHomeStart() {
             navigateToAppSection('dashboard');
             const mainScrollContainer = document.getElementById('mainContentScrollNode');
@@ -296,21 +291,17 @@
             }
         }
 
-        // OPEN ADVANCED PINTEREST DETAIL OVERLAY WINDOW MODAL
         function openGlobalAssetDetailModal(asset) {
             activeSelectedAssetContext = asset;
             const modal = document.getElementById('globalAssetDetailModal');
             
-            // Inject Primary Core Frame Metrics
             document.getElementById('modalHeroElementImage').src = asset.image_url;
             document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Frame';
             document.getElementById('modalAssetSystemIdNode').innerText = `ID: OBJ_${asset.id.toString().substring(0,10)}`;
 
-            // Assign Event Pipelines
             document.getElementById('modalDownloadIconBtn').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
             document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
             
-            // Dropdown Click Handlers Link setup
             document.getElementById('dropdownCopyLinkAction').onclick = () => {
                 navigator.clipboard.writeText(asset.image_url);
                 triggerNotificationToast("Asset address copied to clipboard network!");
@@ -318,29 +309,24 @@
             };
             document.getElementById('dropdownDeleteAction').onclick = () => executeAssetCloudDeletionPipeline(asset.id);
 
-            // Fetch Related Contextual Suggestions Block
             const balanceData = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
             const recommendationSlice = balanceData.sort(() => 0.5 - Math.random()).slice(0, 10);
             
             document.getElementById('suggestionsCountNode').innerText = `${recommendationSlice.length} Assets Core Identified`;
             renderGrid(recommendationSlice, 'modalSuggestionsMasonryGrid', false);
 
-            // Open Visual Modal Frame Layer Node & Lock main body background scrolling action
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             hideSettingsDropdownMenuNode();
-
-            // Auto Scroll back to top inside modal layout
             modal.scrollTop = 0;
         }
 
         function closeGlobalAssetDetailModal() {
             document.getElementById('globalAssetDetailModal').classList.add('hidden');
-            document.body.style.overflow = ''; // Unlock background scroll activity
+            document.body.style.overflow = ''; 
             activeSelectedAssetContext = null;
         }
 
-        // SETTINGS DROPDOWN COMPONENT LAYER CONTROLS
         function toggleSettingsDropdownNode(e) {
             e.stopPropagation();
             const box = document.getElementById('settingsDropdownMenuBox');
@@ -352,7 +338,6 @@
             if(box) box.classList.add('hidden');
         }
 
-        // CONNECTIVE CLOUD DELETION CONTROLLER
         async function executeAssetCloudDeletionPipeline(assetId) {
             if(!confirm("Are you certain you wish to purge this asset entity row permanently from the database core?")) return;
             try {
@@ -361,14 +346,13 @@
 
                 triggerNotificationToast("Asset Row Expunged successfully!");
                 closeGlobalAssetDetailModal();
-                await initializeApplicationDataEngine(); // Refresh background layer state
+                await initializeApplicationDataEngine(); 
             } catch(e) {
                 console.error(e);
                 alert("Operation Refused: Ensure active Anon system permissions allow structural DELETE mutations.");
             }
         }
 
-        // DOWNLOAD INTERACTION FILE PIPELINE
         async function downloadTargetSystemFile(url, filename) {
             try {
                 triggerNotificationToast("Pulling network file stream down...");
@@ -389,7 +373,6 @@
             }
         }
 
-        // VAULT LOCALSTORAGE UTILITIES
         function cacheAssetIntoLocalBoard(asset) {
             let currentVault = getSavedBoardsStorageArray();
             if(currentVault.some(item => item.id === asset.id)) {
@@ -419,7 +402,6 @@
             }
         }
 
-        // INFINITE SCROLL SYSTEM
         function handleWindowInfiniteScrollTrigger() {
             const dashboardSection = document.getElementById('dashboardSection');
             if (dashboardSection.classList.contains('hidden')) return;
@@ -552,9 +534,7 @@
             setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
 
-        // Global Window Click to dismiss custom dropdown panel
         window.onclick = () => hideSettingsDropdownMenuNode();
-
         window.onload = () => initializeApplicationDataEngine();
     </script>
 </body>
