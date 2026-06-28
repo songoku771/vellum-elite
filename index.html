@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUSSO | Premium Wallpaper Hub</title>
+    <title>LUSSO | Premium Matrix System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -55,7 +55,7 @@
                     </button>
                     <button onclick="openYourBoardsPanelSection()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-400 hover:text-white transition group relative">
                         <i class="fa-solid fa-bookmark text-lg"></i>
-                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Saved</span>
+                        <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Saved Vault</span>
                     </button>
                     <button onclick="openLeftSliderUploadEngine()" class="p-3 rounded-xl bg-zinc-900 hover:bg-red-900/40 text-red-500 hover:text-red-400 transition group relative">
                         <i class="fa-solid fa-plus text-lg"></i>
@@ -65,7 +65,7 @@
             </div>
             <button onclick="clearAllSavedBoardsStorage()" class="p-3 rounded-xl hover:bg-zinc-900 text-zinc-600 hover:text-red-500 transition group relative">
                 <i class="fa-solid fa-trash text-sm"></i>
-                <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Clear Saved</span>
+                <span class="absolute left-full ml-2 px-2 py-1 bg-zinc-900 text-xs rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-30">Clear Vault</span>
             </button>
         </aside>
 
@@ -74,36 +74,36 @@
             <header class="sticky top-0 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 px-6 py-4 flex items-center justify-between z-10">
                 <div class="w-full max-w-xl relative" id="topSearchBarContainer">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
-                    <input id="appSearchEngineInput" oninput="executeLiveSearchQuery()" type="text" placeholder="Search premium wallpapers..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+                    <input id="appSearchEngineInput" oninput="executeLiveSearchQuery()" type="text" placeholder="Search across the asset core matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
                 </div>
                 <div class="w-full max-w-xl relative hidden" id="exploreSearchBarContainer">
                     <i class="fa-solid fa-compass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
-                    <input id="exploreSearchEngineInput" oninput="executeExploreGridLocalSearch()" type="text" placeholder="Filter explore section..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
+                    <input id="exploreSearchEngineInput" oninput="executeExploreGridLocalSearch()" type="text" placeholder="Filter explore node matrix..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition placeholder:text-zinc-600">
                 </div>
                 <div>
-                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-mono tracking-wider">ONLINE</span>
+                    <span class="text-xs bg-zinc-900 border border-zinc-800 text-zinc-400 px-3 py-1.5 rounded-full font-mono tracking-wider">SECURE_NODE_OK</span>
                 </div>
             </header>
 
             <section id="dashboardSection" class="p-6">
                 <div id="pinterestMainMasonryContainer" class="masonry-grid w-full"></div>
                 <div id="infiniteScrollLoadStatusIndicator" class="w-full text-center py-8 text-zinc-500 text-xs font-mono tracking-widest hidden">
-                    <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> LOADING MORE WALLPAPERS...
+                    <i class="fa-solid fa-circle-notch animate-spin mr-2"></i> FETCHING NEXT LAYER DATA...
                 </div>
             </section>
 
             <section id="exploreSection" class="p-6 hidden">
                 <div class="mb-6">
-                    <h2 class="text-xl font-bold tracking-tight">Explore Trending</h2>
-                    <p class="text-xs text-zinc-500">Handpicked popular wallpapers from across the community.</p>
+                    <h2 class="text-xl font-bold tracking-tight">Explore Network Core</h2>
+                    <p class="text-xs text-zinc-500">Curated trending matrices across public databanks.</p>
                 </div>
                 <div id="exploreMasonryContainerGrid" class="masonry-grid w-full"></div>
             </section>
 
             <section id="yourBoardsSection" class="p-6 hidden">
                 <div class="mb-6">
-                    <h2 class="text-xl font-bold tracking-tight text-red-500">Your Saved Vault</h2>
-                    <p class="text-xs text-zinc-500">Wallpapers saved locally in this browser.</p>
+                    <h2 class="text-xl font-bold tracking-tight text-red-500">Your Offline Saved Vault</h2>
+                    <p class="text-xs text-zinc-500">Assets cached locally inside browser client storage block.</p>
                 </div>
                 <div id="yourSavedPinsMasonryGrid" class="masonry-grid w-full"></div>
             </section>
@@ -114,13 +114,13 @@
         <div class="w-full max-w-md bg-zinc-950 border-r border-zinc-900 h-full p-6 flex flex-col justify-between overflow-y-auto">
             <div>
                 <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-lg font-bold font-mono text-red-500 tracking-wider">// UPLOAD WALLPAPER</h3>
+                    <h3 class="text-lg font-bold font-mono text-red-500 tracking-wider">// DISPATCH NEW ASSET</h3>
                     <button onclick="closeLeftSliderUploadEngine()" class="text-zinc-500 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
                 </div>
                 <form onsubmit="handleLocalFormUploadSubmit(event)" id="uploadAssetForm" class="space-y-5">
                     <div>
-                        <label class="block text-xs text-zinc-500 font-mono mb-2">WALLPAPER TITLE</label>
-                        <input id="formUploadTitle" type="text" required placeholder="Enter wallpaper name..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition">
+                        <label class="block text-xs text-zinc-500 font-mono mb-2">ASSET TITLE</label>
+                        <input id="formUploadTitle" type="text" required placeholder="Enter asset label..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-700 transition">
                     </div>
                     <div>
                         <label class="block text-xs text-zinc-500 font-mono mb-2">SELECT IMAGE FILE</label>
@@ -132,15 +132,15 @@
                 </form>
             </div>
             <div class="pt-6 border-t border-zinc-900">
-                <button type="submit" form="uploadAssetForm" id="formSubmitBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg text-xs font-mono font-bold tracking-widest transition">UPLOAD NOW</button>
+                <button type="submit" form="uploadAssetForm" id="formSubmitBtn" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg text-xs font-mono font-bold tracking-widest transition">PUBLISH ASSET</button>
             </div>
         </div>
         <div class="flex-1 h-full" onclick="closeLeftSliderUploadEngine()"></div>
     </div>
 
     <div id="globalAssetDetailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden overflow-y-auto custom-scrollbar p-4 md:p-10">
-        <button onclick="closeGlobalAssetDetailModal()" class="fixed top-6 right-6 bg-zinc-900/80 hover:bg-zinc-800 text-white p-3 rounded-full transition z-50 border border-zinc-800 flex items-center gap-1">
-            <i class="fa-solid fa-arrow-left text-sm"></i> Back
+        <button onclick="closeGlobalAssetDetailModal()" class="fixed top-6 right-6 bg-zinc-900/80 hover:bg-zinc-800 text-white p-3 rounded-full transition z-50 border border-zinc-800">
+            <i class="fa-solid fa-arrow-left text-sm mr-1"></i> Back
         </button>
 
         <div class="max-w-5xl mx-auto space-y-10 mt-10">
@@ -154,7 +154,7 @@
                     <div class="space-y-6">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <button id="modalDownloadIconBtn" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Download Wallpaper">
+                                <button id="modalDownloadIconBtn" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Download">
                                     <i class="fa-solid fa-download text-sm"></i>
                                 </button>
                                 
@@ -162,42 +162,42 @@
                                     <button onclick="toggleSettingsDropdownNode(event)" class="w-10 h-10 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white rounded-full flex items-center justify-center transition" title="Options">
                                         <i class="fa-solid fa-ellipsis text-sm"></i>
                                     </button>
-                                    <div id="settingsDropdownMenuBox" class="absolute left-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl hidden z-30 py-1 text-xs">
+                                    <div id="settingsDropdownMenuBox" class="absolute left-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl hidden z-30 py-1 font-mono text-xs">
                                         <button id="dropdownCopyLinkAction" class="w-full text-left px-4 py-2.5 hover:bg-zinc-800 text-zinc-300 transition flex items-center gap-2">
-                                            <i class="fa-solid fa-link text-zinc-500"></i> Copy Image Link
+                                            <i class="fa-solid fa-link text-zinc-500"></i> Copy Asset Link
                                         </button>
-                                        <button id="dropdownDeleteAction" class="w-full text-left px-4 py-2.5 hover:bg-red-950/40 text-red-400 transition flex items-center gap-2 border-t border-zinc-900/60">
-                                            <i class="fa-solid fa-trash-can text-red-500"></i> Delete Wallpaper
+                                        <button id="dropdownDeleteAction" class="w-full text-left px-4 py-2.5 hover:bg-red-950/40 text-red-400 transition flex items-center gap-2 border-t border-zinc-800/60">
+                                            <i class="fa-solid fa-trash-can text-red-500"></i> Delete Asset Node
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <button id="modalSaveVaultActionButton" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-5 py-2.5 rounded-full tracking-wider transition shadow-lg">
-                                SAVE
+                            <button id="modalSaveVaultActionButton" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold font-mono px-5 py-2.5 rounded-full tracking-wider transition shadow-lg">
+                                SAVE ASSET
                             </button>
                         </div>
 
                         <hr class="border-zinc-900">
 
                         <div>
-                            <h2 id="modalHeroElementTitle" class="text-3xl font-black tracking-tight text-white mb-2">Wallpaper Name</h2>
-                            <p class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">Category: Premium Collection</p>
-                            <p class="text-sm text-zinc-400 leading-relaxed">High quality digital artwork saved directly on the Supabase secure cloud storage system. Perfect resolution for phone and desktop screens.</p>
+                            <h2 id="modalHeroElementTitle" class="text-3xl font-black tracking-tight text-white mb-2">Asset Identity Label</h2>
+                            <p class="text-xs font-mono text-zinc-500 tracking-widest uppercase mb-4">Node Stream: SECURE_CORE_MATRIX</p>
+                            <p class="text-sm text-zinc-400 leading-relaxed">This premium digital asset matrix framework is rendered and synchronized directly across cloud-allocated clusters inside your Supabase application pipeline.</p>
                         </div>
                     </div>
 
                     <div class="pt-6 border-t border-zinc-900 mt-8 flex justify-between items-center text-[10px] font-mono text-zinc-600">
-                        <span>FORMAT: HIGH_RES_JPG</span>
-                        <span id="modalAssetSystemIdNode">ID: 000000</span>
+                        <span>CONTEXT: SHA256_VERIFIED</span>
+                        <span id="modalAssetSystemIdNode">ID: NULL_NODE</span>
                     </div>
                 </div>
             </div>
 
             <div class="space-y-6 pt-4">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-4">
-                    <h3 class="text-lg font-bold tracking-wider text-zinc-200">// MORE LIKE THIS</h3>
-                    <span class="text-xs text-zinc-500 font-mono" id="suggestionsCountNode">0 Items Found</span>
+                    <h3 class="text-lg font-bold font-mono tracking-wider text-zinc-200">// MORE LIKE THIS (SCROLL FOR MORE)</h3>
+                    <span class="text-xs text-zinc-500 font-mono" id="suggestionsCountNode">0 Assets Linked</span>
                 </div>
                 
                 <div id="modalSuggestionsMasonryGrid" class="masonry-grid w-full"></div>
@@ -207,15 +207,16 @@
 
     <div id="globalNotificationToast" class="fixed bottom-6 right-6 bg-zinc-900 border border-zinc-800 text-white px-4 py-3 rounded-xl text-xs font-mono tracking-wide shadow-2xl translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
         <i class="fa-solid fa-circle-check text-red-500 text-sm"></i>
-        <span id="toastMessageNode">Operation Successful!</span>
+        <span id="toastMessageNode">Execution Operation Finished!</span>
     </div>
 
     <script>
-        // CONFIGURATION PARAMETERS
+        // CONFIGURATION PARAMETERS MATRIX
         const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // Update with real URL
         const SUPABASE_ANON_KEY = "your-anon-key"; // Update with real Key
         
-        const supabaseClient = netlifyInternalSupabaseInstance || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Netlify standard check to prevent blank screen crashes
+        const supabaseClient = (typeof netlifyInternalSupabaseInstance !== 'undefined') ? netlifyInternalSupabaseInstance : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAssetsDatabaseMemory = [];
         let displayedAssetsMemory = [];
@@ -247,7 +248,7 @@
                 if (displayedAssetsMemory.length >= allAssetsDatabaseMemory.length) isDatabaseCompletelyExhausted = true;
             } catch(e) {
                 console.error(e);
-                triggerNotificationToast("Failed to load wallpapers from cloud.");
+                triggerNotificationToast("Failed to sync cloud asset layers.");
             }
         }
 
@@ -264,7 +265,7 @@
             if(!appendMode) container.innerHTML = "";
 
             if(dataset.length === 0 && !appendMode) {
-                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono">// NO WALLPAPERS FOUND //</div>`;
+                container.innerHTML = `<div class="col-span-full text-center py-20 text-zinc-600 text-xs font-mono">// END OF STREAM / MATRIX VACANT //</div>`;
                 return;
             }
 
@@ -275,16 +276,16 @@
                 itemNode.onclick = () => openGlobalAssetDetailModal(item);
 
                 itemNode.innerHTML = `
-                    <img src="${item.image_url}" alt="${item.title || 'Wallpaper'}" class="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition duration-300" loading="lazy">
+                    <img src="${item.image_url}" alt="${item.title || 'Lusso Asset'}" class="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition duration-300" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 p-4 flex flex-col justify-end">
-                        <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Wallpaper'}</p>
+                        <p class="text-sm font-bold text-white truncate">${item.title || 'Untitled Matrix'}</p>
                     </div>
                 `;
                 container.appendChild(itemNode);
             });
         }
 
-        // BACK TO HOME & SCROLL TO TOP TRIGGER
+        // HOME REDIRECT & SCROLL TO TOP CONTROLLER
         function backToHomeStart() {
             navigateToAppSection('dashboard');
             const scrollNode = document.getElementById('mainContentScrollNode');
@@ -293,24 +294,24 @@
             }
         }
 
-        // OPEN PINTEREST DETAIL OVERLAY WINDOW MODAL
+        // OPEN ADVANCED PINTEREST DETAIL OVERLAY WINDOW MODAL
         function openGlobalAssetDetailModal(asset) {
             activeSelectedAssetContext = asset;
             const modal = document.getElementById('globalAssetDetailModal');
             
             // Inject Primary Core Frame Metrics
             document.getElementById('modalHeroElementImage').src = asset.image_url;
-            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Wallpaper';
-            document.getElementById('modalAssetSystemIdNode').innerText = `ID: ${asset.id.toString().substring(0,10)}`;
+            document.getElementById('modalHeroElementTitle').innerText = asset.title || 'Untitled Asset Frame';
+            document.getElementById('modalAssetSystemIdNode').innerText = `ID: OBJ_${asset.id.toString().substring(0,10)}`;
 
             // Assign Event Pipelines
             document.getElementById('modalDownloadIconBtn').onclick = () => downloadTargetSystemFile(asset.image_url, asset.title);
             document.getElementById('modalSaveVaultActionButton').onclick = () => cacheAssetIntoLocalBoard(asset);
             
-            // Dropdown Click Handlers Link setup
+            // Dropdown Actions setup
             document.getElementById('dropdownCopyLinkAction').onclick = () => {
                 navigator.clipboard.writeText(asset.image_url);
-                triggerNotificationToast("Image link copied to clipboard!");
+                triggerNotificationToast("Asset address copied to clipboard network!");
                 hideSettingsDropdownMenuNode();
             };
             document.getElementById('dropdownDeleteAction').onclick = () => executeAssetCloudDeletionPipeline(asset.id);
@@ -319,7 +320,7 @@
             const balanceData = allAssetsDatabaseMemory.filter(item => item.id !== asset.id);
             const recommendationSlice = balanceData.sort(() => 0.5 - Math.random()).slice(0, 10);
             
-            document.getElementById('suggestionsCountNode').innerText = `${recommendationSlice.length} Wallpapers Found`;
+            document.getElementById('suggestionsCountNode').innerText = `${recommendationSlice.length} Assets Core Identified`;
             renderGrid(recommendationSlice, 'modalSuggestionsMasonryGrid', false);
 
             // Open Visual Modal Frame Layer Node & Lock main body background scrolling action
@@ -351,31 +352,31 @@
 
         // CONNECTIVE CLOUD DELETION CONTROLLER
         async function executeAssetCloudDeletionPipeline(assetId) {
-            if(!confirm("Are you sure you want to delete this wallpaper permanently?")) return;
+            if(!confirm("Are you certain you wish to purge this asset entity row permanently from the database core?")) return;
             try {
                 const { error } = await supabaseClient.from('wallpapers').delete().eq('id', assetId);
                 if(error) throw error;
 
-                triggerNotificationToast("Wallpaper deleted successfully!");
+                triggerNotificationToast("Asset Row Expunged successfully!");
                 closeGlobalAssetDetailModal();
                 await initializeApplicationDataEngine(); // Refresh background layer state
             } catch(e) {
                 console.error(e);
-                alert("Operation Refused: Permission issue or network error.");
+                alert("Operation Refused: Ensure active Anon system permissions allow structural DELETE mutations.");
             }
         }
 
         // DOWNLOAD INTERACTION FILE PIPELINE
         async function downloadTargetSystemFile(url, filename) {
             try {
-                triggerNotificationToast("Starting download...");
+                triggerNotificationToast("Pulling network file stream down...");
                 const res = await fetch(url);
                 const blob = await res.blob();
                 const blobUrl = URL.createObjectURL(blob);
                 
                 const link = document.createElement('a');
                 link.href = blobUrl;
-                link.download = `${filename || 'Wallpaper'}_${Date.now()}.jpg`;
+                link.download = `${filename || 'LUSSO'}_${Date.now()}.jpg`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -390,11 +391,11 @@
         function cacheAssetIntoLocalBoard(asset) {
             let currentVault = getSavedBoardsStorageArray();
             if(currentVault.some(item => item.id === asset.id)) {
-                return triggerNotificationToast("Wallpaper is already saved.");
+                return triggerNotificationToast("Object context already locked inside vault memory.");
             }
             currentVault.push(asset);
             localStorage.setItem('lusso_guest_board', JSON.stringify(currentVault));
-            triggerNotificationToast("Saved to your offline library!");
+            triggerNotificationToast("Linked into Offline Vault Caches!");
         }
 
         function navigateToAppSection(sectionId) {
@@ -471,7 +472,6 @@
             renderGrid(matches.slice(0, 10), 'exploreMasonryContainerGrid', false);
         }
 
-        // STORAGE INFRASTRUCTURE MANAGEMENT
         function getSavedBoardsStorageArray() {
             const data = localStorage.getItem('lusso_guest_board');
             return data ? JSON.parse(data) : [];
@@ -485,7 +485,7 @@
 
         function clearAllSavedBoardsStorage() {
             localStorage.removeItem('lusso_guest_board');
-            triggerNotificationToast("Saved wallpapers cleared!");
+            triggerNotificationToast("Vault Cleared!");
             openYourBoardsPanelSection();
         }
 
@@ -493,7 +493,6 @@
             document.getElementById('leftSliderUploadEngine').classList.remove('translate-x-[-100%]');
         }
 
-        // CLOSE SLIDER
         function closeLeftSliderUploadEngine() {
             document.getElementById('leftSliderUploadEngine').classList.add('translate-x-[-100%]');
         }
@@ -511,10 +510,10 @@
             e.preventDefault();
             const btn = document.getElementById('formSubmitBtn');
             const title = document.getElementById('formUploadTitle').value;
-            if(!selectedFile) return alert("Please select an image first!");
+            if(!selectedFile) return alert("Select an image first!");
 
             btn.disabled = true;
-            btn.innerText = "UPLOADING...";
+            btn.innerText = "STREAMING NODE...";
 
             try {
                 const fileName = `${Date.now()}_${selectedFile.name.replace(/\s+/g, '_')}`;
@@ -531,16 +530,16 @@
                 
                 if(dbErr) throw dbErr;
 
-                triggerNotificationToast("Wallpaper Uploaded!");
+                triggerNotificationToast("Asset Stream Dispatched!");
                 document.getElementById('notificationBadge').classList.remove('hidden');
                 closeLeftSliderUploadEngine();
                 await initializeApplicationDataEngine();
             } catch (err) { 
                 console.error(err);
-                alert("Upload failed. Connection refused."); 
+                alert("Pipeline Connection Refused."); 
             } finally { 
                 btn.disabled = false; 
-                btn.innerText = "UPLOAD NOW"; 
+                btn.innerText = "PUBLISH ASSET"; 
             }
         }
 
